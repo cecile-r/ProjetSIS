@@ -32,6 +32,7 @@ public class PH {
        return prenomPH + " " + nomPH + ", " + specialite;
     }
     
+    
 
     /**
      * @return the IdPH

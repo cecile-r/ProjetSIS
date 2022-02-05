@@ -27,4 +27,6 @@ class ComparaisonFichesCouts implements ComparaisonFiches {
         Double c2 = new Double(fiche2.coutTotal());
         return c1.compareTo(c2);
         }
+    
+
     }

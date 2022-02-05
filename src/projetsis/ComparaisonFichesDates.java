@@ -20,6 +20,8 @@ class ComparaisonFichesDates implements ComparaisonFiches {
      * @return entier pour savoir si les 2 fiches sont égales en date
      */
     public int comparer(FicheDeSoins fiche1, FicheDeSoins fiche2) {
-        return fiche1.getDate().compareTo(fiche2.getDate());
-        }
+        return fiche1.getDateHeure().compareTo(fiche2.getDateHeure());
     }
+    
+    
+}

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Vector;
 
 
-public class FicheDeSoins {
-    private Date dateFicheSoins;
+public class FicheDeSoins implements Evaluable{
+    private DateHeure dateHeure;
     private int idFiche;
     private List<SoinsQuotidien> soinsQuotidien = new ArrayList<SoinsQuotidien> ();
     private List<Examen> examen = new ArrayList<Examen> ();
@@ -17,8 +17,8 @@ public class FicheDeSoins {
     private Infirmiere infirmiere;
     
 
-   public FicheDeSoins(Date dateFicheSoins, int idFiche, PH pH, Infirmiere infirmiere){
-       this.dateFicheSoins=dateFicheSoins;
+   public FicheDeSoins(DateHeure dateHeure, int idFiche, PH pH, Infirmiere infirmiere){
+       this.dateHeure=dateHeure;
        this.idFiche=idFiche;
        this.pH=pH;
        this.infirmiere = infirmiere;
@@ -44,7 +44,7 @@ public class FicheDeSoins {
      */
     public String toString() {
         String ch = "";
-        ch = ch + "Fiche de soins du " + dateFicheSoins;
+        ch = ch + "Fiche de soins du " + dateHeure;
         if(getpH()!=null){
             ch = ch + "\n\nPH : " + getpH().toString();
         }else{
@@ -74,7 +74,7 @@ public class FicheDeSoins {
      */
     public String toStringFicheDeSoins() {
         String ch = "\n";
-        ch = ch + dateFicheSoins;
+        ch = ch + dateHeure;
         if(getpH()!=null){
             ch = ch + " _PH : " + getpH().toString() + "\n";
         }else{
@@ -88,15 +88,15 @@ public class FicheDeSoins {
     /**
      * @return the DateFicheSoins
      */
-    public Date getDateFicheSoins() {
-        return dateFicheSoins;
+    public DateHeure getDateHeure() {
+        return dateHeure;
     }
 
     /**
-     * @param DateFicheSoins the DateFicheSoins to set
+     * @param DateHeure the DateHeure to set
      */
-    public void setDateFicheSoins(Date DateFicheSoins) {
-        this.dateFicheSoins = DateFicheSoins;
+    public void setDateHeure(DateHeure dateHeure) {
+        this.dateHeure = dateHeure;
     }
 
     /**

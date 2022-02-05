@@ -24,4 +24,5 @@ interface ComparaisonFiches {
     //     0  si fiche1 == fiche2
     //    >0  si fiche1 > fiche2
     public int comparer(FicheDeSoins fiche1, FicheDeSoins fiche2);
+    //public int comparer(Object  o1, Object  o2);
 }

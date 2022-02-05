@@ -9,17 +9,21 @@ package projetsis;
  *
  * @author garci
  */
-public class SoinsQuotidien {
+public class SoinsQuotidien implements Evaluable {
     private double temperature;
     private int saturationO2;
     private double tension;
     private String remarque;
+    private Infirmiere infirmiere;
+    private DateHeure dateHeure;
     
-    public SoinsQuotidien(double temperature,int saturationO2,double tension, String remarque ){
+    public SoinsQuotidien(double temperature,int saturationO2,double tension, String remarque, Infirmiere infirmiere, DateHeure dateHeure){
         this.temperature=temperature;
         this.saturationO2=saturationO2;
         this.tension=tension;
         this.remarque=remarque;
+        this.infirmiere=infirmiere;
+        this.dateHeure=dateHeure;
     }
 
     /**
@@ -76,6 +80,34 @@ public class SoinsQuotidien {
      */
     public void setRemarque(String remarque) {
         this.remarque = remarque;
+    }
+
+    /**
+     * @return the infirmiere
+     */
+    public Infirmiere getInfirmiere() {
+        return infirmiere;
+    }
+
+    /**
+     * @param infirmiere the infirmiere to set
+     */
+    public void setInfirmiere(Infirmiere infirmiere) {
+        this.infirmiere = infirmiere;
+    }
+
+    /**
+     * @return the dateHeure
+     */
+    public DateHeure getDateHeure() {
+        return dateHeure;
+    }
+
+    /**
+     * @param dateHeure the dateHeure to set
+     */
+    public void setDateHeure(DateHeure dateHeure) {
+        this.dateHeure = dateHeure;
     }
    
 }

@@ -10,13 +10,16 @@ public class DM {
     private List<Prescriptions> prescriptions = new ArrayList<Prescriptions> ();
     private List<LettreDeSortie> lettreDeSortie = new ArrayList<LettreDeSortie> ();
     private List<SoinsQuotidien> soinsQuotidien = new ArrayList<SoinsQuotidien> ();
+    private List<Examen> examens = new ArrayList<Examen>();
+    //List <Comparable> documents = new ArrayList<Comparable>();
+    ArrayList documents = new ArrayList();
 
     public DM() {
         this.ficheDeSoins = new Vector<FicheDeSoins>();
         this.prescriptions = new Vector<Prescriptions>();
         this.lettreDeSortie=new Vector<LettreDeSortie>();
         this.soinsQuotidien= new Vector<SoinsQuotidien>();
-        
+        this.examens = new Vector<Examen>();
     }
 
     /**

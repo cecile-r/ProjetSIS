@@ -1,6 +1,8 @@
 package projetsis;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 
 
@@ -42,6 +44,8 @@ public class DPI {
         this.dM=dM;
         this.dMA=dMA;
     }
+    
+
 
     /**
      * @return the IPP
