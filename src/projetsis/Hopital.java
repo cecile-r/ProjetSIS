@@ -16,6 +16,9 @@ import java.util.Vector;
 public class Hopital {
     private List<DPI> DPI = new ArrayList<DPI> ();
     
+    public Hopital(){
+        this.DPI= new Vector<DPI>();
+    }
     
     /**
      * retourne la liste des PH
@@ -43,6 +46,19 @@ public class Hopital {
     }
     */
     
+    /**
+     * retourne la liste des patients dossier ouvert d'un service
+     *
+     * @return
+     */
+    /*
+    public List<DPI> filtrerDMAparService(Service service) {
+        //!\ BD
+        return ;
+
+    }
+    */
+    
     public int comparer(Evaluable o1, Evaluable o2){
         DateHeure d1= o1.getDateHeure();
         DateHeure d2= o2.getDateHeure();
@@ -50,7 +66,7 @@ public class Hopital {
     }
     
         
-    /* TRI PAR DATE*/
+    /* TRI D'EVALUABLES PAR DATE*/
      public List<Evaluable> trierFichesParDate(List<Evaluable> liste) {
         Vector<Evaluable> newListe = new Vector<Evaluable>();
 
@@ -72,5 +88,30 @@ public class Hopital {
         }
         return newListe;
     }
+     
     
+        
+    /* TRI DE RDV PAR DATE*/
+     public List<RendezVous> trierRdvParDate(List<RendezVous> liste) {
+        Vector<RendezVous> newListe = new Vector<RendezVous>();
+
+        while (!liste.isEmpty()) {
+            // on cherche la fiche de soins de date minimale :
+            int imin = 0;
+            RendezVous rdv1 = liste.get(imin);
+            for (int i = 1; i < liste.size(); i++) {
+                RendezVous rdv2 = liste.get(i);
+                if (rdv1.getDateHeure().compareTo(rdv2.getDateHeure()) < 0) {
+                    imin = i;
+                    rdv1 = rdv2;
+                }
+            }
+            // on affiche la fiche de soins trouvee :
+            newListe.add(rdv1);
+            //on la supprime de la liste :
+            liste.remove(rdv1);
+        }
+        return newListe;
+    }
+     
 }

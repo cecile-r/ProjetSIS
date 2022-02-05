@@ -26,6 +26,24 @@ public class SoinsQuotidien implements Evaluable {
         this.dateHeure=dateHeure;
     }
 
+    @Override
+    public String toString(){
+        String ch="";
+        ch+=dateHeure.StringDateHeure();
+        ch+="\n";
+        ch+=infirmiere.toString();
+        ch+="\n";
+        ch=ch+"Température : "+temperature;
+        ch+="\n";
+        ch=ch+"Saturation 0² : "+saturationO2;
+        ch+="\n";
+        ch=ch+"Tension : "+tension;
+        ch+="\n";
+        ch=ch+"Remarque : "+remarque;
+        ch+="\n";
+        return ch;
+    }
+    
     /**
      * @return the temperature
      */

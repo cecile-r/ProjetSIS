@@ -15,6 +15,7 @@ public class DMA {
     private List<RendezVous> rendezVous = new ArrayList<RendezVous> ();
     private List<LettreDeSortie> lettreDeSortie = new ArrayList<LettreDeSortie> ();
     private Localisation localisation;
+    private List<Evaluable> documents = new ArrayList<Evaluable> ();
     
     public DMA(Localisation localisation) {
         this.ficheDeSoins = new Vector<FicheDeSoins>();
@@ -23,5 +24,6 @@ public class DMA {
         this.lettreDeSortie= new Vector<LettreDeSortie>();
         this.localisation=localisation;
     }
-
+    
+    
 }

@@ -14,9 +14,20 @@ public class Examen implements Evaluable {
         this.dateHeure=dateHeure;  
     }
     
+    @Override
+    public String toString(){
+        String ch="";
+        ch+=dateHeure.StringDateHeure();
+        ch+="\n";
+        ch+=ph.toString();
+        ch+="\n";
+        ch+=type_examen;
+        ch+="\n";
+        ch=ch + "Résultats : " + resultats;
+        ch+="\n";
+        return ch; 
+    }
     
-    
-
     /**
      * @return the resultats
      */

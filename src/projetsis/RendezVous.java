@@ -2,6 +2,7 @@ package projetsis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 
 public class RendezVous {
@@ -20,6 +21,7 @@ public class RendezVous {
     void afficherRvd(List<RendezVous> rendezVous){
         
     }
+    
 
     /**
      * @return the pH

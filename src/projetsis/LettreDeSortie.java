@@ -10,6 +10,18 @@ public class LettreDeSortie implements Evaluable{
         this.ph=ph;
         this.dateHeure=dateHeure;
     }
+    
+    @Override
+    public String toString(){
+        String ch="";
+        ch+=dateHeure.StringDateHeure();
+        ch+="\n";
+        ch+=ph.toString();
+        ch+="\n";
+        ch+=texte;
+        ch+="\n";
+        return ch;
+    }
 
     /**
      * @return the texte

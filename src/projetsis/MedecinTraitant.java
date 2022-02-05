@@ -7,11 +7,26 @@ public class MedecinTraitant {
     private String prenomMedecinTraitant;
     private int telephoneMedecinTraitant;
     
-    public MedecinTraitant(String mail, String nomMedecinTraitant, String prenomMedecinTraitant){
+    public MedecinTraitant(String mail, String nomMedecinTraitant, String prenomMedecinTraitant, int telephoneMedecinTraitant){
         this.mail=mail;
         this.nomMedecinTraitant=nomMedecinTraitant;
         this.prenomMedecinTraitant=prenomMedecinTraitant;
         this.telephoneMedecinTraitant=telephoneMedecinTraitant;
+    }
+    
+    /*
+    prenom nom 
+    */
+    @Override
+    public String toString(){
+        return prenomMedecinTraitant + " " + nomMedecinTraitant;
+    }
+    
+    /*
+    prenom nom telephone mail
+    */
+    public String toString2(){
+        return prenomMedecinTraitant + " " + nomMedecinTraitant+ " | " + telephoneMedecinTraitant +" | "+ mail;
     }
 
     /**

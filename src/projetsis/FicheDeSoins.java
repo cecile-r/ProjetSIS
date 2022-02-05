@@ -9,10 +9,7 @@ import java.util.Vector;
 public class FicheDeSoins implements Evaluable{
     private DateHeure dateHeure;
     private int idFiche;
-    private List<SoinsQuotidien> soinsQuotidien = new ArrayList<SoinsQuotidien> ();
-    private List<Examen> examen = new ArrayList<Examen> ();
-    private List<Acte> acte = new ArrayList<Acte> ();
-    private List<LettreDeSortie> lettreDeSortie = new ArrayList<LettreDeSortie> ();
+    private List<Acte> actes = new ArrayList<Acte> ();
     private PH pH;
     private Infirmiere infirmiere;
     
@@ -22,6 +19,7 @@ public class FicheDeSoins implements Evaluable{
        this.idFiche=idFiche;
        this.pH=pH;
        this.infirmiere = infirmiere;
+       this.actes= new Vector<Acte>();
    }
    
     /**
@@ -70,9 +68,9 @@ public class FicheDeSoins implements Evaluable{
     
     /**
      *
-     * @return chaine de caractere avecla date et le medecin de la fiche de soin
+     * @return chaine de caractere avec la date et le medecin de la fiche de soin/infirmiere
      */
-    public String toStringFicheDeSoins() {
+    public String toString2() {
         String ch = "\n";
         ch = ch + dateHeure;
         if(getpH()!=null){
@@ -88,6 +86,7 @@ public class FicheDeSoins implements Evaluable{
     /**
      * @return the DateFicheSoins
      */
+    @Override
     public DateHeure getDateHeure() {
         return dateHeure;
     }
@@ -114,59 +113,17 @@ public class FicheDeSoins implements Evaluable{
     }
 
     /**
-     * @return the soinsQuotidien
-     */
-    public List<SoinsQuotidien> getSoinsQuotidien() {
-        return soinsQuotidien;
-    }
-
-    /**
-     * @param soinsQuotidien the soinsQuotidien to set
-     */
-    public void setSoinsQuotidien(List<SoinsQuotidien> soinsQuotidien) {
-        this.soinsQuotidien = soinsQuotidien;
-    }
-
-    /**
-     * @return the examen
-     */
-    public List<Examen> getExamen() {
-        return examen;
-    }
-
-    /**
-     * @param examen the examen to set
-     */
-    public void setExamen(List<Examen> examen) {
-        this.examen = examen;
-    }
-
-    /**
      * @return the acte
      */
     public List<Acte> getActe() {
-        return acte;
+        return actes;
     }
 
     /**
      * @param acte the acte to set
      */
     public void setActe(List<Acte> acte) {
-        this.acte = acte;
-    }
-
-    /**
-     * @return the lettreDeSortie
-     */
-    public List<LettreDeSortie> getLettreDeSortie() {
-        return lettreDeSortie;
-    }
-
-    /**
-     * @param lettreDeSortie the lettreDeSortie to set
-     */
-    public void setLettreDeSortie(List<LettreDeSortie> lettreDeSortie) {
-        this.lettreDeSortie = lettreDeSortie;
+        this.actes = acte;
     }
 
     /**

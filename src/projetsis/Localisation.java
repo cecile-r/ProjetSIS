@@ -7,11 +7,20 @@ public class Localisation {
     private int nchambre;
     private Service service_geographique;
 
-    public Localisation(Service service_responsable, Lit lit, int nchambre, Service service_geograhique){
+    public Localisation(Service service_responsable, Lit lit, int nchambre, Service service_geographique){
         this.service_geographique=service_geographique;
         this.service_responsable=service_responsable;
         this.lit=lit;
         this.nchambre=nchambre;
+    }
+    
+    @Override
+    public String toString(){
+        String ch="";
+        ch=ch+"Service responsable : "+service_responsable+"\n";
+        ch=ch+"Service géographique : "+service_geographique+"\n";
+        ch=ch+"Chambre : " + nchambre+ " " +lit.toString2(lit)+"\n";
+        return ch;
     }
 
     /**

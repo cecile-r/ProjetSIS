@@ -21,6 +21,23 @@ public class Acte {
     public double cout() {
       return getCode().calculerCout(getCoeff());
     }
+    
+        /**
+     * @return une chaine de caractère avec nom, prenom, code, coefficient , type, observation
+     * */
+    @Override
+    public String toString() {
+        return "         Nom : " + getNomA() + "\n         Code : " + getCode().toString() + "\n         Coefficient : " + getCoeff() + "\n         Type : " + getType() + "\n         Observation : " + getObservation();
+    }
+
+    /**
+     * @return une chaine de caractère avec code, coefficient , type, observation
+     */
+    
+    public String toString2() {
+        return getCode().toString() + " Coefficient : " + getCoeff() + " Type : " + getType() + " Observation : " + getObservation();
+    }
+
 
     /**
      * @return the nomA

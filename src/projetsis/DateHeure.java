@@ -59,6 +59,15 @@ public class DateHeure {
      public String StringDate() {
     	return annee + "-" + mois + "-" + jour;
  	}
+     
+     
+    /**
+     * 
+     * @return une chaine de caractère sous la forme ..-..-..
+     */
+     public String StringDateHeure() {
+    	return annee + "-" + mois + "-" + jour + " " + heure +":"+minutes;
+ 	}
 
      /**
       * remplit la date à partir d'une chaine de caractères de format ..-..-..
@@ -75,6 +84,7 @@ public class DateHeure {
     heure = Integer.parseInt(donneesCourantes.substring(0, donneesCourantes.indexOf(':')));
     minutes = Integer.parseInt(donneesCourantes.substring(donneesCourantes.lastIndexOf(':') + 1, donneesCourantes.length()));
     }
+    
 	 
     /**
      * remplit la date à partir d'une chaine de caractères de format ../../..
