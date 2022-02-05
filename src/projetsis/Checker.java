@@ -20,7 +20,9 @@ package projetsis;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author garci
@@ -53,7 +55,7 @@ public class Checker {
         String regex3 = "\\d{2} \\d{2} \\d{2} \\d{2} \\d{2}";
         return telephone.matches(regex3);
     }
-
+    
     
     /** 
      * 
@@ -88,4 +90,17 @@ public class Checker {
    	 
 	}
 
+    public static boolean checkerDate(String date) {
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        try {
+            Date date2 = df.parse(date);
+            return true;
+        } catch (ParseException ex) {
+            Logger.getLogger(Checker.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+   
+    }
+           
 }

@@ -19,6 +19,26 @@ public class Prescriptions {
         this.pH=pH;
     }
 
+    @Override
+    public String toString(){
+        String ch="";
+        ch+=date_presciption.StringDateHeure();
+        ch+="\n";
+        ch+=pH.toString();
+        ch+="\n";
+        if(typeExamen!=null){
+            ch+=typeExamen;
+            ch+="\n";
+        }else{
+            ch+=medicament;
+            ch+="\n";
+        }
+        ch+=observation;
+        ch+="\n";
+        return ch;
+    }
+    
+    
     /**
      * @return the date_presciption
      */

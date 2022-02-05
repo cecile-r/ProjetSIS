@@ -21,6 +21,8 @@ public class DM {
         this.soinsQuotidien= new Vector<SoinsQuotidien>();
         this.examens = new Vector<Examen>();
     }
+    
+    
 
     /**
      * @return the ficheDeSoins

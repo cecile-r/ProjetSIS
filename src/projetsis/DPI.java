@@ -11,7 +11,7 @@ public class DPI {
     private int IPP;
     private String nom;
     private String prenom;
-    private Date dateNaissance; ///!\ créer date pour avoir 13eme mois
+    private Date2 dateNaissance; ///!\ créer date pour avoir 13eme mois
     private String sexe;
     private String adresse;
     private int telephone;
@@ -19,7 +19,7 @@ public class DPI {
     private DMA dMA;
     private DM dM;
 
-    public DPI(int IPP, String nom, String prenom, Date DateNaissance, String sexe, String adresse, int telephone, MedecinTraitant medecin_traitant){
+    public DPI(int IPP, String nom, String prenom, Date2 DateNaissance, String sexe, String adresse, int telephone, MedecinTraitant medecin_traitant){
         this.IPP=IPP;
         this.nom=nom;
         this.prenom=prenom;
@@ -32,7 +32,7 @@ public class DPI {
         this.dMA=null;
     }
     
-    public DPI(int IPP, String nom, String prenom, Date DateNaissance, String sexe, String adresse, int telephone, MedecinTraitant medecin_traitant,DMA dMA, DM dM ){
+    public DPI(int IPP, String nom, String prenom, Date2 DateNaissance, String sexe, String adresse, int telephone, MedecinTraitant medecin_traitant,DMA dMA, DM dM ){
         this.IPP=IPP;
         this.nom=nom;
         this.prenom=prenom;
@@ -92,14 +92,14 @@ public class DPI {
     /**
      * @return the dateNaissance
      */
-    public Date getDateNaissance() {
+    public Date2 getDateNaissance() {
         return dateNaissance;
     }
 
     /**
      * @param dateNaissance the dateNaissance to set
      */
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(Date2 dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 

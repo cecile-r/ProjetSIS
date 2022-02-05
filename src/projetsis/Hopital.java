@@ -26,38 +26,96 @@ public class Hopital {
      * @return
      */
     /*
-    public List<PH> getListePH() {
-        //!\ BD
-        return ;
-
-    }
+    public List<PH> getListePH();
     */
     
     /**
      * retourne la liste des patients dossier ouvert
+     * creer un nouveau patient
+     * retourne la liste des patients dossier ouvert d'un service
+     * @return
+     */
+    /*
+    public List<DPI> getListeDPI();
+    public void creerDPI(DPI dpi);
+    public List<DPI> filtrerDPIparService(Service service);
+    */
+    
+    
+    /**
+     * retourne l'IPP du patient recherché + association du DMA et DM associé
      *
      * @return
      */
     /*
-    public List<DPI> getListeDPI() {
-        //!\ BD
-        return ;
-
+    public List<DPI> filtrerDMAparService(String, nom, Sring prenom, Date2 date);
     }
     */
     
     /**
-     * retourne la liste des patients dossier ouvert d'un service
+     * Liste des rdv résultant du filtrage par médecin, par date, par patient 
      *
      * @return
      */
     /*
-    public List<DPI> filtrerDMAparService(Service service) {
-        //!\ BD
-        return ;
-
+    public List<RendezVous> ListeRdv();
+    public List<RendezVous> filtrerRdvparPH(String nom, Sring prenom, Specialite);
+    public List<RendezVous> filtrerRdvparDate(DateHeure dateHeure);
+    public List<RendezVous> filtrerRdvparPatient(String nom, Sring prenom, Date dateNaissance);
+    public void creerRdv(RendezVous rdv); 
     }
     */
+    
+    /**
+     * Archivage
+     *
+     * @return
+     */
+    /*
+    public void ajoutArchive(DPI dpi);
+    public List<DPI> ListeArchive();
+    */
+    
+    /**
+    * Fiche de soins - Actes / Examens / lettre de sortie / soins quotidiens
+    *
+    * @return
+    */
+    /*
+    public List<FicheDeSoins> ListeFichesDeSoins();
+    public List<FicheDeSoins> ListeFichesDeSoinsEntreDates(DateHeure d1, DateHeure d2);
+    public void ajoutFicheDeSoins(FicheDeSoins fs);
+    public void ajoutActe(FicheDeSoins fs, Acte a);
+    
+    public List<Examen> ListeExamens();
+    public List<Examen> ListeExamensEntreDates(DateHeure d1, DateHeure d2);
+    public void ajoutExamen(Examen examen);
+    
+    public List<LettreDeSortie> ListeLettreDeSortie();
+    public List<LettreDeSortie> ListeLettreDeSortieEntreDates(DateHeure d1, DateHeure d2);
+    public void ajoutLettreDeSortie(LettreDeSortie lettre);
+    
+    public List<SoinsQuoditiens> ListeSoinsQuoditiens();
+    public List<SoinsQuoditiens> ListeSoinsQuoditiensEntreDates(DateHeure d1, DateHeure d2);
+    public void ajoutSoinsQuoditiens(SoinsQuoditiens soinsQ);
+    
+    */
+    
+    /**
+    * Prescription
+    *
+    * @return
+    */
+    /*
+    public List<Prescriptions> ListePrescriptions();
+    public List<Prescriptions> ListePresciptionsEntreDates(DateHeure d1, DateHeure d2);
+    public void ajoutPrescription(Prescriptions p);
+    
+    */
+    
+
+    
+
     
     public int comparer(Evaluable o1, Evaluable o2){
         DateHeure d1= o1.getDateHeure();
