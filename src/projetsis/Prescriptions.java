@@ -1,22 +1,23 @@
 package projetsis;
-
 import java.util.Date;
 
 public class Prescriptions {
     private DateHeure date_presciption;
     private String observation;
     private TypeExamen typeExamen;
-    private Medicament medicament;
+    private String medicament;
     private int idConsultation;
     private PH pH;
+    private DPI DPI;
     
-    public Prescriptions(DateHeure date_presciption,String observation, TypeExamen typeExamen, Medicament medicament, int idConsultation, PH pH){
+    public Prescriptions(DateHeure date_presciption,String observation, TypeExamen typeExamen, String medicament, int idConsultation, PH pH, DPI DPI){
         this.date_presciption = date_presciption;
         this.observation=observation;
         this.typeExamen=typeExamen;
         this.medicament = medicament;
         this.idConsultation=idConsultation;
         this.pH=pH;
+        this.DPI=DPI;
     }
 
     @Override
@@ -84,14 +85,14 @@ public class Prescriptions {
     /**
      * @return the medicament
      */
-    public Medicament getMedicament() {
+    public String getMedicament() {
         return medicament;
     }
 
     /**
      * @param medicament the medicament to set
      */
-    public void setMedicament(Medicament medicament) {
+    public void setMedicament(String medicament) {
         this.medicament = medicament;
     }
 

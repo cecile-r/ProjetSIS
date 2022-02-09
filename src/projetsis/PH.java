@@ -18,8 +18,8 @@ public class PH {
 
     
     public PH(int idPH, String nomPh, String prenomPH,Service service, String mdp, int telephone, String specialite){
-        this.IdPH=IdPH;
-        this.nomPH=nomPH;
+        this.IdPH=idPH;
+        this.nomPH=nomPh;
         this.prenomPH=prenomPH;
         this.service=service;
         this.mdp=mdp;
@@ -28,12 +28,12 @@ public class PH {
         ficheDeSoins =null;
     }
     
+    @Override
     public String toString() {
        return prenomPH + " " + nomPH + ", " + specialite;
     }
     
     
-
     /**
      * @return the IdPH
      */

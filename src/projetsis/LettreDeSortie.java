@@ -4,16 +4,18 @@ public class LettreDeSortie implements Evaluable{
     private String texte;
     private PH ph;
     private DateHeure dateHeure;
+    private DPI DPI;
 
-    public LettreDeSortie(String texte, PH ph, DateHeure dateHeure){
+    public LettreDeSortie(String texte, PH ph, DateHeure dateHeure, DPI DPI){
         this.texte=texte;
         this.ph=ph;
         this.dateHeure=dateHeure;
+        this.DPI=DPI;
     }
     
     @Override
     public String toString(){
-        String ch="";
+        String ch="Lettre de sortie :\n";
         ch+=dateHeure.StringDateHeure();
         ch+="\n";
         ch+=ph.toString();
@@ -54,6 +56,7 @@ public class LettreDeSortie implements Evaluable{
     /**
      * @return the dateHeure
      */
+    @Override
     public DateHeure getDateHeure() {
         return dateHeure;
     }

@@ -1,25 +1,24 @@
 package projetsis;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
 
 public class FicheDeSoins implements Evaluable{
     private DateHeure dateHeure;
-    private int idFiche;
     private List<Acte> actes = new ArrayList<Acte> ();
     private PH pH;
-    private Infirmiere infirmiere;
+    private Infirmier infirmiere;
+    private DPI DPI;
     
 
-   public FicheDeSoins(DateHeure dateHeure, int idFiche, PH pH, Infirmiere infirmiere){
+   public FicheDeSoins(DateHeure dateHeure, PH pH, Infirmier infirmiere, DPI DPI){
        this.dateHeure=dateHeure;
-       this.idFiche=idFiche;
        this.pH=pH;
        this.infirmiere = infirmiere;
-       this.actes= new Vector<Acte>();
+       this.actes= new Vector<>();
+       this.DPI = DPI;
    }
    
     /**
@@ -98,20 +97,7 @@ public class FicheDeSoins implements Evaluable{
         this.dateHeure = dateHeure;
     }
 
-    /**
-     * @return the idFiche
-     */
-    public int getIdFiche() {
-        return idFiche;
-    }
-
-    /**
-     * @param idFiche the idFiche to set
-     */
-    public void setIdFiche(int idFiche) {
-        this.idFiche = idFiche;
-    }
-
+  
     /**
      * @return the acte
      */
@@ -143,14 +129,14 @@ public class FicheDeSoins implements Evaluable{
     /**
      * @return the infirmiere
      */
-    public Infirmiere getInfirmiere() {
+    public Infirmier getInfirmiere() {
         return infirmiere;
     }
 
     /**
      * @param infirmiere the infirmiere to set
      */
-    public void setInfirmiere(Infirmiere infirmiere) {
+    public void setInfirmiere(Infirmier infirmiere) {
         this.infirmiere = infirmiere;
     }
     

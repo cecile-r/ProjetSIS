@@ -14,16 +14,18 @@ public class SoinsQuotidien implements Evaluable {
     private int saturationO2;
     private double tension;
     private String remarque;
-    private Infirmiere infirmiere;
+    private Infirmier infirmiere;
     private DateHeure dateHeure;
+    private DPI DPI;
     
-    public SoinsQuotidien(double temperature,int saturationO2,double tension, String remarque, Infirmiere infirmiere, DateHeure dateHeure){
+    public SoinsQuotidien(double temperature,int saturationO2,double tension, String remarque, Infirmier infirmiere, DateHeure dateHeure, DPI DPI){
         this.temperature=temperature;
         this.saturationO2=saturationO2;
         this.tension=tension;
         this.remarque=remarque;
         this.infirmiere=infirmiere;
         this.dateHeure=dateHeure;
+        this.DPI = DPI;
     }
 
     @Override
@@ -103,14 +105,14 @@ public class SoinsQuotidien implements Evaluable {
     /**
      * @return the infirmiere
      */
-    public Infirmiere getInfirmiere() {
+    public Infirmier getInfirmiere() {
         return infirmiere;
     }
 
     /**
      * @param infirmiere the infirmiere to set
      */
-    public void setInfirmiere(Infirmiere infirmiere) {
+    public void setInfirmiere(Infirmier infirmiere) {
         this.infirmiere = infirmiere;
     }
 

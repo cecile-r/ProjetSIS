@@ -6,12 +6,14 @@ public class Examen implements Evaluable {
     private TypeExamen type_examen;
     private PH ph;
     private DateHeure dateHeure;
+    private DPI DPI;
 
-    public Examen(TypeExamen type_examen, String resultats, PH ph,DateHeure dateHeure){
-        this.resultats=resultats;
+    public Examen(TypeExamen type_examen, String resultats, PH ph,DateHeure dateHeure, DPI DPI){
+        this.type_examen=type_examen;
         this.resultats = resultats;
         this.ph=ph;
         this.dateHeure=dateHeure;  
+        this.DPI=DPI;
     }
     
     @Override

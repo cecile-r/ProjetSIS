@@ -10,7 +10,6 @@ public class Acte {
 
     public Acte(String nomA, Type type, Code code, int coeff, String observation) {
         this.nomA = nomA;
-
         this.type = type;
         this.code = code;
         this.coeff = coeff;

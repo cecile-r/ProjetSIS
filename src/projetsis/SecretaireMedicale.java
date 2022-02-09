@@ -14,8 +14,5 @@ public class SecretaireMedicale {
         this.service=service;
         this.mdp=mdp;
     }
-    
-    
-    
 
 }

@@ -1,8 +1,6 @@
 package projetsis;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 
 public class RendezVous {
@@ -10,15 +8,18 @@ public class RendezVous {
     private DateHeure dateHeure;
     private String remarque;
     private int idRDV;
+    private DPI DPI;
     
-    public RendezVous(PH ph, DateHeure dateHeure, String remarque, int idRDV){
+    public RendezVous(PH ph, DateHeure dateHeure, String remarque, int idRDV, DPI DPI){
         this.pH=ph;
         this.dateHeure=dateHeure;
         this.remarque=remarque;
         this.idRDV=idRDV;
+        this.DPI=DPI;
     }
     
-    void afficherRvd(List<RendezVous> rendezVous){
+    //!\  A FAIRE
+    void afficherRvd(){
         
     }
     

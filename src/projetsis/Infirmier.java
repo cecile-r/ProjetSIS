@@ -5,7 +5,7 @@ import java.util.List;
 
 
 
-public class Infirmiere {
+public class Infirmier {
     private String idInfirmiere;
     private String nomInfirmiere;
     private String prenomInfirmiere;
@@ -13,10 +13,10 @@ public class Infirmiere {
     private String mdp;
     private List<FicheDeSoins> ficheDeSoins = new ArrayList<FicheDeSoins> ();
   
-    public Infirmiere(String idInfirmiere, String nomInfirmiere,String prenomInfirmiere, Service service, String mdp){
-        this.idInfirmiere=idInfirmiere;
-        this.nomInfirmiere=nomInfirmiere;
-        this.prenomInfirmiere=prenomInfirmiere;
+    public Infirmier(String idInfirmier, String nomInfirmier,String prenomInfirmier, Service service, String mdp){
+        this.idInfirmiere=idInfirmier;
+        this.nomInfirmiere=nomInfirmier;
+        this.prenomInfirmiere=prenomInfirmier;
         this.service=service;
         this.mdp=mdp;
     }

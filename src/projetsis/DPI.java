@@ -12,14 +12,14 @@ public class DPI {
     private String nom;
     private String prenom;
     private Date2 dateNaissance; ///!\ créer date pour avoir 13eme mois
-    private String sexe;
+    private Sexe sexe;
     private String adresse;
     private int telephone;
     private MedecinTraitant medecin_traitant;
     private DMA dMA;
     private DM dM;
 
-    public DPI(int IPP, String nom, String prenom, Date2 DateNaissance, String sexe, String adresse, int telephone, MedecinTraitant medecin_traitant){
+    public DPI(int IPP, String nom, String prenom, Date2 DateNaissance, Sexe sexe, String adresse, int telephone, MedecinTraitant medecin_traitant){
         this.IPP=IPP;
         this.nom=nom;
         this.prenom=prenom;
@@ -32,7 +32,7 @@ public class DPI {
         this.dMA=null;
     }
     
-    public DPI(int IPP, String nom, String prenom, Date2 DateNaissance, String sexe, String adresse, int telephone, MedecinTraitant medecin_traitant,DMA dMA, DM dM ){
+    public DPI(int IPP, String nom, String prenom, Date2 DateNaissance, Sexe sexe, String adresse, int telephone, MedecinTraitant medecin_traitant,DMA dMA, DM dM ){
         this.IPP=IPP;
         this.nom=nom;
         this.prenom=prenom;
@@ -106,14 +106,14 @@ public class DPI {
     /**
      * @return the sexe
      */
-    public String getSexe() {
+    public Sexe getSexe() {
         return sexe;
     }
 
     /**
      * @param sexe the sexe to set
      */
-    public void setSexe(String sexe) {
+    public void setSexe(Sexe sexe) {
         this.sexe = sexe;
     }
 
