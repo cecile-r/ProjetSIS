@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 class ConnexionSGBD {
 
-    private static final String configurationFile = "C:/Users/marti/Documents/TIS 4/S2/Projet_SIS/ProjetSIS/src/database/BD.properties";
+    private static final String configurationFile = "src/database/BD.properties";
 
     public static void main(String args[]) {
         try {
