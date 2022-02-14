@@ -5,6 +5,7 @@
  */
 package UI;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -14,8 +15,7 @@ import java.awt.Toolkit;
  */
 public class Connexion extends javax.swing.JFrame {
 
-    static String CB_item;
-
+   
 
     /** Creates new form Connexion */
     public Connexion() {
@@ -24,6 +24,8 @@ public class Connexion extends javax.swing.JFrame {
         int x = (int) ((screen.getWidth() - getWidth()) /2);
         int y = (int) ((screen.getHeight() -getHeight()) /2);
         setLocation(x, y); 
+        
+        
     }
 
     /** This method is called from within the constructor to
@@ -86,14 +88,22 @@ public class Connexion extends javax.swing.JFrame {
         });
 
         Label_Identifiant.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
+        Label_Identifiant.setForeground(new java.awt.Color(153, 153, 153));
         Label_Identifiant.setText("Identifiant");
+        Label_Identifiant.setToolTipText("");
+        Label_Identifiant.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Label_IdentifiantMouseClicked(evt);
+            }
+        });
         Label_Identifiant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Label_IdentifiantActionPerformed(evt);
             }
         });
 
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.setForeground(new java.awt.Color(153, 153, 153));
+        jPasswordField1.setToolTipText("");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -123,12 +133,12 @@ public class Connexion extends javax.swing.JFrame {
                             .addComponent(Label_Identifiant, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
                             .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
                             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 302, Short.MAX_VALUE))
-                    .addGroup(Panel_MainLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Button_Connexion)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 302, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(Panel_MainLayout.createSequentialGroup()
+                .addGap(355, 355, 355)
+                .addComponent(Button_Connexion)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Panel_MainLayout.setVerticalGroup(
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,9 +152,9 @@ public class Connexion extends javax.swing.JFrame {
                 .addComponent(Label_Identifiant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(Button_Connexion)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,28 +172,36 @@ public class Connexion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Label_IdentifiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Label_IdentifiantActionPerformed
-        // TODO add your handling code here:
+       Label_Identifiant.setText("");
     }//GEN-LAST:event_Label_IdentifiantActionPerformed
 
     private void Button_ConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ConnexionActionPerformed
         String CB_item;
         CB_item=jComboBox1.getSelectedItem().toString();
-        if (CB_item=="Medecin"){
+        
+        String id = Label_Identifiant.getText();
+        String mdp = new String(jPasswordField1.getPassword());
+        
+        if (CB_item.equals("Medecin")){
+            //requete bd si id et mdp correct
             Accueil_Med i = new Accueil_Med();
             i.setVisible(true);
             dispose();
         }
-        if (CB_item=="Secretaire Administrative"){
+        if (CB_item.equals("Secretaire Administrative")){
+            //requete bd si id et mdp correct
             Accueil_SA i = new Accueil_SA();
             i.setVisible(true);
             dispose();
         }
-        if (CB_item=="Secretaire Medicale"){
+        if (CB_item.equals("Secretaire Medicale")){
+            //requete bd si id et mdp correct
             Accueil_SM i = new Accueil_SM();
             i.setVisible(true);
             dispose();
         }
-        if (CB_item=="Infirmière"){
+        if (CB_item.equals("Infirmière")){
+            //requete bd si id et mdp correct
             Vue_Medicaments i = new Vue_Medicaments();
             i.setVisible(true);
             dispose();
@@ -195,9 +213,13 @@ public class Connexion extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-         String CB_item;
-         CB_item=jComboBox1.getSelectedItem().toString();
+     
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void Label_IdentifiantMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_IdentifiantMouseClicked
+       Label_Identifiant.setText("");
+       Label_Identifiant.setForeground(Color.black);
+    }//GEN-LAST:event_Label_IdentifiantMouseClicked
 
     /**
      * @param args the command line arguments
@@ -228,6 +250,7 @@ public class Connexion extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Connexion().setVisible(true);
             }
