@@ -41,10 +41,11 @@ public class Connexion extends javax.swing.JFrame {
         Panel_Bandeau = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Label_Main = new javax.swing.JLabel();
-        Button_Connexion = new javax.swing.JButton();
         Label_Identifiant = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        Button_Connexion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -79,14 +80,6 @@ public class Connexion extends javax.swing.JFrame {
         Label_Main.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Label_Main.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil.png"))); // NOI18N
 
-        Button_Connexion.setBackground(new java.awt.Color(255, 255, 255));
-        Button_Connexion.setText("Connexion");
-        Button_Connexion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_ConnexionActionPerformed(evt);
-            }
-        });
-
         Label_Identifiant.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         Label_Identifiant.setForeground(new java.awt.Color(153, 153, 153));
         Label_Identifiant.setText("Identifiant");
@@ -118,6 +111,33 @@ public class Connexion extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+
+        Button_Connexion.setBackground(new java.awt.Color(255, 255, 255));
+        Button_Connexion.setText("Connexion");
+        Button_Connexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ConnexionActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Button_Connexion)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(Button_Connexion)
+                .addContainerGap(119, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout Panel_MainLayout = new javax.swing.GroupLayout(Panel_Main);
         Panel_Main.setLayout(Panel_MainLayout);
         Panel_MainLayout.setHorizontalGroup(
@@ -136,8 +156,8 @@ public class Connexion extends javax.swing.JFrame {
                         .addGap(0, 302, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(Panel_MainLayout.createSequentialGroup()
-                .addGap(355, 355, 355)
-                .addComponent(Button_Connexion)
+                .addGap(341, 341, 341)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Panel_MainLayout.setVerticalGroup(
@@ -152,9 +172,8 @@ public class Connexion extends javax.swing.JFrame {
                 .addComponent(Label_Identifiant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Button_Connexion)
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -171,54 +190,68 @@ public class Connexion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Label_IdentifiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Label_IdentifiantActionPerformed
-       Label_Identifiant.setText("");
-    }//GEN-LAST:event_Label_IdentifiantActionPerformed
-
     private void Button_ConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ConnexionActionPerformed
+        //recupération type de personne
         String CB_item;
         CB_item=jComboBox1.getSelectedItem().toString();
-        
+
+        //recupération id et mdp
         String id = Label_Identifiant.getText();
         String mdp = new String(jPasswordField1.getPassword());
-        
+
+        //dimension fenetre
+        Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+        int longueur = tailleMoniteur.width;
+        int hauteur = tailleMoniteur.height;
+
         if (CB_item.equals("Medecin")){
-            //requete bd si id et mdp correct
-            Accueil_Med i = new Accueil_Med();
-            i.setVisible(true);
-            dispose();
+            //c = verifyConnexion(String id, String mdp, CB_item);
+            //if (c==true){
+                Accueil_Med i = new Accueil_Med();
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+                //}
         }
         if (CB_item.equals("Secretaire Administrative")){
             //requete bd si id et mdp correct
             Accueil_SA i = new Accueil_SA();
+            i.setSize(longueur, hauteur);
             i.setVisible(true);
             dispose();
+
         }
         if (CB_item.equals("Secretaire Medicale")){
             //requete bd si id et mdp correct
             Accueil_SM i = new Accueil_SM();
+            i.setSize(longueur, hauteur);
             i.setVisible(true);
             dispose();
         }
         if (CB_item.equals("Infirmière")){
             //requete bd si id et mdp correct
             Vue_Medicaments i = new Vue_Medicaments();
+            i.setSize(longueur, hauteur);
             i.setVisible(true);
             dispose();
         }
     }//GEN-LAST:event_Button_ConnexionActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-     
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void Label_IdentifiantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Label_IdentifiantActionPerformed
+        Label_Identifiant.setText("");
+    }//GEN-LAST:event_Label_IdentifiantActionPerformed
 
     private void Label_IdentifiantMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_IdentifiantMouseClicked
-       Label_Identifiant.setText("");
-       Label_Identifiant.setForeground(Color.black);
+        Label_Identifiant.setText("");
+        Label_Identifiant.setForeground(Color.black);
     }//GEN-LAST:event_Label_IdentifiantMouseClicked
 
     /**
@@ -252,7 +285,10 @@ public class Connexion extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Connexion().setVisible(true);
+                
+                Connexion i = new Connexion();
+                i.setVisible(true);
+                
             }
         });
     }
@@ -265,6 +301,7 @@ public class Connexion extends javax.swing.JFrame {
     private javax.swing.JPanel Panel_Main;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     // End of variables declaration//GEN-END:variables
 

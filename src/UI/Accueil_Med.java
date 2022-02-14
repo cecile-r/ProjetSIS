@@ -647,7 +647,12 @@ public class Accueil_Med extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Accueil_Med().setVisible(true);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Accueil_Med i = new Accueil_Med();
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
             }
         });
     }
