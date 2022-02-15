@@ -76,7 +76,7 @@ class ConnexionSGBD {
             }*/
             
             
-            // Test getListePHSimplifie(nom) -> 
+            // Test getVectPHNom(nom) -> VALIDE
             /*Vector lph = RequetesBD.getVectPHNom(conn, "Wawrinka");
             System.out.println(lph);*/
             
@@ -111,6 +111,34 @@ class ConnexionSGBD {
             /*Vector ldpi = RequetesBD.getVectorDPI(conn);
             System.out.println(ldpi);*/
             
+            
+            //Test getListeDPI(nom) -> VALIDE
+            /*System.out.println(RequetesBD.getListeDPI(conn, "Garcin"));
+            List<DPI> ldpi = RequetesBD.getListeDPI(conn, "Garcin");
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+            
+            
+            // Test getVectorDPI(nom) -> VALIDE
+            /*Vector ldpi = RequetesBD.getVectorDPI(conn, "Garcin");
+            System.out.println(ldpi);*/
+            
+            
+            //Test getListeDPI(nom, service) -> VALIDE
+            /*List<DPI> ldpi = RequetesBD.getListeDPI(conn, "Pilard", "Chirurgie_digestive");
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+            
+            
+            // Test getVectorDPI(nom, service) -> VALIDE
+            /*Vector ldpi = RequetesBD.getVectorDPI(conn, "Pilard", "Chirurgie_digestive");
+            System.out.println(ldpi);*/
+            
+           
             
             // Print information about connection warnings
             SQLWarningsExceptions.printWarnings(conn);
