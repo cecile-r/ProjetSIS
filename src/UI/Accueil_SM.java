@@ -51,7 +51,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         
         //++++ dpis = getList
         medecins = database.RequetesBD.getListePH(conn);
-        medecinsS = database.RequetesBD.getListePHSimplifie(conn);
+        medecinsS = database.RequetesBD.getVectPH(conn);
         
         //remplir tableau patients du service
         
@@ -656,9 +656,17 @@ public class Accueil_SM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        Connexion i = new Connexion();
-        i.setVisible(true);
-        dispose();
+        Connexion i;
+        try {
+            i = new Connexion();
+            i.setVisible(true);
+            dispose();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_formMouseClicked
 
     private void Button_SelectionnerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_SelectionnerMouseClicked
@@ -730,9 +738,9 @@ public class Accueil_SM extends javax.swing.JFrame {
                 medecinsS = getListePHS(TextField_Docteur1);
                 medecins_global = getListePHS(TextField_Docteur1);
             */
-            TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+            //TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
             tab_medecins.setAutoCreateRowSorter(true);  
-            tab_medecins.setModel(tableModel2);
+            //tab_medecins.setModel(tableModel2);
             
         }else if(type_recherche.equals("Service")){
                 /* A REMPLACER */

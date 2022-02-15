@@ -5,18 +5,26 @@
  */
 package UI;
 
+import database.DatabaseAccessProperties;
+import database.SQLWarningsExceptions;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Audrey
  */
 public class Accueil_SA extends javax.swing.JFrame {
-
+    Connection conn;
     /** Creates new form Connexion */
-    public Accueil_SA() {
+    public Accueil_SA(Connection conn) {
+        this.conn=conn;
         initComponents();
         //Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         //int x = (int) ((screen.getWidth() - getWidth()) /2);
@@ -649,9 +657,17 @@ public class Accueil_SA extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Connexion i = new Connexion();
-        i.setVisible(true);
-        dispose();
+        Connexion i;
+        try {
+            i = new Connexion();
+            i.setVisible(true);
+            dispose();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void Label_Loupe_PatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_PatientMouseClicked
@@ -661,7 +677,7 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_Label_Loupe_PatientMouseClicked
 
     private void Label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_HomeMouseClicked
-       Accueil_SA i = new Accueil_SA();
+       Accueil_SA i = new Accueil_SA(conn);
        i.setVisible(true);
        dispose();
     }//GEN-LAST:event_Label_HomeMouseClicked
@@ -767,14 +783,46 @@ public class Accueil_SA extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Accueil_SA i = new Accueil_SA();
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
+                
                
+                try {
+                    String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
+                    String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
+                    String username;
+                    String password;
+
+                    DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
+                    jdbcDriver = dap.getJdbcDriver();
+                    dbUrl = dap.getDatabaseUrl();
+                    username = dap.getUsername();
+                    password = dap.getPassword();
+
+                    // Load the database driver
+                    Class.forName(jdbcDriver);
+
+                    // Get a connection to the database
+                    Connection conn = DriverManager.getConnection(dbUrl, username, password);
+                    SQLWarningsExceptions.printWarnings(conn);
+                    Accueil_SA i = new Accueil_SA(conn);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    conn.close();
+                    
+                } catch (SQLException se) {
+                    // Print information about SQL exceptions
+                    SQLWarningsExceptions.printExceptions(se);
+                    return;
+
+                } catch (Exception e) {
+                    System.err.println("Exception: " + e.getMessage());
+                    e.printStackTrace();
+                    return;
+                }
             }
         });
     }
