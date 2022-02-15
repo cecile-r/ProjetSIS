@@ -31,9 +31,7 @@ public class Connexion extends javax.swing.JFrame {
      */
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
                 
-        
         this.conn = conn;
-        
         initComponents();
         
     }
@@ -244,7 +242,7 @@ public class Connexion extends javax.swing.JFrame {
             }
 
         }/*
-        if (CB_item.equals("Infirmière")){
+        if (CB_item.equals("Infirmiere")){
             //requete bd si id et mdp correct
             Vue_Medicaments i;
             i = new Vue_Medicaments(conn);

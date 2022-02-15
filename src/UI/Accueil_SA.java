@@ -671,9 +671,7 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void Label_Loupe_PatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_PatientMouseClicked
-       Recherche_Patient i = new Recherche_Patient(TextField_Patient.toString());
-       i.setVisible(true);
-       dispose();
+       
     }//GEN-LAST:event_Label_Loupe_PatientMouseClicked
 
     private void Label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_HomeMouseClicked
@@ -811,7 +809,6 @@ public class Accueil_SA extends javax.swing.JFrame {
                     Accueil_SA i = new Accueil_SA(conn);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
-                    conn.close();
                     
                 } catch (SQLException se) {
                     // Print information about SQL exceptions

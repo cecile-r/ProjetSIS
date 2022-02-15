@@ -689,7 +689,6 @@ public class Accueil_Med extends javax.swing.JFrame {
                     Accueil_Med i = new Accueil_Med(conn);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
-                    conn.close();
 
                 } catch (SQLException se) {
                     // Print information about SQL exceptions
