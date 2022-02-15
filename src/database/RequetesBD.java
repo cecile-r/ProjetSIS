@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 import nf.*;
 
 /*
@@ -76,7 +77,6 @@ public class RequetesBD {
     public static List<PH> getListePH(Connection conn) throws SQLException {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
-        //Sélection de tous les PH
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH");
 
         while (rs.next()) {
@@ -92,20 +92,22 @@ public class RequetesBD {
     
     //Renvoie la liste des PH simplifiés
     //VALIDE
-    public static List<PHSimplifie> getListePHSimplifie(Connection conn) throws SQLException {
-        List<PHSimplifie> listePHSimplifie = new ArrayList();
+    public static Vector getVectPH(Connection conn) throws SQLException {
+        Vector vPHTotal = new Vector();
         Statement stmt = conn.createStatement();
-        //Sélection de tous les PH
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH");
 
         while (rs.next()) {
-            PHSimplifie ph = new PHSimplifie(rs.getString("nom_PH"), rs.getString("prenom_PH"), rs.getString("service_PH"));
-            listePHSimplifie.add(ph);
+            Vector vParPH = new Vector();
+            vParPH.add(rs.getString("nom_PH"));
+            vParPH.add(rs.getString("prenom_PH"));
+            vParPH.add(rs.getString("service_PH"));
+            vPHTotal.add(vParPH);
         }
 
         rs.close();
         stmt.close();
-        return listePHSimplifie;
+        return vPHTotal;
     }
     
     
@@ -114,12 +116,9 @@ public class RequetesBD {
     public static List<PH> getListePH(Connection conn, String nom) throws SQLException {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
-        //Sélection de tous les PH
-        //Verif nom de colonne nomPH de table PH
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE nom_PH = '" + nom + "'");
 
         while (rs.next()) {
-            //verif nom ph
             PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
             listePH.add(ph);
         }
@@ -132,22 +131,22 @@ public class RequetesBD {
     
     //Renvoie la liste des PH simplifiés en fonction du nom
     //VALIDE
-    public static List<PHSimplifie> getListePHSimplifie(Connection conn, String nom) throws SQLException {
-        List<PHSimplifie> listePH = new ArrayList();
+    public static Vector getVectPHNom(Connection conn, String nom) throws SQLException {
+        Vector vPHTotal = new Vector();
         Statement stmt = conn.createStatement();
-        //Sélection de tous les PH
-        //Verif nom de colonne nomPH de table PH
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE nom_PH = '" + nom + "'");
 
         while (rs.next()) {
-            //verif nom ph
-            PHSimplifie ph = new PHSimplifie(rs.getString("nom_PH"), rs.getString("prenom_PH"), rs.getString("service_PH"));
-            listePH.add(ph);
+            Vector vParPH = new Vector();
+            vParPH.add(rs.getString("nom_PH"));
+            vParPH.add(rs.getString("prenom_PH"));
+            vParPH.add(rs.getString("service_PH"));
+            vPHTotal.add(vParPH);
         }
 
         rs.close();
         stmt.close();
-        return listePH;
+        return vPHTotal;
     }
     
     
@@ -172,20 +171,27 @@ public class RequetesBD {
     
     //Renvoie la liste des PH simplifiés en fonction du service
     //VALIDE
-    public static List<PHSimplifie> getListePHServiceSimpl(Connection conn, String service) throws SQLException {
-        List<PHSimplifie> listePH = new ArrayList();
+    public static Vector getVectPHService(Connection conn, String service) throws SQLException {
+        Vector vPHTotal = new Vector();
         Statement stmt = conn.createStatement();
         //Sélection de tous les PH
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE service_PH = '" + service + "'");
 
         while (rs.next()) {
-            PHSimplifie ph = new PHSimplifie(rs.getString("nom_PH"), rs.getString("prenom_PH"), rs.getString("service_PH"));
-            listePH.add(ph);
+            Vector vParPH = new Vector();
+            vParPH.add(rs.getString("nom_PH"));
+            vParPH.add(rs.getString("prenom_PH"));
+            vParPH.add(rs.getString("service_PH"));
+            vPHTotal.add(vParPH);
         }
 
         rs.close();
         stmt.close();
-        return listePH;
+        return vPHTotal;
     }
+    
+    
+   
+
     
 }
