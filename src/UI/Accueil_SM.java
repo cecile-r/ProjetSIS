@@ -5,44 +5,56 @@
  */
 package UI;
 
+import database.DatabaseAccessProperties;
+import database.SQLWarningsExceptions;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.PH;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import nf.DPI;
+import nf.FicheDeSoins;
 
 /**
  *
  * @author Audrey
  */
 public class Accueil_SM extends javax.swing.JFrame {
-
+    Connection conn;
+    List<PH> medecins;
+    Vector  medecinsS;
+    List<DPI> dpis;
+    Vector dpisS;
+    
     /** Creates new form Connexion */
-    public Accueil_SM() {
+    public Accueil_SM(Connection conn) throws SQLException {
+        this.conn=conn;
         initComponents();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screen.getWidth() - getWidth()) /2);
         int y = (int) ((screen.getHeight() -getHeight()) /2);
         setLocation(x, y); 
-        //++++ List<DPI> dpis = new ArrayList<DPI> ();
-        //++++ List<PH> medecins = new ArrayList<PH> ();
-        //++++ List<List<String>> dpisS = new ArrayList<> ();
-        //++++ List<List<String>>  medecinsS = new ArrayList<> ();
-        //dpis = getList
-        //medecins = getListePHS();
+        
+        //++++ dpisS = new Vector<> ();
+        medecinsS = new Vector ();
+        
+        //++++ dpis = getList
+        medecins = database.RequetesBD.getListePH(conn);
+        medecinsS = database.RequetesBD.getListePHSimplifie(conn);
         
         //remplir tableau patients du service
-        /* --- 
-        Object[][] hospitalisation = {{"Johnathan", "Sykes","2000-12-11"},
-                {"Nicolas", "Van de Kampf", "2000-12-12"},
-                {"Damien", "Cuthbert", "1988-12-21"},
-        };
-        */
+        
         /*
         String[] entetes = {"Prénom", "Nom", "Date de naissance"};
         TableModel tableModel = new DefaultTableModel(hospitalisation, entetes);
@@ -50,18 +62,20 @@ public class Accueil_SM extends javax.swing.JFrame {
         Table_Hospit.setModel(tableModel);
         */
         //remplir tableau medecins automatiquement avec tous les medecins
-        //---
+        /*
         Object[][] medecins = {{"Anna", "un","Gynécologie_et_obstétrique"},
                 {"Frederic", "deux", "Neurochirurgie"},
                 {"Julio", "trois", "Addictologie"},
         };
-        //
-        String[] entetes2 = {"Prénom", "Nom", "Service"};
-        TableModel tableModel2 = new DefaultTableModel(medecins, entetes2);
+        */
+        Vector entetes2 = new Vector ();
+        entetes2.add("Prénom");
+        entetes2.add("Nom");
+        entetes2.add("Service");
+        
+        TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
         tab_medecins.setAutoCreateRowSorter(true);  
         tab_medecins.setModel(tableModel2);
-        
-        
         
     }
 
@@ -654,8 +668,13 @@ public class Accueil_SM extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_SelectionnerMouseClicked
 
     private void Label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_HomeMouseClicked
-        Accueil_SM i = new Accueil_SM();
-        i.setVisible(true);
+        Accueil_SM i;
+        try {
+            i = new Accueil_SM(conn);
+            i.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_Label_HomeMouseClicked
 
@@ -701,7 +720,10 @@ public class Accueil_SM extends javax.swing.JFrame {
                     {"Frederic", "deux", "Neurochirurgie"},
             };
 
-            String[] entetes2 = {"Prénom", "Nom", "Service"};
+            Vector entetes2 = new Vector ();
+            entetes2.add("Prénom");
+            entetes2.add("Nom");
+            entetes2.add("Service");
             /* PAR 
                 List<List<String>> medecinsS = new ArrayList<PH> ();
                 List<PH> medecins = new ArrayList<PH> ();
@@ -735,10 +757,8 @@ public class Accueil_SM extends javax.swing.JFrame {
 
     private void tab_medecinsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_medecinsMouseClicked
         //AFFICHER PH SELECTIONNE
-        
-        //
         int index = tab_medecins.getSelectedRow();
-        Label_Identite_Medecin.setText(medecins_global.get(index)) ;
+        Label_Identite_Medecin.setText(medecins.get(index).toString()) ;
     }//GEN-LAST:event_tab_medecinsMouseClicked
 
     /**
@@ -771,14 +791,43 @@ public class Accueil_SM extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-                //dimension fenetre
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Accueil_SM i = new Accueil_SM();
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
+                try {
+                    String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
+                    String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
+                    String username;
+                    String password;
+
+                    DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
+                    jdbcDriver = dap.getJdbcDriver();
+                    dbUrl = dap.getDatabaseUrl();
+                    username = dap.getUsername();
+                    password = dap.getPassword();
+
+                    // Load the database driver
+                    Class.forName(jdbcDriver);
+
+                    // Get a connection to the database
+                    Connection conn = DriverManager.getConnection(dbUrl, username, password);
+                     SQLWarningsExceptions.printWarnings(conn);
+                     Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                    int longueur = tailleMoniteur.width;
+                    int hauteur = tailleMoniteur.height;
+                    Accueil_SM i;
+                    i = new Accueil_SM(conn);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    conn.close();
+                    
+                } catch (SQLException se) {
+                    // Print information about SQL exceptions
+                    SQLWarningsExceptions.printExceptions(se);
+                    return;
+
+                } catch (Exception e) {
+                    System.err.println("Exception: " + e.getMessage());
+                    e.printStackTrace();
+                    return;
+                }
                 
             }
         });
