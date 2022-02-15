@@ -116,11 +116,12 @@ public class Accueil_SM extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tab_medecins = new javax.swing.JTable();
-        Label_Identite_Medecin = new javax.swing.JLabel();
         TextField_Docteur1 = new javax.swing.JTextField();
         Label_Loupe_Docteur2 = new javax.swing.JLabel();
         jComboBox_recherche_praticien = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane_Identite_Medecin = new javax.swing.JTextPane();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         ScrollPane_Planning = new javax.swing.JScrollPane();
@@ -408,11 +409,6 @@ public class Accueil_SM extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(tab_medecins);
 
-        Label_Identite_Medecin.setBackground(new java.awt.Color(204, 255, 255));
-        Label_Identite_Medecin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Label_Identite_Medecin.setText("Identité medecin");
-        Label_Identite_Medecin.setOpaque(true);
-
         TextField_Docteur1.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         TextField_Docteur1.setForeground(new java.awt.Color(153, 153, 153));
         TextField_Docteur1.setText("Praticien / Service");
@@ -438,6 +434,11 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         jLabel2.setText("Rechercher par :");
 
+        jTextPane_Identite_Medecin.setEditable(false);
+        jTextPane_Identite_Medecin.setBackground(new java.awt.Color(204, 204, 255));
+        jTextPane_Identite_Medecin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jScrollPane1.setViewportView(jTextPane_Identite_Medecin);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -457,10 +458,10 @@ public class Accueil_SM extends javax.swing.JFrame {
                         .addComponent(Label_Loupe_Docteur2))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31)
-                .addComponent(Label_Identite_Medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -475,8 +476,8 @@ public class Accueil_SM extends javax.swing.JFrame {
                     .addComponent(Label_Loupe_Docteur2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                    .addComponent(Label_Identite_Medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
                 .addGap(78, 78, 78))
         );
 
@@ -658,12 +659,12 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         Connexion i;
         try {
-            i = new Connexion();
+            i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -766,7 +767,7 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void tab_medecinsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_medecinsMouseClicked
         //AFFICHER PH SELECTIONNE
         int index = tab_medecins.getSelectedRow();
-        Label_Identite_Medecin.setText(medecins.get(index).toString()) ;
+        jTextPane_Identite_Medecin.setText(medecins.get(index).toStringDetail()) ;
     }//GEN-LAST:event_tab_medecinsMouseClicked
 
     /**
@@ -848,7 +849,6 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JLabel Label_FlecheG;
     private javax.swing.JLabel Label_Home;
     private javax.swing.JLabel Label_Hospit;
-    private javax.swing.JLabel Label_Identite_Medecin;
     private javax.swing.JLabel Label_Loupe;
     private javax.swing.JLabel Label_Loupe_Docteur2;
     private javax.swing.JLabel Label_Loupe_Hospit;
@@ -877,9 +877,11 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane5;
+    private javax.swing.JTextPane jTextPane_Identite_Medecin;
     private javax.swing.JLabel nom_SM;
     private javax.swing.JLabel prenom_SM;
     private javax.swing.JTable tab_medecins;

@@ -29,25 +29,9 @@ public class Connexion extends javax.swing.JFrame {
     /**
      * Creates new form Connexion
      */
-    public Connexion() throws ClassNotFoundException, SQLException {
+    public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
                 
-        String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
-        String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
-        String username;
-        String password;
-
-        DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
-        jdbcDriver = dap.getJdbcDriver();
-        dbUrl = dap.getDatabaseUrl();
-        username = dap.getUsername();
-        password = dap.getPassword();
-
-        // Load the database driver
-        Class.forName(jdbcDriver);
-
-        // Get a connection to the database
-        Connection conn = DriverManager.getConnection(dbUrl, username, password);
-        SQLWarningsExceptions.printWarnings(conn);
+        
         this.conn = conn;
         
         initComponents();
@@ -300,16 +284,41 @@ public class Connexion extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Connexion i;
+                
+                String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
+                String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
+                String username;
+                String password;
+
+                DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
+                jdbcDriver = dap.getJdbcDriver();
+                dbUrl = dap.getDatabaseUrl();
+                username = dap.getUsername();
+                password = dap.getPassword();
+
                 try {
-                    i = new Connexion();
-                    i.setSize(longueur, hauteur);
-                    i.setVisible(true);
+                    // Load the database driver
+                    Class.forName(jdbcDriver);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                // Get a connection to the database
+                Connection conn;
+                try {
+                    conn = DriverManager.getConnection(dbUrl, username, password);
+                    SQLWarningsExceptions.printWarnings(conn);
+                    Connexion i;
+                    i = new Connexion(conn);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
                 } catch (SQLException ex) {
                     Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
+                
                 
                   
             }

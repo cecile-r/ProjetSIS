@@ -659,12 +659,12 @@ public class Accueil_SA extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         Connexion i;
         try {
-            i = new Connexion();
+            i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
         }
         

@@ -41,6 +41,16 @@ public class PH {
        return prenomPH + " " + nomPH + ", " + specialite;
     }
     
+    public String toStringDetail() {
+        String ch= "\n\n\n";
+        ch = ch+"Prénom : "+prenomPH + "\n\n";
+        ch = ch+"Nom : " + nomPH + "\n\n";
+        ch = ch+"Service : " + service + "\n\n";
+        ch = ch+"Téléphone : " + telephone+ "\n\n";
+        ch = ch+"Spécialité : " + specialite+"\n\n";
+        return ch;
+    }
+    
     
     /**
      * @return the IdPH
