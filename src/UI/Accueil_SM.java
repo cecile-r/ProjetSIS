@@ -9,9 +9,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import nf.PH;
 
 /**
  *
@@ -26,27 +29,34 @@ public class Accueil_SM extends javax.swing.JFrame {
         int x = (int) ((screen.getWidth() - getWidth()) /2);
         int y = (int) ((screen.getHeight() -getHeight()) /2);
         setLocation(x, y); 
-        
-         
-        //   JTable Table_Hospit;
-        // JTable Table_Vue_Generale;
+        //++++ List<DPI> dpis = new ArrayList<DPI> ();
+        //++++ List<PH> medecins = new ArrayList<PH> ();
+        //++++ List<List<String>> dpisS = new ArrayList<> ();
+        //++++ List<List<String>>  medecinsS = new ArrayList<> ();
+        //dpis = getList
+        //medecins = getListePHS();
         
         //remplir tableau patients du service
+        /* --- 
         Object[][] hospitalisation = {{"Johnathan", "Sykes","2000-12-11"},
                 {"Nicolas", "Van de Kampf", "2000-12-12"},
                 {"Damien", "Cuthbert", "1988-12-21"},
         };
+        */
+        /*
         String[] entetes = {"Prénom", "Nom", "Date de naissance"};
         TableModel tableModel = new DefaultTableModel(hospitalisation, entetes);
         Table_Hospit.setAutoCreateRowSorter(true);  
         Table_Hospit.setModel(tableModel);
-        
-        //remplir tableau medecins
+        */
+        //remplir tableau medecins automatiquement avec tous les medecins
+        //---
         Object[][] medecins = {{"Anna", "un","Gynécologie_et_obstétrique"},
                 {"Frederic", "deux", "Neurochirurgie"},
                 {"Julio", "trois", "Addictologie"},
         };
-        String[] entetes2 = {"Prénom", "Nom", "Date de naissance"};
+        //
+        String[] entetes2 = {"Prénom", "Nom", "Service"};
         TableModel tableModel2 = new DefaultTableModel(medecins, entetes2);
         tab_medecins.setAutoCreateRowSorter(true);  
         tab_medecins.setModel(tableModel2);
@@ -90,7 +100,6 @@ public class Accueil_SM extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        Label_Loupe_Docteur1 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tab_medecins = new javax.swing.JTable();
         Label_Identite_Medecin = new javax.swing.JLabel();
@@ -355,13 +364,6 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(153, 153, 255));
 
-        Label_Loupe_Docteur1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png"))); // NOI18N
-        Label_Loupe_Docteur1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Label_Loupe_Docteur1MouseClicked(evt);
-            }
-        });
-
         tab_medecins.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -385,6 +387,11 @@ public class Accueil_SM extends javax.swing.JFrame {
             }
         });
         tab_medecins.setRowHeight(40);
+        tab_medecins.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tab_medecinsMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tab_medecins);
 
         Label_Identite_Medecin.setBackground(new java.awt.Color(204, 255, 255));
@@ -438,9 +445,7 @@ public class Accueil_SM extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(31, 31, 31)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Label_Identite_Medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Label_Loupe_Docteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(Label_Identite_Medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(57, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -452,13 +457,9 @@ public class Accueil_SM extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Label_Loupe_Docteur2, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(Label_Loupe_Docteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Label_Loupe_Docteur2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
                     .addComponent(Label_Identite_Medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -672,16 +673,11 @@ public class Accueil_SM extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_Selectionner1ActionPerformed
 
     private void Label_Loupe_PatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_PatientMouseClicked
-        Recherche_Patient i = new Recherche_Patient();
+        String nompatient = TextField_Patient.toString();
+        Recherche_Patient i = new Recherche_Patient(nompatient);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_Label_Loupe_PatientMouseClicked
-
-    private void Label_Loupe_Docteur1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_Docteur1MouseClicked
-        Recherche_Docteur i = new Recherche_Docteur();
-        i.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_Label_Loupe_Docteur1MouseClicked
 
     private void TextField_Docteur1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextField_Docteur1MouseClicked
         TextField_Docteur1.setText("");
@@ -693,11 +689,57 @@ public class Accueil_SM extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_Docteur1ActionPerformed
 
     private void Label_Loupe_Docteur2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_Docteur2MouseClicked
-        // VALIDATION DE LA RECHERCHE
+        // VALIDATION DE LA RECHERCHE MEDECIN
         String type_recherche; //Nom ou Service
         type_recherche=jComboBox_recherche_praticien.getSelectedItem().toString();
         String recherche= TextField_Docteur1.getText();
+        
+        if(type_recherche.equals("Nom")){
+        
+            /* A REMPLACER */
+            Object[][] medecinsS = {
+                    {"Frederic", "deux", "Neurochirurgie"},
+            };
+
+            String[] entetes2 = {"Prénom", "Nom", "Service"};
+            /* PAR 
+                List<List<String>> medecinsS = new ArrayList<PH> ();
+                List<PH> medecins = new ArrayList<PH> ();
+                medecinsS = getListePHS(TextField_Docteur1);
+                medecins_global = getListePHS(TextField_Docteur1);
+            */
+            TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+            tab_medecins.setAutoCreateRowSorter(true);  
+            tab_medecins.setModel(tableModel2);
+            
+        }else if(type_recherche.equals("Service")){
+                /* A REMPLACER */
+            Object[][] medecinsS = {{"Anna", "un","Gynécologie_et_obstétrique"},
+            };
+
+            String[] entetes2 = {"Prénom", "Nom", "Service"};
+            /* PAR 
+                List<List<String>> medecinsS = new ArrayList<PH> ();
+                List<PH> medecinsS= new ArrayList<PH> ();
+                medecinsS = getListePHserviceS(TextField_Docteur1);
+                medecins_global = getListePHserviceS(TextField_Docteur1);
+            */
+            
+            TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+            tab_medecins.setAutoCreateRowSorter(true);  
+            tab_medecins.setModel(tableModel2);
+        }
+       
+          
     }//GEN-LAST:event_Label_Loupe_Docteur2MouseClicked
+
+    private void tab_medecinsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_medecinsMouseClicked
+        //AFFICHER PH SELECTIONNE
+        
+        //
+        int index = tab_medecins.getSelectedRow();
+        Label_Identite_Medecin.setText(medecins_global.get(index)) ;
+    }//GEN-LAST:event_tab_medecinsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -751,7 +793,6 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JLabel Label_Hospit;
     private javax.swing.JLabel Label_Identite_Medecin;
     private javax.swing.JLabel Label_Loupe;
-    private javax.swing.JLabel Label_Loupe_Docteur1;
     private javax.swing.JLabel Label_Loupe_Docteur2;
     private javax.swing.JLabel Label_Loupe_Hospit;
     private javax.swing.JLabel Label_Loupe_Patient;

@@ -655,7 +655,7 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void Label_Loupe_PatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_PatientMouseClicked
-       Recherche_Patient i = new Recherche_Patient();
+       Recherche_Patient i = new Recherche_Patient(TextField_Patient.toString());
        i.setVisible(true);
        dispose();
     }//GEN-LAST:event_Label_Loupe_PatientMouseClicked
@@ -709,9 +709,8 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_Selectionner1ActionPerformed
 
     private void Label_Loupe_Docteur1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_Docteur1MouseClicked
-        Recherche_Docteur i = new Recherche_Docteur();
-        i.setVisible(true);
-        dispose();
+        //afficher info PH 
+        
     }//GEN-LAST:event_Label_Loupe_Docteur1MouseClicked
 
     private void TextField_Docteur1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextField_Docteur1MouseClicked

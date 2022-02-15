@@ -14,12 +14,15 @@ import java.awt.Toolkit;
 public class Recherche_Patient extends javax.swing.JFrame {
 
     /** Creates new form Connexion */
-    public Recherche_Patient() {
+    public Recherche_Patient(String nom_patient) {
         initComponents();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screen.getWidth() - getWidth()) /2);
         int y = (int) ((screen.getHeight() -getHeight()) /2);
         setLocation(x, y); 
+        
+        
+        
     }
 
     /** This method is called from within the constructor to
@@ -278,7 +281,7 @@ public class Recherche_Patient extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Recherche_Patient().setVisible(true);
+                new Recherche_Patient("").setVisible(true);
             }
         });
     }
