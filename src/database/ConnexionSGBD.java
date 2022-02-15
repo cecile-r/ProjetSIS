@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 import nf.*;
 
 class ConnexionSGBD {
@@ -59,13 +60,9 @@ class ConnexionSGBD {
             }*/
             
             
-            // Test getListePHSimplifie() -> VALIDE
-            /*System.out.println(RequetesBD.getListePHSimplifie(conn));
-            List<PHSimplifie> lph = RequetesBD.getListePHSimplifie(conn);
-            for (int i = 0; i < lph.size(); i++){
-                System.out.println("\n Praticien hospitalier " + i + " :\n");
-                System.out.println(lph.get(i).toString());
-            }*/
+            // Test getVectPH() -> VALIDE
+            /*Vector lph = RequetesBD.getVectPH(conn);
+            System.out.println(lph);*/
             
             
             // Test getListePH(nom) -> VALIDE
@@ -80,13 +77,9 @@ class ConnexionSGBD {
             }*/
             
             
-            // Test getListePHSimplifie(nom) -> VALIDE
-            /*System.out.println(RequetesBD.getListePHSimplifie(conn, "Wawrinka"));
-            List<PHSimplifie> lphn = RequetesBD.getListePHSimplifie(conn, "Wawrinka");
-            for (int i = 0; i < lphn.size(); i++){
-                System.out.println("\n Praticien hospitalier " + i + " :\n");
-                System.out.println(lphn.get(i).toString());
-            }*/
+            // Test getListePHSimplifie(nom) -> 
+            /*Vector lph = RequetesBD.getVectPHNom(conn, "Wawrinka");
+            System.out.println(lph);*/
             
             
             // Test getListePHService(service) -> VALIDE
@@ -101,13 +94,9 @@ class ConnexionSGBD {
             }*/
             
             
-            // Test getListePHServiceSimpl(service) -> VALIDE
-            /*System.out.println(RequetesBD.getListePHServiceSimpl(conn, serviceS));
-            List<PHSimplifie> lph = RequetesBD.getListePHServiceSimpl(conn, serviceS);
-            for (int i = 0; i < lph.size(); i++){
-                System.out.println("\n Praticien hospitalier " + i + " :\n");
-                System.out.println(lph.get(i).toString());
-            }*/
+            // Test getVectPHService(service) -> VALIDE
+            /*Vector lph = RequetesBD.getVectPHService(conn, serviceS);
+            System.out.println(lph);*/
             
             
             // Print information about connection warnings
