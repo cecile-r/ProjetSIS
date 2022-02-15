@@ -11,6 +11,6 @@ package nf;
  */
 public enum Sexe {
     homme,
-    femmme,
+    femme,
     autre
 }

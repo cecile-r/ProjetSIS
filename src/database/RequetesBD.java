@@ -80,7 +80,7 @@ public class RequetesBD {
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH");
 
         while (rs.next()) {
-            PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp"), rs.getString("telephone"), rs.getString("specialite"));
+            PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
             listePH.add(ph);
         }
 
@@ -191,7 +191,49 @@ public class RequetesBD {
     }
     
     
+    //Renvoie la liste des DPI ouverts -> patients dans le CHU
+    //VALIDE
+    public static List<DPI> getListeDPI(Connection conn) throws SQLException {
+        List<DPI> listeDPIOuvert = new ArrayList();
+        Statement stmt = conn.createStatement();
+        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE (service_responsable IS NOT NULL)");
+        
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPIOuvert.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPIOuvert;
+    }
+    
    
+    //Renvoie la liste des DPI ouverts -> patients dans le CHU
+    //VALIDE
+    public static Vector getVectorDPI(Connection conn) throws SQLException {
+        Vector vDPIOuvert = new Vector();
+        Statement stmt = conn.createStatement();
+        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE (service_responsable IS NOT NULL)");
+        
+        while (rs.next()) {
+            Vector vParDPI = new Vector();
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            vParDPI.add(rs.getString("nom_DPI"));
+            vParDPI.add(rs.getString("prenom_DPI"));
+            vParDPI.add(d);
+            vParDPI.add(rs.getString("sexe_DPI"));
+            vDPIOuvert.add(vParDPI);
+        }
+
+        rs.close();
+        stmt.close();
+        return vDPIOuvert;
+    }
 
     
 }

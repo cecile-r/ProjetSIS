@@ -1,6 +1,5 @@
 package database;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 //import java.sql.Date;
 import java.util.Date;
@@ -97,6 +96,20 @@ class ConnexionSGBD {
             // Test getVectPHService(service) -> VALIDE
             /*Vector lph = RequetesBD.getVectPHService(conn, serviceS);
             System.out.println(lph);*/
+            
+            
+            //Test getListeDPI() -> VALIDE
+            /*System.out.println(RequetesBD.getListeDPI(conn));
+            List<DPI> ldpi = RequetesBD.getListeDPI(conn);
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+            
+            
+            // Test getVectorDPI() -> VALIDE
+            /*Vector ldpi = RequetesBD.getVectorDPI(conn);
+            System.out.println(ldpi);*/
             
             
             // Print information about connection warnings
