@@ -324,4 +324,43 @@ public class RequetesBD {
         stmt.close();
         return vDPIOuvert;
     }
+    
+    
+    //Renvoie true si le mdp est correct, sinon false
+    //
+    public static boolean verifyConnexion(Connection conn,String id, String mdp, String statut) throws SQLException{
+        boolean correct = false;
+        Statement stmt = conn.createStatement();
+        //Requete ci dessous juste pour initialiser le resultset et pas faire buger la suite du programme, pas utilisée
+        ResultSet rs = stmt.executeQuery("SELECT idPH from PH");
+        
+        if(statut == "Medecin"){
+            rs = stmt.executeQuery("SELECT idPH, mdp_PH FROM PH WHERE (idPH = '" + id + "') AND (mdp_PH = '" + mdp + "')");
+            if(rs.next()){
+                correct = true;
+            }
+        }
+        else if(statut == "Secretaire Administrative"){
+            rs = stmt.executeQuery("SELECT idSecretaireAd, mdp_SA FROM Secretaire_administrative WHERE (idSecretaireAd = '" + id + "') AND (mdp_SA = '" + mdp + "')");
+            if(rs.next()){
+                correct = true;
+            }
+        }
+        else if(statut == "Secretaire Medicale"){
+            rs = stmt.executeQuery("SELECT idSecretaireMed, mdp_SM FROM Secretaire_medicale WHERE (idSecretaireMed = '" + id + "') AND (mdp_SM = '" + mdp + "')");
+            if(rs.next()){
+                correct = true;
+            }
+        }
+        else if(statut == "Infirmier"){
+            rs = stmt.executeQuery("SELECT idInfirmier, mdp_Infirmier FROM Infirmier WHERE (idInfirmier = '" + id + "') AND (mdp_Infirmier = '" + mdp + "')");
+            if(rs.next()){
+                correct = true;
+            }
+        }
+        
+        rs.close();
+        stmt.close();
+        return correct;
+    }
 }

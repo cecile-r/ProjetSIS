@@ -138,7 +138,27 @@ class ConnexionSGBD {
             /*Vector ldpi = RequetesBD.getVectorDPI(conn, "Pilard", "Chirurgie_digestive");
             System.out.println(ldpi);*/
             
-           
+            
+            //Test verifyConnexion(id, mdp, statut) ->
+            /*//Medecins
+            System.out.println(RequetesBD.verifyConnexion(conn, "1436985621", "facile", "Medecin")); //true
+            System.out.println(RequetesBD.verifyConnexion(conn, "1436985620", "facile", "Medecin")); //false
+            System.out.println(RequetesBD.verifyConnexion(conn, "1436985621", "FACILE", "Medecin")); //false
+            System.out.println(RequetesBD.verifyConnexion(conn, "1045236987", "chanteuse", "Medecin")); //false
+            //Infirmiers
+            System.out.println(RequetesBD.verifyConnexion(conn, "1045236987", "chanteuse", "Infirmier")); //true
+            System.out.println(RequetesBD.verifyConnexion(conn, "1045236987", "Chanteuse", "Infirmier")); //false
+            System.out.println(RequetesBD.verifyConnexion(conn, "1436985621", "FACILE", "Infirmier")); //false
+            //Secretaire medicale
+            System.out.println(RequetesBD.verifyConnexion(conn, "9993331234", "polyjeu", "Secretaire Medicale")); //true
+            System.out.println(RequetesBD.verifyConnexion(conn, "9993331234", "test", "Secretaire Medicale")); //false
+            System.out.println(RequetesBD.verifyConnexion(conn, "1045236987", "chanteuse", "Secretaire Medicale")); //false
+            //Secretaire administrative
+            System.out.println(RequetesBD.verifyConnexion(conn, "1451251451", "couscous", "Secretaire Administrative")); //true
+            System.out.println(RequetesBD.verifyConnexion(conn, "1451251450", "couscous", "Secretaire Administrative")); //false
+            System.out.println(RequetesBD.verifyConnexion(conn, "9993331234", "polyjeu", "Secretaire Administrative")); //false*/
+       
+            
             
             // Print information about connection warnings
             SQLWarningsExceptions.printWarnings(conn);
