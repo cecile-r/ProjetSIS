@@ -1,13 +1,13 @@
 package nf;
 
 public class SecretaireMedicale {
-    private int idSecretaireMed;
+    private String idSecretaireMed;
     private String nomSecretaireMed;
     private String prenomSecretaireMed;
     private Service service;
     private String mdp;
     
-    public SecretaireMedicale(int idSecretaireMed,String nomSecretaireMed,String prenomSecretaireMed, Service service,String mdp ){
+    public SecretaireMedicale(String idSecretaireMed,String nomSecretaireMed,String prenomSecretaireMed, Service service,String mdp ){
         this.idSecretaireMed=idSecretaireMed;
         this.nomSecretaireMed=nomSecretaireMed;
         this.prenomSecretaireMed=prenomSecretaireMed;
@@ -25,14 +25,14 @@ public class SecretaireMedicale {
     /**
      * @return the idSecretaireMed
      */
-    public int getIdSecretaireMed() {
+    public String getIdSecretaireMed() {
         return idSecretaireMed;
     }
 
     /**
      * @param idSecretaireMed the idSecretaireMed to set
      */
-    public void setIdSecretaireMed(int idSecretaireMed) {
+    public void setIdSecretaireMed(String idSecretaireMed) {
         this.idSecretaireMed = idSecretaireMed;
     }
 

@@ -139,7 +139,7 @@ class ConnexionSGBD {
             System.out.println(ldpi);*/
             
             
-            //Test verifyConnexion(id, mdp, statut) ->
+            //Test verifyConnexion(id, mdp, statut) -> VALIDE
             /*//Medecins
             System.out.println(RequetesBD.verifyConnexion(conn, "1436985621", "facile", "Medecin")); //true
             System.out.println(RequetesBD.verifyConnexion(conn, "1436985620", "facile", "Medecin")); //false
@@ -158,6 +158,22 @@ class ConnexionSGBD {
             System.out.println(RequetesBD.verifyConnexion(conn, "1451251450", "couscous", "Secretaire Administrative")); //false
             System.out.println(RequetesBD.verifyConnexion(conn, "9993331234", "polyjeu", "Secretaire Administrative")); //false*/
        
+            
+            //Test userPH(id) -> VALIDE
+            System.out.println(RequetesBD.userPH(conn, "8888888888").getClass().getName()); //PH
+            System.out.println(RequetesBD.userPH(conn, "8888888888").toString());
+
+            //Test userInf(id) -> VALIDE
+            System.out.println(RequetesBD.userInf(conn, "5000050005").getClass().getName()); //infirmier
+            System.out.println(RequetesBD.userInf(conn, "5000050005").toString());
+            
+            //Test userSM(id) -> VALIDE
+            System.out.println(RequetesBD.userSM(conn, "9992221234").getClass().getName()); //secretaire medicale
+            System.out.println(RequetesBD.userSM(conn, "9992221234").toString());
+            
+            //Test userSA(id) -> VALIDE
+            System.out.println(RequetesBD.userSA(conn, "1451261452").getClass().getName()); //secretaire administrative
+            System.out.println(RequetesBD.userSA(conn, "1451261452").toString());
             
             
             // Print information about connection warnings

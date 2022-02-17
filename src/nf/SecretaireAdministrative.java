@@ -2,12 +2,12 @@ package nf;
 
 
 public class SecretaireAdministrative {
-    private int IdSecretaireAd;
+    private String IdSecretaireAd;
     private String nomSecretaireAd;
     private String prenomSecretaireAd;
     private String mdp;
     
-    public SecretaireAdministrative(int IdSecretaireAd,String nomSecretaireAd, String prenomSecretaireAd,String mdp){
+    public SecretaireAdministrative(String IdSecretaireAd,String nomSecretaireAd, String prenomSecretaireAd,String mdp){
         this.IdSecretaireAd=IdSecretaireAd;
         this.nomSecretaireAd=nomSecretaireAd;
         this.prenomSecretaireAd=prenomSecretaireAd;
@@ -24,14 +24,14 @@ public class SecretaireAdministrative {
     /**
      * @return the IdSecretaireAd
      */
-    public int getIdSecretaireAd() {
+    public String getIdSecretaireAd() {
         return IdSecretaireAd;
     }
 
     /**
      * @param IdSecretaireAd the IdSecretaireAd to set
      */
-    public void setIdSecretaireAd(int IdSecretaireAd) {
+    public void setIdSecretaireAd(String IdSecretaireAd) {
         this.IdSecretaireAd = IdSecretaireAd;
     }
 
