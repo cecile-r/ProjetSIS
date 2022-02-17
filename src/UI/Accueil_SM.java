@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,6 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nf.DPI;
 import nf.FicheDeSoins;
+import nf.SecretaireMedicale;
+import nf.Service;
 
 /**
  *
@@ -33,23 +36,31 @@ import nf.FicheDeSoins;
 public class Accueil_SM extends javax.swing.JFrame {
 
     Connection conn;
+    SecretaireMedicale sm;
     List<PH> medecins;
     Vector medecinsS;
     List<DPI> dpis;
     Vector dpisS;
+    Vector entetes;
+    Vector entetes2;
 
     /**
      * Creates new form Connexion
      */
-    public Accueil_SM(Connection conn) throws SQLException {
+    public Accueil_SM(Connection conn, SecretaireMedicale sm) throws SQLException {
         this.conn = conn;
+        this.sm=sm;
         initComponents();
+        
+        //infos identité
+        prenom_SM.setText(sm.getPrenomSecretaireMed());
+        nom_SM.setText(sm.getNomSecretaireMed());
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
         dpis = database.RequetesBD.getListeDPI(conn);
         dpisS = database.RequetesBD.getVectorDPI(conn);
-        Vector entetes = new Vector();
+        entetes = new Vector();
         entetes.add("Nom");
         entetes.add("Prénom");
         entetes.add("Date de naissance");
@@ -62,7 +73,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         medecinsS = new Vector();
         medecins = database.RequetesBD.getListePH(conn);
         medecinsS = database.RequetesBD.getVectPH(conn);
-        Vector entetes2 = new Vector();
+        entetes2 = new Vector();
         entetes2.add("Nom");
         entetes2.add("Prénom");
         entetes2.add("Service");
@@ -97,6 +108,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         TextField_Patient = new javax.swing.JTextField();
         Button_Selectionner1 = new javax.swing.JButton();
         Label_Loupe_Patient = new javax.swing.JLabel();
+        jButton_actualiser = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -181,9 +193,9 @@ public class Accueil_SM extends javax.swing.JFrame {
                                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                                         .addComponent(prenom_SM)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(nom_SM)
-                                        .addGap(30, 30, 30))
+                                        .addGap(35, 35, 35))
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
@@ -233,6 +245,11 @@ public class Accueil_SM extends javax.swing.JFrame {
                 TextField_PatientActionPerformed(evt);
             }
         });
+        TextField_Patient.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TextField_PatientKeyPressed(evt);
+            }
+        });
 
         Button_Selectionner1.setBackground(new java.awt.Color(51, 102, 255));
         Button_Selectionner1.setText("Sélectionner");
@@ -249,6 +266,13 @@ public class Accueil_SM extends javax.swing.JFrame {
             }
         });
 
+        jButton_actualiser.setText("Recharger");
+        jButton_actualiser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_actualiserActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -256,28 +280,31 @@ public class Accueil_SM extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(358, 358, 358)
+                        .addGap(257, 257, 257)
+                        .addComponent(jButton_actualiser)
+                        .addGap(18, 18, 18)
                         .addComponent(TextField_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Label_Loupe_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(442, 442, 442)
-                        .addComponent(Button_Selectionner1)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                        .addComponent(Button_Selectionner1))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(135, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(TextField_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Label_Loupe_Patient, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
-                .addGap(53, 53, 53)
+                    .addComponent(Label_Loupe_Patient, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(jButton_actualiser, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextField_Patient, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(31, 31, 31)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(40, 40, 40)
                 .addComponent(Button_Selectionner1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63))
         );
@@ -294,7 +321,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 581, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -695,6 +722,38 @@ public class Accueil_SM extends javax.swing.JFrame {
         jTextArea1.setText(medecins.get(index).toStringDetail());
     }//GEN-LAST:event_tab_medecinsMouseClicked
 
+    private void jButton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserActionPerformed
+        try {
+            //RECHARGER
+            dpis = database.RequetesBD.getListeDPI(conn);
+            dpisS = database.RequetesBD.getVectorDPI(conn);
+            TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+            Table_Vue_Generale1.setAutoCreateRowSorter(true);
+            Table_Vue_Generale1.setModel(tableModel);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_actualiserActionPerformed
+
+    private void TextField_PatientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PatientKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            String recherche = TextField_Patient.getText();
+            try {
+                if (!recherche.equals("")) {
+
+                    dpis = database.RequetesBD.getListeDPI(conn, recherche);
+                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+                    TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+                    Table_Vue_Generale1.setAutoCreateRowSorter(true);
+                    Table_Vue_Generale1.setModel(tableModel);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_TextField_PatientKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -747,7 +806,7 @@ public class Accueil_SM extends javax.swing.JFrame {
                     int longueur = tailleMoniteur.width;
                     int hauteur = tailleMoniteur.height;
                     Accueil_SM i;
-                    i = new Accueil_SM(conn);
+                    i = new Accueil_SM(conn,new SecretaireMedicale("1462354712","Boss","Pierre",Service.Biologie_clinique,"maison"));
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
 
@@ -784,6 +843,7 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JTable Table_Vue_Generale1;
     private javax.swing.JTextField TextField_Docteur1;
     private javax.swing.JTextField TextField_Patient;
+    private javax.swing.JButton jButton_actualiser;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
