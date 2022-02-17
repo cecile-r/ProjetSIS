@@ -34,7 +34,8 @@ public class RequetesBD {
     public static void afficherNomPrenom(Connection conn, String IPP) throws SQLException {
         // java.math.BigDecimal
         Statement stmt = conn.createStatement();
-        String requete = "SELECT * FROM DPI WHERE IPP = '" + IPP + "' ";
+        String requete = "SELECT * FROM DPI "
+                + "WHERE IPP = '" + IPP + "' ";
         ResultSet rs = stmt.executeQuery(requete);
 
         if (rs.next()) {
@@ -52,7 +53,8 @@ public class RequetesBD {
     //VALIDE
     public static void afficherDateNaissanceDPI(Connection conn, String IPP) throws SQLException {
         Statement stmt = conn.createStatement();
-        String requete = "SELECT * FROM DPI WHERE IPP = '" + IPP + "' ";
+        String requete = "SELECT * FROM DPI "
+                + "WHERE IPP = '" + IPP + "' ";
         ResultSet rs = stmt.executeQuery(requete);
 
         if (rs.next()) {
@@ -111,7 +113,8 @@ public class RequetesBD {
     public static List<PH> getListePH(Connection conn, String nom) throws SQLException {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE nom_PH = '" + nom + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
+                + "WHERE nom_PH = '" + nom + "'");
 
         while (rs.next()) {
             PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
@@ -128,7 +131,8 @@ public class RequetesBD {
     public static Vector getVectPHNom(Connection conn, String nom) throws SQLException {
         Vector vPHTotal = new Vector();
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE nom_PH = '" + nom + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
+                + "WHERE nom_PH = '" + nom + "'");
 
         while (rs.next()) {
             Vector vParPH = new Vector();
@@ -142,6 +146,10 @@ public class RequetesBD {
         stmt.close();
         return vPHTotal;
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Fonctions PH
 
     //Renvoie la liste des PH en fonction du service
     //VALIDE
@@ -149,7 +157,8 @@ public class RequetesBD {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection de tous les PH
-        ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE service_PH = '" + service + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
+                + "WHERE service_PH = '" + service + "'");
 
         while (rs.next()) {
             PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
@@ -167,7 +176,8 @@ public class RequetesBD {
         Vector vPHTotal = new Vector();
         Statement stmt = conn.createStatement();
         //Sélection de tous les PH
-        ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE service_PH = '" + service + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
+                + "WHERE service_PH = '" + service + "'");
 
         while (rs.next()) {
             Vector vParPH = new Vector();
@@ -182,13 +192,20 @@ public class RequetesBD {
         return vPHTotal;
     }
 
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Fonctions DPI
+    
     //Renvoie la liste des DPI ouverts -> patients dans le CHU
     //VALIDE
     public static List<DPI> getListeDPI(Connection conn) throws SQLException {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE (service_responsable IS NOT NULL)");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                + "WHERE (service_responsable IS NOT NULL)");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -208,7 +225,9 @@ public class RequetesBD {
         Vector vDPIOuvert = new Vector();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation WHERE (service_responsable IS NOT NULL)");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "WHERE (service_responsable IS NOT NULL)");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -231,7 +250,10 @@ public class RequetesBD {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE (service_responsable IS NOT NULL) AND (nom_DPI = '" + nom + "')");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                + "WHERE (service_responsable IS NOT NULL) AND (nom_DPI = '" + nom + "')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -251,7 +273,9 @@ public class RequetesBD {
         Vector vDPIOuvert = new Vector();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation WHERE (service_responsable IS NOT NULL) AND (nom_DPI = '" + nom + "')");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "WHERE (service_responsable IS NOT NULL) AND (nom_DPI = '" + nom + "')");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -270,11 +294,62 @@ public class RequetesBD {
 
     //Renvoie la liste des DPI ouverts en fonction du nom et du service
     //VALIDE
+    public static List<DPI> getListeDPIService(Connection conn, String service) throws SQLException {
+        List<DPI> listeDPIOuvert = new ArrayList();
+        Statement stmt = conn.createStatement();
+        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                + "WHERE service_responsable = '" + service + "'");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPIOuvert.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPIOuvert;
+    }
+    
+    //Renvoie le vecteur des DPI ouverts en fonction du nom et du service
+    //VALIDE
+    public static Vector getVectorDPIService(Connection conn, String service) throws SQLException {
+        Vector vDPIOuvert = new Vector();
+        Statement stmt = conn.createStatement();
+        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "WHERE service_responsable = '" + service + "'");
+
+        while (rs.next()) {
+            Vector vParDPI = new Vector();
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            vParDPI.add(rs.getString("nom_DPI"));
+            vParDPI.add(rs.getString("prenom_DPI"));
+            vParDPI.add(d);
+            vParDPI.add(rs.getString("sexe_DPI"));
+            vDPIOuvert.add(vParDPI);
+        }
+
+        rs.close();
+        stmt.close();
+        return vDPIOuvert;
+    }
+    
+    //Renvoie la liste des DPI ouverts en fonction du nom et du service
+    //VALIDE
     public static List<DPI> getListeDPI(Connection conn, String nom, String service) throws SQLException {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE (service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                + "WHERE (service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -294,7 +369,9 @@ public class RequetesBD {
         Vector vDPIOuvert = new Vector();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI NATURAL JOIN Localisation WHERE (service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "NATURAL JOIN Localisation "
+                + "WHERE (service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -311,6 +388,11 @@ public class RequetesBD {
         return vDPIOuvert;
     }
 
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Fonctions pour connexion
+    
     //Renvoie true si le mdp est correct, sinon false
     //VALIDE
     public static boolean verifyConnexion(Connection conn, String id, String mdp, String statut) throws SQLException {
@@ -320,22 +402,26 @@ public class RequetesBD {
         ResultSet rs = stmt.executeQuery("SELECT idPH from PH");
 
         if (statut == "Medecin") {
-            rs = stmt.executeQuery("SELECT idPH, mdp_PH FROM PH WHERE (idPH = '" + id + "') AND (mdp_PH = '" + mdp + "')");
+            rs = stmt.executeQuery("SELECT idPH, mdp_PH FROM PH "
+                    + "WHERE (idPH = '" + id + "') AND (mdp_PH = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
         } else if (statut == "Secretaire Administrative") {
-            rs = stmt.executeQuery("SELECT idSecretaireAd, mdp_SA FROM Secretaire_administrative WHERE (idSecretaireAd = '" + id + "') AND (mdp_SA = '" + mdp + "')");
+            rs = stmt.executeQuery("SELECT idSecretaireAd, mdp_SA FROM Secretaire_administrative "
+                    + "WHERE (idSecretaireAd = '" + id + "') AND (mdp_SA = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
         } else if (statut == "Secretaire Medicale") {
-            rs = stmt.executeQuery("SELECT idSecretaireMed, mdp_SM FROM Secretaire_medicale WHERE (idSecretaireMed = '" + id + "') AND (mdp_SM = '" + mdp + "')");
+            rs = stmt.executeQuery("SELECT idSecretaireMed, mdp_SM FROM Secretaire_medicale "
+                    + "WHERE (idSecretaireMed = '" + id + "') AND (mdp_SM = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
         } else if (statut == "Infirmier") {
-            rs = stmt.executeQuery("SELECT idInfirmier, mdp_Infirmier FROM Infirmier WHERE (idInfirmier = '" + id + "') AND (mdp_Infirmier = '" + mdp + "')");
+            rs = stmt.executeQuery("SELECT idInfirmier, mdp_Infirmier FROM Infirmier "
+                    + "WHERE (idInfirmier = '" + id + "') AND (mdp_Infirmier = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
@@ -350,7 +436,8 @@ public class RequetesBD {
     //VALIDE
     public static PH userPH(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM PH WHERE idPH = '" + id + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
+                + "WHERE idPH = '" + id + "'");
 
         if (rs.next()) { //Si c'est un PH
             PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
@@ -369,7 +456,8 @@ public class RequetesBD {
     //VALIDE
     public static Infirmier userInf(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Infirmier WHERE idInfirmier = '" + id + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Infirmier "
+                + "WHERE idInfirmier = '" + id + "'");
 
         if (rs.next()) { //Si c'est un PH
             Infirmier inf = new Infirmier(rs.getString("idInfirmier"), rs.getString("nom_Infirmier"), rs.getString("prenom_Infirmier"), Service.valueOf(rs.getString("service_Infirmier")), rs.getString("mdp_Infirmier"));
@@ -388,7 +476,8 @@ public class RequetesBD {
     //VALIDE
     public static SecretaireMedicale userSM(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Secretaire_medicale WHERE idSecretaireMed = '" + id + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Secretaire_medicale "
+                + "WHERE idSecretaireMed = '" + id + "'");
 
         if (rs.next()) { //Si c'est un PH
             SecretaireMedicale sm = new SecretaireMedicale(rs.getString("idSecretaireMed"), rs.getString("nom_SM"), rs.getString("prenom_SM"), Service.valueOf(rs.getString("service_SM")), rs.getString("mdp_SM"));
@@ -407,7 +496,8 @@ public class RequetesBD {
     //VALIDE
     public static SecretaireAdministrative userSA(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Secretaire_administrative WHERE idSecretaireAd = '" + id + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Secretaire_administrative "
+                + "WHERE idSecretaireAd = '" + id + "'");
 
         if (rs.next()) { //Si c'est un PH
             SecretaireAdministrative sa = new SecretaireAdministrative(rs.getString("idSecretaireAd"), rs.getString("nom_SA"), rs.getString("prenom_SA"), rs.getString("mdp_SA"));
