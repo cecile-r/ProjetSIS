@@ -58,8 +58,8 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = database.RequetesBD.getListeDPI(conn,ph.getService().toString());
-        dpisS = database.RequetesBD.getVectorDPI(conn,ph.getService().toString());
+        dpis = database.RequetesBD.getListeDPIService(conn, ph.getService().toString());
+        dpisS = database.RequetesBD.getVectorDPIService(conn, ph.getService().toString());
         entetes = new Vector();
         entetes.add("Nom");
         entetes.add("Prénom");
@@ -625,8 +625,8 @@ public class Accueil_Med extends javax.swing.JFrame {
         String recherche = TextField_Patient.getText();
         try {
             if (!recherche.equals("")) {
-                dpis = database.RequetesBD.getListeDPI(conn, recherche,ph.getService().toString());
-                dpisS = database.RequetesBD.getVectorDPI(conn, recherche,ph.getService().toString());
+                dpis = database.RequetesBD.getListeDPI(conn, recherche, ph.getService().toString());
+                dpisS = database.RequetesBD.getVectorDPI(conn, recherche, ph.getService().toString());
                 TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                 Table_Vue_Generale1.setAutoCreateRowSorter(true);
                 Table_Vue_Generale1.setModel(tableModel);
@@ -650,8 +650,8 @@ public class Accueil_Med extends javax.swing.JFrame {
     private void jButton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserActionPerformed
         try {
             //RECHARGER
-            dpis = database.RequetesBD.getListeDPI(conn,ph.getService());
-            dpisS = database.RequetesBD.getVectorDPI(conn,ph.getService());
+            dpis = database.RequetesBD.getListeDPIService(conn, ph.getService().toString());
+            dpisS = database.RequetesBD.getVectorDPIService(conn, ph.getService().toString());
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
@@ -662,14 +662,14 @@ public class Accueil_Med extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_actualiserActionPerformed
 
     private void TextField_PatientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PatientKeyPressed
+        //RECHERCHE PATIENT ENTREE
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             String recherche = TextField_Patient.getText();
             try {
                 if (!recherche.equals("")) {
-
-                    dpis = database.RequetesBD.getListeDPI(conn, recherche);
-                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+                    dpis = database.RequetesBD.getListeDPI(conn, recherche, ph.getService().toString());
+                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche, ph.getService().toString());
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setAutoCreateRowSorter(true);
                     Table_Vue_Generale1.setModel(tableModel);

@@ -49,17 +49,17 @@ public class Accueil_SM extends javax.swing.JFrame {
      */
     public Accueil_SM(Connection conn, SecretaireMedicale sm) throws SQLException {
         this.conn = conn;
-        this.sm=sm;
+        this.sm = sm;
         initComponents();
-        
+
         //infos identité
         prenom_SM.setText(sm.getPrenomSecretaireMed());
         nom_SM.setText(sm.getNomSecretaireMed());
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = database.RequetesBD.getListeDPI(conn);
-        dpisS = database.RequetesBD.getVectorDPI(conn);
+        dpis = database.RequetesBD.getListeDPIService(conn, sm.getService().toString());
+        dpisS = database.RequetesBD.getVectorDPIService(conn, sm.getService().toString());
         entetes = new Vector();
         entetes.add("Nom");
         entetes.add("Prénom");
@@ -696,7 +696,7 @@ public class Accueil_SM extends javax.swing.JFrame {
             }
 
         } else if (type_recherche.equals("Service")) {
-             try {
+            try {
                 medecins = database.RequetesBD.getListePHService(conn, recherche);
                 medecinsS = database.RequetesBD.getVectPHService(conn, recherche);
                 Vector entetes2 = new Vector();
@@ -725,8 +725,8 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void jButton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserActionPerformed
         try {
             //RECHARGER
-            dpis = database.RequetesBD.getListeDPI(conn);
-            dpisS = database.RequetesBD.getVectorDPI(conn);
+            dpis = database.RequetesBD.getListeDPIService(conn, sm.getService().toString());
+            dpisS = database.RequetesBD.getVectorDPIService(conn, sm.getService().toString());
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
@@ -736,14 +736,13 @@ public class Accueil_SM extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_actualiserActionPerformed
 
     private void TextField_PatientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PatientKeyPressed
+        //RECHERCHE PATIENT ENTREE
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
             String recherche = TextField_Patient.getText();
             try {
                 if (!recherche.equals("")) {
-
-                    dpis = database.RequetesBD.getListeDPI(conn, recherche);
-                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+                    dpis = database.RequetesBD.getListeDPI(conn, recherche, sm.getService().toString());
+                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche, sm.getService().toString());
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setAutoCreateRowSorter(true);
                     Table_Vue_Generale1.setModel(tableModel);
@@ -806,7 +805,7 @@ public class Accueil_SM extends javax.swing.JFrame {
                     int longueur = tailleMoniteur.width;
                     int hauteur = tailleMoniteur.height;
                     Accueil_SM i;
-                    i = new Accueil_SM(conn,new SecretaireMedicale("1462354712","Boss","Pierre",Service.Biologie_clinique,"maison"));
+                    i = new Accueil_SM(conn, new SecretaireMedicale("1462354712", "Boss", "Pierre", Service.Biologie_clinique, "maison"));
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
 
