@@ -138,6 +138,28 @@ class ConnexionSGBD {
             /*Vector ldpi = RequetesBD.getVectorDPI(conn, "Pilard", "Chirurgie_digestive");
             System.out.println(ldpi);*/
             
+            //Test getListeDPIService(service) -> VALIDE
+            /*System.out.println(RequetesBD.getListeDPIService(conn, "Medecine_nucleaire"));
+            List<DPI> ldpi = RequetesBD.getListeDPIService(conn, "Medecine_nucleaire");
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+            
+            
+            // Test getVectorDPIService(service) -> VALIDE
+            /*Vector ldpi = RequetesBD.getVectorDPIService(conn, "Chirurgie_digestive");
+            System.out.println(ldpi);*/
+            
+            
+            //Test getListeDPIService(service) -> VALIDE
+            /*System.out.println(RequetesBD.getListeDPIService(conn, "Medecine_nucleaire"));
+            List<DPI> ldpi = RequetesBD.getListeDPIService(conn, "Medecine_nucleaire");
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+           
             
             //Test verifyConnexion(id, mdp, statut) -> VALIDE
             /*//Medecins
@@ -160,20 +182,21 @@ class ConnexionSGBD {
        
             
             //Test userPH(id) -> VALIDE
-            System.out.println(RequetesBD.userPH(conn, "8888888888").getClass().getName()); //PH
-            System.out.println(RequetesBD.userPH(conn, "8888888888").toString());
+            /*System.out.println(RequetesBD.userPH(conn, "8888888888").getClass().getName()); //PH
+            System.out.println(RequetesBD.userPH(conn, "8888888888").toString());*/
 
             //Test userInf(id) -> VALIDE
-            System.out.println(RequetesBD.userInf(conn, "5000050005").getClass().getName()); //infirmier
-            System.out.println(RequetesBD.userInf(conn, "5000050005").toString());
+            /*System.out.println(RequetesBD.userInf(conn, "5000050005").getClass().getName()); //infirmier
+            System.out.println(RequetesBD.userInf(conn, "5000050005").toString());*/
             
             //Test userSM(id) -> VALIDE
-            System.out.println(RequetesBD.userSM(conn, "9992221234").getClass().getName()); //secretaire medicale
-            System.out.println(RequetesBD.userSM(conn, "9992221234").toString());
+            /*System.out.println(RequetesBD.userSM(conn, "9992221234").getClass().getName()); //secretaire medicale
+            System.out.println(RequetesBD.userSM(conn, "9992221234").toString());*/
             
             //Test userSA(id) -> VALIDE
-            System.out.println(RequetesBD.userSA(conn, "1451261452").getClass().getName()); //secretaire administrative
-            System.out.println(RequetesBD.userSA(conn, "1451261452").toString());
+            /*System.out.println(RequetesBD.userSA(conn, "1451261452").getClass().getName()); //secretaire administrative
+            System.out.println(RequetesBD.userSA(conn, "1451261452").toString());*/
+            
             
             
             // Print information about connection warnings
