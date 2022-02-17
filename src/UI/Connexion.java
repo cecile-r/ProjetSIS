@@ -30,10 +30,10 @@ public class Connexion extends javax.swing.JFrame {
      * Creates new form Connexion
      */
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
-                
+
         this.conn = conn;
         initComponents();
-        
+
     }
 
     /**
@@ -211,37 +211,39 @@ public class Connexion extends javax.swing.JFrame {
         Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
         int longueur = tailleMoniteur.width;
         int hauteur = tailleMoniteur.height;
+        boolean c;
+        try {
+            c = database.RequetesBD.verifyConnexion(conn, id, mdp, CB_item);
+            if (c) {
+                if (CB_item.equals("Medecin")) {
+                    Accueil_Med i;
+                    i = new Accueil_Med(conn);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    dispose();
+                }
+                if (CB_item.equals("Secretaire Administrative")) {
+                    //requete bd si id et mdp correct
+                    Accueil_SA i;
+                    i = new Accueil_SA(conn);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    dispose();
+                }
+                if (CB_item.equals("Secretaire Medicale")) {
+                    //requete bd si id et mdp correct
+                    Accueil_SM i;
+                    i = new Accueil_SM(conn);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    dispose();
 
-        if (CB_item.equals("Medecin")) {
-            //c = verifyConnexion(String id, String mdp, CB_item);
-            //if (c==true){
-            Accueil_Med i = new Accueil_Med(conn);
-            i.setSize(longueur, hauteur);
-            i.setVisible(true);
-            dispose();
-            //}
-        }
-        if (CB_item.equals("Secretaire Administrative")) {
-            //requete bd si id et mdp correct
-            Accueil_SA i = new Accueil_SA(conn);
-            i.setSize(longueur, hauteur);
-            i.setVisible(true);
-            dispose();
-
-        }
-        if (CB_item.equals("Secretaire Medicale")) {
-            //requete bd si id et mdp correct
-            Accueil_SM i;
-            try {
-                i = new Accueil_SM(conn);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-                dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-
-        }/*
+        } catch (SQLException ex) {
+            Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*
         if (CB_item.equals("Infirmiere")){
             //requete bd si id et mdp correct
             Vue_Medicaments i;
@@ -273,52 +275,66 @@ public class Connexion extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Connexion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Connexion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Connexion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Connexion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
-
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                
-                String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
-                String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
-                String username;
-                String password;
-
-                DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
-                jdbcDriver = dap.getJdbcDriver();
-                dbUrl = dap.getDatabaseUrl();
-                username = dap.getUsername();
-                password = dap.getPassword();
-
                 try {
+                    String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
+                    String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
+                    String username;
+                    String password;
+
+                    DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
+                    jdbcDriver = dap.getJdbcDriver();
+                    dbUrl = dap.getDatabaseUrl();
+                    username = dap.getUsername();
+                    password = dap.getPassword();
+
                     // Load the database driver
                     Class.forName(jdbcDriver);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                // Get a connection to the database
-                Connection conn;
-                try {
-                    conn = DriverManager.getConnection(dbUrl, username, password);
+                    // Get a connection to the database
+                    Connection conn = DriverManager.getConnection(dbUrl, username, password);
                     SQLWarningsExceptions.printWarnings(conn);
+
                     Connexion i;
                     i = new Connexion(conn);
-                    i.setSize(longueur, hauteur);
                     i.setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
+
+                } catch (SQLException se) {
+                    // Print information about SQL exceptions
+                    SQLWarningsExceptions.printExceptions(se);
+                    return;
+
+                } catch (Exception e) {
+                    System.err.println("Exception: " + e.getMessage());
+                    e.printStackTrace();
+                    return;
                 }
-                
-                
-                
-                  
+
             }
         });
     }

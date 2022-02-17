@@ -35,7 +35,10 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="Panel_Main" min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Component id="Panel_Main" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -85,19 +88,17 @@
                       <Component id="Panel_icon_perso" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="Label_Home" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="nom_SM" min="-2" pref="112" max="-2" attributes="0"/>
                                   <Component id="prenom_SM" min="-2" pref="112" max="-2" attributes="0"/>
+                                  <Component id="nom_SM" min="-2" pref="112" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="70" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="Panel_logo" min="-2" max="-2" attributes="0"/>
@@ -110,22 +111,26 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="Panel_icon_perso" alignment="1" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="Panel_logo" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="prenom_SM" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="nom_SM" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="Panel_logo" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="Label_Home" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="prenom_SM" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="nom_SM" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="jLabel1" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -154,7 +159,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="prenom_SM"/>
+                <Property name="text" type="java.lang.String" value="prenom"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
@@ -164,22 +169,12 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="Label_Home">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/image/home.png"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Label_HomeMouseClicked"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JLabel" name="nom_SM">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="cc" red="cc" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="nom_SM"/>
+                <Property name="text" type="java.lang.String" value="nom"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -199,7 +194,10 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTabbedPane5" alignment="0" pref="536" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jTabbedPane5" min="-2" pref="549" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -215,6 +213,11 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="jPanel3">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="99" red="99" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="Patients">
@@ -226,7 +229,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="1029" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="1058" max="32767" attributes="0"/>
                           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
@@ -237,7 +240,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="577" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="582" max="32767" attributes="0"/>
                           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
@@ -261,9 +264,7 @@
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
-                                          <Component id="Label_Loupe_Hospit" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="358" max="-2" attributes="0"/>
                                           <Component id="TextField_Patient" min="-2" pref="275" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="Label_Loupe_Patient" min="-2" pref="28" max="-2" attributes="0"/>
@@ -273,7 +274,7 @@
                                           <Component id="jScrollPane3" min="-2" pref="820" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="441" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="442" max="-2" attributes="0"/>
                                           <Component id="Button_Selectionner1" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -284,19 +285,16 @@
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="TextField_Patient" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="Label_Loupe_Patient" alignment="0" pref="33" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Component id="Label_Loupe_Hospit" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="TextField_Patient" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Label_Loupe_Patient" alignment="0" pref="43" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                                   <Component id="jScrollPane3" pref="328" max="32767" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="Button_Selectionner1" min="-2" pref="61" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -392,13 +390,6 @@
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Label_Loupe_PatientMouseClicked"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="Label_Loupe_Hospit">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/image/loupe_plus.png"/>
-                            </Property>
-                          </Properties>
-                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -411,8 +402,8 @@
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Praticien hospitalier">
-                        <Property name="tabTitle" type="java.lang.String" value="Praticien hospitalier"/>
+                      <JTabbedPaneConstraints tabName="Praticiens hospitalier">
+                        <Property name="tabTitle" type="java.lang.String" value="Praticiens hospitalier"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
@@ -420,7 +411,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="1029" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="1058" max="32767" attributes="0"/>
                           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -497,21 +488,17 @@
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
-                                              <Component id="jComboBox_recherche_praticien" min="-2" pref="95" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="Label_Loupe_Docteur2" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                              <Component id="jScrollPane4" min="-2" pref="520" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-                                              <Component id="jScrollPane1" min="-2" pref="310" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                                      <Component id="jComboBox_recherche_praticien" min="-2" pref="95" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="Label_Loupe_Docteur2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace pref="435" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane4" min="-2" pref="520" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane2" pref="396" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -529,7 +516,7 @@
                                       </Group>
                                       <EmptySpace pref="42" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jScrollPane1" pref="347" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane2" pref="347" max="32767" attributes="0"/>
                                           <Component id="jScrollPane4" pref="347" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
@@ -627,21 +614,25 @@
                                 <Property name="text" type="java.lang.String" value="Rechercher par :"/>
                               </Properties>
                             </Component>
-                            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+                            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
                               <AuxValues>
                                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                               </AuxValues>
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JTextPane" name="jTextPane_Identite_Medecin">
+                                <Component class="javax.swing.JTextArea" name="jTextArea1">
                                   <Properties>
-                                    <Property name="editable" type="boolean" value="false"/>
                                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                      <Color blue="ff" green="cc" red="cc" type="rgb"/>
+                                      <Color blue="ff" green="99" red="99" type="rgb"/>
                                     </Property>
+                                    <Property name="columns" type="int" value="20"/>
                                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                      <Font name="Tahoma" size="18" style="0"/>
+                                      <Font name="Lucida Console" size="18" style="0"/>
+                                    </Property>
+                                    <Property name="rows" type="int" value="5"/>
+                                    <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="99" red="99" type="rgb"/>
                                     </Property>
                                   </Properties>
                                 </Component>
@@ -692,7 +683,7 @@
                                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                                   <Component id="Label_FlecheG" min="-2" pref="20" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                                  <Component id="ScrollPane_Planning" pref="906" max="32767" attributes="0"/>
+                                  <Component id="ScrollPane_Planning" pref="935" max="32767" attributes="0"/>
                                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                                   <Component id="Label_FlecheD" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>

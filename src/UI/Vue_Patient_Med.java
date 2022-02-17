@@ -17,10 +17,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     /** Creates new form Connexion */
     public Vue_Patient_Med() {
         initComponents();
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((screen.getWidth() - getWidth()) /2);
-        int y = (int) ((screen.getHeight() -getHeight()) /2);
-        setLocation(x, y);
     }
 
     /** This method is called from within the constructor to
@@ -32,34 +28,41 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        prenom_medecin = new javax.swing.JLabel();
         Panel_Main = new javax.swing.JPanel();
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
         Panel_icon_perso = new javax.swing.JLabel();
-        Identite = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        TextField_Patient = new javax.swing.JTextField();
-        Label_Loupe_Patient = new javax.swing.JLabel();
-        Label_Plus_Patient = new javax.swing.JLabel();
+        prenom_medecin1 = new javax.swing.JLabel();
+        nom_medecin = new javax.swing.JLabel();
         Label_Home = new javax.swing.JLabel();
         Label_Droite = new javax.swing.JPanel();
         Button_RDV = new javax.swing.JButton();
-        Button_Historique_RDV = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         Panle_Gauche = new javax.swing.JPanel();
         Label_Icon_Patient = new javax.swing.JLabel();
-        Label_Identite = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+
+        prenom_medecin.setText("prenom_medecin");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -76,23 +79,32 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
 
         Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
-        Identite.setBackground(new java.awt.Color(204, 204, 255));
-        Identite.setText("Identité");
-
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
+
+        prenom_medecin1.setText("prenom_medecin");
+
+        nom_medecin.setText("nom_medecin");
+
+        Label_Home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
 
         javax.swing.GroupLayout Panel_BandeauLayout = new javax.swing.GroupLayout(Panel_Bandeau);
         Panel_Bandeau.setLayout(Panel_BandeauLayout);
         Panel_BandeauLayout.setHorizontalGroup(
             Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(Panel_icon_perso)
-                .addGap(28, 28, 28)
-                .addComponent(Identite, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(30, 30, 30)
+                .addGap(36, 36, 36)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                        .addComponent(nom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Label_Home))
+                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                        .addComponent(prenom_medecin1, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+                        .addGap(145, 145, 145)
+                        .addComponent(jLabel3)))
+                .addGap(48, 48, 48)
                 .addComponent(Panel_logo)
                 .addContainerGap())
         );
@@ -104,28 +116,19 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
+                            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(prenom_medecin1)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nom_medecin)
+                                    .addComponent(Label_Home)))
                             .addComponent(Panel_logo))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(Identite, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        TextField_Patient.setText("Patient");
-        TextField_Patient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_PatientActionPerformed(evt);
-            }
-        });
-
-        Label_Loupe_Patient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png"))); // NOI18N
-
-        Label_Plus_Patient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/plus.png"))); // NOI18N
-
-        Label_Home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
 
         Label_Droite.setBackground(new java.awt.Color(153, 153, 255));
         Label_Droite.setOpaque(false);
@@ -140,43 +143,39 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             }
         });
 
-        Button_Historique_RDV.setBackground(new java.awt.Color(0, 0, 255));
-        Button_Historique_RDV.setText("Historique et prochain RDV");
-        Button_Historique_RDV.setMargin(new java.awt.Insets(2, 2, 2, 3));
-        Button_Historique_RDV.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/calendrier.png"))); // NOI18N
+
+        jButton2.setText("Editer une lettre de sortie");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Historique_RDVActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/calendrier.png"))); // NOI18N
 
         javax.swing.GroupLayout Label_DroiteLayout = new javax.swing.GroupLayout(Label_Droite);
         Label_Droite.setLayout(Label_DroiteLayout);
         Label_DroiteLayout.setHorizontalGroup(
             Label_DroiteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Label_DroiteLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(Label_DroiteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Button_Historique_RDV, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                    .addComponent(Button_RDV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Label_DroiteLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(Label_DroiteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(Label_DroiteLayout.createSequentialGroup()
+                        .addComponent(Button_RDV, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)))
+                .addGap(29, 29, 29))
         );
         Label_DroiteLayout.setVerticalGroup(
             Label_DroiteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Label_DroiteLayout.createSequentialGroup()
-                .addGroup(Label_DroiteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Label_DroiteLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Button_RDV, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Button_Historique_RDV, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Label_DroiteLayout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(Label_DroiteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Button_RDV, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
@@ -185,8 +184,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         Panle_Gauche.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         Label_Icon_Patient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil.png"))); // NOI18N
-
-        Label_Identite.setText("Identité");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/editer.png"))); // NOI18N
 
@@ -199,6 +196,30 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel6.setText("Nom :");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel7.setText("Prénom :");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel8.setText("Sexe :");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel9.setText("Date de naissance :");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("nom");
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("prenom");
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText("sexe");
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel13.setText("date");
+
         javax.swing.GroupLayout Panle_GaucheLayout = new javax.swing.GroupLayout(Panle_Gauche);
         Panle_Gauche.setLayout(Panle_GaucheLayout);
         Panle_GaucheLayout.setHorizontalGroup(
@@ -206,45 +227,66 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             .addGroup(Panle_GaucheLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Label_Icon_Patient)
-                .addGap(13, 13, 13)
-                .addComponent(Label_Identite, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(6, 6, 6)
-                .addComponent(jLabel2)
+                .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panle_GaucheLayout.createSequentialGroup()
+                        .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(63, 63, 63)
+                        .addComponent(jButton1)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Panle_GaucheLayout.setVerticalGroup(
             Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panle_GaucheLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jButton1))
+                    .addComponent(Label_Icon_Patient)
+                    .addGroup(Panle_GaucheLayout.createSequentialGroup()
+                        .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(Panle_GaucheLayout.createSequentialGroup()
+                                .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel11))))
+                        .addGap(11, 11, 11)
+                        .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(Panle_GaucheLayout.createSequentialGroup()
-                .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Label_Identite, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Label_Icon_Patient))
-                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null}
+                {null, null, null}
             },
             new String [] {
-                "Nom", "Chambre"
+                "Service", "Service géographique ", "Chambre "
             }
         ));
+        jTable1.setPreferredSize(new java.awt.Dimension(225, 30));
         jScrollPane1.setViewportView(jTable1);
-
-        jButton2.setText("Lettre de sortie");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/chronometre.png"))); // NOI18N
 
@@ -254,14 +296,11 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5))
-                    .addComponent(Panle_Gauche, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Panle_Gauche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -269,29 +308,38 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Panle_Gauche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel5)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel5)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Motif", "Prestation", "Editeur", "Date", "Resumé", "Documents"
+                "Type de document", "Date", "Contenu"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.setPreferredSize(new java.awt.Dimension(450, 180));
         jScrollPane2.setViewportView(jTable2);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/plus.png"))); // NOI18N
@@ -308,29 +356,17 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(Panel_MainLayout.createSequentialGroup()
-                .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_MainLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(TextField_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Label_Loupe_Patient)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Label_Plus_Patient)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Label_Home))
-                    .addGroup(Panel_MainLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Label_Droite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(24, 24, 24)))
-                .addGap(23, 23, 23))
+                .addGap(21, 21, 21)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Label_Droite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(47, 47, 47))
             .addGroup(Panel_MainLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane2)
                 .addGap(38, 38, 38))
             .addGroup(Panel_MainLayout.createSequentialGroup()
-                .addGap(368, 368, 368)
+                .addGap(365, 365, 365)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
@@ -340,30 +376,27 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_MainLayout.createSequentialGroup()
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Label_Home)
-                    .addComponent(TextField_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Label_Loupe_Patient)
-                    .addComponent(Label_Plus_Patient))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Label_Droite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Panel_MainLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(Label_Droite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Panel_MainLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addGap(4, 4, 4)
                 .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jButton3))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Panel_Main, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
+            .addComponent(Panel_Main, javax.swing.GroupLayout.DEFAULT_SIZE, 789, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,10 +406,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TextField_PatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_PatientActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_PatientActionPerformed
-
     private void Button_RDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_RDVActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Button_RDVActionPerformed
@@ -384,10 +413,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void Button_Historique_RDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Historique_RDVActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Button_Historique_RDVActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -429,34 +454,39 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Button_Historique_RDV;
     private javax.swing.JButton Button_RDV;
-    private javax.swing.JLabel Identite;
     private javax.swing.JPanel Label_Droite;
     private javax.swing.JLabel Label_Home;
     private javax.swing.JLabel Label_Icon_Patient;
-    private javax.swing.JLabel Label_Identite;
-    private javax.swing.JLabel Label_Loupe_Patient;
-    private javax.swing.JLabel Label_Plus_Patient;
     private javax.swing.JPanel Panel_Bandeau;
     private javax.swing.JPanel Panel_Main;
     private javax.swing.JLabel Panel_icon_perso;
     private javax.swing.JLabel Panel_logo;
     private javax.swing.JPanel Panle_Gauche;
-    private javax.swing.JTextField TextField_Patient;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JLabel nom_medecin;
+    private javax.swing.JLabel prenom_medecin;
+    private javax.swing.JLabel prenom_medecin1;
     // End of variables declaration//GEN-END:variables
     
    
