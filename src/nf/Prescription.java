@@ -59,6 +59,32 @@ public class Prescription implements Evaluable{
     
     public String toStringDMA(){return null;};
     
+    @Override
+    public Object getProfessionnel(){
+        return pH;
+    }
+    
+    @Override
+    public String getTypeEvaluable(){
+        return "Prescription";
+    }
+    
+    @Override
+    public String getContenu(){
+        if(typeExamen!=null){
+            return typeExamen.toString();
+        }else if(medicament!=null){
+            return medicament;
+        }
+        return null;
+    }
+    
+    @Override
+    public String getObservations(){
+        return observation;
+    }
+    
+    
     /**
      * @return the date_presciption
      */

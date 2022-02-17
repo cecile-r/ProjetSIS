@@ -12,6 +12,11 @@ package nf;
  */
 public interface Evaluable {
     public DateHeure getDateHeure();
+    public Object getProfessionnel();
+    public String getTypeEvaluable();
+    public String getContenu();
+    public String getObservations();
     public String toStringDM();
     public String toStringDMA();
+    
 }

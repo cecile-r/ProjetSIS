@@ -92,6 +92,37 @@ public class FicheDeSoins implements Evaluable{
         }
         return ch;
     }
+    
+    @Override
+    public Object getProfessionnel(){
+        if(pH!=null){
+            return pH;
+        }else if(infirmier!=null){
+            return infirmier;
+        }
+        return null;
+    }
+    
+    @Override
+    public String getTypeEvaluable(){
+        return "Fiche de soins";
+    }
+    
+    @Override
+    public String getContenu(){
+        String ch="";
+        ch += "Actes medicaux :\n";
+        for (int i = 0; i < getActe().size(); i++) {
+            Acte a = getActe().get(i);
+            ch = ch + "    ------ " + a.toString()+"\n";
+        }
+        return ch;
+    }
+    
+    @Override
+    public String getObservations(){
+        return null;
+    }
 
     /**
      * permet d'ajouter un acte a la liste a partir d'un acte
