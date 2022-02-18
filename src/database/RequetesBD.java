@@ -71,6 +71,8 @@ public class RequetesBD {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    //Fonctions PH
+    
     //Renvoie la liste des PH
     //VALIDE
     public static List<PH> getListePH(Connection conn) throws SQLException {
@@ -146,10 +148,6 @@ public class RequetesBD {
         stmt.close();
         return vPHTotal;
     }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////
-    //Fonctions PH
 
     //Renvoie la liste des PH en fonction du service
     //VALIDE
@@ -388,7 +386,84 @@ public class RequetesBD {
         return vDPIOuvert;
     }
 
-    
+    //Renvoie le DPI associé à l'ipp donnée, ainsi que ses DM et DMA associés
+    //
+    public static DPI getDPI(Connection conn, String ipp) throws SQLException{
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                + "JOIN Localisation USING(IPP) "
+                + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
+        ResultSet rs2 = stmt.executeQuery("SELECT * FROM FichesDeSoins "
+                + "NATURAL JOIN Acte "
+                + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins avec infos sur les actes du patient
+        ResultSet rs6 = stmt.executeQuery("SELECT DISTINCT IPP, dateHeure_FichesDeSoins FROM FichesDeSoins "
+                + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins du patient, fiches pas en double
+        
+        ResultSet rs3 = stmt.executeQuery("SELECT * FROM RendezVous "
+                + "WHERE IPP = '" + ipp + "'");//Tous les RDV du patient
+        ResultSet rs4 = stmt.executeQuery("SELECT * FROM Examen "
+                + "WHERE IPP = '" + ipp + "'");//Tous les examens du patient
+        ResultSet rs5 = stmt.executeQuery("SELECT * FROM LettreDeSortie "
+                + "WHERE IPP = '" + ipp + "'");//Toutes les lettre des sorties du patient
+        
+        if(rs.next()){ //Si y'a un DPI qui correspond à l'identifiant
+            //Création des instances pour créer le DPI
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            //Création du DMA
+            Localisation loc = new Localisation(Service.valueOf(rs.getString("service_responsable")), Lit.valueOf(rs.getString("lit")), rs.getInt("nchambre"), Service.valueOf(rs.getString("service_geographique")));
+            DMA dma = new DMA(loc);
+            //Remplissage du DMA
+            //Création de la liste de fiches de soins
+            while(rs6.next()){ //Tant que y'a des fiches de soins pour ce patient
+                DateHeure dh = new DateHeure(rs6.getTimestamp("dateHeure_FichesDeSoins").getYear(), rs6.getTimestamp("dateHeure_FichesDeSoins").getMonth(), rs6.getTimestamp("dateHeure_FichesDeSoins").getDay(), rs6.getTimestamp("dateHeure_FichesDeSoins").getHours(), rs6.getTimestamp("dateHeure_FichesDeSoins").getMinutes());
+                FicheDeSoins fiche = new FicheDeSoins(dh);
+                ResultSet rs7 = stmt.executeQuery("SELECT * FROM FichesDeSoins " //Sélection de la fiche de soins et tous ses actes
+                        + "NATURAL JOIN Acte "
+                        + "WHERE IPP = '" + ipp + "' AND dateHeure_FichesDeSoins = '" + rs6.getTimestamp("dateHeure_FichesDeSoins") + "'");
+                while(rs7.next()){ //Tant qu'il y a des actes pour cette fiche
+                    Code c = Code.valueOf("" + rs7.getString("libelle") + "," + (double) rs7.getFloat("cout"));
+                    Acte acte = new Acte(rs7.getString("nom_Acte"), Type.valueOf(rs7.getString("type")), c, (int) rs7.getFloat("coeff"), rs7.getString("observation"));
+                    //coeff int ou float??? est ce que ca va poser pb?
+                    fiche.ajouterActe(acte);
+                }
+                if(rs7.getString("idPH") != null){ //Si l'éditeur/celui qui réalise les actes est un PH
+                        ResultSet rs8 = stmt.executeQuery("SELECT * FROM PH "
+                                + "WHERE idPH = '" + rs6.getString("idPH") + "'");//Avoir les infos du PH pour cette fiche de soins
+                        if(rs8.next()){//Si y'a bien un PH qui correspond -> en principe toujours oui mais on sait jamais
+                            PH ph = new PH(rs8.getString("idPH"), rs8.getString("nom_PH"), rs8.getString("prenom_PH"), Service.valueOf(rs8.getString("service_PH")), rs8.getString("mdp_PH"), rs8.getString("telephone_PH"), rs8.getString("specialite_PH"));
+                            fiche.setpH(ph);
+                        }
+                }
+                else if(rs7.getString("idInfirmier") != null){ //L'éditeur/celui qui réalise les actes est un infirmier
+                       ResultSet rs9 = stmt.executeQuery("SELECT * FROM Infirmier "
+                                + "WHERE idInfirmier = '" + rs6.getString("idInfirmier") + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
+                        if(rs9.next()){//Si y'a bien un PH qui correspond -> en principe toujours oui mais on sait jamais
+                            Infirmier inf = new Infirmier(rs9.getString("idInfirmier"), rs9.getString("nom_Infirmier"), rs9.getString("prenom_Infirmier"), Service.valueOf(rs9.getString("service_Infirmier")), rs9.getString("mdp_Infirmier"));
+                            fiche.setInfirmier(inf);
+                        } 
+                }
+                dma.ajouterFicheDeSoins(fiche);
+                rs7.close();
+            }
+            //Création du DM
+            DM dm = new DM();
+            //Création du DPI
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m, dma, dm);
+            return dpi;
+        }
+        
+        rs.close();
+        rs2.close();
+        rs3.close();
+        rs4.close();
+        rs5.close();
+        rs6.close();
+        stmt.close();
+        return null;
+    }
+
     
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions pour connexion
