@@ -45,6 +45,26 @@ public class RendezVous implements Evaluable{
         return ch;
     }
     
+     @Override
+    public Object getProfessionnel(){
+        return pH;
+    }
+    
+    @Override
+    public String getTypeEvaluable(){
+        return "Rendez-Vous";
+    }
+    
+    @Override
+    public String getContenu(){
+        return null;
+    }
+    
+    @Override
+    public String getObservations(){
+        return remarque;
+    }
+    
 
     /**
      * @return the pH

@@ -56,6 +56,25 @@ public class Examen implements Evaluable {
         return ch; 
     }
     
+    @Override
+    public Object getProfessionnel(){
+        return ph;
+    }
+    
+    @Override
+    public String getTypeEvaluable(){
+        return "Examen";
+    }
+    
+    public String getContenu(){
+        return type_examen.toString();
+    }
+    
+    @Override
+    public String getObservations(){
+        return resultats;
+    }
+    
     /**
      * @return the resultats
      */

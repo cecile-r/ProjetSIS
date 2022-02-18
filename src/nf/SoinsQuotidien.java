@@ -67,6 +67,34 @@ public class SoinsQuotidien implements Evaluable {
     
     public String toStringDMA(){return null;}
     
+      @Override
+    public Object getProfessionnel(){
+        return infirmier;
+    }
+    
+    @Override
+    public String getTypeEvaluable(){
+        return "Soins quotidien";
+    }
+    
+    @Override
+    public String getContenu(){
+        String ch ="";
+        ch=ch+"Température : "+temperature;
+        ch+="\n";
+        ch=ch+"Saturation 0² : "+saturationO2;
+        ch+="\n";
+        ch=ch+"Tension : "+getTension();
+        ch+="\n";
+        return ch;
+    }
+    
+    @Override
+    public String getObservations(){
+        return remarque;
+    }
+    
+    
     /**
      * @return the temperature
      */

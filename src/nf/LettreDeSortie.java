@@ -49,6 +49,25 @@ public class LettreDeSortie implements Evaluable{
         ch+="\n";
         return ch;
     }
+    
+    @Override
+    public Object getProfessionnel(){
+        return ph;
+    }
+    
+    @Override
+    public String getTypeEvaluable(){
+        return "Lettre de sortie";
+    }
+    
+    public String getContenu(){
+        return texte;
+    }
+    
+    @Override
+    public String getObservations(){
+        return null;
+    }
 
     /**
      * @return the texte

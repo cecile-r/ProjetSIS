@@ -65,7 +65,7 @@ public class Test {
     rdv1.setpH(ph1);
     dma1.ajouterRendezVous(rdv1);
     MedecinTraitant mt1 = new MedecinTraitant("id@gmail.com","PAT", "PATROUILLE","0467894567");
-    Date2 dn1 = new Date2(1997,07,13); //date de naissance
+    Date dn1 = new Date(1997,07,13); //date de naissance
     DPI dpi1 = new DPI("1234567891","Jones","Jack",dn1,Sexe.homme,"3 rue Beranger, 45000 Tours","0657985613",mt1,dma1,dm1);
     
     inf1.ajouterSoinsQuotidien(sq1);
