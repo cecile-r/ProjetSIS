@@ -71,6 +71,8 @@ public class RequetesBD {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    //Fonctions PH
+    
     //Renvoie la liste des PH
     //VALIDE
     public static List<PH> getListePH(Connection conn) throws SQLException {
@@ -146,10 +148,6 @@ public class RequetesBD {
         stmt.close();
         return vPHTotal;
     }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////
-    //Fonctions PH
 
     //Renvoie la liste des PH en fonction du service
     //VALIDE
@@ -388,6 +386,27 @@ public class RequetesBD {
         return vDPIOuvert;
     }
 
+    //Creer un patient et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, String telephone_medecin_traitant) throws SQLException {
+        
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "WHERE IPP = '" + id + "'" );
+
+        if (rs.next()) {
+            System.out.println("Ce patient est déjà enregistré dans la base de données.");
+        }
+        else {
+            System.out.println("ok");
+            Date dateNaissanceReelle = new Date(date_de_naissance.getYear(), date_de_naissance.getMonth()-1, date_de_naissance.getDate());
+            ResultSet rs2 = stmt.executeQuery("insert into DPI values ('"+ id +"', '"+ nom_DPI +"', '"+ prenom_DPI +"', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "','yyyy-MM-dd')" + ", '"+ sexe_DPI +"', '"+ adresse_DPI +"', '"+ telephone_DPI +"', '" + telephone_medecin_traitant + "')");
+            System.out.println("Ce patient a été inséré dans la base de données.");
+            rs2.close();
+        }
+        rs.close();
+        stmt.close();
+    }
     
     
     ////////////////////////////////////////////////////////////////////////////

@@ -18,6 +18,17 @@ public class Examen implements Evaluable {
         //SET DPI
     }
     
+    //Constructeur pour les examens mis dans les DMA -> pas de résultats
+    public Examen(TypeExamen type_examen, DateHeure dateHeure){
+        this.type_examen=type_examen;
+        this.resultats = null;
+        this.dateHeure=dateHeure;  
+        this.ph=null;
+        this.DPI=null;
+        //SET PH
+        //SET DPI
+    }
+    
     @Override
     public String toString(){
         String ch="";
