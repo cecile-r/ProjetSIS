@@ -94,7 +94,7 @@ public class Connexion extends javax.swing.JFrame {
         Label_Identifiant.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         Label_Identifiant.setForeground(new java.awt.Color(153, 153, 153));
         Label_Identifiant.setText("Identifiant");
-        Label_Identifiant.setToolTipText("");
+        Label_Identifiant.setToolTipText("Entrez votre identifiant");
         Label_Identifiant.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Label_IdentifiantMouseClicked(evt);
@@ -107,7 +107,7 @@ public class Connexion extends javax.swing.JFrame {
         });
 
         jPasswordField1.setForeground(new java.awt.Color(153, 153, 153));
-        jPasswordField1.setToolTipText("");
+        jPasswordField1.setToolTipText("Entrez votre mot de passe");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);

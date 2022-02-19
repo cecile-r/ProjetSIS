@@ -301,12 +301,12 @@
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="257" max="-2" attributes="0"/>
-                                          <Component id="jButton_actualiser" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="230" max="-2" attributes="0"/>
+                                          <Component id="jButton_actualiser" min="-2" pref="60" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Component id="TextField_Patient" min="-2" pref="275" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="Label_Loupe_Patient" min="-2" pref="28" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="jButton_recherche_patient" min="-2" pref="63" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="442" max="-2" attributes="0"/>
@@ -314,10 +314,10 @@
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane3" min="-2" pref="820" max="-2" attributes="0"/>
+                                          <Component id="jScrollPane3" min="-2" pref="901" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace pref="135" max="32767" attributes="0"/>
+                                  <EmptySpace pref="54" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -326,9 +326,9 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="Label_Loupe_Patient" pref="43" max="32767" attributes="0"/>
-                                      <Component id="jButton_actualiser" min="-2" pref="42" max="-2" attributes="0"/>
-                                      <Component id="TextField_Patient" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="TextField_Patient" alignment="0" pref="43" max="32767" attributes="0"/>
+                                      <Component id="jButton_recherche_patient" max="32767" attributes="0"/>
+                                      <Component id="jButton_actualiser" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                                   <Component id="jScrollPane3" pref="328" max="32767" attributes="0"/>
@@ -382,7 +382,7 @@
                                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                   <Dimension value="[300, 300]"/>
                                 </Property>
-                                <Property name="rowHeight" type="int" value="20"/>
+                                <Property name="rowHeight" type="int" value="20" postCode="Table_Vue_Generale1.setDefaultEditor(Object.class, null);"/>
                                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                                 </Property>
@@ -402,7 +402,7 @@
                               <Color blue="99" green="99" red="99" type="rgb"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="Patient"/>
-                            <Property name="toolTipText" type="java.lang.String" value=""/>
+                            <Property name="toolTipText" type="java.lang.String" value="Entrez le nom du patient recherch&#xe9;"/>
                           </Properties>
                           <Events>
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TextField_PatientMouseClicked"/>
@@ -421,22 +421,24 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Button_Selectionner1ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="Label_Loupe_Patient">
+                        <Component class="javax.swing.JButton" name="jButton_actualiser">
                           <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/image/loupe.png"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="99" red="99" type="rgb"/>
                             </Property>
                           </Properties>
                           <Events>
-                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Label_Loupe_PatientMouseClicked"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_actualiserActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton_actualiser">
+                        <Component class="javax.swing.JButton" name="jButton_recherche_patient">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Recharger"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="99" red="99" type="rgb"/>
+                            </Property>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_actualiserActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_recherche_patientActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -529,41 +531,50 @@
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="TextField_Docteur1" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
-                                          <Component id="jLabel2" alignment="0" min="-2" pref="95" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="jScrollPane4" min="-2" pref="520" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                                              <Component id="jScrollPane2" pref="396" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="jButton_actualiser_medecin" min="-2" pref="50" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="TextField_Docteur1" min="-2" pref="181" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="1" attributes="0">
+                                                  <Component id="jComboBox_recherche_praticien" min="-2" pref="95" max="-2" attributes="0"/>
+                                                  <Component id="jLabel2" min="-2" pref="95" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                              <Component id="jButton_recherche_medecin" min="-2" pref="63" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="490" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
-                                      <Component id="jComboBox_recherche_praticien" min="-2" pref="95" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="Label_Loupe_Docteur2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="435" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane4" min="-2" pref="520" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane2" pref="396" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="TextField_Docteur1" min="-2" pref="29" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jComboBox_recherche_praticien" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                                          <Component id="Label_Loupe_Docteur2" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="3" attributes="0">
+                                                  <Component id="TextField_Docteur1" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                                                  <Component id="jComboBox_recherche_praticien" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                                                  <Component id="jButton_recherche_medecin" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="jButton_actualiser_medecin" min="-2" pref="37" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                                      <EmptySpace pref="69" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Component id="jScrollPane2" pref="347" max="32767" attributes="0"/>
                                           <Component id="jScrollPane4" pref="347" max="32767" attributes="0"/>
@@ -629,20 +640,11 @@
                                   <Color blue="99" green="99" red="99" type="rgb"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Praticien / Service"/>
+                                <Property name="toolTipText" type="java.lang.String" value="Entrez le nom du praticien recherch&#xe9; ou le service auquel il appartient"/>
                               </Properties>
                               <Events>
                                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TextField_Docteur1MouseClicked"/>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextField_Docteur1ActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Component class="javax.swing.JLabel" name="Label_Loupe_Docteur2">
-                              <Properties>
-                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                  <Image iconType="3" name="/image/loupe.png"/>
-                                </Property>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Label_Loupe_Docteur2MouseClicked"/>
                               </Events>
                             </Component>
                             <Component class="javax.swing.JComboBox" name="jComboBox_recherche_praticien">
@@ -687,6 +689,26 @@
                                 </Component>
                               </SubComponents>
                             </Container>
+                            <Component class="javax.swing.JButton" name="jButton_actualiser_medecin">
+                              <Properties>
+                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="ff" green="99" red="99" type="rgb"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_actualiser_medecinActionPerformed"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="jButton_recherche_medecin">
+                              <Properties>
+                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="ff" green="99" red="99" type="rgb"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_recherche_medecinActionPerformed"/>
+                              </Events>
+                            </Component>
                           </SubComponents>
                         </Container>
                       </SubComponents>

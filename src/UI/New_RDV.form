@@ -68,7 +68,7 @@
                                   <Component id="TextField_Docteur" min="-2" pref="100" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="Label_Loupe_Docteur" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="267" max="32767" attributes="0"/>
                                   <Component id="Label_Home" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                               </Group>
@@ -159,7 +159,7 @@
                       <Component id="Panel_icon_perso" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="Identite" min="-2" pref="112" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="387" max="32767" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="Panel_logo" min="-2" max="-2" attributes="0"/>

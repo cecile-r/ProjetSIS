@@ -14,10 +14,12 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.DPI;
@@ -47,6 +49,18 @@ public class Accueil_SA extends javax.swing.JFrame {
         this.sa = sa;
         initComponents();
 
+        //boutons
+        ImageIcon icone = new ImageIcon("src/image/actualise.png");
+        java.awt.Image img5 = icone.getImage();
+        icone = new ImageIcon(img5);
+        jButton_actualiser.setIcon(icone);
+        jButton_actualiser_medecin.setIcon(icone);
+        ImageIcon icone_recherche = new ImageIcon("src/image/loupe2.png");
+        java.awt.Image img_recherche = icone_recherche.getImage();
+        icone_recherche = new ImageIcon(img_recherche);
+        jButton_recherche_medecin.setIcon(icone_recherche);
+        jButton_recherche_patient.setIcon(icone_recherche);
+                
         //infos identité
         prenom_SA.setText(sa.getPrenomSecretaireAd());
         nom_SA.setText(sa.getNomSecretaireAd());
@@ -75,6 +89,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
+        tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
 
     }
 
@@ -113,18 +128,19 @@ public class Accueil_SA extends javax.swing.JFrame {
         Table_Vue_Generale1 = new javax.swing.JTable();
         TextField_Patient = new javax.swing.JTextField();
         Button_Selectionner1 = new javax.swing.JButton();
-        Label_Loupe_Patient = new javax.swing.JLabel();
         jButton_actualiser = new javax.swing.JButton();
+        jButton_recherche_patient = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         TextField_Docteur1 = new javax.swing.JTextField();
-        Label_Loupe_Docteur2 = new javax.swing.JLabel();
         jComboBox_recherche_praticien = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tab_medecins = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jButton_actualiser_medecin = new javax.swing.JButton();
+        jButton_recherche_medecin = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         Label_Nom = new javax.swing.JLabel();
@@ -207,9 +223,9 @@ public class Accueil_SA extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(Panel_icon_perso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(prenom_SA, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nom_SA, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(nom_SA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(prenom_SA, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Panel_logo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -222,7 +238,7 @@ public class Accueil_SA extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 21, Short.MAX_VALUE)
                         .addComponent(Panel_logo))
                     .addComponent(Panel_icon_perso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_BandeauLayout.createSequentialGroup()
@@ -230,7 +246,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                         .addComponent(prenom_SA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nom_SA)
-                        .addGap(0, 44, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -263,12 +279,13 @@ public class Accueil_SA extends javax.swing.JFrame {
         Table_Vue_Generale1.setMinimumSize(new java.awt.Dimension(300, 300));
         Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(300, 300));
         Table_Vue_Generale1.setRowHeight(20);
+        Table_Vue_Generale1.setDefaultEditor(Object.class, null);
         jScrollPane3.setViewportView(Table_Vue_Generale1);
 
         TextField_Patient.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         TextField_Patient.setForeground(new java.awt.Color(153, 153, 153));
         TextField_Patient.setText("Patient");
-        TextField_Patient.setToolTipText("");
+        TextField_Patient.setToolTipText("Entrez le nom du patient recherché");
         TextField_Patient.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TextField_PatientMouseClicked(evt);
@@ -293,17 +310,17 @@ public class Accueil_SA extends javax.swing.JFrame {
             }
         });
 
-        Label_Loupe_Patient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png"))); // NOI18N
-        Label_Loupe_Patient.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Label_Loupe_PatientMouseClicked(evt);
-            }
-        });
-
-        jButton_actualiser.setText("Recharger");
+        jButton_actualiser.setBackground(new java.awt.Color(153, 153, 255));
         jButton_actualiser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_actualiserActionPerformed(evt);
+            }
+        });
+
+        jButton_recherche_patient.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_recherche_patient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_recherche_patientActionPerformed(evt);
             }
         });
 
@@ -314,12 +331,12 @@ public class Accueil_SA extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(240, 240, 240)
-                        .addComponent(jButton_actualiser)
-                        .addGap(35, 35, 35)
-                        .addComponent(TextField_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(280, 280, 280)
+                        .addComponent(jButton_actualiser, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(Label_Loupe_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(TextField_Patient, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton_recherche_patient, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(73, 73, 73)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -335,7 +352,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(TextField_Patient)
                     .addComponent(jButton_actualiser, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addComponent(Label_Loupe_Patient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton_recherche_patient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
@@ -365,7 +382,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         TextField_Docteur1.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         TextField_Docteur1.setForeground(new java.awt.Color(153, 153, 153));
         TextField_Docteur1.setText("Praticien / Service");
-        TextField_Docteur1.setToolTipText("Tapez le nom du praticien recherché ou le service auquel il appratient");
+        TextField_Docteur1.setToolTipText("Entrez le nom du praticien recherché ou le service auquel il appartient");
         TextField_Docteur1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TextField_Docteur1MouseClicked(evt);
@@ -374,13 +391,6 @@ public class Accueil_SA extends javax.swing.JFrame {
         TextField_Docteur1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TextField_Docteur1ActionPerformed(evt);
-            }
-        });
-
-        Label_Loupe_Docteur2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/loupe.png"))); // NOI18N
-        Label_Loupe_Docteur2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Label_Loupe_Docteur2MouseClicked(evt);
             }
         });
 
@@ -425,6 +435,20 @@ public class Accueil_SA extends javax.swing.JFrame {
         jTextArea1.setCaretColor(new java.awt.Color(153, 153, 255));
         jScrollPane2.setViewportView(jTextArea1);
 
+        jButton_actualiser_medecin.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_actualiser_medecin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_actualiser_medecinActionPerformed(evt);
+            }
+        });
+
+        jButton_recherche_medecin.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_recherche_medecin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_recherche_medecinActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -432,35 +456,41 @@ public class Accueil_SA extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(TextField_Docteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                            .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(Label_Loupe_Docteur2)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jButton_actualiser_medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TextField_Docteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(TextField_Docteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(5, 5, 5)
+                .addGap(3, 3, 3)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Label_Loupe_Docteur2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(TextField_Docteur1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton_actualiser_medecin, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -469,7 +499,7 @@ public class Accueil_SA extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 66, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +531,7 @@ public class Accueil_SA extends javax.swing.JFrame {
 
         buttonGroup1.add(RadioButton_F);
         RadioButton_F.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
-        RadioButton_F.setText("F");
+        RadioButton_F.setText("femme");
         RadioButton_F.setBorder(null);
         RadioButton_F.setOpaque(false);
         RadioButton_F.addActionListener(new java.awt.event.ActionListener() {
@@ -512,7 +542,7 @@ public class Accueil_SA extends javax.swing.JFrame {
 
         buttonGroup1.add(RadioButton_H);
         RadioButton_H.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
-        RadioButton_H.setText("H");
+        RadioButton_H.setText("homme");
         RadioButton_H.setBorder(null);
         RadioButton_H.setOpaque(false);
 
@@ -532,7 +562,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         jRadioButton1.setBackground(new java.awt.Color(153, 153, 255));
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
-        jRadioButton1.setText("Autre");
+        jRadioButton1.setText("autre");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton1ActionPerformed(evt);
@@ -542,7 +572,11 @@ public class Accueil_SA extends javax.swing.JFrame {
         jFormattedTextField_date_naissance.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
         jFormattedTextField_date_naissance.setToolTipText("Format yyyy-MM-dd");
 
-        jFormattedTextField_telephone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##,##,##,##,##"))));
+        try {
+            jFormattedTextField_telephone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("## ## ## ## ##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         jFormattedTextField_telephone.setToolTipText("Format yyyy-MM-dd");
 
         jTextArea_adresse.setColumns(20);
@@ -578,7 +612,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
                             .addComponent(jTextField_Prenom)
                             .addComponent(TextField_Nom)
                             .addComponent(jFormattedTextField_telephone)
@@ -655,7 +689,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         Panel_MainLayout.setHorizontalGroup(
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1274, Short.MAX_VALUE)
         );
         Panel_MainLayout.setVerticalGroup(
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -694,25 +728,6 @@ public class Accueil_SA extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void Label_Loupe_PatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_PatientMouseClicked
-        String recherche = TextField_Patient.getText();
-        try {
-            dpis = database.RequetesBD.getListeDPI(conn, recherche);
-            dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
-            Vector entetes = new Vector();
-            entetes.add("Nom");
-            entetes.add("Prénom");
-            entetes.add("Date de naissance");
-            entetes.add("Sexe");
-            TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-            Table_Vue_Generale1.setAutoCreateRowSorter(true);
-            Table_Vue_Generale1.setModel(tableModel);
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_Label_Loupe_PatientMouseClicked
-
     private void RadioButton_FActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioButton_FActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_RadioButton_FActionPerformed
@@ -726,17 +741,43 @@ public class Accueil_SA extends javax.swing.JFrame {
         String nom = TextField_Nom.getText();
         String prenom = jTextField_Prenom.getText();
         String date_naissance = jFormattedTextField_date_naissance.getText();
+
+        int annee = Integer.parseInt(date_naissance.substring(0, date_naissance.indexOf('-')));
+        int mois = Integer.parseInt(date_naissance.substring(date_naissance.indexOf('-') + 1, date_naissance.lastIndexOf('-')));
+        int jour = Integer.parseInt(date_naissance.substring(date_naissance.lastIndexOf('-') + 1, date_naissance.length()));
+        Date d = new Date(annee, mois, jour);
+
         String adresse = jTextArea_adresse.getText();
         String telephone = jFormattedTextField_telephone.getText();
+        String sexe;
+        if (RadioButton_F.isSelected()) {
+            sexe = RadioButton_F.getText();
+        } else if (RadioButton_H.isSelected()) {
+            sexe = RadioButton_H.getText();
+        } else if (jRadioButton1.isSelected()) {
+            sexe = jRadioButton1.getText();
+        } else {
+            sexe = null;
+        }
 
-        //CreerPatient(String nom, String prenom, Date date_naissance, String adresse, String telephone)
-        //tout remettre à 0 
-        TextField_Nom.setText("");
-        jTextField_Prenom.setText("");
-        jFormattedTextField_date_naissance.setText("");
-        jTextArea_adresse.setText("");
-        jFormattedTextField_telephone.setText("");
-        buttonGroup1.clearSelection();
+        try {
+            database.RequetesBD2.creerNouveauDPI(conn, "1728975689", nom, prenom, d, sexe, telephone, adresse);
+            TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+            Table_Vue_Generale1.setAutoCreateRowSorter(true);
+            Table_Vue_Generale1.setModel(tableModel);
+
+            //tout remettre à 0 
+            TextField_Nom.setText("");
+            jTextField_Prenom.setText("");
+            jFormattedTextField_date_naissance.setText("");
+            jTextArea_adresse.setText("");
+            jFormattedTextField_telephone.setText("");
+            buttonGroup1.clearSelection();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }//GEN-LAST:event_Button_ValiderActionPerformed
 
@@ -766,51 +807,6 @@ public class Accueil_SA extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TextField_Docteur1ActionPerformed
 
-    private void Label_Loupe_Docteur2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_Loupe_Docteur2MouseClicked
-
-        // VALIDATION DE LA RECHERCHE MEDECIN
-        String type_recherche; //Nom ou Service
-        type_recherche = jComboBox_recherche_praticien.getSelectedItem().toString();
-        String recherche = TextField_Docteur1.getText();
-
-        if (type_recherche.equals("Nom")) {
-
-            try {
-                medecins = database.RequetesBD.getListePH(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHNom(conn, recherche);
-                Vector entetes2 = new Vector();
-                entetes2.add("Nom");
-                entetes2.add("Prénom");
-                entetes2.add("Service");
-
-                TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-                tab_medecins.setAutoCreateRowSorter(true);
-                tab_medecins.setModel(tableModel2);
-            } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else if (type_recherche.equals("Service")) {
-            try {
-                medecins = database.RequetesBD.getListePHService(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHService(conn, recherche);
-                Vector entetes2 = new Vector();
-                entetes2.add("Nom");
-                entetes2.add("Prénom");
-                entetes2.add("Service");
-
-                TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-                tab_medecins.setAutoCreateRowSorter(true);
-                tab_medecins.setModel(tableModel2);
-            } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-
-
-    }//GEN-LAST:event_Label_Loupe_Docteur2MouseClicked
-
     private void tab_medecinsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab_medecinsMouseClicked
         //AFFICHER PH SELECTIONNE
         int index = tab_medecins.getSelectedRow();
@@ -819,12 +815,13 @@ public class Accueil_SA extends javax.swing.JFrame {
 
     private void jButton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserActionPerformed
         try {
-            //RECHARGER
+            //RECHARGER DPI
             dpis = database.RequetesBD.getListeDPI(conn);
             dpisS = database.RequetesBD.getVectorDPI(conn);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
+            TextField_Patient.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -848,6 +845,86 @@ public class Accueil_SA extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_TextField_PatientKeyPressed
+
+    private void jButton_actualiser_medecinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser_medecinActionPerformed
+        //RECHARGER MEDECINS
+        try {
+            medecins = database.RequetesBD.getListePH(conn);
+            medecinsS = database.RequetesBD.getVectPH(conn);
+            TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+            tab_medecins.setAutoCreateRowSorter(true);
+            tab_medecins.setModel(tableModel2);
+            tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jButton_actualiser_medecinActionPerformed
+
+    private void jButton_recherche_medecinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_medecinActionPerformed
+        // VALIDATION DE LA RECHERCHE MEDECIN
+        String type_recherche; //Nom ou Service
+        type_recherche = jComboBox_recherche_praticien.getSelectedItem().toString();
+        String recherche = TextField_Docteur1.getText();
+
+        if (type_recherche.equals("Nom")) {
+
+            try {
+                medecins = database.RequetesBD.getListePH(conn, recherche);
+                medecinsS = database.RequetesBD.getVectPHNom(conn, recherche);
+                Vector entetes2 = new Vector();
+                entetes2.add("Nom");
+                entetes2.add("Prénom");
+                entetes2.add("Service");
+
+                TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+                tab_medecins.setAutoCreateRowSorter(true);
+                tab_medecins.setModel(tableModel2);
+                tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (type_recherche.equals("Service")) {
+            try {
+                medecins = database.RequetesBD.getListePHService(conn, recherche);
+                medecinsS = database.RequetesBD.getVectPHService(conn, recherche);
+                Vector entetes2 = new Vector();
+                entetes2.add("Nom");
+                entetes2.add("Prénom");
+                entetes2.add("Service");
+
+                TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+                tab_medecins.setAutoCreateRowSorter(true);
+                tab_medecins.setModel(tableModel2);
+                tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_jButton_recherche_medecinActionPerformed
+
+    private void jButton_recherche_patientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_patientActionPerformed
+        //RECHERCHE PATIENT
+        String recherche = TextField_Patient.getText();
+        try {
+            dpis = database.RequetesBD.getListeDPI(conn, recherche);
+            dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+            Vector entetes = new Vector();
+            entetes.add("Nom");
+            entetes.add("Prénom");
+            entetes.add("Date de naissance");
+            entetes.add("Sexe");
+            TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+            Table_Vue_Generale1.setAutoCreateRowSorter(true);
+            Table_Vue_Generale1.setModel(tableModel);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton_recherche_patientActionPerformed
 
     /**
      * @param args the command line arguments
@@ -927,8 +1004,6 @@ public class Accueil_SA extends javax.swing.JFrame {
     private javax.swing.JLabel Label_Commentaire;
     private javax.swing.JLabel Label_Date_Naissance;
     private javax.swing.JLabel Label_Home;
-    private javax.swing.JLabel Label_Loupe_Docteur2;
-    private javax.swing.JLabel Label_Loupe_Patient;
     private javax.swing.JLabel Label_Nom;
     private javax.swing.JLabel Label_Prenom;
     private javax.swing.JLabel Label_Sexe;
@@ -953,6 +1028,9 @@ public class Accueil_SA extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup8;
     private javax.swing.ButtonGroup buttonGroup9;
     private javax.swing.JButton jButton_actualiser;
+    private javax.swing.JButton jButton_actualiser_medecin;
+    private javax.swing.JButton jButton_recherche_medecin;
+    private javax.swing.JButton jButton_recherche_patient;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
     private javax.swing.JFormattedTextField jFormattedTextField_date_naissance;
     private javax.swing.JFormattedTextField jFormattedTextField_telephone;

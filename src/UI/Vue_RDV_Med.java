@@ -21,6 +21,9 @@ public class Vue_RDV_Med extends javax.swing.JFrame {
         int x = (int) ((screen.getWidth() - getWidth()) /2);
         int y = (int) ((screen.getHeight() -getHeight()) /2);
         setLocation(x, y);
+        
+        
+        
     }
 
     /** This method is called from within the constructor to

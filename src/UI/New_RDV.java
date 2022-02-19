@@ -21,6 +21,8 @@ public class New_RDV extends javax.swing.JFrame {
         int x = (int) ((screen.getWidth() - getWidth()) /2);
         int y = (int) ((screen.getHeight() -getHeight()) /2);
         setLocation(x, y); 
+        
+        
     }
 
     /** This method is called from within the constructor to
@@ -88,7 +90,7 @@ public class New_RDV extends javax.swing.JFrame {
                 .addComponent(Panel_icon_perso)
                 .addGap(28, 28, 28)
                 .addComponent(Identite, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 387, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(31, 31, 31)
                 .addComponent(Panel_logo)
@@ -238,7 +240,7 @@ public class New_RDV extends javax.swing.JFrame {
                                 .addComponent(TextField_Docteur, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(Label_Loupe_Docteur)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
                                 .addComponent(Label_Home)
                                 .addGap(20, 20, 20))))
                     .addGroup(Panel_MainLayout.createSequentialGroup()
@@ -335,7 +337,7 @@ public class New_RDV extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_AnnulerMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        Connexion i = new Connexion();
+       Connexion i = new Connexion();
        i.setVisible(true);
        dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
