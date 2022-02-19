@@ -6,6 +6,7 @@ import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
@@ -99,12 +100,12 @@ class ConnexionSGBD {
             
             
             //Test getListeDPI() -> VALIDE
-            /*System.out.println(RequetesBD.getListeDPI(conn));
+            System.out.println(RequetesBD.getListeDPI(conn));
             List<DPI> ldpi = RequetesBD.getListeDPI(conn);
             for (int i = 0; i < ldpi.size(); i++){
                 System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
                 System.out.println(ldpi.get(i).toString());
-            }*/
+            }
             
             
             // Test getVectorDPI() -> VALIDE
@@ -196,6 +197,11 @@ class ConnexionSGBD {
             //Test userSA(id) -> VALIDE
             /*System.out.println(RequetesBD.userSA(conn, "1451261452").getClass().getName()); //secretaire administrative
             System.out.println(RequetesBD.userSA(conn, "1451261452").toString());*/
+            
+            
+            //Test creerNouveauDPI(infos DPI) -> VALIDE
+            //RequetesBD.creerNouveauDPI(conn, "1926354276", "Pouet", "Goku", d, "autre", "0798142609", "14 avenue des trousses", "0987123516");
+        
             
             
             
