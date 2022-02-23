@@ -1,5 +1,8 @@
 package nf;
 
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+
 public class DateHeure {
     private int annee;
     private int mois;
@@ -63,7 +66,7 @@ public class DateHeure {
      
     /**
      * 
-     * @return une chaine de caractère sous la forme ..-..-..
+     * @return une chaine de caractère sous la forme ..-..-.. ..:..
      */
      public String StringDateHeure() {
     	return annee + "-" + mois + "-" + jour + " " + heure +":"+minutes;
