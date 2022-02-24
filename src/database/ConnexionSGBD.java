@@ -269,6 +269,17 @@ class ConnexionSGBD {
             System.out.println(RequetesBD.listeLettreSortie(conn, "1502503500"));*/
             
             
+            //Test listeFichesDeSoins(ipp) -> 
+            //System.out.println("Identifiant du patient : 5555888800");
+            //System.out.println(RequetesBD.listeFichesDeSoins(conn, "5555888800"));
+            
+            
+            //Test IPPexistant(ipp) -> VALIDE
+            //System.out.println(RequetesBD.IPPexistant(conn, "4500055544")); //true
+            //System.out.println(RequetesBD.IPPexistant(conn, "1111111111")); //false
+            
+            
+            
             
             // Print information about connection warnings
             SQLWarningsExceptions.printWarnings(conn);

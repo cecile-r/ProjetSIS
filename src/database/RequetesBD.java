@@ -282,6 +282,23 @@ public class RequetesBD {
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions DPI
     
+    //Renvoie true si l'ipp existe sinon renvoie false
+    //VALIDE
+    public static boolean IPPexistant(Connection conn, String ipp) throws SQLException{
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT IPP FROM DPI "
+                + "WHERE IPP = '" + ipp + "'");
+        boolean ippExiste = false;
+
+        if(rs.next()){
+            ippExiste = true;
+        }
+        
+        rs.close();
+        stmt.close();
+        return ippExiste;
+    }
+    
     //Renvoie la liste des DPI ouverts -> patients dans le CHU
     //VALIDE
     public static List<DPI> getListeDPI(Connection conn) throws SQLException {
@@ -625,7 +642,7 @@ public class RequetesBD {
         return listeLettres;
     }
 
-    
+   
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions pour connexion
     
@@ -747,5 +764,5 @@ public class RequetesBD {
             return null;
         }
     }
-
+    
 }
