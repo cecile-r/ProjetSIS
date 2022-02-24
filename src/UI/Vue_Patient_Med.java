@@ -4,10 +4,24 @@
  * and open the template in the editor.
  */
 package UI;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 import com.sun.jdi.connect.spi.Connection;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,33 +38,10 @@ import javax.swing.table.TableModel;
 import nf.Acte;
 import static nf.Checker.convertirDatetoString;
 import static nf.DateHeure.convertirDatetoString;
-import nf.Code;
-import nf.ComparaisonEvaluables;
-import nf.DM;
-import nf.DMA;
-import nf.DPI;
-import nf.DateHeure;
-import nf.Evaluable;
-import nf.Examen;
-import nf.FicheDeSoins;
-import nf.Infirmier;
-import nf.LettreDeSortie;
-import nf.Lit;
-import nf.Localisation;
-import nf.MedecinTraitant;
-import nf.PH;
-import nf.Prescription;
-import nf.RendezVous;
-import nf.SecretaireMedicale;
-import nf.Service;
-import nf.Sexe;
-import nf.SoinsQuotidien;
-import nf.TypeExamen;
+import nf.*;
 
-/**
- *
- * @author Audrey
- */
+
+
 public class Vue_Patient_Med extends javax.swing.JFrame {
 
     Vector entetesL;
@@ -58,31 +49,32 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     Vector entetesD;
     Vector documents;
     DPI dpi;
+
     /**
      * Creates new form Connexion
      */
     public Vue_Patient_Med(DPI dpi, PH ph) {
         initComponents();
         this.dpi = dpi;
-         /*
+        /*
         Icon icon = new ImageIcon("/image/pdf.png");
         JButton btn = new JButton(icon);
         btn.setBounds(300,20,100,100);  
         Panel_Bandeau.add(btn);  
         Panel_Bandeau.setSize(300,250);  */
-        
+
         //infos identité connexion
         prenom_medecin.setText(ph.getPrenomPH());
         nom_medecin.setText(ph.getNomPH());
         service.setText(ph.getService().toString());
-        
+
         //infos du patient
         jLabel10.setText(dpi.getNom());
         jLabel11.setText(dpi.getPrenom());
         jLabel12.setText(dpi.getSexe().toString());
         String dN = convertirDatetoString(dpi.getDateNaissance());
         jLabel13.setText(dN);
-        
+
         //images des boutons
         ImageIcon icone1 = new ImageIcon("src/image/prescription.png");
         java.awt.Image img1 = icone1.getImage();
@@ -105,10 +97,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         icone5 = new ImageIcon(img5);
         jLabel_infimiere.setIcon(icone5);
         ImageIcon icone6 = new ImageIcon("src/image/pdf.png");
-        java.awt.Image img6 = icone6.getImage();
-        //icone6 = new ImageIcon(img6);
-        //jButton5.setIcon(icone1);
-        
+
         //localisation
         entetesL = new Vector();
         entetesL.add("Service");
@@ -125,7 +114,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(tableModelL);
-        
+
         //Documents
         entetesD = new Vector();
         entetesD.add("Type de document");
@@ -133,12 +122,12 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         entetesD.add("Professionnel");
         entetesD.add("Document");
         documents = new Vector();
-        List <Evaluable> document_temp = new ArrayList<Evaluable>();
+        List<Evaluable> document_temp = new ArrayList<Evaluable>();
         document_temp = new Vector<>();
         document_temp.addAll(dpi.getdM().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
         document_temp.addAll(dpi.getdMA().getExamens());
-        Vector document1=new Vector();
+        Vector document1 = new Vector();
         for (int i = 0; i < document_temp.size(); i++) { //pour tous les documents
             Evaluable e = document_temp.get(i);
             document1.add(e.getTypeEvaluable());
@@ -148,17 +137,15 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             //document1.add(e.getContenu());
             //document1.add(e.getObservations());
             documents.add(document1);
-            document1=new Vector();
+            document1 = new Vector();
         }
         //TABLEAU DOCUMENTS
         TableModel tableModelD = new DefaultTableModel(documents, entetesD);
-        jTable2 = new javax.swing.JTable( tableModelD )
-        {          
+        jTable2 = new javax.swing.JTable(tableModelD) {
             /*détection automatique des types de données             
              *de toutes les colonnes    
              */
-            public Class getColumnClass(int colonne)
-            {
+            public Class getColumnClass(int colonne) {
                 return getValueAt(0, colonne).getClass();
             }
         };
@@ -168,14 +155,17 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jTable2.setRowHeight(70);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                try {
+                    jTable2MouseClicked(evt);
+                } catch (IOException ex) {
+                    Logger.getLogger(Vue_Patient_Med.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         jScrollPane5.setViewportView(jTable2);
         jTable2.setAutoCreateRowSorter(true);
         jTable2.setDefaultEditor(Object.class, null);
-        
-        
+
     }
 
     /**
@@ -651,9 +641,9 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -672,9 +662,9 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt){
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) throws IOException {
         //AFFICHAGE DU DOCUMENT SUR LA DROITE
-        List <Evaluable> document_temp = new ArrayList<Evaluable>();
+        List<Evaluable> document_temp = new ArrayList<Evaluable>();
         document_temp = new Vector<>();
         document_temp.addAll(dpi.getdM().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
@@ -682,8 +672,25 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         int i = jTable2.getSelectedRow();
         String ch = document_temp.get(i).toStringDM();
         JTextArea_affichage.setText(ch);
+
+        if (jTable2.getSelectedColumn() == 3) { //si on clique sur l'image pdf
+            Document document = new Document(PageSize.A4);
+            try {
+                PdfWriter.getInstance(document,
+                        new FileOutputStream("document.pdf"));
+                document.open();
+                document.add(new Paragraph(ch));
+            } catch (DocumentException de) {
+                de.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            document.close();
+            Desktop.getDesktop().open(new File("document.pdf"));
+        }
+
     }
-    
+
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
         Ajout_Acte_SM i = new Ajout_Acte_SM();
         i.setVisible(true);
@@ -823,7 +830,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                 int hauteur = tailleMoniteur.height;
                 Vue_Patient_Med i;
                 PH ph = new PH("1616161616", "Pan", "Peter", Service.Addictologie, "peterpan", "0456486756", "Biologie");
-                i = new Vue_Patient_Med(dpi1,ph);
+                i = new Vue_Patient_Med(dpi1, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
 

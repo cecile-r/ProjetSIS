@@ -54,7 +54,7 @@ public class Accueil_SA extends javax.swing.JFrame {
     Vector entetes2;
     Vector medecinsS_traitant;
     List<DPI> dpisF;
-    Vector<DPI> dpisFS;
+    Vector dpisFS;
     List<MedecinTraitant> medecins_traitant;
 
     /**
@@ -84,7 +84,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         java.awt.Image img_details = icone_details.getImage();
         icone_details = new ImageIcon(img_details);
         Button_Selectionner.setIcon(icone_details);
-        
+
         //JcomboBox de localisation
         jPanel_localisation.setVisible(false);
         DefaultComboBoxModel dbm = new DefaultComboBoxModel(Service.values());
@@ -93,7 +93,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         jComboBox_serviceG.setModel(dbm2);
         DefaultComboBoxModel dbm3 = new DefaultComboBoxModel(Lit.values());
         jComboBoxLit.setModel(dbm3);
-        
+
         //onglet désactivé
         jTabbedPane2.setEnabledAt(1, false);
 
@@ -129,8 +129,13 @@ public class Accueil_SA extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS DPI FERME
         dpisFS = new Vector();
-        
-        
+        dpisF = database.RequetesBD.getListeDPIFerme(conn);
+        dpisFS = database.RequetesBD.getVectorDPIFerme(conn);
+        TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+        Table_DPI_ferme.setAutoCreateRowSorter(true);
+        Table_DPI_ferme.setModel(tableModel3);
+        Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
+
         //Medecins traitant
         medecinsS_traitant = new Vector();
     }
@@ -203,7 +208,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         tab_medecinsT = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        Table_Vue_Generale2 = new javax.swing.JTable();
+        Table_DPI_ferme = new javax.swing.JTable();
         jButton_actualiserOuvrirDPI = new javax.swing.JButton();
         TextField_Patient1 = new javax.swing.JTextField();
         jButton_recherche_patientOuvrirDPI = new javax.swing.JButton();
@@ -846,7 +851,7 @@ public class Accueil_SA extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(204, 204, 255));
 
-        Table_Vue_Generale2.setModel(new javax.swing.table.DefaultTableModel(
+        Table_DPI_ferme.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -864,15 +869,15 @@ public class Accueil_SA extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        Table_Vue_Generale2.setMinimumSize(new java.awt.Dimension(300, 300));
-        Table_Vue_Generale2.setPreferredSize(new java.awt.Dimension(300, 300));
-        Table_Vue_Generale2.setRowHeight(20);
-        Table_Vue_Generale2.addMouseListener(new java.awt.event.MouseAdapter() {
+        Table_DPI_ferme.setMinimumSize(new java.awt.Dimension(300, 300));
+        Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(300, 300));
+        Table_DPI_ferme.setRowHeight(20);
+        Table_DPI_ferme.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Table_Vue_Generale2MouseClicked(evt);
+                Table_DPI_fermeMouseClicked(evt);
             }
         });
-        jScrollPane5.setViewportView(Table_Vue_Generale2);
+        jScrollPane5.setViewportView(Table_DPI_ferme);
 
         jButton_actualiserOuvrirDPI.setBackground(new java.awt.Color(204, 204, 255));
         jButton_actualiserOuvrirDPI.addActionListener(new java.awt.event.ActionListener() {
@@ -928,6 +933,7 @@ public class Accueil_SA extends javax.swing.JFrame {
             }
         });
 
+        jComboBox_serviceG.setMaximumRowCount(30);
         jComboBox_serviceG.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox_serviceG.setPreferredSize(new java.awt.Dimension(59, 300));
 
@@ -1269,13 +1275,17 @@ public class Accueil_SA extends javax.swing.JFrame {
                         IPP = getIPPRandom();
                     }
                     //création du patient
-                    database.RequetesBD.creerNouveauDPI(conn,IPP, nom, prenom, d, sexe,telephone, adresse, mt.getTelephoneMedecinTraitant());
-                    
+                    database.RequetesBD.creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt.getTelephoneMedecinTraitant());
+
                     //mettre à jour la liste des patients
                     dpis = database.RequetesBD.getListeDPI(conn);
                     dpisS = database.RequetesBD.getVectorDPI(conn);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setModel(tableModel);
+                    dpisF = database.RequetesBD.getListeDPIFerme(conn);
+                    dpisFS = database.RequetesBD.getVectorDPIFerme(conn);
+                    TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+                    Table_DPI_ferme.setModel(tableModel3);
 
                     //tout remettre à 0
                     TextField_Nom2.setText("");
@@ -1287,7 +1297,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                     jCheckBox_medecinsT.setSelected(false);
                     tab_medecinsT.clearSelection();
                     JOptionPane.showMessageDialog(this, "Le patient a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-           
+
                 }
             }
         } catch (ParseException ex) {
@@ -1363,7 +1373,16 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton_actualiserOuvrirDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserOuvrirDPIActionPerformed
-        // TODO add your handling code here:
+        //RECHARGER LES DPI FERMES
+        try {
+            dpisF = database.RequetesBD.getListeDPIFerme(conn);
+            dpisFS = database.RequetesBD.getVectorDPIFerme(conn);
+            TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+            Table_DPI_ferme.setModel(tableModel3);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton_actualiserOuvrirDPIActionPerformed
 
     private void TextField_Patient1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextField_Patient1MouseClicked
@@ -1383,20 +1402,20 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
     private void jComboBox_serviceRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceRActionPerformed
-        
+
     }//GEN-LAST:event_jComboBox_serviceRActionPerformed
 
     private void jComboBox_serviceRMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox_serviceRMouseReleased
-  
+
     }//GEN-LAST:event_jComboBox_serviceRMouseReleased
 
-    private void Table_Vue_Generale2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Table_Vue_Generale2MouseClicked
+    private void Table_DPI_fermeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Table_DPI_fermeMouseClicked
         jPanel_localisation.setVisible(true);
-    }//GEN-LAST:event_Table_Vue_Generale2MouseClicked
+    }//GEN-LAST:event_Table_DPI_fermeMouseClicked
 
     private void Button_SelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SelectionnerActionPerformed
         //VISUALISATION D UN PATIENT PARTICULIER
-        if(Table_Vue_Generale1.getSelectedRow()==-1){
+        if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
@@ -1518,8 +1537,8 @@ public class Accueil_SA extends javax.swing.JFrame {
     private javax.swing.JLabel Panel_logo;
     private javax.swing.JRadioButton RadioButton_F2;
     private javax.swing.JRadioButton RadioButton_H2;
+    private javax.swing.JTable Table_DPI_ferme;
     private javax.swing.JTable Table_Vue_Generale1;
-    private javax.swing.JTable Table_Vue_Generale2;
     private javax.swing.JTextField TextField_Docteur;
     private javax.swing.JTextField TextField_Docteur1;
     private javax.swing.JTextField TextField_Nom2;
