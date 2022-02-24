@@ -3,6 +3,7 @@ package nf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import static nf.DateHeure.convertirDatetoString;
 
 
 public class FicheDeSoins implements Evaluable{
@@ -47,9 +48,9 @@ public class FicheDeSoins implements Evaluable{
         String ch = "";
         ch = ch + "Fiche de soins du " + dateHeure;
         if(getpH()!=null){
-            ch = ch + "\n\nPH : " + getpH().toString();
+            ch = ch + "\n\nPar -PH- : " + getpH().toString();
         }else{
-            ch = ch + "\n\nIDE : " + getpH().toString();
+            ch = ch + "\n\nPar -IDE- : " + getInfirmier().toString();
         }
         ch = ch + "\n\n\n Actes medicaux :";
         for (int i = 0; i < getActe().size(); i++) {
@@ -61,12 +62,13 @@ public class FicheDeSoins implements Evaluable{
     
     @Override
     public String toStringDM(){
-        String ch="############# FICHE DE SOINS ###########\n";
-        ch = ch + dateHeure.StringDateHeure()+"\n";
+        String ch="------------------------------FICHE DE SOINS------------------------------\n\n";
+        ch+="Le ";
+        ch = ch + convertirDatetoString(dateHeure)+"\n\n";
         if(getpH()!=null){
-            ch = ch + "PH : " + getpH().toString()+"\n";
+            ch = ch + "Par -PH- : " + getpH().toString()+"\n\n";
         }else{
-            ch = ch + "IDE : " + getpH().toString()+"\n";
+            ch = ch + "Par -IDE- : " + getInfirmier().toString()+"\n\n";
         }
         ch = ch + "Actes medicaux :\n";
         for (int i = 0; i < getActe().size(); i++) {
@@ -78,12 +80,12 @@ public class FicheDeSoins implements Evaluable{
     
     @Override
     public String toStringDMA(){
-        String ch="############# FICHE DE SOINS ###########\n";
-        ch = ch + dateHeure.StringDateHeure()+"\n";
+        String ch="------------------------------FICHE DE SOINS------------------------------\n\n";
+        ch = ch + convertirDatetoString(dateHeure)+"\n\n";
         if(getpH()!=null){
-            ch = ch + "PH : " + getpH().toString()+"\n";
+            ch = ch + "Par -PH- : " + getpH().toString()+"\n\n";
         }else{
-            ch = ch + "IDE : " + getpH().toString()+"\n";
+            ch = ch + "Par -IDE- : " + getInfirmier().toString()+"\n\n";
         }
         ch = ch + "Actes medicaux :\n";
         for (int i = 0; i < getActe().size(); i++) {

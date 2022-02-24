@@ -63,9 +63,9 @@ public class Connexion extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setSize(new java.awt.Dimension(0, 0));
 
-        Panel_Main.setBackground(new java.awt.Color(153, 153, 255));
+        Panel_Main.setBackground(new java.awt.Color(204, 204, 255));
 
-        Panel_Bandeau.setBackground(new java.awt.Color(204, 102, 255));
+        Panel_Bandeau.setBackground(new java.awt.Color(213, 123, 213));
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -94,7 +94,7 @@ public class Connexion extends javax.swing.JFrame {
         Label_Identifiant.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         Label_Identifiant.setForeground(new java.awt.Color(153, 153, 153));
         Label_Identifiant.setText("Identifiant");
-        Label_Identifiant.setToolTipText("");
+        Label_Identifiant.setToolTipText("Entrez votre identifiant");
         Label_Identifiant.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Label_IdentifiantMouseClicked(evt);
@@ -107,7 +107,7 @@ public class Connexion extends javax.swing.JFrame {
         });
 
         jPasswordField1.setForeground(new java.awt.Color(153, 153, 153));
-        jPasswordField1.setToolTipText("");
+        jPasswordField1.setToolTipText("Entrez votre mot de passe");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -122,7 +122,7 @@ public class Connexion extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         Button_Connexion.setBackground(new java.awt.Color(255, 255, 255));
         Button_Connexion.setText("Connexion");

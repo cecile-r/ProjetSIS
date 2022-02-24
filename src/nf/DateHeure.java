@@ -2,6 +2,7 @@ package nf;
 
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
+import java.util.Date;
 
 public class DateHeure {
     private int annee;
@@ -97,6 +98,12 @@ public class DateHeure {
     jour = Integer.parseInt(donneesCourantes.substring(0, donneesCourantes.indexOf('/')));
     mois = Integer.parseInt(donneesCourantes.substring(donneesCourantes.indexOf('/') + 1, donneesCourantes.lastIndexOf('/')));
     annee = Integer.parseInt(donneesCourantes.substring(donneesCourantes.lastIndexOf('/') + 1, donneesCourantes.length()));
+    }
+    
+    public static String convertirDatetoString(DateHeure d){
+        String d2 ="";
+        d2 = d2 + d.jour +"/" + d.mois +"/" +d.annee +" " + d.heure+ ":"+d.minutes;
+        return d2;
     }
         
      
