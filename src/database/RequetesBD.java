@@ -305,10 +305,9 @@ public class RequetesBD {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "WHERE (service_responsable IS NOT NULL)");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " +
+        "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " +
+        "WHERE IPP IN (SELECT IPP FROM Localisation)");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -321,6 +320,48 @@ public class RequetesBD {
         stmt.close();
         return listeDPIOuvert;
     }
+    
+    //Renvoie la liste des DPI fermés -> patients PAS dans le CHU
+    //VALIDE
+    public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " +
+        "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " +
+        "WHERE IPP NOT IN (SELECT IPP FROM Localisation)");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
+    //VALIDE
+    public static List<DPI> getListeTousDPI(Connection conn) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) ");
+        rs.toString();
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
 
     //Renvoie le vecteur des DPI ouverts
     //VALIDE
@@ -329,8 +370,7 @@ public class RequetesBD {
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "WHERE (service_responsable IS NOT NULL)");
+                + "NATURAL JOIN Localisation");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -353,10 +393,9 @@ public class RequetesBD {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "WHERE (service_responsable IS NOT NULL) AND (nom_DPI = '" + nom + "')");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " 
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " 
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE (nom_DPI = '" + nom + "'))");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -378,7 +417,7 @@ public class RequetesBD {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "NATURAL JOIN Localisation "
-                + "WHERE (service_responsable IS NOT NULL) AND (nom_DPI = '" + nom + "')");
+                + "WHERE (nom_DPI = '" + nom + "')");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -401,10 +440,9 @@ public class RequetesBD {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "WHERE service_responsable = '" + service + "'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " 
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " 
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_responsable = '" + service + "')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -449,10 +487,9 @@ public class RequetesBD {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "WHERE (service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " 
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -494,7 +531,6 @@ public class RequetesBD {
     //Creer un patient et l'ajouter dans la base de données
     //VALIDE
     public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, String telephone_medecin_traitant) throws SQLException {
-
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "WHERE IPP = '" + id + "'");
@@ -502,11 +538,13 @@ public class RequetesBD {
         if (rs.next()) {
             System.out.println("Ce patient est déjà enregistré dans la base de données.");
         } else {
-            System.out.println("ok");
             Date dateNaissanceReelle = new Date(date_de_naissance.getYear(), date_de_naissance.getMonth() - 1, date_de_naissance.getDate());
-            ResultSet rs2 = stmt.executeQuery("insert into DPI values ('" + id + "', '" + nom_DPI + "', '" + prenom_DPI + "', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "','yyyy-MM-dd')" + ", '" + sexe_DPI + "', '" + adresse_DPI + "', '" + telephone_DPI + "', '" + telephone_medecin_traitant + "')");
+            Statement stmt2 = conn.createStatement();
+            stmt2.executeUpdate("INSERT INTO DPI(IPP, nom_DPI, prenom_DPI, date_de_naissance, sexe_DPI, adresse_DPI, telephone_DPI, telephone_medecin_traitant) "
+                    + "VALUES ('" + id + "', '" + nom_DPI + "', '" + prenom_DPI + "', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "'"
+                            + ",'yyyy-MM-dd')" + ", '" + sexe_DPI + "', '" + adresse_DPI + "', '" + telephone_DPI + "', '" + telephone_medecin_traitant + "')");
             System.out.println("Ce patient a été inséré dans la base de données.");
-            rs2.close();
+            stmt2.close();
         }
         rs.close();
         stmt.close();
@@ -534,15 +572,13 @@ public class RequetesBD {
             //Création du DPI
             Statement stmt3 = conn.createStatement();
             ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "JOIN Localisation USING(IPP) "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
             if(rs3.next()){
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
                 DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
                 rdv.setDPI(dpi);
             }
-            //System.out.println(rdv.toString());
             rs2.close();
             rs3.close();
             stmt2.close();
@@ -576,8 +612,7 @@ public class RequetesBD {
             //Création du DPI
             Statement stmt3 = conn.createStatement();
             ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "JOIN Localisation USING(IPP) "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
             if(rs3.next()){
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
@@ -622,8 +657,7 @@ public class RequetesBD {
             //Création du DPI
             Statement stmt3 = conn.createStatement();
             ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
-                + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                + "JOIN Localisation USING(IPP) "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
             if(rs3.next()){
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));

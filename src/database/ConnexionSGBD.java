@@ -36,7 +36,9 @@ class ConnexionSGBD {
 
             // Get a connection to the database
             Connection conn = DriverManager.getConnection(dbUrl, username, password);
-
+            
+            
+            
             //REQUETES TESTS DE LA BD
             //RequetesBD.afficherNomPrenom(conn, "5555888800");
             //RequetesBD.afficherDateNaissanceDPI(conn,"5555888800");
@@ -140,6 +142,7 @@ class ConnexionSGBD {
             /*Vector ldpi = RequetesBD.getVectorDPI(conn, "Pilard", "Chirurgie_digestive");
             System.out.println(ldpi);*/
             
+            
             //Test getListeDPIService(service) -> VALIDE
             /*System.out.println(RequetesBD.getListeDPIService(conn, "Medecine_nucleaire"));
             List<DPI> ldpi = RequetesBD.getListeDPIService(conn, "Medecine_nucleaire");
@@ -150,18 +153,9 @@ class ConnexionSGBD {
             
             
             // Test getVectorDPIService(service) -> VALIDE
-            /*Vector ldpi = RequetesBD.getVectorDPIService(conn, "Chirurgie_digestive");
+            /*Vector ldpi = RequetesBD.getVectorDPIService(conn, "Addictologie");
             System.out.println(ldpi);*/
             
-            
-            //Test getListeDPIService(service) -> VALIDE
-            /*System.out.println(RequetesBD.getListeDPIService(conn, "Medecine_nucleaire"));
-            List<DPI> ldpi = RequetesBD.getListeDPIService(conn, "Medecine_nucleaire");
-            for (int i = 0; i < ldpi.size(); i++){
-                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
-                System.out.println(ldpi.get(i).toString());
-            }*/
-           
             
             //Test verifyConnexion(id, mdp, statut) -> VALIDE
             /*//Medecins
@@ -200,16 +194,10 @@ class ConnexionSGBD {
             System.out.println(RequetesBD.userSA(conn, "1451261452").toString());*/
             
             
-            //Test creerNouveauDPI(infos DPI) -> VALIDE
+            //Test creerNouveauDPI(infos DPI) -> 
             //RequetesBD.creerNouveauDPI(conn, "1926354276", "Pouet", "Goku", d, "autre", "0798142609", "14 avenue des trousses", "0987123516");
+            //RequetesBD.creerNouveauDPI(conn, "1800511699", "Ronflex", "Pokemon", d, "autre", "0765342609", "3 avenue des Flutes", "0655445544");
         
-            //Test listeFichesDeSoins(ipp) ->
-            /*System.out.println(RequetesBD.listeFichesDeSoins(conn, "5555888800"));
-            List<FicheDeSoins> listeFiches = RequetesBD.listeFichesDeSoins(conn, "5555888800");
-            for (int i = 0; i < listeFiches.size(); i++){
-                listeFiches.get(i).toString();
-            }*/
-            
             
             //Tests conversions dates -> VALIDE
             /*java.sql.Statement stmt = conn.createStatement();
@@ -239,9 +227,11 @@ class ConnexionSGBD {
                 System.out.println(lmt.get(i).toString2());
             }*/
             
+            
             // Test getVectMT() -> VALIDE
             /*Vector lmt = RequetesBD.getVectMT(conn);
             System.out.println(lmt);*/
+            
             
             // Test getListeMTNom(nom) -> VALIDE
             /*System.out.println(RequetesBD.getListeMTNom(conn, "Docteur"));
@@ -250,6 +240,7 @@ class ConnexionSGBD {
                 System.out.println("\n Médecin traitant " + i + " :\n");
                 System.out.println(lmt.get(i).toString2());
             }*/
+            
             
             // Test getVectMTNom() -> VALIDE
             /*Vector lmt = RequetesBD.getVectMTNom(conn, "Osborn");
@@ -260,23 +251,50 @@ class ConnexionSGBD {
             /*System.out.println("Identifiant du patient : 5555888800");
             System.out.println(RequetesBD.listeRendezVous(conn, "5555888800"));*/
             
+            
             //Test listeExamens(ipp) -> VALIDE
             /*System.out.println("Identifiant du patient : 4445556660");
             System.out.println(RequetesBD.listeExamens(conn, "4445556660"));*/
+            
             
             //Test listeLettreSortie(ipp) -> VALIDE
             /*System.out.println("Identifiant du patient : 1502503500");
             System.out.println(RequetesBD.listeLettreSortie(conn, "1502503500"));*/
             
             
-            //Test listeFichesDeSoins(ipp) -> 
-            //System.out.println("Identifiant du patient : 5555888800");
-            //System.out.println(RequetesBD.listeFichesDeSoins(conn, "5555888800"));
-            
-            
             //Test IPPexistant(ipp) -> VALIDE
             //System.out.println(RequetesBD.IPPexistant(conn, "4500055544")); //true
             //System.out.println(RequetesBD.IPPexistant(conn, "1111111111")); //false
+            
+            
+            //Test getListeTousDPI() -> VALIDE
+            /*System.out.println(RequetesBD.getListeTousDPI(conn));
+            List<DPI> ldpi = RequetesBD.getListeTousDPI(conn);
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+            
+            
+            //Test getListeDPIFerme() -> VALIDE
+            /*System.out.println(RequetesBD.getListeDPIFerme(conn));
+            List<DPI> ldpi = RequetesBD.getListeDPIFerme(conn);
+            for (int i = 0; i < ldpi.size(); i++){
+                System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
+                System.out.println(ldpi.get(i).toString());
+            }*/
+            
+            
+            //Test listeFichesDeSoins(ipp) ->
+            /*System.out.println(RequetesBD.listeFichesDeSoins(conn, "5555888800"));
+            List<FicheDeSoins> listeFiches = RequetesBD.listeFichesDeSoins(conn, "5555888800");
+            for (int i = 0; i < listeFiches.size(); i++){
+                listeFiches.get(i).toString();
+            }*/
+            
+            
+            
+            
             
             
             
