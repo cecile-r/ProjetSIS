@@ -299,6 +299,94 @@ public class RequetesBD {
         return ippExiste;
     }
     
+    //Renvoie la liste des DPI fermés -> patients PAS dans le CHU
+    //VALIDE
+    public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " +
+        "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " +
+        "WHERE IPP NOT IN (SELECT IPP FROM Localisation)");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie le vecteur des DPI ouverts
+    //VALIDE
+    public static Vector getVectorDPIFerme(Connection conn) throws SQLException {
+        Vector vDPI = new Vector();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " +
+        "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " +
+        "WHERE IPP NOT IN (SELECT IPP FROM Localisation)");
+
+        while (rs.next()) {
+            Vector vParDPI = new Vector();
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            vParDPI.add(rs.getString("nom_DPI"));
+            vParDPI.add(rs.getString("prenom_DPI"));
+            vParDPI.add(d);
+            vParDPI.add(rs.getString("sexe_DPI"));
+            vDPI.add(vParDPI);
+        }
+
+        rs.close();
+        stmt.close();
+        return vDPI;
+    }
+    
+    //Renvoie la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
+    //VALIDE
+    public static List<DPI> getListeTousDPI(Connection conn) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) ");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie le vecteur des DPI ouverts
+    //VALIDE
+    public static Vector getVectorTousDPI(Connection conn) throws SQLException {
+        Vector vDPI = new Vector();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) ");
+
+        while (rs.next()) {
+            Vector vParDPI = new Vector();
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            vParDPI.add(rs.getString("nom_DPI"));
+            vParDPI.add(rs.getString("prenom_DPI"));
+            vParDPI.add(d);
+            vParDPI.add(rs.getString("sexe_DPI"));
+            vDPI.add(vParDPI);
+        }
+
+        rs.close();
+        stmt.close();
+        return vDPI;
+    }
+
     //Renvoie la liste des DPI ouverts -> patients dans le CHU
     //VALIDE
     public static List<DPI> getListeDPI(Connection conn) throws SQLException {
@@ -321,48 +409,6 @@ public class RequetesBD {
         return listeDPIOuvert;
     }
     
-    //Renvoie la liste des DPI fermés -> patients PAS dans le CHU
-    //VALIDE
-    public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
-        List<DPI> listeDPI = new ArrayList();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI " +
-        "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) " +
-        "WHERE IPP NOT IN (SELECT IPP FROM Localisation)");
-
-        while (rs.next()) {
-            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
-            listeDPI.add(dpi);
-        }
-
-        rs.close();
-        stmt.close();
-        return listeDPI;
-    }
-    
-    //Renvoie la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
-    //VALIDE
-    public static List<DPI> getListeTousDPI(Connection conn) throws SQLException {
-        List<DPI> listeDPI = new ArrayList();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) ");
-        rs.toString();
-
-        while (rs.next()) {
-            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
-            listeDPI.add(dpi);
-        }
-
-        rs.close();
-        stmt.close();
-        return listeDPI;
-    }
-
     //Renvoie le vecteur des DPI ouverts
     //VALIDE
     public static Vector getVectorDPI(Connection conn) throws SQLException {

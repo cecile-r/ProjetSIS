@@ -276,6 +276,11 @@ class ConnexionSGBD {
             }*/
             
             
+            // Test getVectorTousDPI() -> VALIDE
+            /*Vector ldpi = RequetesBD.getVectorTousDPI(conn);
+            System.out.println(ldpi);*/
+            
+            
             //Test getListeDPIFerme() -> VALIDE
             /*System.out.println(RequetesBD.getListeDPIFerme(conn));
             List<DPI> ldpi = RequetesBD.getListeDPIFerme(conn);
@@ -283,6 +288,11 @@ class ConnexionSGBD {
                 System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
                 System.out.println(ldpi.get(i).toString());
             }*/
+            
+            
+            // Test getVectorDPIFerme() -> VALIDE
+            /*Vector ldpif = RequetesBD.getVectorDPIFerme(conn);
+            System.out.println(ldpif);*/
             
             
             //Test listeFichesDeSoins(ipp) ->
