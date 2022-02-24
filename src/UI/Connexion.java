@@ -63,9 +63,9 @@ public class Connexion extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setSize(new java.awt.Dimension(0, 0));
 
-        Panel_Main.setBackground(new java.awt.Color(153, 153, 255));
+        Panel_Main.setBackground(new java.awt.Color(204, 204, 255));
 
-        Panel_Bandeau.setBackground(new java.awt.Color(204, 102, 255));
+        Panel_Bandeau.setBackground(new java.awt.Color(213, 123, 213));
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -122,7 +122,7 @@ public class Connexion extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         Button_Connexion.setBackground(new java.awt.Color(255, 255, 255));
         Button_Connexion.setText("Connexion");
