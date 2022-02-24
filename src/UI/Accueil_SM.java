@@ -215,6 +215,7 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         Panel_Hospitalisations.setBackground(new java.awt.Color(204, 204, 255));
 
+        jTabbedPane5.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         jTabbedPane5.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 

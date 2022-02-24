@@ -235,6 +235,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         );
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
+        jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane1.setAlignmentX(2);
         jTabbedPane1.setAlignmentY(2);
