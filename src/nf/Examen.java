@@ -1,5 +1,7 @@
 package nf;
 
+import static nf.DateHeure.convertirDatetoString;
+
 public class Examen implements Evaluable {
     
     private String resultats;
@@ -44,26 +46,28 @@ public class Examen implements Evaluable {
     }
     
     public String toStringDM(){
-        String ch="############# EXAMEN ###########\n";
-        ch+=dateHeure.StringDateHeure();
-        ch+="\n";
+        String ch="------------------------------EXAMEN------------------------------\n\n";
+        ch+="Le ";
+        ch+=convertirDatetoString(dateHeure);
+        ch+="\n\nPar ";
         ch+=ph.toString();
-        ch+="\n";
+        ch+="\n\nType d'examen : ";
         ch+=type_examen;
-        ch+="\n";
+        ch+="\n\n";
         ch=ch + "Résultats : " + resultats;
         ch+="\n";
         return ch; 
     }
     
     public String toStringDMA(){
-        String ch="############# EXAMEN ###########\n";
-        ch+=dateHeure.StringDateHeure();
-        ch+="\n";
+        String ch="------------------------------EXAMEN------------------------------\n\n";
+        ch+="Le ";
+        ch+=convertirDatetoString(dateHeure);
+        ch+="\n\nPar ";
         ch+=ph.toString();
-        ch+="\n";
+        ch+="\n\nType d'examen : ";
         ch+=type_examen;
-        ch+="\n";
+        ch+="\n\n";
         return ch; 
     }
     
