@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -51,9 +52,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         this.ph = ph;
         initComponents();
         
-        //
-        
-
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
         java.awt.Image img5 = icone.getImage();
@@ -65,6 +63,10 @@ public class Accueil_Med extends javax.swing.JFrame {
         icone_recherche = new ImageIcon(img_recherche);
         jButton_recherche_medecin.setIcon(icone_recherche);
         jButton_recherche_patient.setIcon(icone_recherche);
+        ImageIcon icone_details = new ImageIcon("src/image/details.png");
+        java.awt.Image img_details = icone_details.getImage();
+        icone_details = new ImageIcon(img_details);
+        Button_Selectionner.setIcon(icone_details);
 
         //infos identité
         prenom_medecin.setText(ph.getPrenomPH());
@@ -126,7 +128,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Table_Vue_Generale1 = new javax.swing.JTable();
         TextField_Patient = new javax.swing.JTextField();
-        Button_Selectionner1 = new javax.swing.JButton();
+        Button_Selectionner = new javax.swing.JButton();
         jButton_actualiser1 = new javax.swing.JButton();
         jButton_recherche_patient = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -292,11 +294,12 @@ public class Accueil_Med extends javax.swing.JFrame {
             }
         });
 
-        Button_Selectionner1.setBackground(new java.awt.Color(51, 102, 255));
-        Button_Selectionner1.setText("Sélectionner");
-        Button_Selectionner1.addActionListener(new java.awt.event.ActionListener() {
+        Button_Selectionner.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Selectionner.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+        Button_Selectionner.setText("Détails");
+        Button_Selectionner.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_Selectionner1ActionPerformed(evt);
+                Button_SelectionnerActionPerformed(evt);
             }
         });
 
@@ -329,11 +332,11 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(443, 443, 443)
-                        .addComponent(Button_Selectionner1))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(73, 73, 73)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(418, 418, 418)
+                        .addComponent(Button_Selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(87, 153, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -346,9 +349,9 @@ public class Accueil_Med extends javax.swing.JFrame {
                     .addComponent(jButton_recherche_patient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                .addGap(41, 41, 41)
-                .addComponent(Button_Selectionner1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(18, 18, 18)
+                .addComponent(Button_Selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
 
         jTabbedPane1.addTab("Patients", null, jPanel4, "");
@@ -606,9 +609,12 @@ public class Accueil_Med extends javax.swing.JFrame {
         TextField_Docteur.setForeground(Color.black);
     }//GEN-LAST:event_TextField_DocteurMouseClicked
 
-    private void Button_Selectionner1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Selectionner1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Button_Selectionner1ActionPerformed
+    private void Button_SelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SelectionnerActionPerformed
+        //VISUALISATION D UN PATIENT PARTICULIER
+        if(Table_Vue_Generale1.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_Button_SelectionnerActionPerformed
 
     private void TextField_PatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_PatientActionPerformed
         // TODO add your handling code here:
@@ -827,7 +833,7 @@ public class Accueil_Med extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Button_Selectionner1;
+    private javax.swing.JButton Button_Selectionner;
     private javax.swing.JLabel Label_FlecheD;
     private javax.swing.JLabel Label_FlecheG;
     private javax.swing.JLabel Label_Plannig;
