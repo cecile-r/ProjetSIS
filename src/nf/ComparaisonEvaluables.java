@@ -15,7 +15,7 @@ import java.util.Vector;
 public class ComparaisonEvaluables {
     
     
-    public int comparer(Evaluable o1, Evaluable o2){
+    public static int comparer(Evaluable o1, Evaluable o2){
         DateHeure d1= o1.getDateHeure();
         DateHeure d2= o2.getDateHeure();
         return d1.compareTo(d2);
@@ -23,7 +23,7 @@ public class ComparaisonEvaluables {
     
         
     /* TRI D'EVALUABLES PAR DATE*/
-     public List<Evaluable> trierEvaluablesParDate(List<Evaluable> liste) {
+     public static List<Evaluable> trierEvaluablesParDate(List<Evaluable> liste) {
         Vector<Evaluable> newListe = new Vector<Evaluable>();
 
         while (!liste.isEmpty()) {

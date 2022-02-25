@@ -30,6 +30,15 @@ public class RendezVous implements Evaluable{
         return ch;
     }
     
+    public String toStringProchainRDV(){
+        
+        String ch =  "Le "+dateHeure.getJour() + "/"+  dateHeure.getMois() + "/" + dateHeure.getAnnee();
+        ch = ch + "\nA "+dateHeure.getHeure()+":"+dateHeure.getMinutes();
+        ch = ch + "\nAvec ";
+        ch =ch + getpH().toString();
+        return ch;
+    }
+    
     @Override
     public String toStringDM(){return null;}
     

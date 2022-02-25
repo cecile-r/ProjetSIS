@@ -35,246 +35,75 @@ public class Modif_Patient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        Label_Nom = new javax.swing.JLabel();
-        Label_Prenom = new javax.swing.JLabel();
-        Label_Date_Naissance = new javax.swing.JLabel();
-        Label_Adresse = new javax.swing.JLabel();
-        Label_Ville = new javax.swing.JLabel();
-        Label_Code_Postal = new javax.swing.JLabel();
-        Label_Photo = new javax.swing.JLabel();
-        Label_Commentaire = new javax.swing.JLabel();
-        Label_Nom_P = new javax.swing.JLabel();
-        Label_Prenom_P = new javax.swing.JLabel();
-        Label_Date_P = new javax.swing.JLabel();
-        TextField_Adresse = new javax.swing.JTextField();
-        TextField_Ville = new javax.swing.JTextField();
-        TextField_Code_Postal = new javax.swing.JTextField();
-        TextField_Photo = new javax.swing.JTextField();
-        Button_Telecharger = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TextArea_Commentaire = new javax.swing.JTextArea();
-        Label_Sexe = new javax.swing.JLabel();
-        Label_Sexe_P = new javax.swing.JLabel();
-        Button_Valider = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton_prendreRDV = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextPane_rdv = new javax.swing.JTextPane();
 
         setTitle("Modifications");
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/calendrier.png"))); // NOI18N
 
-        Label_Nom.setText("Nom :");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel2.setText("Prochain rendez-vous :");
 
-        Label_Prenom.setText("Prénom :");
-
-        Label_Date_Naissance.setText("Date de naissance :");
-
-        Label_Adresse.setText("Adresse :");
-
-        Label_Ville.setText("Ville :");
-
-        Label_Code_Postal.setText("Code Postal :");
-
-        Label_Photo.setText("Photo :");
-
-        Label_Commentaire.setText("Commentaire :");
-
-        Label_Nom_P.setText("jLabel9");
-
-        Label_Prenom_P.setText("jLabel10");
-
-        Label_Date_P.setText("jLabel11");
-
-        TextField_Adresse.setText("X rue X");
-        TextField_Adresse.addActionListener(new java.awt.event.ActionListener() {
+        jButton_prendreRDV.setBackground(new java.awt.Color(169, 206, 243));
+        jButton_prendreRDV.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
+        jButton_prendreRDV.setText("Prendre rendez-vous");
+        jButton_prendreRDV.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton_prendreRDV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_AdresseActionPerformed(evt);
+                jButton_prendreRDVActionPerformed(evt);
             }
         });
 
-        TextField_Ville.setText("XXX");
-
-        TextField_Code_Postal.setText("00000");
-        TextField_Code_Postal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_Code_PostalActionPerformed(evt);
-            }
-        });
-
-        TextField_Photo.setText("URL");
-        TextField_Photo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_PhotoActionPerformed(evt);
-            }
-        });
-
-        Button_Telecharger.setText("Télécharger");
-        Button_Telecharger.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_TelechargerActionPerformed(evt);
-            }
-        });
-
-        TextArea_Commentaire.setColumns(20);
-        TextArea_Commentaire.setRows(5);
-        jScrollPane1.setViewportView(TextArea_Commentaire);
-
-        Label_Sexe.setText("Sexe :");
-
-        Label_Sexe_P.setText("jLabel2");
-
-        Button_Valider.setBackground(new java.awt.Color(0, 204, 0));
-        Button_Valider.setText("Valider");
-        Button_Valider.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_ValiderActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("jButton1");
-
-        jButton2.setText("jButton2");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Label_Adresse)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TextField_Adresse))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Label_Photo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TextField_Photo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Button_Telecharger))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Label_Ville)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TextField_Ville, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(Label_Code_Postal)
-                                .addGap(18, 18, 18)
-                                .addComponent(TextField_Code_Postal, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(Label_Date_Naissance)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Label_Date_P))
-                                    .addComponent(Label_Commentaire))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(Label_Prenom)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Label_Prenom_P)
-                                        .addGap(146, 146, 146)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(Label_Nom)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Label_Nom_P)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(Label_Sexe)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(Label_Sexe_P)))
-                                .addGap(114, 114, 114)))
-                        .addGap(34, 34, 34))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Button_Valider)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Nom)
-                    .addComponent(Label_Nom_P)
-                    .addComponent(Label_Sexe)
-                    .addComponent(Label_Sexe_P))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Prenom)
-                    .addComponent(Label_Prenom_P)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Date_Naissance)
-                    .addComponent(Label_Date_P))
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Adresse)
-                    .addComponent(TextField_Adresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Ville)
-                    .addComponent(TextField_Ville, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Label_Code_Postal)
-                    .addComponent(TextField_Code_Postal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Label_Photo)
-                    .addComponent(TextField_Photo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Button_Telecharger))
-                .addGap(18, 18, 18)
-                .addComponent(Label_Commentaire)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                .addGap(11, 11, 11)
-                .addComponent(Button_Valider)
-                .addContainerGap())
-        );
+        jTextPane_rdv.setBackground(new java.awt.Color(169, 206, 243));
+        jTextPane_rdv.setBorder(null);
+        jScrollPane3.setViewportView(jTextPane_rdv);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 669, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(255, 255, 255)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(53, 53, 53)
+                            .addComponent(jLabel1)))
+                    .addContainerGap(255, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 452, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(112, 112, 112)
+                    .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TextField_AdresseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_AdresseActionPerformed
+    private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_AdresseActionPerformed
-
-    private void TextField_Code_PostalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_Code_PostalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_Code_PostalActionPerformed
-
-    private void Button_TelechargerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_TelechargerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Button_TelechargerActionPerformed
-
-    private void TextField_PhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_PhotoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_PhotoActionPerformed
-
-    private void Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ValiderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Button_ValiderActionPerformed
+    }//GEN-LAST:event_jButton_prendreRDVActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,30 +141,11 @@ public class Modif_Patient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Button_Telecharger;
-    private javax.swing.JButton Button_Valider;
-    private javax.swing.JLabel Label_Adresse;
-    private javax.swing.JLabel Label_Code_Postal;
-    private javax.swing.JLabel Label_Commentaire;
-    private javax.swing.JLabel Label_Date_Naissance;
-    private javax.swing.JLabel Label_Date_P;
-    private javax.swing.JLabel Label_Nom;
-    private javax.swing.JLabel Label_Nom_P;
-    private javax.swing.JLabel Label_Photo;
-    private javax.swing.JLabel Label_Prenom;
-    private javax.swing.JLabel Label_Prenom_P;
-    private javax.swing.JLabel Label_Sexe;
-    private javax.swing.JLabel Label_Sexe_P;
-    private javax.swing.JLabel Label_Ville;
-    private javax.swing.JTextArea TextArea_Commentaire;
-    private javax.swing.JTextField TextField_Adresse;
-    private javax.swing.JTextField TextField_Code_Postal;
-    private javax.swing.JTextField TextField_Photo;
-    private javax.swing.JTextField TextField_Ville;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jButton_prendreRDV;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextPane jTextPane_rdv;
     // End of variables declaration//GEN-END:variables
 
 }

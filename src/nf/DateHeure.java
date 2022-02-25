@@ -72,6 +72,8 @@ public class DateHeure {
      public String StringDateHeure() {
     	return annee + "-" + mois + "-" + jour + " " + heure +":"+minutes;
  	}
+     
+     
 
      /**
       * remplit la date à partir d'une chaine de caractères de format ..-..-..
