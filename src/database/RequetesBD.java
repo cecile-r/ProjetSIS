@@ -85,16 +85,69 @@ public class RequetesBD {
         return timestampSQL;
     }
     
-    //Renvoie en string le timestamp
-    //
+    //Renvoie en string le timestamp sous la forme DD-MON-YYYY HH:MI:SS AM ou PM
+    //VALIDE
     public static String toStringTimestamp(java.sql.Timestamp ts){
-        int year = ts.getYear();
-        int month = ts.getMonth();
+        //String year = String.valueOf(ts.getYear()+1900).substring(2, 4);
+        int year = ts.getYear()+1900;
+        int month = ts.getMonth()+1;
         int day = ts.getDate();
         int hour = ts.getHours();
         int min = ts.getMinutes();
-        int sec = ts.getSeconds();
-        String s = day + "-" + month + "-" + year + " " + hour + ":" + min + ":" + sec;
+        String s = day + "-";
+        
+        //Conditions des mois
+        if(month==1){
+            s = s + "JAN-" + year + " ";
+        }
+        else if(month==2){
+            s = s + "FEB-" + year + " ";
+        }
+        else if(month==3){
+            s = s + "MAR-" + year + " ";
+        }
+        else if(month==4){
+            s = s + "APR-" + year + " ";
+        }
+        else if(month==5){
+            s = s + "MAY-" + year + " ";
+        }
+        else if(month==6){
+            s = s + "JUN-" + year + " ";
+        }
+        else if(month==7){
+            s = s + "JUL-" + year + " ";
+        }
+        else if(month==8){
+            s = s + "AUG-" + year + " ";
+        }
+        else if(month==9){
+            s = s + "SEP-" + year + " ";
+        }
+        else if(month==10){
+            s = s + "OCT-" + year + " ";
+        }
+        else if(month==11){
+            s = s + "NOV-" + year + " ";
+        }
+        else if(month==12){
+            s = s + "DEC-" + year + " ";
+        }
+
+        //Conditions des heures
+        if(hour > 12 && hour <= 24){//si c'est pm
+            if((hour - 12) >= 10){
+                s = s + (hour - 12) + ":" + min + ":00 PM";
+            }
+            else{
+                s = s + "0" + (hour - 12) + ":" + min + ":00 PM";
+            }
+            
+        }
+        else if(0 <= hour && hour <=12){
+            s = s + "0" + hour + ":" + min + ":00 AM";
+        }
+        
         return s;
     }
 
@@ -768,14 +821,14 @@ public class RequetesBD {
                 //System.out.println("bow?");marche jusque la
                 Statement stmt3 = conn.createStatement();
                 System.out.println("avant rs3");
-                System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins").toGMTString());
+                //System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins").toGMTString());
                 System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins").toString());
                 System.out.println(toStringTimestamp(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                 //System.out.println(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                 //System.out.println(convertDateJavaenSQL('" + rs2.getTimestamp("dateHeure_FichesDeSoins") + "', 'DD-MON-YYYY HH:MI" + ":00 AM');
                 ResultSet rs3 = stmt3.executeQuery("SELECT * FROM FichesDeSoins " //Sélection de la fiche de soins et tous ses actes
                         + "JOIN Acte USING (idActe)"
-                        + "WHERE (IPP = '" + ipp + "') AND (dateHeure_FichesDeSoins = '" + rs2.getTimestamp("dateHeure_FichesDeSoins").toString() + "')");//pb ici a régler
+                        + "WHERE (IPP = '" + ipp + "') AND (TO_CHAR(dateHeure_FichesDeSoins) = '" + toStringTimestamp(rs2.getTimestamp("dateHeure_FichesDeSoins")) + "')");//pb ici a régler
                 //convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure())
                 System.out.println("avant while 2");
                 while (rs3.next()) { //Tant qu'il y a des actes pour cette fiche
@@ -836,25 +889,25 @@ public class RequetesBD {
         //Requete ci dessous juste pour initialiser le resultset et pas faire buger la suite du programme, pas utilisée
         ResultSet rs = stmt.executeQuery("SELECT idPH from PH");
 
-        if (statut == "Medecin") {
+        if (statut == "PH") {
             rs = stmt.executeQuery("SELECT idPH, mdp_PH FROM PH "
                     + "WHERE (idPH = '" + id + "') AND (mdp_PH = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
-        } else if (statut == "Secretaire Administrative") {
+        } else if (statut == "SA") {
             rs = stmt.executeQuery("SELECT idSecretaireAd, mdp_SA FROM Secretaire_administrative "
                     + "WHERE (idSecretaireAd = '" + id + "') AND (mdp_SA = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
-        } else if (statut == "Secretaire Medicale") {
+        } else if (statut == "SM") {
             rs = stmt.executeQuery("SELECT idSecretaireMed, mdp_SM FROM Secretaire_medicale "
                     + "WHERE (idSecretaireMed = '" + id + "') AND (mdp_SM = '" + mdp + "')");
             if (rs.next()) {
                 correct = true;
             }
-        } else if (statut == "Infirmier") {
+        } else if (statut == "Inf") {
             rs = stmt.executeQuery("SELECT idInfirmier, mdp_Infirmier FROM Infirmier "
                     + "WHERE (idInfirmier = '" + id + "') AND (mdp_Infirmier = '" + mdp + "')");
             if (rs.next()) {
