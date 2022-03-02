@@ -48,6 +48,7 @@ class ConnexionSGBD {
             Service service = Service.valueOf("Anesthesie");
             String serviceS = "Anesthesie";
             Date d = new Date(2000, 12, 20);
+            DateHeure dh = new DateHeure(2020, 12, 6, 11, 30);
             MedecinTraitant m = new MedecinTraitant("bruce.batman@yahoo.com", "Batman", "Bruce", "0696471245");
             
             
@@ -295,12 +296,29 @@ class ConnexionSGBD {
             System.out.println(ldpif);*/
             
             
+            //Test getStatut(id) -> VALIDE
+            /*System.out.println(RequetesBD.getStatut(conn, "5005400400")); //PH
+            System.out.println(RequetesBD.getStatut(conn, "9999000099")); //Infirmier
+            System.out.println(RequetesBD.getStatut(conn, "9993331234")); //Secrétaire médicale
+            System.out.println(RequetesBD.getStatut(conn, "1451251451")); //Secrétaire administrative
+            System.out.println(RequetesBD.getStatut(conn, "9290374828")); //Rien*/
+            
+            
+            //Test convertDateJavaEnSQL(date) -> VALIDE
+            /*System.out.println(RequetesBD.convertDateJavaEnSQL(d));
+            System.out.println(RequetesBD.convertDateJavaEnSQL(d).getClass());*/
+            
+            //Test convertDateHeureJavaEnTimestampSQL(date) -> VALIDE
+            /*System.out.println(RequetesBD.convertDateHeureJavaEnTimestampSQL(dh));
+            System.out.println(RequetesBD.convertDateHeureJavaEnTimestampSQL(dh).getClass());*/
+            
+            
             //Test listeFichesDeSoins(ipp) ->
-            /*System.out.println(RequetesBD.listeFichesDeSoins(conn, "5555888800"));
+            System.out.println(RequetesBD.listeFichesDeSoins(conn, "5555888800"));
             List<FicheDeSoins> listeFiches = RequetesBD.listeFichesDeSoins(conn, "5555888800");
             for (int i = 0; i < listeFiches.size(); i++){
                 listeFiches.get(i).toString();
-            }*/
+            }
             
             
             
