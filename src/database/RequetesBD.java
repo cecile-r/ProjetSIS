@@ -6,10 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 
@@ -71,6 +69,34 @@ public class RequetesBD {
         return dh;
     }
     
+    //Convertir une date Java en Date SQL correctement
+    //VALIDE
+    public static java.sql.Date convertDateJavaEnSQL(Date d){
+        Date dateReelle = new Date(d.getYear()-1900, d.getMonth()-1, d.getDate());
+        java.sql.Date dateSQL = new java.sql.Date(dateReelle.getTime());
+        return dateSQL;
+    }
+    
+    //Convertir une date Java en Date SQL correctement
+    //VALIDE
+    public static java.sql.Timestamp convertDateHeureJavaEnTimestampSQL(DateHeure dh){
+        DateHeure dateHeureReelle = new DateHeure(dh.getAnnee()-1900, dh.getMois()-1, dh.getJour(), dh.getHeure(), dh.getMinutes());
+        java.sql.Timestamp timestampSQL = new java.sql.Timestamp(dateHeureReelle.getAnnee(),dateHeureReelle.getMois(),dateHeureReelle.getJour(), dateHeureReelle.getHeure(), dateHeureReelle.getMinutes(), 0, 0);
+        return timestampSQL;
+    }
+    
+    //Renvoie en string le timestamp
+    //
+    public static String toStringTimestamp(java.sql.Timestamp ts){
+        int year = ts.getYear();
+        int month = ts.getMonth();
+        int day = ts.getDate();
+        int hour = ts.getHours();
+        int min = ts.getMinutes();
+        int sec = ts.getSeconds();
+        String s = day + "-" + month + "-" + year + " " + hour + ":" + min + ":" + sec;
+        return s;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions PH
@@ -722,6 +748,82 @@ public class RequetesBD {
         return listeLettres;
     }
 
+    //Renvoie la liste des fiches de soins pour un patient donné
+    //
+    public static List<FicheDeSoins> listeFichesDeSoins(Connection conn, String ipp) throws SQLException {
+        Statement stmt = conn.createStatement();
+        Statement stmt2 = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "WHERE IPP = '" + ipp + "'");
+        ResultSet rs2 = stmt2.executeQuery("SELECT DISTINCT IPP, dateHeure_FichesDeSoins FROM FichesDeSoins "
+                + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins du patient, fiches n'apparaissent pas en double
+        List<FicheDeSoins> listeFiches = new ArrayList();
+
+        if (rs.next()) { //Si y'a un DPI qui correspond à l'identifiant
+            //Création de la liste de fiches de soins
+            //System.out.println("ok if");
+            while (rs2.next()) { //Tant que y'a des fiches de soins pour ce patient (sans doublons)
+                //System.out.println("ok while");
+                FicheDeSoins fiche = new FicheDeSoins(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
+                //System.out.println("bow?");marche jusque la
+                Statement stmt3 = conn.createStatement();
+                System.out.println("avant rs3");
+                System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins").toGMTString());
+                System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins").toString());
+                System.out.println(toStringTimestamp(rs2.getTimestamp("dateHeure_FichesDeSoins")));
+                //System.out.println(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
+                //System.out.println(convertDateJavaenSQL('" + rs2.getTimestamp("dateHeure_FichesDeSoins") + "', 'DD-MON-YYYY HH:MI" + ":00 AM');
+                ResultSet rs3 = stmt3.executeQuery("SELECT * FROM FichesDeSoins " //Sélection de la fiche de soins et tous ses actes
+                        + "JOIN Acte USING (idActe)"
+                        + "WHERE (IPP = '" + ipp + "') AND (dateHeure_FichesDeSoins = '" + rs2.getTimestamp("dateHeure_FichesDeSoins").toString() + "')");//pb ici a régler
+                //convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure())
+                System.out.println("avant while 2");
+                while (rs3.next()) { //Tant qu'il y a des actes pour cette fiche
+                    System.out.println("ok while 2");
+                    Code c = Code.valueOf(rs3.getString("libelle") + "," + (double) rs3.getFloat("cout"));
+                    Acte acte = new Acte(rs3.getString("nom_Acte"), Type.valueOf(rs3.getString("type")), c, (int) rs3.getFloat("coeff"), rs3.getString("observation"));
+                    //coeff int ou float??? est ce que ca va poser pb?
+                    fiche.ajouterActe(acte);
+                }
+                //Création du professionnel de santé qui réalise la fiche de soins
+                if (rs3.getString("idPH") != null) { //Si l'éditeur/celui qui réalise les actes est un PH
+                    Statement stmt4 = conn.createStatement();
+                    ResultSet rs4 = stmt4.executeQuery("SELECT * FROM PH "
+                            + "WHERE idPH = '" + rs2.getString("idPH") + "'");//Avoir les infos du PH pour cette fiche de soins
+                    System.out.println("ok if 2");
+                    if (rs4.next()) {//Si y'a bien un PH qui correspond -> en principe toujours oui mais on sait jamais
+                        System.out.println("ok if 3");
+                        PH ph = new PH(rs4.getString("idPH"), rs4.getString("nom_PH"), rs4.getString("prenom_PH"), Service.valueOf(rs4.getString("service_PH")), rs4.getString("mdp_PH"), rs4.getString("telephone_PH"), rs4.getString("specialite_PH"));
+                        fiche.setpH(ph);
+                    }
+                    rs4.close();
+                    stmt4.close();
+                } else if (rs3.getString("idInfirmier") != null) { //L'éditeur/celui qui réalise les actes est un infirmier
+                    System.out.println("ok else if");
+                    Statement stmt5 = conn.createStatement();
+                    ResultSet rs5 = stmt5.executeQuery("SELECT * FROM Infirmier "
+                            + "WHERE idInfirmier = '" + rs2.getString("idInfirmier") + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
+                    if (rs5.next()) {//Si y'a bien un infirmier qui correspond -> en principe toujours oui mais on sait jamais
+                        System.out.println("ok else if 2");
+                        Infirmier inf = new Infirmier(rs5.getString("idInfirmier"), rs5.getString("nom_Infirmier"), rs5.getString("prenom_Infirmier"), Service.valueOf(rs5.getString("service_Infirmier")), rs5.getString("mdp_Infirmier"));
+                        fiche.setInfirmier(inf);
+                    }
+                    rs5.close();
+                    stmt5.close();
+                }
+                rs3.close();
+                stmt3.close();
+                listeFiches.add(fiche);
+            }
+        }
+        rs.close();
+        rs2.close();
+        stmt.close();
+        stmt2.close();
+        return listeFiches;
+    }
+
+    
    
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions pour connexion
@@ -845,4 +947,44 @@ public class RequetesBD {
         }
     }
     
+    //Renvoie le statut du professionnel de santé
+    //VALIDE
+    public static String getStatut(Connection conn, String id) throws SQLException{
+        Statement stmt1 = conn.createStatement();
+        Statement stmt2 = conn.createStatement();
+        Statement stmt3 = conn.createStatement();
+        Statement stmt4 = conn.createStatement();
+        ResultSet rsSA = stmt1.executeQuery("SELECT * FROM Secretaire_administrative "
+                + "WHERE idSecretaireAd = '" + id + "'");
+        ResultSet rsSM = stmt2.executeQuery("SELECT * FROM Secretaire_medicale "
+                + "WHERE idSecretaireMed = '" + id + "'");
+        ResultSet rsInf = stmt3.executeQuery("SELECT * FROM Infirmier "
+                + "WHERE idInfirmier = '" + id + "'");
+        ResultSet rsPH = stmt4.executeQuery("SELECT * FROM PH "
+                + "WHERE idPH = '" + id + "'");
+        String statut = "";
+        
+        if(rsSA.next()){
+            statut = "SA";
+        }
+        else if(rsSM.next()){
+            statut = "SM";
+        }
+        else if(rsInf.next()){
+            statut = "Inf";
+        }
+        else if(rsPH.next()){
+            statut = "PH";
+        }
+        
+        rsSA.close();
+        rsSM.close();
+        rsInf.close();
+        rsPH.close();
+        stmt1.close();
+        stmt2.close();
+        stmt3.close();
+        stmt4.close();
+        return statut;
+    }
 }
