@@ -8,7 +8,17 @@ package UI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import static nf.Checker.checkerDate;
+import nf.DPI;
+import nf.MedecinTraitant;
+import nf.PH;
+import nf.SecretaireAdministrative;
 
 /**
  *
@@ -16,8 +26,13 @@ import javax.swing.ImageIcon;
  */
 public class Modif_Patient extends javax.swing.JFrame {
 
+    Connection conn;
+    SecretaireAdministrative sa;
+    Vector medecinsS_traitant;
+    List<MedecinTraitant> medecins_traitant;
+    
     /** Creates new form Modif_Patient */
-    public Modif_Patient() {
+    public Modif_Patient(SecretaireAdministrative sa) {
         initComponents();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screen.getWidth() - getWidth()) /2);
@@ -35,76 +50,491 @@ public class Modif_Patient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton_prendreRDV = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextPane_rdv = new javax.swing.JTextPane();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        Button_Valider2 = new javax.swing.JButton();
+        Label_Nom2 = new javax.swing.JLabel();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        Label_Prenom2 = new javax.swing.JLabel();
+        Label_Date_Naissance2 = new javax.swing.JLabel();
+        jFormattedTextField_telephone2 = new javax.swing.JFormattedTextField();
+        Label_Adresse2 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextArea_adresse2 = new javax.swing.JTextArea();
+        Label_Commentaire2 = new javax.swing.JLabel();
+        Label_Sexe2 = new javax.swing.JLabel();
+        jCheckBox_medecinsT = new javax.swing.JCheckBox();
+        jButton3 = new javax.swing.JButton();
+        RadioButton_F2 = new javax.swing.JRadioButton();
+        RadioButton_H2 = new javax.swing.JRadioButton();
+        jLabel_nom = new javax.swing.JLabel();
+        jLabel_prenom = new javax.swing.JLabel();
+        jLabel_date = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jButton_recherche_medecinT = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        TextField_Docteur = new javax.swing.JTextField();
+        jButton_actualiser_medecinT = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tab_medecinsT = new javax.swing.JTable();
 
         setTitle("Modifications");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/calendrier.png"))); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        jLabel2.setText("Prochain rendez-vous :");
-
-        jButton_prendreRDV.setBackground(new java.awt.Color(169, 206, 243));
-        jButton_prendreRDV.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
-        jButton_prendreRDV.setText("Prendre rendez-vous");
-        jButton_prendreRDV.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton_prendreRDV.addActionListener(new java.awt.event.ActionListener() {
+        Button_Valider2.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Valider2.setText("MODIFIER LE PATIENT");
+        Button_Valider2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Button_Valider2Button_ValiderMouseClicked(evt);
+            }
+        });
+        Button_Valider2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_prendreRDVActionPerformed(evt);
+                Button_Valider2Button_ValiderActionPerformed(evt);
             }
         });
 
-        jTextPane_rdv.setBackground(new java.awt.Color(169, 206, 243));
-        jTextPane_rdv.setBorder(null);
-        jScrollPane3.setViewportView(jTextPane_rdv);
+        Label_Nom2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Nom2.setText("Nom :");
+        Label_Nom2.setDoubleBuffered(true);
+
+        jRadioButton3.setBackground(new java.awt.Color(204, 204, 255));
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton3.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        jRadioButton3.setText("autre");
+        jRadioButton3.setEnabled(false);
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3jRadioButton1ActionPerformed(evt);
+            }
+        });
+
+        Label_Prenom2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Prenom2.setText("Prénom :");
+
+        Label_Date_Naissance2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Date_Naissance2.setText("Date de naissance :");
+
+        try {
+            jFormattedTextField_telephone2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("## ## ## ## ##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        Label_Adresse2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Adresse2.setText("Adresse :");
+
+        jTextArea_adresse2.setColumns(20);
+        jTextArea_adresse2.setRows(5);
+        jScrollPane6.setViewportView(jTextArea_adresse2);
+
+        Label_Commentaire2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Commentaire2.setText("Téléphone :");
+
+        Label_Sexe2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Sexe2.setText("Sexe :");
+
+        jCheckBox_medecinsT.setBackground(new java.awt.Color(204, 204, 255));
+        jCheckBox_medecinsT.setEnabled(false);
+
+        jButton3.setBackground(new java.awt.Color(153, 153, 255));
+        jButton3.setText("Ajouter un medecin traitant");
+        jButton3.setActionCommand("Changer le medecin traitant");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3jButton1ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(RadioButton_F2);
+        RadioButton_F2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        RadioButton_F2.setText("femme");
+        RadioButton_F2.setBorder(null);
+        RadioButton_F2.setEnabled(false);
+        RadioButton_F2.setOpaque(false);
+        RadioButton_F2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioButton_F2RadioButton_FActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(RadioButton_H2);
+        RadioButton_H2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        RadioButton_H2.setText("homme");
+        RadioButton_H2.setBorder(null);
+        RadioButton_H2.setEnabled(false);
+        RadioButton_H2.setOpaque(false);
+
+        jLabel_nom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_nom.setText("nom");
+
+        jLabel_prenom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_prenom.setText("prenom");
+
+        jLabel_date.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_date.setText("date de naissance");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(138, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jCheckBox_medecinsT)
+                    .addComponent(Label_Sexe2)
+                    .addComponent(Label_Date_Naissance2)
+                    .addComponent(Label_Commentaire2)
+                    .addComponent(Label_Prenom2)
+                    .addComponent(Label_Nom2)
+                    .addComponent(Label_Adresse2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(31, 31, 31)
+                            .addComponent(RadioButton_F2)
+                            .addGap(18, 18, 18)
+                            .addComponent(RadioButton_H2)
+                            .addGap(18, 18, 18)
+                            .addComponent(jRadioButton3))
+                        .addComponent(jScrollPane6)
+                        .addComponent(jFormattedTextField_telephone2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel_nom, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel_prenom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel_date, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(134, 134, 134))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(289, 289, 289)
+                .addComponent(Button_Valider2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Label_Nom2)
+                            .addComponent(jLabel_nom))
+                        .addGap(79, 79, 79)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Label_Date_Naissance2)
+                            .addComponent(jLabel_date)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Label_Prenom2)
+                            .addComponent(jLabel_prenom))))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Label_Sexe2)
+                    .addComponent(RadioButton_F2)
+                    .addComponent(RadioButton_H2)
+                    .addComponent(jRadioButton3))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Label_Commentaire2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jFormattedTextField_telephone2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Label_Adresse2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jCheckBox_medecinsT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(Button_Valider2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab1", jPanel1);
+
+        jPanel9.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel9.setEnabled(false);
+
+        jButton_recherche_medecinT.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_recherche_medecinT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_recherche_medecinTActionPerformed(evt);
+            }
+        });
+
+        jButton5.setBackground(new java.awt.Color(153, 153, 255));
+        jButton5.setText("Choisir ce médecin traitant");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
+        jLabel3.setText("Veillez choisir le médecin traitant");
+
+        TextField_Docteur.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
+        TextField_Docteur.setForeground(new java.awt.Color(153, 153, 153));
+        TextField_Docteur.setText("Nom médecin");
+        TextField_Docteur.setToolTipText("Entrez le nom du médecin recherché");
+        TextField_Docteur.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TextField_DocteurMouseClicked(evt);
+            }
+        });
+        TextField_Docteur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextField_DocteurActionPerformed(evt);
+            }
+        });
+
+        jButton_actualiser_medecinT.setBackground(new java.awt.Color(153, 153, 255));
+        jButton_actualiser_medecinT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_actualiser_medecinTActionPerformed(evt);
+            }
+        });
+
+        tab_medecinsT.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Nom", "Prénom", "Date de naissance", "Sexe"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tab_medecinsT.setMinimumSize(new java.awt.Dimension(300, 300));
+        tab_medecinsT.setPreferredSize(new java.awt.Dimension(300, 300));
+        tab_medecinsT.setRowHeight(30);
+        jScrollPane8.setViewportView(tab_medecinsT);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(310, 310, 310)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jButton_actualiser_medecinT, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextField_Docteur, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton_recherche_medecinT, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(42, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(jButton5)
+                        .addGap(367, 367, 367))))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_actualiser_medecinT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TextField_Docteur)
+                    .addComponent(jButton_recherche_medecinT, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(52, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 903, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 529, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab2", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 669, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(255, 255, 255)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(21, 21, 21)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(53, 53, 53)
-                            .addComponent(jLabel1)))
-                    .addContainerGap(255, Short.MAX_VALUE)))
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 452, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(112, 112, 112)
-                    .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+            .addComponent(jTabbedPane1)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_prendreRDVActionPerformed
+    private void Button_Valider2Button_ValiderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_Valider2Button_ValiderMouseClicked
 
+    }//GEN-LAST:event_Button_Valider2Button_ValiderMouseClicked
+
+    private void Button_Valider2Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Valider2Button_ValiderActionPerformed
+        try {
+            ///CREATION D'UN PATIENT
+            if (champsCorrects()) {
+               
+                String adresse = jTextArea_adresse2.getText();
+                String telephone = jFormattedTextField_telephone2.getText();
+                int index = tab_medecinsT.getSelectedRow();
+                MedecinTraitant mt = medecins_traitant.get(index);
+
+                String message = "Etes-vous sûr de vouloir modifier le patient suivant ?";
+                message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText() + "\n Sexe : " + sexe + "\n Téléphone : " + telephone + "\n Adresse : " + adresse + "\n Medecin traitant : " + mt.getNomMedecinTraitant() + " " + mt.getPrenomMedecinTraitant();
+                int retour = JOptionPane.showConfirmDialog(this, message, "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+                if (retour == 0) { //les informations sont correctes = validation
+                    //tirer un IPP random qui n'existe pas
+                    String IPP = getIPPRandom();
+                    while (IPPexistant(conn, IPP)) {
+                        IPP = getIPPRandom();
+                    }
+                    //modification du patient
+                    //database.RequetesBD.creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt.getTelephoneMedecinTraitant());
+
+                   
+                }
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_Button_Valider2Button_ValiderActionPerformed
+
+    private void jRadioButton3jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton3jRadioButton1ActionPerformed
+
+    private void jButton3jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3jButton1ActionPerformed
+        //AJOUTER UN MEDECIN TRAITANT
+
+        try {
+            jTabbedPane2.setEnabledAt(1, true);
+            jTabbedPane2.setSelectedIndex(1);
+
+            medecins_traitant = database.RequetesBD.getListeMT(conn);
+            medecinsS_traitant = database.RequetesBD.getVectMT(conn);
+            Vector entetesM = new Vector();
+            entetesM.add("Nom");
+            entetesM.add("Prénom");
+            entetesM.add("Téléphone");
+            TableModel tableModelM = new DefaultTableModel(medecinsS_traitant, entetesM);
+            tab_medecinsT.setAutoCreateRowSorter(true);
+            tab_medecinsT.setModel(tableModelM);
+            tab_medecinsT.setPreferredSize(new java.awt.Dimension(3000, 30 * tab_medecinsT.getRowCount()));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3jButton1ActionPerformed
+
+    private void RadioButton_F2RadioButton_FActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioButton_F2RadioButton_FActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RadioButton_F2RadioButton_FActionPerformed
+
+    private void jButton_recherche_medecinTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_medecinTActionPerformed
+        // VALIDATION DE LA RECHERCHE MEDECIN
+        String recherche = TextField_Docteur.getText();
+
+        try {
+            medecins_traitant = database.RequetesBD.getListeMTNom(conn, recherche);
+            medecinsS_traitant = database.RequetesBD.getVectMTNom(conn, recherche);
+            TableModel tableModel2 = new DefaultTableModel(medecinsS_traitant, entetes);
+            tab_medecinsT.setAutoCreateRowSorter(true);
+            tab_medecinsT.setModel(tableModel2);
+            tab_medecinsT.setPreferredSize(new java.awt.Dimension(3000, 30 * tab_medecinsT.getRowCount()));
+
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(Accueil_SA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_recherche_medecinTActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //VALIDATION DU MEDECIN TRAITANT
+
+        if (tab_medecinsT.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Aucun medecin traitant sélectionné", "Attention", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            jCheckBox_medecinsT.setSelected(true);
+            jTabbedPane2.setSelectedIndex(0);
+            jTabbedPane2.setEnabledAt(1, false);
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void TextField_DocteurMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextField_DocteurMouseClicked
+        TextField_Docteur.setText("");
+        TextField_Docteur.setForeground(Color.black);
+    }//GEN-LAST:event_TextField_DocteurMouseClicked
+
+    private void TextField_DocteurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_DocteurActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextField_DocteurActionPerformed
+
+    private void jButton_actualiser_medecinTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser_medecinTActionPerformed
+        try {
+            //RECHARGER MEDECINS
+            medecins_traitant = database.RequetesBD.getListeMT(conn);
+            medecinsS_traitant = database.RequetesBD.getVectMT(conn);
+            TableModel tableModel2 = new DefaultTableModel(medecinsS_traitant, entetes);
+            tab_medecinsT.setAutoCreateRowSorter(true);
+            tab_medecinsT.setModel(tableModel2);
+            tab_medecinsT.setPreferredSize(new java.awt.Dimension(3000, 30 * tab_medecinsT.getRowCount()));
+
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(Accueil_SA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_actualiser_medecinTActionPerformed
+
+    public boolean champsCorrects() throws ParseException {
+        boolean v = true;
+        if (jFormattedTextField_telephone2.getText().equals("              ")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un téléphone", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        } else if (jTextArea_adresse2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer une adresse", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        } else if (tab_medecinsT.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un médecin traitant", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }
+
+        return v;
+    }
     /**
      * @param args the command line arguments
      */
@@ -141,11 +571,36 @@ public class Modif_Patient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_prendreRDV;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextPane jTextPane_rdv;
+    private javax.swing.JButton Button_Valider2;
+    private javax.swing.JLabel Label_Adresse2;
+    private javax.swing.JLabel Label_Commentaire2;
+    private javax.swing.JLabel Label_Date_Naissance2;
+    private javax.swing.JLabel Label_Nom2;
+    private javax.swing.JLabel Label_Prenom2;
+    private javax.swing.JLabel Label_Sexe2;
+    private javax.swing.JRadioButton RadioButton_F2;
+    private javax.swing.JRadioButton RadioButton_H2;
+    private javax.swing.JTextField TextField_Docteur;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton_actualiser_medecinT;
+    private javax.swing.JButton jButton_recherche_medecinT;
+    private javax.swing.JCheckBox jCheckBox_medecinsT;
+    private javax.swing.JFormattedTextField jFormattedTextField_telephone2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel_date;
+    private javax.swing.JLabel jLabel_nom;
+    private javax.swing.JLabel jLabel_prenom;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea_adresse2;
+    private javax.swing.JTable tab_medecinsT;
     // End of variables declaration//GEN-END:variables
 
 }

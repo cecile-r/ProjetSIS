@@ -45,6 +45,21 @@ public class ComparaisonEvaluables {
         return newListe;
     }
      
+     public static List<Evaluable> trierEvaluables(List<Evaluable> es) {
+        int nbr = es.size();
+        Evaluable tmp;
+
+        for (int i = 0; i < nbr; i++) {
+            for (int j = i + 1; j < nbr; j++) {
+                if (comparer(es.get(i),es.get(j))<0) {
+                    tmp = es.get(i);
+                    es.set(i, es.get(j));
+                    es.set(j, tmp);
+                }
+            }
+        }
+        return es;
+    }
     
         
 }

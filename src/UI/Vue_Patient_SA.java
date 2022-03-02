@@ -23,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
 import static nf.Checker.convertirDatetoString;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  *
@@ -57,7 +59,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         jLabel_telephone.setText(dpi.getTelephone());
         jLabel_adresse.setText(dpi.getAdresse());
         jLabel_medecin.setText(dpi.getMedecin_traitant().toString());
-        
+
         //prochain rdv
         List<RendezVous> rdvsP = dpi.getdMA().getRendezVous();
         List<Evaluable> evs = new Vector<Evaluable>();
@@ -110,8 +112,11 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         jTable1.setModel(tableModelL);
 
         //calendrier
+        LocalDate current_date = LocalDate.now();
+        int current_Year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
         List<RendezVous> rdvs = dpi.getdMA().getRendezVous();
-        Calendrier calendrier = new Calendrier(20, 50, 1, 2022, jPanel_rendezvous, rdvs);
+        Calendrier calendrier = new Calendrier(20, 50, current_month, current_Year, jPanel_rendezvous, rdvs);
 
     }
 
@@ -478,17 +483,21 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Panle_Gauche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_modifier, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(jButton_archives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_fermeture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel_rendezvous, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(40, 40, 40))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(Panle_Gauche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButton_modifier, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                    .addComponent(jButton_archives, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton_fermeture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(40, 40, 40))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel_rendezvous, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -564,13 +573,14 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
             suiv = new SButton(">>", 270, 0, 50, 28, true, this);
             prec.addActionListener(this);
             suiv.addActionListener(this);
-            new SLabel("Dim", 1, 12, 0, 30, 60, 30, this);
+
             new SLabel("Lun", 1, 12, 60, 30, 60, 30, this);
             new SLabel("Mar", 1, 12, 120, 30, 60, 30, this);
             new SLabel("Mer", 1, 12, 180, 30, 60, 30, this);
             new SLabel("Jeu", 1, 12, 240, 30, 60, 30, this);
             new SLabel("Ven", 1, 12, 300, 30, 60, 30, this);
             new SLabel("Sam", 1, 12, 360, 30, 60, 30, this);
+            new SLabel("Dim", 1, 12, 0, 30, 60, 30, this);
 
             remplirVect();
             afficherGrille(iMois, iAnnee, rdvs);
@@ -601,16 +611,20 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
                     RendezVous rdv = rdvs.get(j);
                     DateHeure dh = rdv.getDateHeure();
                     if (dh.getAnnee() == iAnnee && dh.getMois() == iMois && dh.getJour() == i) {
-                        b.setBackground(Color.BLUE);
+                        if(estApresDateCourante(dh.getAnnee(),dh.getMois(),dh.getJour(),dh.getHeure(),dh.getMinutes())){
+                            b.setBackground(Color.BLUE);
+                        }else{
+                            b.setBackground(Color.ORANGE);
+                        }
                         b.addMouseListener(new java.awt.event.MouseAdapter() {
                             @Override
                             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                             String ch = "Rendez-vous \n\nLe "+dh.getJour() + "/"+  dh.getMois() + "/" + dh.getAnnee();
-                             ch = ch + "\nA "+dh.getHeure()+":"+dh.getMinutes();
-                             ch = ch + "\nAvec ";
-                             ch =ch + rdv.getpH().toString();
-                            JOptionPane.showMessageDialog(jPanel1, ch, "Détails du rendez-vous", JOptionPane.INFORMATION_MESSAGE);
-            
+                                String ch = "Rendez-vous \n\nLe " + dh.getJour() + "/" + dh.getMois() + "/" + dh.getAnnee();
+                                ch = ch + "\nA " + dh.getHeure() + ":" + dh.getMinutes();
+                                ch = ch + "\nAvec ";
+                                ch = ch + rdv.getpH().toString();
+                                JOptionPane.showMessageDialog(jPanel1, ch, "Détails du rendez-vous", JOptionPane.INFORMATION_MESSAGE);
+
                             }
                         });
                     }
@@ -804,6 +818,34 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
             }
         }
 
+        public boolean estApresDateCourante(int annee, int mois, int jour, int heure, int minutes) {
+            LocalDate current_date = LocalDate.now();
+            LocalTime current_time = LocalTime.now();
+            if (annee < current_date.getYear()) {
+                return false;
+            } else if (annee > current_date.getYear()) {
+                return true;
+            } else if (mois < current_date.getMonthValue()) {
+                return false;
+            } else if (mois > current_date.getMonthValue()) {
+                return true;
+            } else if (jour < current_date.getDayOfMonth()) {
+                return false;
+            } else if (jour > current_date.getDayOfMonth()) {
+                return true;
+            } else if (heure < current_time.getHour()) {
+                return false;
+            } else if (heure > current_time.getHour()) {
+                return true;
+            } else if (minutes < current_time.getMinute()) {
+                return false;
+            } else if (minutes > current_time.getMinute()) {
+                return true;
+            }
+            return true;
+
+        }
+
     }
 
 // les deux classes qui suivent font partie de ma biblioth�que de composants person�lis�e 
@@ -921,8 +963,12 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
                 dma1.ajouterExamen(e1);
                 DateHeure d17 = new DateHeure(2022, 02, 15, 10, 00); //date de RDV
                 RendezVous rdv1 = new RendezVous(d17, "reverifier les resultats");
+                DateHeure d18 = new DateHeure(2022, 03, 28, 9, 00); //date de RDV
+                RendezVous rdv2 = new RendezVous(d18, "refaire des tests");
                 rdv1.setpH(ph1);
+                rdv2.setpH(ph1);
                 dma1.ajouterRendezVous(rdv1);
+                dma1.ajouterRendezVous(rdv2);
                 MedecinTraitant mt1 = new MedecinTraitant("id@gmail.com", "PAT", "PATROUILLE", "0467894567");
                 Date dn1 = new Date(1997, 07, 13); //date de naissance
                 DPI dpi1 = new DPI("1234567891", "Jones", "Jack", dn1, Sexe.homme, "3 rue Beranger, 45000 Tours", "0657985613", mt1, dma1, dm1);
@@ -934,6 +980,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
                 ph1.ajouterPrescriptions(p1);
                 ph1.ajouterExamen(e1);
                 ph1.ajouterRdv(rdv1);
+                ph1.ajouterRdv(rdv2);
                 sq1.setDPI(dpi1);
                 sq2.setDPI(dpi1);
                 fs1.setDPI(dpi1);
@@ -941,6 +988,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
                 p1.setDPI(dpi1);
                 e1.setDPI(dpi1);
                 rdv1.setDPI(dpi1);
+                rdv2.setDPI(dpi1);
 
                 SecretaireAdministrative sa = new SecretaireAdministrative("5678452345", "Blabla", "car", "car");
                 new Vue_Patient_SA(dpi1, sa).setVisible(true);

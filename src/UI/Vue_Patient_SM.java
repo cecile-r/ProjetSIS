@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
 import static nf.Checker.convertirDatetoString;
+import static nf.ComparaisonEvaluables.trierEvaluables;
 import static nf.DateHeure.convertirDatetoString;
 
 /**
@@ -119,6 +120,7 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         document_temp.addAll(dpi.getdMA().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
         document_temp.addAll(dpi.getdMA().getExamens());
+        document_temp = trierEvaluables(document_temp);
         Vector document1 = new Vector();
         for (int i = 0; i < document_temp.size(); i++) { //pour tous les documents
             Evaluable e = document_temp.get(i);
@@ -153,7 +155,6 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
             }
         });
         jScrollPane5.setViewportView(jTable2);
-        jTable2.setAutoCreateRowSorter(true);
         jTable2.setDefaultEditor(Object.class, null);
 
     }

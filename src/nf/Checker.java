@@ -19,8 +19,11 @@ package nf;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,8 +48,6 @@ public class Checker {
         System.out.println(chekerNumero_secu(secu, cle));
         System.out.println(chekerNumero_secu(secu2, cle2));
     }        */
-
-     
     /**
      *
      * @param telephone
@@ -88,7 +89,6 @@ public class Checker {
         return cleCompare;
 
     }
-    
 
     public static boolean checkerDate(String date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -101,16 +101,94 @@ public class Checker {
             return false;
         }
     }
-    
-    public static String convertirDatetoString(Date d){
-        String d2 ="";
-        d2 = d2 + d.getDay() +"/" + d.getMonth() +"/" +d.getYear();
+
+    public static String convertirDatetoString(Date d) {
+        String d2 = "";
+        d2 = d2 + d.getDay() + "/" + d.getMonth() + "/" + d.getYear();
         return d2;
     }
 
-    public static Date convertirStringtoDate(String d1) throws ParseException{
+    public static Date convertirStringtoDate(String d1) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d2 = simpleDateFormat.parse(d1);
         return d2;
+    }
+
+    public static List<PH> trierPH(List<PH> phs) {
+        int nbr = phs.size();
+        PH tmp;
+
+        for (int i = 0; i < nbr; i++) {
+            for (int j = i + 1; j < nbr; j++) {
+                if (phs.get(i).compareTo(phs.get(j)) > 0) {
+                    tmp = phs.get(i);
+                    phs.set(i, phs.get(j));
+                    phs.set(j, tmp);
+                }
+            }
+        }
+        return phs;
+    }
+
+    public static Vector getVectorPH(List<PH> phs) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < phs.size(); i++) {
+            Vector ls = new Vector();
+            PH ph = phs.get(i);
+            ls.add(ph.getNomPH());
+            ls.add(ph.getPrenomPH());
+            ls.add(ph.getService().toString());
+            v.add(ls);
+        }
+        return v;
+    }
+
+    public static List<DPI> trierDPI(List<DPI> dpis) {
+        int nbr = dpis.size();
+        DPI tmp;
+
+        for (int i = 0; i < nbr; i++) {
+            for (int j = i + 1; j < nbr; j++) {
+                if (dpis.get(i).compareTo(dpis.get(j)) > 0) {
+                    tmp = dpis.get(i);
+                    dpis.set(i, dpis.get(j));
+                    dpis.set(j, tmp);
+                }
+            }
+        }
+        return dpis;
+    }
+
+    public static Vector getVectorDPI(List<DPI> dpis) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < dpis.size(); i++) {
+            Vector ls = new Vector();
+            DPI dpi = dpis.get(i);
+            ls.add(dpi.getNom());
+            ls.add(dpi.getPrenom());
+            ls.add(dpi.getDateNaissance().toString());
+            ls.add(dpi.getSexe().toString());
+            v.add(ls);
+        }
+        return v;
+    }
+    
+    
+
+    public static Vector getVectorDPIFerme(List<DPI> dpis) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < dpis.size(); i++) {
+            Vector ls = new Vector();
+            DPI dpi = dpis.get(i);
+            ls.add(dpi.getNom());
+            ls.add(dpi.getPrenom());
+            ls.add(dpi.getDateNaissance().toString());
+            ls.add(dpi.getSexe().toString());
+            v.add(ls);
+        }
+        return v;
     }
 }

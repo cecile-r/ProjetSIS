@@ -39,6 +39,7 @@ import nf.Acte;
 import static nf.Checker.convertirDatetoString;
 import static nf.DateHeure.convertirDatetoString;
 import nf.*;
+import static nf.ComparaisonEvaluables.trierEvaluables;
 
 
 
@@ -112,7 +113,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         localisation1.add(dpi.getdMA().getLocalisation().getLit());
         localisation.add(localisation1);
         TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
-        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(tableModelL);
 
         //Documents
@@ -127,6 +127,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         document_temp.addAll(dpi.getdM().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
         document_temp.addAll(dpi.getdMA().getExamens());
+        document_temp = trierEvaluables(document_temp);
         Vector document1 = new Vector();
         for (int i = 0; i < document_temp.size(); i++) { //pour tous les documents
             Evaluable e = document_temp.get(i);
@@ -163,7 +164,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             }
         });
         jScrollPane5.setViewportView(jTable2);
-        jTable2.setAutoCreateRowSorter(true);
         jTable2.setDefaultEditor(Object.class, null);
 
     }
@@ -676,8 +676,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         if (jTable2.getSelectedColumn() == 3) { //si on clique sur l'image pdf
             Document document = new Document(PageSize.A4);
             try {
-                PdfWriter.getInstance(document,
-                        new FileOutputStream("document.pdf"));
+                PdfWriter.getInstance(document, new FileOutputStream("document.pdf"));
                 document.open();
                 document.add(new Paragraph(ch));
             } catch (DocumentException de) {

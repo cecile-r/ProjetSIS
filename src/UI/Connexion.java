@@ -54,7 +54,6 @@ public class Connexion extends javax.swing.JFrame {
         Label_Main = new javax.swing.JLabel();
         Label_Identifiant = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         Button_Connexion = new javax.swing.JButton();
 
@@ -76,7 +75,7 @@ public class Connexion extends javax.swing.JFrame {
         Panel_BandeauLayout.setHorizontalGroup(
             Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(684, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -114,14 +113,6 @@ public class Connexion extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setBackground(new java.awt.Color(51, 51, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sélectionner", "Medecin", "Infirmière", "Secretaire Medicale", "Secretaire Administrative" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         Button_Connexion.setBackground(new java.awt.Color(255, 255, 255));
@@ -156,20 +147,19 @@ public class Connexion extends javax.swing.JFrame {
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(Panel_MainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(Panel_MainLayout.createSequentialGroup()
-                        .addGap(0, 307, Short.MAX_VALUE)
-                        .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Label_Identifiant, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 302, Short.MAX_VALUE)))
+                .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(Panel_MainLayout.createSequentialGroup()
-                .addGap(341, 341, 341)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_MainLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(Label_Identifiant)
+                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Panel_MainLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(307, 307, 307))
         );
         Panel_MainLayout.setVerticalGroup(
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,14 +167,13 @@ public class Connexion extends javax.swing.JFrame {
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
                 .addComponent(Label_Main, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Label_Identifiant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(46, 46, 46))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -204,7 +193,8 @@ public class Connexion extends javax.swing.JFrame {
     private void Button_ConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ConnexionActionPerformed
         //recupération type de personne
         String CB_item;
-        CB_item = jComboBox1.getSelectedItem().toString();
+        //CB_item = database.RequetesBD. ???
+        CB_item = "PH";
 
         //recupération id et mdp
         String id = Label_Identifiant.getText();
@@ -218,7 +208,7 @@ public class Connexion extends javax.swing.JFrame {
         try {
             c = database.RequetesBD.verifyConnexion(conn, id, mdp, CB_item);
             if (c) {
-                if (CB_item.equals("Medecin")) {
+                if (CB_item.equals("PH")) {
                     PH ph = database.RequetesBD.userPH(conn,id);
                     Accueil_Med i;
                     i = new Accueil_Med(conn,ph);
@@ -226,7 +216,7 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("Secretaire Administrative")) {
+                if (CB_item.equals("SA")) {
                     SecretaireAdministrative sa =database.RequetesBD.userSA(conn,id);
                     Accueil_SA i;
                     i = new Accueil_SA(conn,sa);
@@ -234,7 +224,7 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("Secretaire Medicale")) {
+                if (CB_item.equals("SM")) {
                     SecretaireMedicale sm =database.RequetesBD.userSM(conn,id);
                     Accueil_SM i;
                     i = new Accueil_SM(conn,sm);
@@ -248,7 +238,7 @@ public class Connexion extends javax.swing.JFrame {
             Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*
-        if (CB_item.equals("Infirmiere")){
+        if (CB_item.equals("Inf")){
             //requete bd si id et mdp correct
             Vue_Medicaments i;
             i = new Vue_Medicaments(conn);
@@ -257,10 +247,6 @@ public class Connexion extends javax.swing.JFrame {
             dispose();
         }*/
     }//GEN-LAST:event_Button_ConnexionActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
@@ -349,7 +335,6 @@ public class Connexion extends javax.swing.JFrame {
     private javax.swing.JLabel Label_Main;
     private javax.swing.JPanel Panel_Bandeau;
     private javax.swing.JPanel Panel_Main;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;

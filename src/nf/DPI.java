@@ -203,6 +203,10 @@ public class DPI {
     public void setdM(DM dM) {
         this.dM = dM;
     }
+
+    int compareTo(DPI dpi) {
+        return getNom().compareTo(dpi.getNom());
+    }
     
     
     

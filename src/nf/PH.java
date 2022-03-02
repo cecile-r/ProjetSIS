@@ -184,6 +184,10 @@ public class PH {
     public void ajouterRdv(RendezVous rdv){
         rendezVous.add(rdv);
     }
+
+    int compareTo(PH ph) {
+        return getNomPH().compareTo(ph.getNomPH());
+    }
     
     
 }

@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import static nf.Checker.checkerDate;
+import static nf.Checker.*;
 import static nf.Cryptage.getIPPRandom;
 import nf.DPI;
 import nf.Lit;
@@ -104,38 +104,41 @@ public class Accueil_SA extends javax.swing.JFrame {
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
         dpis = database.RequetesBD.getListeDPI(conn);
-        dpisS = database.RequetesBD.getVectorDPI(conn);
+        dpis = trierDPI(dpis); //tri par ordre alphabétique
+        dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
         entetes.add("Nom");
         entetes.add("Prénom");
         entetes.add("Date de naissance");
         entetes.add("Sexe");
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-        Table_Vue_Generale1.setAutoCreateRowSorter(true);
         Table_Vue_Generale1.setModel(tableModel);
+        Table_Vue_Generale1.setDefaultEditor(Object.class, null);
 
         //TABLEAU PH
         medecinsS = new Vector();
         medecins = database.RequetesBD.getListePH(conn);
-        medecinsS = database.RequetesBD.getVectPH(conn);
+        medecins = trierPH(medecins); //tri par ordre alphabétique
+        medecinsS = getVectorPH(medecins); //vecteur tableau
         entetes2 = new Vector();
         entetes2.add("Nom");
         entetes2.add("Prénom");
         entetes2.add("Service");
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-        tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
+        tab_medecins.setDefaultEditor(Object.class, null);
 
         //TABLEAU PATIENTS DPI FERME
         dpisFS = new Vector();
         dpisF = database.RequetesBD.getListeDPIFerme(conn);
-        dpisFS = database.RequetesBD.getVectorDPIFerme(conn);
+        dpisF = trierDPI(dpisF);
+        dpisFS = getVectorDPIFerme(dpisF);
         TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
-        Table_DPI_ferme.setAutoCreateRowSorter(true);
         Table_DPI_ferme.setModel(tableModel3);
         Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
-
+        Table_DPI_ferme.setDefaultEditor(Object.class, null);
+                
         //Medecins traitant
         medecinsS_traitant = new Vector();
     }
@@ -1251,6 +1254,8 @@ public class Accueil_SA extends javax.swing.JFrame {
                 Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
                 String adresse = jTextArea_adresse2.getText();
                 String telephone = jFormattedTextField_telephone2.getText();
+                telephone = telephone.replaceAll("\\s+","");
+                System.out.println(telephone);
                 String sexe;
                 if (RadioButton_F2.isSelected()) {
                     sexe = RadioButton_F2.getText();

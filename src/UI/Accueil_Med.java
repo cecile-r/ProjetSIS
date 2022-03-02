@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import static nf.Checker.*;
 import nf.DPI;
 import nf.PH;
 import nf.Service;
@@ -75,8 +76,9 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = database.RequetesBD.getListeDPIService(conn, ph.getService().toString());
-        dpisS = database.RequetesBD.getVectorDPIService(conn, ph.getService().toString());
+        dpis = database.RequetesBD.getListeDPI(conn);
+        dpis = trierDPI(dpis); //tri par ordre alphabétique
+        dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
         entetes.add("Nom");
         entetes.add("Prénom");
@@ -90,7 +92,8 @@ public class Accueil_Med extends javax.swing.JFrame {
         //TABLEAU PH
         medecinsS = new Vector();
         medecins = database.RequetesBD.getListePH(conn);
-        medecinsS = database.RequetesBD.getVectPH(conn);
+        medecins = trierPH(medecins); //tri par ordre alphabétique
+        medecinsS = getVectorPH(medecins); //vecteur tableau
         entetes2 = new Vector();
         entetes2.add("Nom");
         entetes2.add("Prénom");
