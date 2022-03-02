@@ -193,22 +193,23 @@ public class Connexion extends javax.swing.JFrame {
     private void Button_ConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ConnexionActionPerformed
         //recupération type de personne
         String CB_item;
-        //CB_item = database.RequetesBD. ???
-        CB_item = "PH";
 
         //recupération id et mdp
         String id = Label_Identifiant.getText();
         String mdp = new String(jPasswordField1.getPassword());
-
+        
         //dimension fenetre
         Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
         int longueur = tailleMoniteur.width;
         int hauteur = tailleMoniteur.height;
         boolean c;
         try {
+            CB_item = database.RequetesBD.getStatut(conn,id);
+            System.out.println(CB_item);
             c = database.RequetesBD.verifyConnexion(conn, id, mdp, CB_item);
             if (c) {
                 if (CB_item.equals("PH")) {
+                    System.out.println("rentrer");
                     PH ph = database.RequetesBD.userPH(conn,id);
                     Accueil_Med i;
                     i = new Accueil_Med(conn,ph);
