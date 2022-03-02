@@ -321,13 +321,7 @@ class ConnexionSGBD {
             }
             
             
-            
-            
-            
-            
-            
-            
-            // Print information about connection warnings
+            //Print information about connection warnings
             SQLWarningsExceptions.printWarnings(conn);
             conn.close();
         } catch (SQLException se) {
