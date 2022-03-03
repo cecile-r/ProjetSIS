@@ -29,6 +29,7 @@ import static nf.Checker.*;
 import nf.DPI;
 import nf.PH;
 import nf.Service;
+import database.RequetesBD;
 
 /**
  *
@@ -44,6 +45,7 @@ public class Accueil_Med extends javax.swing.JFrame {
     Vector dpisS;
     Vector entetes;
     Vector entetes2;
+    
 
     /**
      * Creates new form Connexion
@@ -76,7 +78,7 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = database.RequetesBD.getListeDPI(conn);
+        dpis = getListeDPI(conn);
         dpis = trierDPI(dpis); //tri par ordre alphabétique
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();

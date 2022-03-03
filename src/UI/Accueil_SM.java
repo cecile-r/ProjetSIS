@@ -6,6 +6,11 @@
 package UI;
 
 import database.DatabaseAccessProperties;
+import static database.RequetesBDDPI.getListeDPI;
+import static database.RequetesBDDPI.getListeDPIFerme;
+import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDProfessionnels.getListePH;
+import static database.RequetesBDProfessionnels.getListePHService;
 import database.SQLWarningsExceptions;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -79,7 +84,7 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = database.RequetesBD.getListeDPI(conn);
+        dpis = getListeDPI(conn);
         dpis = trierDPI(dpis); //tri par ordre alphabétique
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
@@ -93,7 +98,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         
         //TABLEAU PH
         medecinsS = new Vector();
-        medecins = database.RequetesBD.getListePH(conn);
+        medecins = getListePH(conn);
         medecins = trierPH(medecins); //tri par ordre alphabétique
         medecinsS = getVectorPH(medecins); //vecteur tableau
         entetes2 = new Vector();
@@ -906,8 +911,8 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void jButton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserActionPerformed
         try {
             //RECHARGER DPI
-            dpis = database.RequetesBD.getListeDPIService(conn, sm.getService().toString());
-            dpisS = database.RequetesBD.getVectorDPIService(conn, sm.getService().toString());
+            dpis = getListeDPIService(conn, sm.getService().toString());
+            dpisS = getVectorDPI(dpis);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
@@ -923,8 +928,8 @@ public class Accueil_SM extends javax.swing.JFrame {
             String recherche = TextField_Patient.getText();
             try {
                 if (!recherche.equals("")) {
-                    dpis = database.RequetesBD.getListeDPI(conn, recherche, sm.getService().toString());
-                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche, sm.getService().toString());
+                    dpis = getListeDPI(conn, recherche, sm.getService().toString());
+                    dpisS = getVectorDPI(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setAutoCreateRowSorter(true);
                     Table_Vue_Generale1.setModel(tableModel);
@@ -938,8 +943,8 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void jButton_actualiser_medecinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser_medecinActionPerformed
         //RECHARGER MEDECINS
         try {
-            medecins = database.RequetesBD.getListePH(conn);
-            medecinsS = database.RequetesBD.getVectPH(conn);
+            medecins = getListePH(conn);
+            medecinsS = getVectorPH(medecinsS);
             TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
             tab_medecins.setAutoCreateRowSorter(true);
             tab_medecins.setModel(tableModel2);
@@ -958,8 +963,8 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         if (type_recherche.equals("Nom")) {
             try {
-                medecins = database.RequetesBD.getListePH(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHNom(conn, recherche);
+                medecins = getListePH(conn, recherche);
+                medecinsS = getVectorPH(medecins);
                 Vector entetes2 = new Vector();
                 entetes2.add("Nom");
                 entetes2.add("Prénom");
@@ -975,8 +980,8 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         } else if (type_recherche.equals("Service")) {
             try {
-                medecins = database.RequetesBD.getListePHService(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHService(conn, recherche);
+                medecins = getListePHService(conn, recherche);
+                medecinsS = getVectorPH(medecins);
                 Vector entetes2 = new Vector();
                 entetes2.add("Nom");
                 entetes2.add("Prénom");
@@ -996,8 +1001,8 @@ public class Accueil_SM extends javax.swing.JFrame {
         //RECHERCHE PATIENT
         String recherche = TextField_Patient.getText();
         try {
-            dpis = database.RequetesBD.getListeDPI(conn, recherche);
-            dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+            dpis = getListeDPI(conn, recherche);
+            dpisS = getVectorDPI(dpis);
             Vector entetes = new Vector();
             entetes.add("Nom");
             entetes.add("Prénom");
@@ -1038,8 +1043,8 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void jButton_actualiserOuvrirDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserOuvrirDPIActionPerformed
         //RECHARGER LES DPI FERMES
         try {
-            dpisF = database.RequetesBD.getListeDPIFerme(conn);
-            dpisFS = database.RequetesBD.getVectorDPIFerme(conn);
+            dpisF = getListeDPIFerme(conn);
+            dpisFS = getVectorDPIFerme(dpisF);
             TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
             Table_DPI_ferme.setModel(tableModel3);
         } catch (SQLException ex) {

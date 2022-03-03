@@ -17,6 +17,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.*;
 import database.*;
+import static database.RequetesBDConnexion.getStatut;
+import static database.RequetesBDConnexion.userInf;
+import static database.RequetesBDConnexion.userPH;
+import static database.RequetesBDConnexion.userSA;
+import static database.RequetesBDConnexion.userSM;
+import static database.RequetesBDConnexion.verifyConnexion;
+import nf.Infirmier;
 import nf.PH;
 import nf.SecretaireAdministrative;
 import nf.SecretaireMedicale;
@@ -204,13 +211,13 @@ public class Connexion extends javax.swing.JFrame {
         int hauteur = tailleMoniteur.height;
         boolean c;
         try {
-            CB_item = database.RequetesBD.getStatut(conn,id);
+            CB_item = getStatut(conn,id);
             System.out.println(CB_item);
-            c = database.RequetesBD.verifyConnexion(conn, id, mdp, CB_item);
+            c = verifyConnexion(conn, id, mdp, CB_item);
             if (c) {
                 if (CB_item.equals("PH")) {
                     System.out.println("rentrer");
-                    PH ph = database.RequetesBD.userPH(conn,id);
+                    PH ph = userPH(conn,id);
                     Accueil_Med i;
                     i = new Accueil_Med(conn,ph);
                     i.setSize(longueur, hauteur);
@@ -218,7 +225,7 @@ public class Connexion extends javax.swing.JFrame {
                     dispose();
                 }
                 if (CB_item.equals("SA")) {
-                    SecretaireAdministrative sa =database.RequetesBD.userSA(conn,id);
+                    SecretaireAdministrative sa = userSA(conn,id);
                     Accueil_SA i;
                     i = new Accueil_SA(conn,sa);
                     i.setSize(longueur, hauteur);
@@ -226,27 +233,25 @@ public class Connexion extends javax.swing.JFrame {
                     dispose();
                 }
                 if (CB_item.equals("SM")) {
-                    SecretaireMedicale sm =database.RequetesBD.userSM(conn,id);
+                    SecretaireMedicale sm =userSM(conn,id);
                     Accueil_SM i;
                     i = new Accueil_SM(conn,sm);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
-
+                }
+                if (CB_item.equals("Inf")) {
+                    Infirmier inf =userInf(conn,id);
+                    Accueil_SM i;
+                    //i = new Accueil_Inf(conn,sm);
+                    //i.setSize(longueur, hauteur);
+                    //i.setVisible(true);
+                    dispose();
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
         }
-        /*
-        if (CB_item.equals("Inf")){
-            //requete bd si id et mdp correct
-            Vue_Medicaments i;
-            i = new Vue_Medicaments(conn);
-            i.setSize(longueur, hauteur);
-            i.setVisible(true);
-            dispose();
-        }*/
     }//GEN-LAST:event_Button_ConnexionActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed

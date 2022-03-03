@@ -206,4 +206,18 @@ public class Checker {
         }
         return v;
     }
+    
+    public static Vector getVectorMT(List<MedecinTraitant> mts) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < mts.size(); i++) {
+            Vector ls = new Vector();
+            MedecinTraitant mt = mts.get(i);
+            ls.add(mt.getNomMedecinTraitant());
+            ls.add(mt.getPrenomMedecinTraitant());
+            ls.add(mt.getTelephoneMedecinTraitant());
+            v.add(ls);
+        }
+        return v;
+    }
 }
