@@ -484,6 +484,46 @@ public class RequetesBDDPI {
 
     //Renvoie la liste des soins quotidiens pour un patient donné
     //
+    /*public static List<SoinsQuotidien> listeSoinQuotidien(Connection conn, String ipp) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM SoinsQuotidien "
+                + "WHERE IPP = '" + ipp + "'");//Tous les soins quotidiens du patient
+        List<SoinsQuotidien> listeSQ = new ArrayList();
+
+        while (rs.next()) {
+            SoinsQuotidien sq = new SoinsQuotidien((double) rs.getFloat("temperature"), (int) rs.getFloat("saturation_o2"), (double) rs.getFloat("tension"), rs.getString("remarque"), convertTimestampSQLEnJava(rs.getTimestamp("dateHeure_SoinsQuotidien")));
+
+            //Création de l'infirmier
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT * FROM Infirmier "
+                    + "WHERE idInfirmier = '" + rs.getString("idInfirmier") + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
+            if (rs2.next()) {//Si y'a bien un infirmier qui correspond -> en principe toujours oui mais on sait jamais
+                Infirmier inf = new Infirmier(rs2.getString("idInfirmier"), rs2.getString("nom_Infirmier"), rs2.getString("prenom_Infirmier"), Service.valueOf(rs2.getString("service_Infirmier")), rs2.getString("mdp_Infirmier"));
+                sq.setInfirmier(inf);
+            }
+            rs2.close();
+            stmt2.close();
+
+            //Création du DPI
+            Statement stmt3 = conn.createStatement();
+            ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
+                    + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                    + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
+            if (rs3.next()) {
+                MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
+                DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
+                sq.setDPI(dpi);
+            }
+            rs3.close();
+            stmt3.close();
+            listeSQ.add(sq);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeSQ;
+    }*/
+
     //Renvoie la liste des prescriptions pour un patient donné
     //VALIDE
     public static List<Prescription> listePrescription(Connection conn, String ipp) throws SQLException {
@@ -640,12 +680,12 @@ public class RequetesBDDPI {
             int compteur = 0;
             //Création de la liste de fiches de soins avec doublons
             while (rs2.next()) { //Tant que y'a des fiches de soins pour ce patient
-                if (listeFiches.size() != 0 && listeFiches.get(listeFiches.size()-1).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) == 0) {
+                if (listeFiches.size() != 0 && listeFiches.get(listeFiches.size() - 1).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) == 0) {
                     compteur++;
                 } else {
                     compteur = 0;
                 }
-                
+
                 if (compteur == 0) {//Si c'est la 1er fois qu'on voit la fiche
                     FicheDeSoins fiche = new FicheDeSoins(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                     Code c = Code.valueOf(rs2.getString("libelle"));
@@ -691,11 +731,11 @@ public class RequetesBDDPI {
                     stmt3.close();
                     listeFiches.add(fiche);
                 }
-                
+
                 if (compteur > 0) {//Si y'a deja eu cette fiche
-                    Code c = Code.valueOf(rs2.getString("libelle") + "," + (double) rs2.getFloat("cout"));
+                    Code c = Code.valueOf(rs2.getString("libelle"));
                     Acte acte = new Acte(rs2.getString("nom_Acte"), Type.valueOf(rs2.getString("type")), c, (int) rs2.getFloat("coeff"), rs2.getString("observation"));
-                    listeFiches.get(listeFiches.size()-1).ajouterActe(acte);
+                    listeFiches.get(listeFiches.size() - 1).ajouterActe(acte);
                 }
 
             }

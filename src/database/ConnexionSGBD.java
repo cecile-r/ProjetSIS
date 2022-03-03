@@ -318,11 +318,10 @@ class ConnexionSGBD {
             //System.out.println(RequetesBDDPI.listePrescription(conn, "1502503500"));
             
             //Test listeFichesDeSoinsBis(ipp) ->
-            System.out.println(RequetesBDDPI.listeFichesDeSoinsBis(conn, "4500055544"));
-            //List<FicheDeSoins> listeFiches = listeFichesDeSoins(conn, "4500055544");
-            //for (int i = 0; i < listeFiches.size(); i++){
-            //    listeFiches.get(i).toString();
-            //}
+            System.out.println(RequetesBDDPI.listeFichesDeSoinsBis(conn, "5555888800"));
+            
+            //Test listeSoinsQuotidien(ipp) ->
+            //System.out.println(RequetesBDDPI.listeSoinQuotidien(conn, "5555888800"));
             
             
             //Print information about connection warnings
