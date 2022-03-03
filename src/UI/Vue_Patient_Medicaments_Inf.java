@@ -437,7 +437,7 @@ public class Vue_Patient_Medicaments_Inf extends javax.swing.JFrame {
     }//GEN-LAST:event_Label_Vue_CRMouseClicked
 
     private void Label_PlusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Label_PlusMouseClicked
-        Ajout_Acte_SM i = new Ajout_Acte_SM(); // ajout acte tout court pas forcement SM
+        Ajout_FS i = new Ajout_FS(); // ajout acte tout court pas forcement SM
         i.setVisible(true);
     }//GEN-LAST:event_Label_PlusMouseClicked
 

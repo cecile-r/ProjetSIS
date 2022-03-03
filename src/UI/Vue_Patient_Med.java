@@ -691,7 +691,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     }
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        Ajout_Acte_SM i = new Ajout_Acte_SM();
+        Ajout_FS i = new Ajout_FS();
         i.setVisible(true);
 
     }//GEN-LAST:event_jLabel14MouseClicked

@@ -52,9 +52,9 @@ public class Accueil_SA extends javax.swing.JFrame {
     Vector dpisS;
     Vector entetes;
     Vector entetes2;
-    Vector medecinsS_traitant;
     List<DPI> dpisF;
     Vector dpisFS;
+    Vector medecinsS_traitant;
     List<MedecinTraitant> medecins_traitant;
 
     /**
@@ -91,8 +91,8 @@ public class Accueil_SA extends javax.swing.JFrame {
         jComboBox_serviceR.setModel(dbm);
         DefaultComboBoxModel dbm2 = new DefaultComboBoxModel(Service.values());
         jComboBox_serviceG.setModel(dbm2);
-        DefaultComboBoxModel dbm3 = new DefaultComboBoxModel(Lit.values());
-        jComboBoxLit.setModel(dbm3);
+        //DefaultComboBoxModel dbm3 = new DefaultComboBoxModel(Lit.values());
+        //jComboBoxLit.setModel(dbm3);
 
         //onglet désactivé
         jTabbedPane2.setEnabledAt(1, false);
@@ -219,10 +219,9 @@ public class Accueil_SA extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jComboBox_serviceR = new javax.swing.JComboBox<>();
         jComboBox_serviceG = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBoxLit = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -940,59 +939,48 @@ public class Accueil_SA extends javax.swing.JFrame {
         jComboBox_serviceG.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox_serviceG.setPreferredSize(new java.awt.Dimension(59, 300));
 
-        jLabel4.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
-        jLabel4.setText("Numéro de chambre :");
-
-        jComboBoxLit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jButton1.setBackground(new java.awt.Color(213, 123, 213));
         jButton1.setText("Ouvrir son DPI");
+
+        jLabel5.setText("Service responsable");
+
+        jLabel6.setText("Service géographique");
 
         javax.swing.GroupLayout jPanel_localisationLayout = new javax.swing.GroupLayout(jPanel_localisation);
         jPanel_localisation.setLayout(jPanel_localisationLayout);
         jPanel_localisationLayout.setHorizontalGroup(
             jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_localisationLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(101, 101, 101))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
                         .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBoxLit, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel_localisationLayout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(20, 20, 20))))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(103, 103, 103))))
         );
         jPanel_localisationLayout.setVerticalGroup(
             jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_localisationLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(58, 58, 58)
                 .addComponent(jLabel1)
-                .addGap(50, 50, 50)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
-                .addComponent(jComboBoxLit, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80)
+                .addGap(78, 78, 78)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
+                .addGap(71, 71, 71))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -1563,7 +1551,6 @@ public class Accueil_SA extends javax.swing.JFrame {
     private javax.swing.JButton jButton_recherche_patient;
     private javax.swing.JButton jButton_recherche_patientOuvrirDPI;
     private javax.swing.JCheckBox jCheckBox_medecinsT;
-    private javax.swing.JComboBox<String> jComboBoxLit;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
     private javax.swing.JComboBox<String> jComboBox_serviceG;
     private javax.swing.JComboBox<String> jComboBox_serviceR;
@@ -1572,7 +1559,8 @@ public class Accueil_SA extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -1593,7 +1581,6 @@ public class Accueil_SA extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea_adresse2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField_Prenom2;
     private javax.swing.JLabel nom_SA;
     private javax.swing.JLabel prenom_SA;

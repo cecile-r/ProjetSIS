@@ -191,4 +191,19 @@ public class Checker {
         }
         return v;
     }
+    
+    public static Vector getVectorActes(List<Acte> actes) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < actes.size(); i++) {
+            Vector ls = new Vector();
+            Acte a = actes.get(i);
+            ls.add(a.getNomA());
+            ls.add(a.getCode().toString());
+            ls.add(a.getCoeff());
+            ls.add(a.getObservation());
+            v.add(ls);
+        }
+        return v;
+    }
 }
