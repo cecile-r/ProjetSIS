@@ -65,9 +65,9 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel2" min="-2" pref="47" max="-2" attributes="0"/>
@@ -78,10 +78,7 @@
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jScrollPane1" pref="588" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="jScrollPane1" alignment="1" pref="588" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
@@ -389,6 +386,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Ajouter la fiche de soins"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="Panel_Bandeau">
           <Properties>
@@ -411,8 +411,8 @@
                       <Component id="Panel_icon_perso" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="prenom_SM" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
-                          <Component id="nom_SM" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                          <Component id="prenom" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                          <Component id="nom" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="Panel_logo" min="-2" max="-2" attributes="0"/>
@@ -437,9 +437,9 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                              <Component id="prenom_SM" min="-2" max="-2" attributes="0"/>
+                              <Component id="prenom" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="nom_SM" min="-2" max="-2" attributes="0"/>
+                              <Component id="nom" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -463,7 +463,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="prenom_SM">
+            <Component class="javax.swing.JLabel" name="prenom">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="cc" red="cc" type="rgb"/>
@@ -471,7 +471,7 @@
                 <Property name="text" type="java.lang.String" value="prenom"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="nom_SM">
+            <Component class="javax.swing.JLabel" name="nom">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="cc" red="cc" type="rgb"/>

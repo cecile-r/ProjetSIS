@@ -26,6 +26,9 @@ import static nf.Checker.getVectorActes;
  */
 public class Ajout_FS extends javax.swing.JFrame {
 
+    //Connection conn;
+    PH ph;
+    Infirmier inf;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
@@ -33,9 +36,21 @@ public class Ajout_FS extends javax.swing.JFrame {
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_FS() {
+    public Ajout_FS(PH ph,Infirmier inf) {
         initComponents();
         actes = new Vector();
+        this.ph=ph;
+        this.inf=inf;
+        
+        //infos identité
+        if(ph!=null){
+            prenom.setText(ph.getPrenomPH());
+            nom.setText(ph.getNomPH());
+        }else{
+            prenom.setText(inf.getPrenomInfirmiere());
+            nom.setText(inf.getNomInfirmiere());
+        }
+        
 
         //Jbutton images
         ImageIcon icone = new ImageIcon("src/image/plus.png");
@@ -104,8 +119,8 @@ public class Ajout_FS extends javax.swing.JFrame {
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
         Panel_icon_perso = new javax.swing.JLabel();
-        prenom_SM = new javax.swing.JLabel();
-        nom_SM = new javax.swing.JLabel();
+        prenom = new javax.swing.JLabel();
+        nom = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
 
@@ -250,6 +265,11 @@ public class Ajout_FS extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
         jButton2.setText("Ajouter la fiche de soins");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         Panel_Bandeau.setBackground(new java.awt.Color(213, 123, 213));
         Panel_Bandeau.setRequestFocusEnabled(false);
@@ -259,11 +279,11 @@ public class Ajout_FS extends javax.swing.JFrame {
 
         Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
-        prenom_SM.setBackground(new java.awt.Color(204, 204, 255));
-        prenom_SM.setText("prenom");
+        prenom.setBackground(new java.awt.Color(204, 204, 255));
+        prenom.setText("prenom");
 
-        nom_SM.setBackground(new java.awt.Color(204, 204, 255));
-        nom_SM.setText("nom");
+        nom.setBackground(new java.awt.Color(204, 204, 255));
+        nom.setText("nom");
 
         jButton4.setBackground(new java.awt.Color(204, 102, 255));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
@@ -294,8 +314,8 @@ public class Ajout_FS extends javax.swing.JFrame {
                 .addComponent(Panel_icon_perso)
                 .addGap(18, 18, 18)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(prenom_SM, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nom_SM, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Panel_logo)
                 .addContainerGap())
@@ -315,9 +335,9 @@ public class Ajout_FS extends javax.swing.JFrame {
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addGap(44, 44, 44)
-                        .addComponent(prenom_SM)
+                        .addComponent(prenom)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nom_SM)))
+                        .addComponent(nom)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -329,9 +349,9 @@ public class Ajout_FS extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,9 +359,7 @@ public class Ajout_FS extends javax.swing.JFrame {
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
                         .addGap(30, 30, 30))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -461,16 +479,15 @@ public class Ajout_FS extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_jButton9ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //CREER FICHE DE SOINS
+        //telephone = telephone.replaceAll("\\s+","");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     public boolean champsCorrects() throws ParseException {
         boolean v = true;
         if (jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        } else if (jComboBox1.getSelectedIndex()<0) {
-            JOptionPane.showMessageDialog(this, "Merci de choisir un type", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        }else if (jComboBox2.getSelectedIndex()<0) {
-            JOptionPane.showMessageDialog(this, "Merci de choisir un code", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }else if (jFormattedTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
@@ -510,7 +527,9 @@ public class Ajout_FS extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Ajout_FS().setVisible(true);
+                PH ph = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
+                Ajout_FS i = new Ajout_FS(ph,null);
+                i.setVisible(true);
             }
         });
     }
@@ -544,8 +563,8 @@ public class Ajout_FS extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel nom_SM;
-    private javax.swing.JLabel prenom_SM;
+    private javax.swing.JLabel nom;
+    private javax.swing.JLabel prenom;
     // End of variables declaration//GEN-END:variables
 
 }

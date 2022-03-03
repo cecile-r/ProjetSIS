@@ -12,10 +12,10 @@ import java.awt.Toolkit;
  *
  * @author Audrey
  */
-public class Vue_RDV_Med extends javax.swing.JFrame {
+public class RDV_SA extends javax.swing.JFrame {
 
     /** Creates new form Connexion */
-    public Vue_RDV_Med() {
+    public RDV_SA() {
         initComponents();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screen.getWidth() - getWidth()) /2);
@@ -392,7 +392,7 @@ public class Vue_RDV_Med extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Vue_RDV_Med().setVisible(true);
+                new RDV_SA().setVisible(true);
             }
         });
     }

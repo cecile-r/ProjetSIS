@@ -4,196 +4,44 @@
  * and open the template in the editor.
  */
 package UI;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
-
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
-import com.sun.jdi.connect.spi.Connection;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import nf.Acte;
-import static nf.Checker.convertirDatetoString;
-import static nf.DateHeure.convertirDatetoString;
-import nf.*;
-import static nf.ComparaisonEvaluables.trierEvaluables;
 
+/**
+ *
+ * @author Audrey
+ */
+public class Vue_Patient_Inf extends javax.swing.JFrame {
 
-
-public class Vue_Patient_Med extends javax.swing.JFrame {
-
-    Vector entetesL;
-    Vector localisation;
-    Vector entetesD;
-    Vector documents;
-    DPI dpi;
-    PH ph;
-
-    /**
-     * Creates new form Connexion
-     */
-    public Vue_Patient_Med(DPI dpi, PH ph) {
+    /** Creates new form Connexion */
+    public Vue_Patient_Inf() {
         initComponents();
-        this.dpi = dpi;
-        this.ph=ph;
-        /*
-        Icon icon = new ImageIcon("/image/pdf.png");
-        JButton btn = new JButton(icon);
-        btn.setBounds(300,20,100,100);  
-        Panel_Bandeau.add(btn);  
-        Panel_Bandeau.setSize(300,250);  */
-
-        //infos identité connexion
-        prenom_medecin.setText(ph.getPrenomPH());
-        nom_medecin.setText(ph.getNomPH());
-        service.setText(ph.getService().toString());
-
-        //infos du patient
-        jLabel10.setText(dpi.getNom());
-        jLabel11.setText(dpi.getPrenom());
-        jLabel12.setText(dpi.getSexe().toString());
-        String dN = convertirDatetoString(dpi.getDateNaissance());
-        jLabel13.setText(dN);
-
-        //images des boutons
-        ImageIcon icone1 = new ImageIcon("src/image/prescription.png");
-        java.awt.Image img1 = icone1.getImage();
-        icone1 = new ImageIcon(img1);
-        jButton5.setIcon(icone1);
-        ImageIcon icone2 = new ImageIcon("src/image/ficheDeSoins.png");
-        java.awt.Image img2 = icone2.getImage();
-        icone2 = new ImageIcon(img2);
-        jButton4.setIcon(icone2);
-        ImageIcon icone3 = new ImageIcon("src/image/examen.png");
-        java.awt.Image img3 = icone3.getImage();
-        icone3 = new ImageIcon(img3);
-        jButton6.setIcon(icone3);
-        ImageIcon icone4 = new ImageIcon("src/image/lettreDeSortie.png");
-        java.awt.Image img4 = icone4.getImage();
-        icone4 = new ImageIcon(img4);
-        jButton7.setIcon(icone4);
-        ImageIcon icone5 = new ImageIcon("src/image/infirmiere.png");
-        java.awt.Image img5 = icone5.getImage();
-        icone5 = new ImageIcon(img5);
-        jLabel_infimiere.setIcon(icone5);
-        ImageIcon icone6 = new ImageIcon("src/image/pdf.png");
-
-        //localisation
-        entetesL = new Vector();
-        entetesL.add("Service");
-        entetesL.add("Service géographique");
-        entetesL.add("Chambre");
-        entetesL.add("Lit");
-        localisation = new Vector();
-        Vector localisation1 = new Vector();
-        localisation1.add(dpi.getdMA().getLocalisation().getService_responsable().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
-        localisation1.add(dpi.getdMA().getLocalisation().getLit());
-        localisation.add(localisation1);
-        TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
-        jTable1.setModel(tableModelL);
-
-        //Documents
-        entetesD = new Vector();
-        entetesD.add("Type de document");
-        entetesD.add("Date");
-        entetesD.add("Professionnel");
-        entetesD.add("Document");
-        documents = new Vector();
-        List<Evaluable> document_temp = new ArrayList<Evaluable>();
-        document_temp = new Vector<>();
-        document_temp.addAll(dpi.getdM().getFicheDeSoins());
-        document_temp.addAll(dpi.getdMA().getLettreDeSortie());
-        document_temp.addAll(dpi.getdMA().getExamens());
-        document_temp = trierEvaluables(document_temp);
-        Vector document1 = new Vector();
-        for (int i = 0; i < document_temp.size(); i++) { //pour tous les documents
-            Evaluable e = document_temp.get(i);
-            document1.add(e.getTypeEvaluable());
-            document1.add(convertirDatetoString(e.getDateHeure()));
-            document1.add(e.getProfessionnel().toString());
-            document1.add(icone6);
-            //document1.add(e.getContenu());
-            //document1.add(e.getObservations());
-            documents.add(document1);
-            document1 = new Vector();
-        }
-        //TABLEAU DOCUMENTS
-        TableModel tableModelD = new DefaultTableModel(documents, entetesD);
-        jTable2 = new javax.swing.JTable(tableModelD) {
-            /*détection automatique des types de données             
-             *de toutes les colonnes    
-             */
-            public Class getColumnClass(int colonne) {
-                return getValueAt(0, colonne).getClass();
-            }
-        };
-        jTable2.setBackground(new java.awt.Color(225, 225, 249));
-        jTable2.setGridColor(new java.awt.Color(153, 153, 153));
-        jTable2.setPreferredSize(new java.awt.Dimension(300, 300));
-        jTable2.setRowHeight(70);
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                try {
-                    jTable2MouseClicked(evt);
-                } catch (IOException ex) {
-                    Logger.getLogger(Vue_Patient_Med.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        jScrollPane5.setViewportView(jTable2);
-        jTable2.setDefaultEditor(Object.class, null);
-
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((screen.getWidth() - getWidth()) /2);
+        int y = (int) ((screen.getHeight() -getHeight()) /2);
+        setLocation(x, y);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        prenom_medecin = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        Table_Vue_Generale1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
         Panel_icon_perso = new javax.swing.JLabel();
-        prenom_medecin1 = new javax.swing.JLabel();
-        nom_medecin = new javax.swing.JLabel();
+        prenom_inf = new javax.swing.JLabel();
+        nom_inf = new javax.swing.JLabel();
         service = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         Panle_Gauche = new javax.swing.JPanel();
-        Label_Icon_Patient = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -202,10 +50,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jPanel_rendezvous = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        Label_Icon_Patient = new javax.swing.JLabel();
         jPanel_constantes1 = new javax.swing.JPanel();
         jLabel_infimiere = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -218,48 +63,16 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         JTextArea_affichage = new javax.swing.JTextArea();
-
-        prenom_medecin.setText("prenom_medecin");
-
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/plus.png"))); // NOI18N
-        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel14MouseClicked(evt);
-            }
-        });
-
-        Table_Vue_Generale1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Nom", "Prénom", "Date de naissance", "Sexe"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(300, 300));
-        Table_Vue_Generale1.setRowHeight(20);
-        jScrollPane4.setViewportView(Table_Vue_Generale1);
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable_constantes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
-        setBackground(new java.awt.Color(204, 204, 255));
         setMinimumSize(new java.awt.Dimension(800, 600));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
@@ -272,9 +85,9 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
 
         Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
-        prenom_medecin1.setText("prenom_medecin");
+        prenom_inf.setText("prenom_inf");
 
-        nom_medecin.setText("nom_medecin");
+        nom_inf.setText("nom_inf");
 
         service.setText("service");
 
@@ -307,8 +120,8 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                 .addComponent(Panel_icon_perso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(prenom_medecin1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(prenom_inf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(nom_inf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Panel_logo)
@@ -329,9 +142,9 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(prenom_medecin1)
+                        .addComponent(prenom_inf)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nom_medecin)
+                        .addComponent(nom_inf)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(service)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -340,8 +153,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         Panle_Gauche.setBackground(new java.awt.Color(250, 247, 247));
         Panle_Gauche.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         Panle_Gauche.setAutoscrolls(true);
-
-        Label_Icon_Patient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil.png"))); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel6.setText("Nom :");
@@ -367,14 +178,16 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel13.setText("date");
 
+        Label_Icon_Patient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil.png"))); // NOI18N
+
         javax.swing.GroupLayout Panle_GaucheLayout = new javax.swing.GroupLayout(Panle_Gauche);
         Panle_Gauche.setLayout(Panle_GaucheLayout);
         Panle_GaucheLayout.setHorizontalGroup(
             Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panle_GaucheLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panle_GaucheLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addComponent(Label_Icon_Patient)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
@@ -386,15 +199,14 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(100, 100, 100))
         );
         Panle_GaucheLayout.setVerticalGroup(
             Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panle_GaucheLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
                 .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Label_Icon_Patient, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(Panle_GaucheLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -409,43 +221,10 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel_rendezvous.setBackground(new java.awt.Color(169, 206, 243));
-        jPanel_rendezvous.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/calendrier.png"))); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        jLabel2.setText("Prochain rendez-vous :");
-
-        jLabel3.setText("12/03/2022 à 12:00");
-
-        javax.swing.GroupLayout jPanel_rendezvousLayout = new javax.swing.GroupLayout(jPanel_rendezvous);
-        jPanel_rendezvous.setLayout(jPanel_rendezvousLayout);
-        jPanel_rendezvousLayout.setHorizontalGroup(
-            jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_rendezvousLayout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_rendezvousLayout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addGroup(jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
-        );
-        jPanel_rendezvousLayout.setVerticalGroup(
-            jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_rendezvousLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(jLabel3)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(Panle_GaucheLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Label_Icon_Patient)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -507,7 +286,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             .addGroup(jPanel_constantes1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel_infimiere, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel_constantes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -541,22 +320,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AJOUTER", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Console", 1, 11))); // NOI18N
 
-        jButton5.setBackground(new java.awt.Color(169, 206, 243));
-        jButton5.setText("Prescription");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton7.setBackground(new java.awt.Color(169, 206, 243));
-        jButton7.setText("Lettre de sortie");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
         jButton4.setBackground(new java.awt.Color(169, 206, 243));
         jButton4.setText("Fiche de soins");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -565,34 +328,28 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setBackground(new java.awt.Color(169, 206, 243));
-        jButton6.setText("Examen");
+        jButton1.setBackground(new java.awt.Color(169, 206, 243));
+        jButton1.setText("Constantes");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(2, 2, 2))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane5.setBackground(new java.awt.Color(204, 204, 255));
@@ -604,6 +361,19 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         JTextArea_affichage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane2.setViewportView(JTextArea_affichage);
 
+        jTable_constantes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable_constantes);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -611,41 +381,42 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Panle_Gauche, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel_rendezvous, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane5))
+                    .addComponent(Panle_Gauche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5)
+                    .addComponent(jScrollPane3))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel_constantes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Panle_Gauche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel_rendezvous, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel_constantes1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Panle_Gauche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane5)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -658,45 +429,11 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) throws IOException {
-        //AFFICHAGE DU DOCUMENT SUR LA DROITE
-        List<Evaluable> document_temp = new ArrayList<Evaluable>();
-        document_temp = new Vector<>();
-        document_temp.addAll(dpi.getdM().getFicheDeSoins());
-        document_temp.addAll(dpi.getdMA().getLettreDeSortie());
-        document_temp.addAll(dpi.getdMA().getExamens());
-        int i = jTable2.getSelectedRow();
-        String ch = document_temp.get(i).toStringDM();
-        JTextArea_affichage.setText(ch);
-
-        if (jTable2.getSelectedColumn() == 3) { //si on clique sur l'image pdf
-            Document document = new Document(PageSize.A4);
-            try {
-                PdfWriter.getInstance(document, new FileOutputStream("document.pdf"));
-                document.open();
-                document.add(new Paragraph(ch));
-            } catch (DocumentException de) {
-                de.printStackTrace();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-            document.close();
-            Desktop.getDesktop().open(new File("document.pdf"));
-        }
-
-    }
-
-    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        Ajout_FS i = new Ajout_FS(ph,null);
-        i.setVisible(true);
-
-    }//GEN-LAST:event_jLabel14MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         /*Connexion i;
@@ -711,18 +448,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         /*Connexion i;
         try {
@@ -735,6 +460,10 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         }*/
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -766,75 +495,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
-                PH ph1 = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
-
-                Acte a11 = new Acte("prise de sang", nf.Type.diagnostic, Code.CS, 2, "RAS");
-                Acte a12 = new Acte("changement pansement", nf.Type.therapeutique, Code.FP, 1, "Propre");
-                DateHeure d11 = new DateHeure(2022, 02, 10, 10, 00); //date Fiche de soins
-                FicheDeSoins fs1 = new FicheDeSoins(d11);
-                fs1.setpH(ph1);
-                fs1.ajouterActe(a11);
-                fs1.ajouterActe(a12);
-                DateHeure d12 = new DateHeure(2022, 02, 10, 11, 00); //date presciption
-                Prescription p1 = new Prescription(d12, "a prendre 2 fois par jour pendant 7 jours", null, "Doliprane");
-                p1.setpH(ph1);
-                DateHeure d13 = new DateHeure(2022, 02, 10, 14, 00); //date de sortie
-                LettreDeSortie ls1 = new LettreDeSortie("Madame ... sort de l'hopital", d13);
-                ls1.setPh(ph1);
-                DateHeure d14 = new DateHeure(2022, 02, 10, 10, 30); //date de soin quotidien
-                DateHeure d15 = new DateHeure(2022, 02, 10, 8, 30); //date de soin quotidien
-                SoinsQuotidien sq1 = new SoinsQuotidien(37.5, 80, 12.8, "RSA", d14);
-                SoinsQuotidien sq2 = new SoinsQuotidien(37.0, 80, 12.9, "RSA", d15);
-                sq1.setInfirmier(inf1);
-                sq2.setInfirmier(inf1);
-                DateHeure d16 = new DateHeure(2022, 02, 10, 11, 30); //date de l'examen
-                Examen e1 = new Examen(TypeExamen.biopsie, "cancer trouvé", d16);
-                e1.setPh(ph1);
-                DM dm1 = new DM();
-                dm1.ajouterFicheDeSoins(fs1);
-                dm1.ajouterLettreDeSortie(ls1);
-                dm1.ajouterPrescription(p1);
-                dm1.ajouterSoinsQuotidien(sq1);
-                dm1.ajouterSoinsQuotidien(sq2);
-                dm1.ajouterExamen(e1);
-                Localisation l1 = new Localisation(Service.Biologie_clinique, Lit.F, 12, Service.Addictologie);
-                DMA dma1 = new DMA(l1);
-                dma1.ajouterFicheDeSoins(fs1);
-                dma1.ajouterLettreDeSortie(ls1);
-                dma1.ajouterExamen(e1);
-                DateHeure d17 = new DateHeure(2022, 02, 15, 10, 00); //date de RDV
-                RendezVous rdv1 = new RendezVous(d17, "reverifier les resultats");
-                rdv1.setpH(ph1);
-                dma1.ajouterRendezVous(rdv1);
-                MedecinTraitant mt1 = new MedecinTraitant("id@gmail.com", "PAT", "PATROUILLE", "0467894567");
-                Date dn1 = new Date(1997, 07, 13); //date de naissance
-                DPI dpi1 = new DPI("1234567891", "Jones", "Jack", dn1, Sexe.homme, "3 rue Beranger, 45000 Tours", "0657985613", mt1, dma1, dm1);
-
-                inf1.ajouterSoinsQuotidien(sq1);
-                inf1.ajouterSoinsQuotidien(sq2);
-                ph1.ajouterFicheDeSoins(fs1);
-                ph1.ajouterLettresDeSorties(ls1);
-                ph1.ajouterPrescriptions(p1);
-                ph1.ajouterExamen(e1);
-                ph1.ajouterRdv(rdv1);
-                sq1.setDPI(dpi1);
-                sq2.setDPI(dpi1);
-                fs1.setDPI(dpi1);
-                ls1.setDPI(dpi1);
-                p1.setDPI(dpi1);
-                e1.setDPI(dpi1);
-                rdv1.setDPI(dpi1);
-
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i;
-                PH ph = new PH("1616161616", "Pan", "Peter", Service.Addictologie, "peterpan", "0456486756", "Biologie");
-                i = new Vue_Patient_Med(dpi1, ph);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-
+                new Vue_Patient_Inf().setVisible(true);
             }
         });
     }
@@ -846,26 +507,19 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private javax.swing.JLabel Panel_icon_perso;
     private javax.swing.JLabel Panel_logo;
     private javax.swing.JPanel Panle_Gauche;
-    private javax.swing.JTable Table_Vue_Generale1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -876,16 +530,17 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel_constantes1;
-    private javax.swing.JPanel jPanel_rendezvous;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel nom_medecin;
-    private javax.swing.JLabel prenom_medecin;
-    private javax.swing.JLabel prenom_medecin1;
+    private javax.swing.JTable jTable_constantes;
+    private javax.swing.JLabel nom_inf;
+    private javax.swing.JLabel prenom_inf;
     private javax.swing.JLabel service;
     // End of variables declaration//GEN-END:variables
-    private javax.swing.JTable jTable2;
+    
+   
+    
 }

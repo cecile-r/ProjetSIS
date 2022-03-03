@@ -12,10 +12,10 @@ import java.awt.Toolkit;
  *
  * @author Audrey
  */
-public class New_RDV extends javax.swing.JFrame {
+public class RDV_SM extends javax.swing.JFrame {
 
     /** Creates new form Connexion */
-    public New_RDV() {
+    public RDV_SM() {
         initComponents();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screen.getWidth() - getWidth()) /2);
@@ -372,7 +372,7 @@ public class New_RDV extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new New_RDV().setVisible(true);
+                new RDV_SM().setVisible(true);
             }
         });
     }

@@ -14,6 +14,7 @@ public class Infirmier {
     private String mdp;
     private List<FicheDeSoins> ficheDeSoins = new ArrayList<FicheDeSoins> ();
     private List<SoinsQuotidien> soinsQuotidien = new ArrayList<SoinsQuotidien> ();
+    private List<Prescription> prescritions = new ArrayList<Prescription> ();
   
     public Infirmier(String idInfirmier, String nomInfirmier,String prenomInfirmier, Service service, String mdp){
         this.idInfirmiere=idInfirmier;
@@ -23,6 +24,7 @@ public class Infirmier {
         this.mdp=mdp;
         this.ficheDeSoins=new Vector<>();
         this.soinsQuotidien=new Vector<>();
+        this.prescritions =new Vector<>();
     }
     
     @Override
