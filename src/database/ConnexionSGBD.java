@@ -317,11 +317,21 @@ class ConnexionSGBD {
             //Test listePrescription(ipp) -> VALIDE
             //System.out.println(RequetesBDDPI.listePrescription(conn, "1502503500"));
             
-            //Test listeFichesDeSoinsBis(ipp) ->
-            System.out.println(RequetesBDDPI.listeFichesDeSoinsBis(conn, "5555888800"));
+            //Test listeFichesDeSoins(ipp) -> VALIDE
+            //System.out.println(RequetesBDDPI.listeFichesDeSoins(conn, "5555888800"));
             
-            //Test listeSoinsQuotidien(ipp) ->
-            //System.out.println(RequetesBDDPI.listeSoinQuotidien(conn, "5555888800"));
+            //Test listeSoinsQuotidien(ipp) -> VALIDE
+            //System.out.println(RequetesBDDPI.listeSoinQuotidien(conn, "5500005500"));
+            
+            
+            //Test getDPI(ipp) -> VALIDE mais pb PH Maboul
+            DPI dpi = RequetesBDDPI.getDPI(conn, "5555888800");
+            System.out.println(dpi.toString());
+            System.out.println("DM");
+            System.out.println(dpi.getdM().toString());
+            System.out.println();
+            System.out.println("DMA");
+            System.out.println(dpi.getdMA().toString());
             
             
             //Print information about connection warnings
