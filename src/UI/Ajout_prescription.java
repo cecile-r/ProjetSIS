@@ -8,6 +8,9 @@ package UI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -24,10 +27,11 @@ import static nf.Checker.getVectorActes;
  *
  * @author Audrey
  */
-public class Ajout_FS extends javax.swing.JFrame {
+public class Ajout_prescription extends javax.swing.JFrame {
 
     //Connection conn;
     PH ph;
+    DPI dpi;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
@@ -35,7 +39,7 @@ public class Ajout_FS extends javax.swing.JFrame {
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_FS(PH ph) {
+    public Ajout_prescription(PH ph,DPI dpi) {
         initComponents();
         actes = new Vector();
         this.ph=ph;
@@ -43,9 +47,20 @@ public class Ajout_FS extends javax.swing.JFrame {
         //infos identité
         prenom.setText(ph.getPrenomPH());
         nom.setText(ph.getNomPH());
+        
+        //date courante
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        String dateL = dtf.format(LocalDateTime.now());
+        jLabel3.setText(dateL);
+        
+        //cacher
+        jLabel6.setVisible(false);
+        jLabel5.setVisible(false);
+        jComboBox2.setVisible(false);
+        jTextArea2.setVisible(false);
        
         //Jbutton images
-        ImageIcon icone2 = new ImageIcon("src/image/ficheDeSoins.png");
+        ImageIcon icone2 = new ImageIcon("src/image/plus.png");
         java.awt.Image img2 = icone2.getImage();
         icone2 = new ImageIcon(img2);
         jButton2.setIcon(icone2);
@@ -54,20 +69,10 @@ public class Ajout_FS extends javax.swing.JFrame {
         icone3 = new ImageIcon(img3);
         jButton9.setIcon(icone3);
         
-
         //Jcombobox
-        DefaultComboBoxModel dbm1 = new DefaultComboBoxModel(nf.Type.values());
-        jComboBox1.setModel(dbm1);
+        DefaultComboBoxModel dbm1 = new DefaultComboBoxModel(TypeExamen.values());
+        jComboBox2.setModel(dbm1);
 
-        //Jtable
-        entetes = new Vector();
-        entetes.add("Nom");
-        entetes.add("Code");
-        entetes.add("Coefficient");
-        TableModel tableModel = new DefaultTableModel(actesS, entetes);
-        jTable1.setModel(tableModel);
-        jTable1.setPreferredSize(new java.awt.Dimension(3000, 20 * jTable1.getRowCount()));
-        jTable1.setDefaultEditor(Object.class, null);
     }
 
     /**
@@ -210,7 +215,12 @@ public class Ajout_FS extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Médicament", "Examen" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir", "Médicament", "Examen" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(169, 206, 243));
 
@@ -235,6 +245,11 @@ public class Ajout_FS extends javax.swing.JFrame {
         );
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jComboBox2MouseReleased(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Type d'examen :");
@@ -268,10 +283,10 @@ public class Ajout_FS extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(194, 194, 194)
                                 .addComponent(jButton2)))))
@@ -304,12 +319,13 @@ public class Ajout_FS extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(2, 2, 2)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,7 +396,27 @@ public class Ajout_FS extends javax.swing.JFrame {
         //telephone = telephone.replaceAll("\\s+","");
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jComboBox2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox2MouseReleased
+        
+    }//GEN-LAST:event_jComboBox2MouseReleased
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // CHOIX MEDOC OU EXAMEN Chosir,Médicament, Examen
+        if(jComboBox1.getSelectedItem().equals("Médicament")){
+            jLabel5.setVisible(true);
+            jTextArea2.setVisible(true);
+            jLabel6.setVisible(false);
+            jComboBox2.setVisible(false);
+        }else if(jComboBox1.getSelectedItem().equals("Examen")){
+            jLabel6.setVisible(true);
+            jComboBox2.setVisible(true);
+            jLabel5.setVisible(false);
+            jTextArea2.setVisible(false);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     public boolean champsCorrects() throws ParseException {
+        /*
         boolean v = true;
         if (jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
@@ -389,7 +425,8 @@ public class Ajout_FS extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
-        return v;
+        return v;*/
+        return true;
     }
 
     /**
@@ -423,8 +460,68 @@ public class Ajout_FS extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
+                PH ph1 = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
+
+                Acte a11 = new Acte("prise de sang", nf.Type.diagnostic, Code.CS, 2, "RAS");
+                Acte a12 = new Acte("changement pansement", nf.Type.therapeutique, Code.FP, 1, "Propre");
+                DateHeure d11 = new DateHeure(2022, 02, 10, 10, 00); //date Fiche de soins
+                FicheDeSoins fs1 = new FicheDeSoins(d11);
+                fs1.setpH(ph1);
+                fs1.ajouterActe(a11);
+                fs1.ajouterActe(a12);
+                DateHeure d12 = new DateHeure(2022, 02, 10, 11, 00); //date presciption
+                Prescription p1 = new Prescription(d12, "a prendre 2 fois par jour pendant 7 jours", null, "Doliprane");
+                p1.setpH(ph1);
+                DateHeure d13 = new DateHeure(2022, 02, 10, 14, 00); //date de sortie
+                LettreDeSortie ls1 = new LettreDeSortie("Madame ... sort de l'hopital", d13);
+                ls1.setPh(ph1);
+                DateHeure d14 = new DateHeure(2022, 02, 10, 10, 30); //date de soin quotidien
+                DateHeure d15 = new DateHeure(2022, 02, 10, 8, 30); //date de soin quotidien
+                SoinsQuotidien sq1 = new SoinsQuotidien(37.5, 80, 12.8, "RSA", d14);
+                SoinsQuotidien sq2 = new SoinsQuotidien(37.0, 80, 12.9, "RSA", d15);
+                sq1.setInfirmier(inf1);
+                sq2.setInfirmier(inf1);
+                DateHeure d16 = new DateHeure(2022, 02, 10, 11, 30); //date de l'examen
+                Examen e1 = new Examen(TypeExamen.biopsie, "cancer trouvé", d16);
+                e1.setPh(ph1);
+                DM dm1 = new DM();
+                dm1.ajouterFicheDeSoins(fs1);
+                dm1.ajouterLettreDeSortie(ls1);
+                dm1.ajouterPrescription(p1);
+                dm1.ajouterSoinsQuotidien(sq1);
+                dm1.ajouterSoinsQuotidien(sq2);
+                dm1.ajouterExamen(e1);
+                Localisation l1 = new Localisation(Service.Biologie_clinique, Lit.F, 12, Service.Addictologie);
+                DMA dma1 = new DMA(l1);
+                dma1.ajouterFicheDeSoins(fs1);
+                dma1.ajouterLettreDeSortie(ls1);
+                dma1.ajouterExamen(e1);
+                DateHeure d17 = new DateHeure(2022, 02, 15, 10, 00); //date de RDV
+                RendezVous rdv1 = new RendezVous(d17, "reverifier les resultats");
+                rdv1.setpH(ph1);
+                dma1.ajouterRendezVous(rdv1);
+                MedecinTraitant mt1 = new MedecinTraitant("id@gmail.com", "PAT", "PATROUILLE", "0467894567");
+                Date dn1 = new Date(1997, 07, 13); //date de naissance
+                DPI dpi1 = new DPI("1234567891", "Jones", "Jack", dn1, Sexe.homme, "3 rue Beranger, 45000 Tours", "0657985613", mt1, dma1, dm1);
+
+                inf1.ajouterSoinsQuotidien(sq1);
+                inf1.ajouterSoinsQuotidien(sq2);
+                ph1.ajouterFicheDeSoins(fs1);
+                ph1.ajouterLettresDeSorties(ls1);
+                ph1.ajouterPrescriptions(p1);
+                ph1.ajouterExamen(e1);
+                ph1.ajouterRdv(rdv1);
+                sq1.setDPI(dpi1);
+                sq2.setDPI(dpi1);
+                fs1.setDPI(dpi1);
+                ls1.setDPI(dpi1);
+                p1.setDPI(dpi1);
+                e1.setDPI(dpi1);
+                rdv1.setDPI(dpi1);
+                
                 PH ph = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
-                Ajout_FS i = new Ajout_FS(ph,null);
+                Ajout_prescription i = new Ajout_prescription(ph,dpi1);
                 i.setVisible(true);
             }
         });
