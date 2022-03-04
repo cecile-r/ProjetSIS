@@ -216,7 +216,6 @@ public class Connexion extends javax.swing.JFrame {
             c = verifyConnexion(conn, id, mdp, CB_item);
             if (c) {
                 if (CB_item.equals("PH")) {
-                    System.out.println("rentrer");
                     PH ph = userPH(conn,id);
                     Accueil_Med i;
                     i = new Accueil_Med(conn,ph);

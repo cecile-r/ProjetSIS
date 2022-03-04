@@ -102,7 +102,7 @@ public class DateHeure {
     annee = Integer.parseInt(donneesCourantes.substring(donneesCourantes.lastIndexOf('/') + 1, donneesCourantes.length()));
     }
     
-    public static String convertirDatetoString(DateHeure d){
+    public static String convertirDateHeuretoString(DateHeure d){
         String d2 ="";
         d2 = d2 + d.jour +"/" + d.mois +"/" +d.annee +" " + d.heure+ ":"+d.minutes;
         return d2;

@@ -104,7 +104,9 @@ public class Checker {
 
     public static String convertirDatetoString(Date d) {
         String d2 = "";
-        d2 = d2 + d.getDay() + "/" + d.getMonth() + "/" + d.getYear();
+        System.out.println("date --> "+ d.getDate());
+        System.out.println("day --> "+ d.getDay());
+        d2 = d2 + d.getDay() + "/" + d.getDate() + "/" + d.getYear();
         return d2;
     }
 

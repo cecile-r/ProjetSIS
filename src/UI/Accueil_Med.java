@@ -5,7 +5,9 @@
  */
 package UI;
 
+import java.sql.Connection;
 import database.DatabaseAccessProperties;
+import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDProfessionnels.getListePH;
@@ -15,7 +17,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
@@ -618,6 +619,23 @@ public class Accueil_Med extends javax.swing.JFrame {
         //VISUALISATION D UN PATIENT PARTICULIER
         if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            try {
+                int index = Table_Vue_Generale1.getSelectedRow();
+                DPI dpi = getDPI(conn, dpis.get(index).getIPP());
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i = new Vue_Patient_Med(conn,dpi,ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
 

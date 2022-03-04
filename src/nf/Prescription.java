@@ -1,6 +1,6 @@
 package nf;
 import java.util.Date;
-import static nf.DateHeure.convertirDatetoString;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 public class Prescription implements Evaluable{
     private DateHeure date_presciption;
@@ -42,7 +42,7 @@ public class Prescription implements Evaluable{
     
     public String toStringDM(){
         String ch="------------------------------PRESCRIPTION------------------------------\n\n";
-        ch+=convertirDatetoString(date_presciption);
+        ch+=convertirDateHeuretoString(date_presciption);
         ch+="\n\nPar ";
         ch+=pH.toString();
         ch+="\n\n";

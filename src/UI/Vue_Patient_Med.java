@@ -12,11 +12,10 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -37,14 +36,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.Acte;
 import static nf.Checker.convertirDatetoString;
-import static nf.DateHeure.convertirDatetoString;
 import nf.*;
 import static nf.ComparaisonEvaluables.trierEvaluables;
-
+import database.DatabaseAccessProperties;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 
 public class Vue_Patient_Med extends javax.swing.JFrame {
 
+    Connection conn;
     Vector entetesL;
     Vector localisation;
     Vector entetesD;
@@ -55,8 +55,9 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     /**
      * Creates new form Connexion
      */
-    public Vue_Patient_Med(DPI dpi, PH ph) {
+    public Vue_Patient_Med(Connection conn,DPI dpi, PH ph) {
         initComponents();
+        this.conn=conn;
         this.dpi = dpi;
         this.ph=ph;
         /*
@@ -67,7 +68,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         Panel_Bandeau.setSize(300,250);  */
 
         //infos identité connexion
-        prenom_medecin.setText(ph.getPrenomPH());
+        prenom_medecin1.setText(ph.getPrenomPH());
         nom_medecin.setText(ph.getNomPH());
         service.setText(ph.getService().toString());
 
@@ -75,7 +76,8 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jLabel10.setText(dpi.getNom());
         jLabel11.setText(dpi.getPrenom());
         jLabel12.setText(dpi.getSexe().toString());
-        String dN = convertirDatetoString(dpi.getDateNaissance());
+        System.out.println(dpi.getDateNaissance().toString());
+        String dN = nf.Checker.convertirDatetoString(dpi.getDateNaissance());
         jLabel13.setText(dN);
 
         //images des boutons
@@ -134,7 +136,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         for (int i = 0; i < document_temp.size(); i++) { //pour tous les documents
             Evaluable e = document_temp.get(i);
             document1.add(e.getTypeEvaluable());
-            document1.add(convertirDatetoString(e.getDateHeure()));
+            document1.add(convertirDateHeuretoString(e.getDateHeure()));
             document1.add(e.getProfessionnel().toString());
             document1.add(icone6);
             //document1.add(e.getContenu());
@@ -766,6 +768,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                /*
                 Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
                 PH ph1 = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
 
@@ -834,7 +837,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                 i = new Vue_Patient_Med(dpi1, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
-
+                */
             }
         });
     }
