@@ -30,12 +30,17 @@ import nf.DPI;
 import nf.PH;
 import nf.Service;
 import database.RequetesBD;
+import static database.RequetesBDDPI.getListeDPI;
+import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDProfessionnels.getListePH;
+import static database.RequetesBDProfessionnels.getListePHService;
+import nf.Infirmier;
 
 /**
  *
  * @author Audrey
  */
-public class Accueil_Med extends javax.swing.JFrame {
+public class Accueil_Inf extends javax.swing.JFrame {
 
     PH ph;
     Connection conn;
@@ -45,16 +50,15 @@ public class Accueil_Med extends javax.swing.JFrame {
     Vector dpisS;
     Vector entetes;
     Vector entetes2;
-    
 
     /**
      * Creates new form Connexion
      */
-    public Accueil_Med(Connection conn, PH ph) throws SQLException {
+    public Accueil_Inf(Connection conn, Infirmier inf) throws SQLException {
         this.conn = conn;
         this.ph = ph;
         initComponents();
-        
+
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
         java.awt.Image img5 = icone.getImage();
@@ -72,14 +76,14 @@ public class Accueil_Med extends javax.swing.JFrame {
         Button_Selectionner.setIcon(icone_details);
 
         //infos identité
-        prenom_medecin.setText(ph.getPrenomPH());
-        nom_medecin.setText(ph.getNomPH());
-        service.setText(ph.getService().toString());
+        prenom_medecin.setText(inf.getPrenomInfirmiere());
+        nom_medecin.setText(inf.getNomInfirmiere());
+        service.setText(inf.getService().toString());
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPI(conn);
-        dpis = trierDPI(dpis); //tri par ordre alphabétique
+        dpis = getListeDPIService(conn, ph.getService().toString());
+        dpis = trierDPI(dpis);
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
         entetes.add("Nom");
@@ -93,7 +97,7 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         //TABLEAU PH
         medecinsS = new Vector();
-        medecins = database.RequetesBD.getListePH(conn);
+        medecins = getListePH(conn);
         medecins = trierPH(medecins); //tri par ordre alphabétique
         medecinsS = getVectorPH(medecins); //vecteur tableau
         entetes2 = new Vector();
@@ -616,7 +620,7 @@ public class Accueil_Med extends javax.swing.JFrame {
 
     private void Button_SelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SelectionnerActionPerformed
         //VISUALISATION D UN PATIENT PARTICULIER
-        if(Table_Vue_Generale1.getSelectedRow()==-1){
+        if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
@@ -641,17 +645,19 @@ public class Accueil_Med extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_PatientMouseEntered
 
     private void TextField_PatientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PatientKeyPressed
-        //RECHERCHE PATIENT ENTREE
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             String recherche = TextField_Patient.getText();
             try {
                 if (!recherche.equals("")) {
-                    dpis = database.RequetesBD.getListeDPI(conn, recherche, ph.getService().toString());
-                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche, ph.getService().toString());
+                    dpis = getListeDPI(conn, recherche, ph.getService().toString());
+                    dpis = trierDPI(dpis);
+                    dpisS = getVectorDPI(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setAutoCreateRowSorter(true);
                     Table_Vue_Generale1.setModel(tableModel);
+                    Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
@@ -662,13 +668,15 @@ public class Accueil_Med extends javax.swing.JFrame {
     private void jButton_actualiser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser1ActionPerformed
         try {
             //RECHARGER DPI
-            dpis = database.RequetesBD.getListeDPIService(conn, ph.getService().toString());
-            dpisS = database.RequetesBD.getVectorDPIService(conn, ph.getService().toString());
+            dpis = getListeDPIService(conn, ph.getService().toString());
+            dpis = trierDPI(dpis);
+            dpisS = getVectorDPI(dpis);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-            Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
+            Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
+
             TextField_Patient.setText("");
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -678,23 +686,25 @@ public class Accueil_Med extends javax.swing.JFrame {
         //RECHERCHE PATIENT
         String recherche = TextField_Patient.getText();
         try {
-            dpis = database.RequetesBD.getListeDPI(conn, recherche);
-            dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+            dpis = getListeDPI(conn, recherche, ph.getService().toString());
+            dpis = trierDPI(dpis);
+            dpisS = getVectorDPI(dpis);
             Vector entetes = new Vector();
             entetes.add("Nom");
             entetes.add("Prénom");
             entetes.add("Date de naissance");
             entetes.add("Sexe");
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-            Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
+            Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
+
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_recherche_patientActionPerformed
 
     private void jButton_recherche_medecinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_medecinActionPerformed
-        // VALIDATION DE LA RECHERCHE MEDECIN
+         // VALIDATION DE LA RECHERCHE MEDECIN
         String type_recherche; //Nom ou Service
         type_recherche = jComboBox_recherche_praticien.getSelectedItem().toString();
         String recherche = TextField_Docteur.getText();
@@ -702,10 +712,10 @@ public class Accueil_Med extends javax.swing.JFrame {
         if (type_recherche.equals("Nom")) {
 
             try {
-                medecins = database.RequetesBD.getListePH(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHNom(conn, recherche);
+                medecins = getListePH(conn, recherche);
+                medecins = trierPH(medecins); //tri par ordre alphabétique
+                medecinsS = getVectorPH(medecins); //vecteur tableau
                 TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-                tab_medecins.setAutoCreateRowSorter(true);
                 tab_medecins.setModel(tableModel2);
                 tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
             } catch (SQLException ex) {
@@ -714,26 +724,23 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         } else if (type_recherche.equals("Service")) {
             try {
-                medecins = database.RequetesBD.getListePHService(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHService(conn, recherche);
+                medecins = getListePHService(conn, recherche);
+                medecinsS = getVectorPH(medecins); //vecteur tableau
                 TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-                tab_medecins.setAutoCreateRowSorter(true);
                 tab_medecins.setModel(tableModel2);
                 tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
             } catch (SQLException ex) {
                 Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }//GEN-LAST:event_jButton_recherche_medecinActionPerformed
 
     private void jButton_actualiser_medecin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser_medecin1ActionPerformed
         //RECHARGER MEDECINS
         try {
-            medecins = database.RequetesBD.getListePH(conn);
-            medecinsS = database.RequetesBD.getVectPH(conn);
+            medecins = getListePH(conn);
+            medecinsS = getVectorPH(medecins); //vecteur tableau
             TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-            tab_medecins.setAutoCreateRowSorter(true);
             tab_medecins.setModel(tableModel2);
             tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
         } catch (SQLException ex) {

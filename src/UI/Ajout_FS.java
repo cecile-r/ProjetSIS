@@ -8,6 +8,7 @@ package UI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -29,6 +30,7 @@ public class Ajout_FS extends javax.swing.JFrame {
     //Connection conn;
     PH ph;
     Infirmier inf;
+    DPI dpi;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
@@ -36,7 +38,7 @@ public class Ajout_FS extends javax.swing.JFrame {
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_FS(PH ph,Infirmier inf) {
+    public Ajout_FS(PH ph,Infirmier inf,DPI dpi) {
         initComponents();
         actes = new Vector();
         this.ph=ph;
@@ -456,6 +458,15 @@ public class Ajout_FS extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //CREER FICHE DE SOINS
         //telephone = telephone.replaceAll("\\s+","");
+        LocalDateTime ldt = LocalDateTime.now();
+        DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        FicheDeSoins f = new FicheDeSoins(dh);
+        f.setDPI(dpi);
+        f.setActe(actes);
+        f.setpH(ph);
+        f.setInfirmier(inf);
+        
+        //AJOUT FICHE DE SOINS DANS LA BD
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -527,8 +538,8 @@ public class Ajout_FS extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PH ph = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
-                Ajout_FS i = new Ajout_FS(ph,null);
-                i.setVisible(true);
+                //Ajout_FS i = new Ajout_FS(ph,null);
+                //i.setVisible(true);
             }
         });
     }

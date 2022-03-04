@@ -6,6 +6,8 @@
 package UI;
 
 import database.DatabaseAccessProperties;
+import static database.RequetesBDProfessionnels.getListeMT;
+import static database.RequetesBDProfessionnels.getListeMTNom;
 import database.SQLWarningsExceptions;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +29,7 @@ import nf.Acte;
 import static nf.Checker.checkerDate;
 import static nf.Checker.convertirDatetoString;
 import nf.*;
+import static nf.Checker.getVectorMT;
 
 /**
  *
@@ -493,8 +496,8 @@ public class Modif_Patient extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(1);
        
         try {
-            medecins_traitant = database.RequetesBD.getListeMT(conn);
-            medecinsS_traitant = database.RequetesBD.getVectMT(conn);
+            medecins_traitant = getListeMT(conn);
+            medecinsS_traitant = getVectorMT(medecinsS_traitant);
             TableModel tableModelM = new DefaultTableModel(medecinsS_traitant, entetesM);
             tab_medecinsT.setAutoCreateRowSorter(true);
             tab_medecinsT.setModel(tableModelM);
@@ -516,8 +519,8 @@ public class Modif_Patient extends javax.swing.JFrame {
         String recherche = TextField_Docteur.getText();
 
         try {
-            medecins_traitant = database.RequetesBD.getListeMTNom(conn, recherche);
-            medecinsS_traitant = database.RequetesBD.getVectMTNom(conn, recherche);
+            medecins_traitant = getListeMTNom(conn, recherche);
+            medecinsS_traitant =  getVectorMT(medecinsS_traitant);
             TableModel tableModel2 = new DefaultTableModel(medecinsS_traitant, entetesM);
             tab_medecinsT.setAutoCreateRowSorter(true);
             tab_medecinsT.setModel(tableModel2);
@@ -554,8 +557,8 @@ public class Modif_Patient extends javax.swing.JFrame {
     private void jButton_actualiser_medecinTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser_medecinTActionPerformed
         try {
             //RECHARGER MEDECINS
-            medecins_traitant = database.RequetesBD.getListeMT(conn);
-            medecinsS_traitant = database.RequetesBD.getVectMT(conn);
+            medecins_traitant = getListeMT(conn);
+            medecinsS_traitant = getVectorMT(medecinsS_traitant);;
             TableModel tableModel2 = new DefaultTableModel(medecinsS_traitant, entetesM);
             tab_medecinsT.setAutoCreateRowSorter(true);
             tab_medecinsT.setModel(tableModel2);

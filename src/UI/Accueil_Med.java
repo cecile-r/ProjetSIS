@@ -701,7 +701,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         //RECHERCHE PATIENT
         String recherche = TextField_Patient.getText();
         try {
-            dpis = getListeDPI(conn, recherche);
+            dpis = getListeDPI(conn, recherche, ph.getService().toString());
             dpis = trierDPI(dpis);
             dpisS = getVectorDPI(dpis);
             Vector entetes = new Vector();
