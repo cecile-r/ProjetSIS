@@ -31,6 +31,7 @@ import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestamp;
 import nf.DM;
 import nf.DMA;
+import nf.DateHeure;
 import nf.Lit;
 import nf.Localisation;
 import nf.Prescription;
@@ -483,15 +484,15 @@ public class RequetesBDDPI {
     }
 
     //Renvoie la liste des soins quotidiens pour un patient donné
-    //
-    /*public static List<SoinsQuotidien> listeSoinQuotidien(Connection conn, String ipp) throws SQLException {
+    //VALIDE
+    public static List<SoinsQuotidien> listeSoinQuotidien(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM SoinsQuotidien "
                 + "WHERE IPP = '" + ipp + "'");//Tous les soins quotidiens du patient
         List<SoinsQuotidien> listeSQ = new ArrayList();
 
         while (rs.next()) {
-            SoinsQuotidien sq = new SoinsQuotidien((double) rs.getFloat("temperature"), (int) rs.getFloat("saturation_o2"), (double) rs.getFloat("tension"), rs.getString("remarque"), convertTimestampSQLEnJava(rs.getTimestamp("dateHeure_SoinsQuotidien")));
+            SoinsQuotidien sq = new SoinsQuotidien((double) rs.getFloat("temperature"), rs.getInt("saturation_o2"), (double) rs.getFloat("tension"), rs.getString("remarque"), convertTimestampSQLenJava(rs.getTimestamp("dateHeure_SoinsQuotidien")));
 
             //Création de l'infirmier
             Statement stmt2 = conn.createStatement();
@@ -522,7 +523,7 @@ public class RequetesBDDPI {
         rs.close();
         stmt.close();
         return listeSQ;
-    }*/
+    }
 
     //Renvoie la liste des prescriptions pour un patient donné
     //VALIDE
@@ -584,109 +585,23 @@ public class RequetesBDDPI {
     }
 
     //Renvoie la liste des fiches de soins pour un patient donné
-    //
+    //VALIDE
     public static List<FicheDeSoins> listeFichesDeSoins(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         Statement stmt2 = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "WHERE IPP = '" + ipp + "'");
-        ResultSet rs2 = stmt2.executeQuery("SELECT DISTINCT IPP, dateHeure_FichesDeSoins FROM FichesDeSoins "
-                + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins du patient, fiches n'apparaissent pas en double
-        List<FicheDeSoins> listeFiches = new ArrayList();
-
-        if (rs.next()) { //Si y'a un DPI qui correspond à l'identifiant
-            //Création de la liste de fiches de soins
-            //System.out.println("ok if");
-            while (rs2.next()) { //Tant que y'a des fiches de soins pour ce patient (sans doublons)
-                //System.out.println("ok while");
-                FicheDeSoins fiche = new FicheDeSoins(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
-                //System.out.println("bow?");marche jusque la
-                Statement stmt3 = conn.createStatement();
-                System.out.println("avant rs3");
-                //System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins").toGMTString());
-                System.out.println(rs2.getTimestamp("dateHeure_FichesDeSoins"));
-                //System.out.println(toStringTimestamp(rs2.getTimestamp("dateHeure_FichesDeSoins")));
-                //System.out.println(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
-                //System.out.println(convertDateJavaenSQL('" + rs2.getTimestamp("dateHeure_FichesDeSoins") + "', 'DD-MON-YYYY HH:MI" + ":00v AM');
-                ResultSet rs3 = stmt3.executeQuery("SELECT dateHeure_FichesDeSoins, idActe, libelle, cout, type, nom_Acte, coeff, observation FROM FichesDeSoins " //Sélection de la fiche de soins et tous ses actes
-                        + "JOIN Acte USING (idActe) "
-                        + "WHERE (IPP = '" + ipp + "') AND (TO_CHAR(dateHeure_FichesDeSoins, 'DD-MON-YYYY HH12:MI:SS.FF') = '" + toStringTimestamp(rs2.getTimestamp("dateHeure_FichesDeSoins")) + "')");
-                //+ "WHERE (diff = 0)");  
-                //+ "WHERE (IPP = '" + ipp + "') AND (dateHeure_FichesDeSoins - " + rs2.getTimestamp("dateHeure_FichesDeSoins") + " = 0)");
-                //convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure())
-                System.out.println("avec fct tostringtimestamp : " + toStringTimestamp(rs2.getTimestamp("dateHeure_FichesDeSoins")));
-                System.out.println("avant while 2");//marche jusque la
-
-                while (rs3.next()) { //Tant qu'il y a des actes pour cette fiche MAIS ne rentre pas dans la boucle PB
-                    System.out.println("ok while 2");
-                    Code c = Code.valueOf(rs3.getString("libelle") + "," + (double) rs3.getFloat("cout"));
-                    Acte acte = new Acte(rs3.getString("nom_Acte"), Type.valueOf(rs3.getString("type")), c, (int) rs3.getFloat("coeff"), rs3.getString("observation"));
-                    //coeff int ou float??? est ce que ca va poser pb?
-                    fiche.ajouterActe(acte);
-                }
-                System.out.println("ok fin while 2");
-                //Création du professionnel de santé qui réalise la fiche de soins
-                if (rs2.getString("idPH") != null) { //Si l'éditeur/celui qui réalise les actes est un PH
-                    Statement stmt4 = conn.createStatement();
-                    ResultSet rs4 = stmt4.executeQuery("SELECT * FROM PH "
-                            + "WHERE idPH = '" + rs2.getString("idPH") + "'");//Avoir les infos du PH pour cette fiche de soins
-                    System.out.println("ok if 2");
-                    if (rs4.next()) {//Si y'a bien un PH qui correspond -> en principe toujours oui mais on sait jamais
-                        System.out.println("ok if 3");
-                        PH ph = new PH(rs4.getString("idPH"), rs4.getString("nom_PH"), rs4.getString("prenom_PH"), Service.valueOf(rs4.getString("service_PH")), rs4.getString("mdp_PH"), rs4.getString("telephone_PH"), rs4.getString("specialite_PH"));
-                        fiche.setpH(ph);
-                    }
-                    rs4.close();
-                    stmt4.close();
-                } else if (rs2.getString("idInfirmier") != null) { //L'éditeur/celui qui réalise les actes est un infirmier
-                    System.out.println("ok else if");
-                    Statement stmt5 = conn.createStatement();
-                    ResultSet rs5 = stmt5.executeQuery("SELECT * FROM Infirmier "
-                            + "WHERE idInfirmier = '" + rs2.getString("idInfirmier") + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
-                    if (rs5.next()) {//Si y'a bien un infirmier qui correspond -> en principe toujours oui mais on sait jamais
-                        System.out.println("ok else if 2");
-                        Infirmier inf = new Infirmier(rs5.getString("idInfirmier"), rs5.getString("nom_Infirmier"), rs5.getString("prenom_Infirmier"), Service.valueOf(rs5.getString("service_Infirmier")), rs5.getString("mdp_Infirmier"));
-                        fiche.setInfirmier(inf);
-                    }
-                    rs5.close();
-                    stmt5.close();
-                }
-                rs3.close();
-                stmt3.close();
-                listeFiches.add(fiche);
-            }
-            rs2.close();
-            stmt2.close();
-        }
-        rs.close();
-
-        stmt.close();
-
-        return listeFiches;
-    }
-
-    //Renvoie la liste des fiches de soins pour un patient donné
-    //
-    public static List<FicheDeSoins> listeFichesDeSoinsBis(Connection conn, String ipp) throws SQLException {
-        Statement stmt = conn.createStatement();
-        Statement stmt2 = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du patient
-        ResultSet rs2 = stmt2.executeQuery("SELECT * FROM FichesDeSoins NATURAL JOIN Acte "
+        ResultSet rs2 = stmt2.executeQuery("SELECT * FROM FichesDeSoins JOIN Acte USING (idActe)"
                 + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins du patient, fiches n'apparaissent pas en double
         List<FicheDeSoins> listeFiches = new ArrayList();
+        List<DateHeure> listeDateHeure = new ArrayList();
 
         if (rs.next()) { //Si y'a un DPI qui correspond à l'identifiant
-            int compteur = 0;
             //Création de la liste de fiches de soins avec doublons
             while (rs2.next()) { //Tant que y'a des fiches de soins pour ce patient
-                if (listeFiches.size() != 0 && listeFiches.get(listeFiches.size() - 1).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) == 0) {
-                    compteur++;
-                } else {
-                    compteur = 0;
-                }
 
-                if (compteur == 0) {//Si c'est la 1er fois qu'on voit la fiche
+                if (!listeDateHeure.contains(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")))) {//Si c'est la 1er fois qu'on voit la fiche
+                    listeDateHeure.add(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                     FicheDeSoins fiche = new FicheDeSoins(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                     Code c = Code.valueOf(rs2.getString("libelle"));
                     Acte acte = new Acte(rs2.getString("nom_Acte"), Type.valueOf(rs2.getString("type")), c, (int) rs2.getFloat("coeff"), rs2.getString("observation"));
@@ -694,7 +609,6 @@ public class RequetesBDDPI {
 
                     //Création du professionnel de santé qui réalise la fiche de soins
                     if (rs2.getString("idPH") != null) { //Si l'éditeur/celui qui réalise les actes est un PH
-                        System.out.println("ph ok");
                         Statement stmt4 = conn.createStatement();
                         ResultSet rs4 = stmt4.executeQuery("SELECT * FROM PH "
                                 + "WHERE idPH = '" + rs2.getString("idPH") + "'");//Avoir les infos du PH pour cette fiche de soins
@@ -705,7 +619,6 @@ public class RequetesBDDPI {
                         rs4.close();
                         stmt4.close();
                     } else if (rs2.getString("idInfirmier") != null) { //L'éditeur/celui qui réalise les actes est un infirmier
-                        System.out.println("inf ok");
                         Statement stmt5 = conn.createStatement();
                         ResultSet rs5 = stmt5.executeQuery("SELECT * FROM Infirmier "
                                 + "WHERE idInfirmier = '" + rs2.getString("idInfirmier") + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
@@ -732,10 +645,14 @@ public class RequetesBDDPI {
                     listeFiches.add(fiche);
                 }
 
-                if (compteur > 0) {//Si y'a deja eu cette fiche
+                else {//Si y'a deja eu cette fiche
                     Code c = Code.valueOf(rs2.getString("libelle"));
                     Acte acte = new Acte(rs2.getString("nom_Acte"), Type.valueOf(rs2.getString("type")), c, (int) rs2.getFloat("coeff"), rs2.getString("observation"));
-                    listeFiches.get(listeFiches.size() - 1).ajouterActe(acte);
+                    int j = 0;
+                    while(j < listeFiches.size() && listeFiches.get(j).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) != 0){
+                        j++;
+                    }
+                    listeFiches.get(j).ajouterActe(acte);
                 }
 
             }
@@ -749,14 +666,14 @@ public class RequetesBDDPI {
     }
 
     //Renvoie le DPI associé à l'ipp donnée, ainsi que ses DM et DMA associés
-    //
-    /*public static DPI getDPI(Connection conn, String ipp) throws SQLException {
+    //VALIDE
+    public static DPI getDPI(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                 + "JOIN Localisation USING(IPP) "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
-        
+
         if (rs.next()) { //Si y'a un DPI qui correspond à l'identifiant
             //Création des instances pour créer le DPI (pour le moment sans les DM et DMA
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -768,47 +685,47 @@ public class RequetesBDDPI {
             DMA dma = new DMA(loc);
             //Remplissage du DMA
             List<FicheDeSoins> listeFiches = listeFichesDeSoins(conn, ipp);
-            for (int i = 0; i < listeFiches.size(); i++){ //parcours de la liste de fiches de soins
+            for (int i = 0; i < listeFiches.size(); i++) { //parcours de la liste de fiches de soins
                 dma.ajouterFicheDeSoins(listeFiches.get(i));
             }
             List<RendezVous> listeRDV = listeRendezVous(conn, ipp);
-            for (int i = 0; i < listeRDV.size(); i++){ //parcours de la liste de rdv
+            for (int i = 0; i < listeRDV.size(); i++) { //parcours de la liste de rdv
                 dma.ajouterRendezVous(listeRDV.get(i));
             }
             List<Examen> listeExam = listeExamens(conn, ipp);
-            for (int i = 0; i < listeExam.size(); i++){ //parcours de la liste des examens
+            for (int i = 0; i < listeExam.size(); i++) { //parcours de la liste des examens
                 dma.ajouterExamen(listeExam.get(i));
             }
             List<LettreDeSortie> listeLS = listeLettreSortie(conn, ipp);
-            for (int i = 0; i < listeLS.size(); i++){ //parcours de la liste des lettres de sortie
+            for (int i = 0; i < listeLS.size(); i++) { //parcours de la liste des lettres de sortie
                 dma.ajouterLettreDeSortie(listeLS.get(i));
             }
-            
+
             //Création du DM
             DM dm = new DM();
             //Remplissage du DM
-            for (int i = 0; i < listeFiches.size(); i++){ //parcours de la liste de fiches de soins définie au dessus
+            for (int i = 0; i < listeFiches.size(); i++) { //parcours de la liste de fiches de soins définie au dessus
                 dm.ajouterFicheDeSoins(listeFiches.get(i));
             }
             List<Prescription> listeP = listePrescription(conn, ipp);
-            for (int i = 0; i < listeP.size(); i++){ //parcours des prescriptions
+            for (int i = 0; i < listeP.size(); i++) { //parcours des prescriptions
                 dm.ajouterPrescription(listeP.get(i));
             }
-            for (int i = 0; i < listeLS.size(); i++){ //parcours de la liste des lettres de sortie définie au dessus
+            for (int i = 0; i < listeLS.size(); i++) { //parcours de la liste des lettres de sortie définie au dessus
                 dm.ajouterLettreDeSortie(listeLS.get(i));
             }
-            //List<SoinsQuotidien> listeSQ = listeSoinQuotidien(conn, ipp);
-            /*for (int i = 0; i < listeSQ.size(); i++){ //parcours de la liste des lettres de sortie
+            List<SoinsQuotidien> listeSQ = listeSoinQuotidien(conn, ipp);
+            for (int i = 0; i < listeSQ.size(); i++) { //parcours de la liste des lettres de sortie
                 dm.ajouterSoinsQuotidien(listeSQ.get(i));
             }
-            for (int i = 0; i < listeExam.size(); i++){ //parcours de la liste des examens définie au dessus
+            for (int i = 0; i < listeExam.size(); i++) { //parcours de la liste des examens définie au dessus
                 dm.ajouterExamen(listeExam.get(i));
-            }/*
-            
-        dpi.setdMA(dma);
-        dpi.setdM(dm);
-        return dpi;
+            }
+
+            dpi.setdMA(dma);
+            dpi.setdM(dm);
+            return dpi;
+        }
+        return null;
     }
-    return dpi;
-    }*/
 }
