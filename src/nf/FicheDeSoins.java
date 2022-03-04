@@ -46,7 +46,7 @@ public class FicheDeSoins implements Evaluable{
     @Override
     public String toString() {
         String ch = "";
-        ch = ch + "Fiche de soins du " + dateHeure;
+        ch = ch + "Fiche de soins du " + convertirDatetoString(dateHeure);
         if(getpH()!=null){
             ch = ch + "\n\nPar -PH- : " + getpH().toString();
         }else{

@@ -317,12 +317,22 @@ class ConnexionSGBD {
             //Test listePrescription(ipp) -> VALIDE
             //System.out.println(RequetesBDDPI.listePrescription(conn, "1502503500"));
             
-            //Test listeFichesDeSoinsBis(ipp) ->
-            System.out.println(RequetesBDDPI.listeFichesDeSoinsBis(conn, "4500055544"));
-            //List<FicheDeSoins> listeFiches = listeFichesDeSoins(conn, "4500055544");
-            //for (int i = 0; i < listeFiches.size(); i++){
-            //    listeFiches.get(i).toString();
-            //}
+            //Test listeFichesDeSoins(ipp) -> VALIDE
+            //System.out.println(RequetesBDDPI.listeFichesDeSoins(conn, "5555888800"));
+            
+            //Test listeSoinsQuotidien(ipp) -> VALIDE
+            //System.out.println(RequetesBDDPI.listeSoinQuotidien(conn, "5500005500"));
+            
+            
+            //Test getDPI(ipp) -> VALIDE
+            /*DPI dpi = RequetesBDDPI.getDPI(conn, "5555888800");
+            System.out.println(dpi.toString());
+            System.out.println("DM");
+            System.out.println(dpi.getdM().toString());
+            System.out.println();
+            System.out.println("DMA");
+            System.out.println(dpi.getdMA().toString());*/
+            
             
             
             //Print information about connection warnings
