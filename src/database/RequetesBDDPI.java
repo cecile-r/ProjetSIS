@@ -31,6 +31,7 @@ import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestamp;
 import nf.DM;
 import nf.DMA;
+import nf.DateHeure;
 import nf.Lit;
 import nf.Localisation;
 import nf.Prescription;
@@ -590,21 +591,17 @@ public class RequetesBDDPI {
         Statement stmt2 = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du patient
-        ResultSet rs2 = stmt2.executeQuery("SELECT * FROM FichesDeSoins NATURAL JOIN Acte "
+        ResultSet rs2 = stmt2.executeQuery("SELECT * FROM FichesDeSoins JOIN Acte USING (idActe)"
                 + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins du patient, fiches n'apparaissent pas en double
         List<FicheDeSoins> listeFiches = new ArrayList();
+        List<DateHeure> listeDateHeure = new ArrayList();
 
         if (rs.next()) { //Si y'a un DPI qui correspond à l'identifiant
-            int compteur = 0;
             //Création de la liste de fiches de soins avec doublons
             while (rs2.next()) { //Tant que y'a des fiches de soins pour ce patient
-                if (listeFiches.size() != 0 && listeFiches.get(listeFiches.size() - 1).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) == 0) {
-                    compteur++;
-                } else {
-                    compteur = 0;
-                }
 
-                if (compteur == 0) {//Si c'est la 1er fois qu'on voit la fiche
+                if (!listeDateHeure.contains(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")))) {//Si c'est la 1er fois qu'on voit la fiche
+                    listeDateHeure.add(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                     FicheDeSoins fiche = new FicheDeSoins(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins")));
                     Code c = Code.valueOf(rs2.getString("libelle"));
                     Acte acte = new Acte(rs2.getString("nom_Acte"), Type.valueOf(rs2.getString("type")), c, (int) rs2.getFloat("coeff"), rs2.getString("observation"));
@@ -648,10 +645,14 @@ public class RequetesBDDPI {
                     listeFiches.add(fiche);
                 }
 
-                if (compteur > 0) {//Si y'a deja eu cette fiche
+                else {//Si y'a deja eu cette fiche
                     Code c = Code.valueOf(rs2.getString("libelle"));
                     Acte acte = new Acte(rs2.getString("nom_Acte"), Type.valueOf(rs2.getString("type")), c, (int) rs2.getFloat("coeff"), rs2.getString("observation"));
-                    listeFiches.get(listeFiches.size() - 1).ajouterActe(acte);
+                    int j = 0;
+                    while(j < listeFiches.size() && listeFiches.get(j).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) != 0){
+                        j++;
+                    }
+                    listeFiches.get(j).ajouterActe(acte);
                 }
 
             }
@@ -665,7 +666,7 @@ public class RequetesBDDPI {
     }
 
     //Renvoie le DPI associé à l'ipp donnée, ainsi que ses DM et DMA associés
-    //
+    //VALIDE
     public static DPI getDPI(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "

@@ -324,14 +324,15 @@ class ConnexionSGBD {
             //System.out.println(RequetesBDDPI.listeSoinQuotidien(conn, "5500005500"));
             
             
-            //Test getDPI(ipp) -> VALIDE mais pb PH Maboul
-            DPI dpi = RequetesBDDPI.getDPI(conn, "5555888800");
+            //Test getDPI(ipp) -> VALIDE
+            /*DPI dpi = RequetesBDDPI.getDPI(conn, "5555888800");
             System.out.println(dpi.toString());
             System.out.println("DM");
             System.out.println(dpi.getdM().toString());
             System.out.println();
             System.out.println("DMA");
-            System.out.println(dpi.getdMA().toString());
+            System.out.println(dpi.getdMA().toString());*/
+            
             
             
             //Print information about connection warnings
