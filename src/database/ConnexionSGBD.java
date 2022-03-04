@@ -50,7 +50,40 @@ class ConnexionSGBD {
             String serviceS = "Anesthesie";
             Date d = new Date(2000, 12, 20);
             DateHeure dh = new DateHeure(2020, 12, 6, 11, 30);
+            
             MedecinTraitant m = new MedecinTraitant("bruce.batman@yahoo.com", "Batman", "Bruce", "0696471245");
+            MedecinTraitant m1 = new MedecinTraitant("doctor.octopus@gmail.com", "Docteur", "Octopus", "0696874523");
+            Infirmier inf1 = new Infirmier("totorocec","Totoro","Cecile",Service.Unite_de_soins_intensifs_respiratoires,"dessin");
+            PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"Specialiste en substances psychoactives","0433322233","cannabis");
+            
+            DM dm1 = new DM();
+            Localisation l1 = new Localisation(Service.Unite_de_soins_intensifs_respiratoires,Lit.P,3,Service.Addictologie);
+            DMA dma1 = new DMA(l1);
+            
+            Acte a1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
+            a1.setIdActe(666);
+            Acte a2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
+            a2.setIdActe(252);
+          
+            DateHeure d1 = new DateHeure(2022,02,10,10,00);
+            FicheDeSoins fs1 = new FicheDeSoins(d1);
+            fs1.setpH(ph1);
+            fs1.ajouterActe(a1);
+            fs1.ajouterActe(a2);
+            
+            DateHeure d2 = new DateHeure(2021,06,27,17,40);
+            FicheDeSoins fs2 = new FicheDeSoins(d1);
+            fs2.setInfirmier(inf1);
+            fs2.ajouterActe(a2);
+            
+            Date dn1 = new Date(1977,07,30);
+            DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
+            
+            ph1.ajouterFicheDeSoins(fs1);
+            fs1.setDPI(dpi1);
+            dm1.ajouterFicheDeSoins(fs1);
+            dma1.ajouterFicheDeSoins(fs1);
+            
             
             
             // Test getListePH() -> VALIDE
@@ -332,6 +365,10 @@ class ConnexionSGBD {
             System.out.println();
             System.out.println("DMA");
             System.out.println(dpi.getdMA().toString());*/
+            
+            
+            //Test creerFicheDeSoins(fiche) ->
+            RequetesBDDPI.creerFicheDeSoins(conn, fs1);
             
             
             

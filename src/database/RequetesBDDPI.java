@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +28,13 @@ import nf.Sexe;
 import nf.Type;
 import nf.TypeExamen;
 import database.RequetesBDConversion;
+import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
 import static database.RequetesBDConversion.convertDateSQLenJava;
 import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestamp;
+import static database.RequetesBDConversion.toStringTimestampJAVA;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import nf.DM;
 import nf.DMA;
 import nf.DateHeure;
@@ -335,28 +341,6 @@ public class RequetesBDDPI {
         return vDPIOuvert;
     }
 
-    //Creer un patient et l'ajouter dans la base de données
-    //VALIDE
-    public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, String telephone_medecin_traitant) throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "WHERE IPP = '" + id + "'");
-
-        if (rs.next()) {
-            System.out.println("Ce patient est déjà enregistré dans la base de données.");
-        } else {
-            Date dateNaissanceReelle = new Date(date_de_naissance.getYear(), date_de_naissance.getMonth() - 1, date_de_naissance.getDate());
-            Statement stmt2 = conn.createStatement();
-            stmt2.executeUpdate("INSERT INTO DPI(IPP, nom_DPI, prenom_DPI, date_de_naissance, sexe_DPI, adresse_DPI, telephone_DPI, telephone_medecin_traitant) "
-                    + "VALUES ('" + id + "', '" + nom_DPI + "', '" + prenom_DPI + "', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "'"
-                    + ",'yyyy-MM-dd')" + ", '" + sexe_DPI + "', '" + adresse_DPI + "', '" + telephone_DPI + "', '" + telephone_medecin_traitant + "')");
-            System.out.println("Ce patient a été inséré dans la base de données.");
-            stmt2.close();
-        }
-        rs.close();
-        stmt.close();
-    }
-
     //Renvoie la liste des rendez-vous pour un patient donné
     //VALIDE
     public static List<RendezVous> listeRendezVous(Connection conn, String ipp) throws SQLException {
@@ -643,13 +627,11 @@ public class RequetesBDDPI {
                     rs3.close();
                     stmt3.close();
                     listeFiches.add(fiche);
-                }
-
-                else {//Si y'a deja eu cette fiche
+                } else {//Si y'a deja eu cette fiche
                     Code c = Code.valueOf(rs2.getString("libelle"));
                     Acte acte = new Acte(rs2.getString("nom_Acte"), Type.valueOf(rs2.getString("type")), c, (int) rs2.getFloat("coeff"), rs2.getString("observation"));
                     int j = 0;
-                    while(j < listeFiches.size() && listeFiches.get(j).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) != 0){
+                    while (j < listeFiches.size() && listeFiches.get(j).getDateHeure().compareTo(convertTimestampSQLenJava(rs2.getTimestamp("dateHeure_FichesDeSoins"))) != 0) {
                         j++;
                     }
                     listeFiches.get(j).ajouterActe(acte);
@@ -727,5 +709,86 @@ public class RequetesBDDPI {
             return dpi;
         }
         return null;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //Création d'éléments
+    //Creer un patient et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, String telephone_medecin_traitant) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "WHERE IPP = '" + id + "'");
+
+        if (rs.next()) {
+            System.out.println("Ce patient est déjà enregistré dans la base de données.");
+        } else {
+            Date dateNaissanceReelle = new Date(date_de_naissance.getYear(), date_de_naissance.getMonth() - 1, date_de_naissance.getDate());
+            Statement stmt2 = conn.createStatement();
+            stmt2.executeUpdate("INSERT INTO DPI(IPP, nom_DPI, prenom_DPI, date_de_naissance, sexe_DPI, adresse_DPI, telephone_DPI, telephone_medecin_traitant) "
+                    + "VALUES ('" + id + "', '" + nom_DPI + "', '" + prenom_DPI + "', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "'"
+                    + ",'yyyy-MM-dd')" + ", '" + sexe_DPI + "', '" + adresse_DPI + "', '" + telephone_DPI + "', '" + telephone_medecin_traitant + "')");
+            System.out.println("Ce patient a été inséré dans la base de données.");
+            stmt2.close();
+        }
+        rs.close();
+        stmt.close();
+    }
+
+    //Creer une fiche de soins et l'ajouter dans la base de données
+    //
+    public static void creerFicheDeSoins(Connection conn, FicheDeSoins fiche) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM FichesDeSoins "
+                + "WHERE IPP = '" + fiche.getDPI().getIPP() + "'");
+
+        for (int i = 0; i < fiche.getActe().size(); i++) {
+            PreparedStatement stmt2 = null;
+            String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
+            System.out.println(ts);
+            Timestamp t = Timestamp.valueOf(ts);
+
+            if (fiche.getpH() == null) {
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
+                stmt2.setString(1, fiche.getDPI().getIPP());
+                stmt2.setTimestamp(2, t);
+                stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
+                stmt2.setString(4, null);
+                stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
+                
+                
+                
+                //stmt2.executeUpdate("INSERT INTO FichesDeSoins(IPP, dateHeure_FichesDeSoins, idActe, idPH, idInfirmier) "
+                //        + "VALUES ('" + fiche.getDPI().getIPP() + "', TO_TIMESTAMP('" + new java.sql.Timestamp(fiche.getDateHeure().getAnnee(), fiche.getDateHeure().getMois(), fiche.getDateHeure().getJour(), fiche.getDateHeure().getHeure(), fiche.getDateHeure().getMinutes(), 0, 0).toString() + "', 'dd-MON-yyyy HH12:MI:SS.FF'),'" + fiche.getActe().get(i) + "','" + null + "', '" + fiche.getInfirmier().getIdInfirmiere() + "')");
+
+            }
+            if (fiche.getInfirmier() == null) {
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
+                stmt2.setString(1, fiche.getDPI().getIPP());
+                stmt2.setTimestamp(2, t);
+                stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
+                stmt2.setString(4, fiche.getpH().getIdPH());
+                stmt2.setString(5, null);
+                //stmt2.executeUpdate("INSERT INTO FichesDeSoins(IPP, dateHeure_FichesDeSoins, idActe, idPH, idInfirmier) "
+                //        + "VALUES ('" + fiche.getDPI().getIPP() + "', TO_TIMESTAMP('" + new java.sql.Timestamp(fiche.getDateHeure().getAnnee(), fiche.getDateHeure().getMois(), fiche.getDateHeure().getJour(), fiche.getDateHeure().getHeure(), fiche.getDateHeure().getMinutes(), 0, 0).toString() + "', 'dd-MON-yyyy HH12:MI:SS.FF'),'" + fiche.getActe().get(i) + "','" + fiche.getpH().getIdPH() + "', '" + null + "')");
+
+            } 
+            else {
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
+                stmt2.setString(1, fiche.getDPI().getIPP());
+                stmt2.setTimestamp(2, t);
+                stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
+                stmt2.setString(4, fiche.getpH().getIdPH());
+                stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
+                //stmt2.executeUpdate("INSERT INTO FichesDeSoins(IPP, dateHeure_FichesDeSoins, idActe, idPH, idInfirmier) "
+                //        + "VALUES ('" + fiche.getDPI().getIPP() + "', TO_TIMESTAMP('" + new java.sql.Timestamp(fiche.getDateHeure().getAnnee(), fiche.getDateHeure().getMois(), fiche.getDateHeure().getJour(), fiche.getDateHeure().getHeure(), fiche.getDateHeure().getMinutes(), 0, 0).toString() + "', 'dd-MON-yyyy HH12:MI:SS.FF'),'" + fiche.getActe().get(i) + "','" + fiche.getpH().getIdPH() + "', '" + fiche.getInfirmier().getIdInfirmiere() + "')");
+            }
+            
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+
+        rs.close();
+        stmt.close();
     }
 }
