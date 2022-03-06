@@ -158,9 +158,10 @@ public class RequetesBDProfessionnels {
         List<RendezVous> listeRDV = new ArrayList();
         //Sélection de tous les rdv d'un PH selon la date donnée en paramètre
         PreparedStatement stmt = null;
-        stmt = conn.prepareStatement("SELECT * FROM RendezVous WHERE dateHeure_RDV BETWEEN ? AND ?");
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous WHERE dateHeure_RDV BETWEEN ? AND ? AND idPH = ?");
         stmt.setTimestamp(1, convertDateJavaEnTimestampJavaMin(date));
         stmt.setTimestamp(2, convertDateJavaEnTimestampJavaMax(date));
+        stmt.setString(3, ph.getIdPH());
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
