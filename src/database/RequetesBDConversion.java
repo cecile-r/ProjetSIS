@@ -4,6 +4,7 @@ Fonctions relatives aux conversions
 package database;
 
 import java.util.Date;
+import java.sql.Timestamp;
 import nf.DateHeure;
 
 /**
@@ -11,6 +12,20 @@ import nf.DateHeure;
  * @author cecilerichard
  */
 public class RequetesBDConversion {
+    
+    //Convertir une Date java en DateHeure avec heure et min 00:00
+    //VALIDE
+    public static Timestamp convertDateJavaEnTimestampJavaMin(Date date){
+        Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 0, 0 ,0 ,0);
+        return t;
+    }
+    
+    //Convertir une Date java en DateHeure avec heure et min 23:59
+    //VALIDE
+    public static Timestamp convertDateJavaEnTimestampJavaMax(Date date){
+        Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 23, 59, 0, 0);
+        return t;
+    }
     
     //Convertir une date sql en date java correctement
     //VALIDE
@@ -46,8 +61,8 @@ public class RequetesBDConversion {
     //VALIDE
     public static String toStringTimestamp(java.sql.Timestamp ts){
         //String year = String.valueOf(ts.getYear()+1900).substring(2, 4);
-        int year = ts.getYear()+1900;
-        int month = ts.getMonth()+1;
+        int year = ts.getYear();
+        int month = ts.getMonth();
         int day = ts.getDate();
         int hour = ts.getHours();
         int min = ts.getMinutes();
@@ -98,11 +113,9 @@ public class RequetesBDConversion {
         else if(month==12){
             s = s + "DEC-" + year + " ";
         }
-        
-        //s = s + hour + ":" + min + ":00.000000";
 
         //Conditions des heures
-        if(hour > 12 && hour <= 24){//si c'est pm
+        if(hour >= 13){//si c'est pm
             if((hour - 12) >= 10){
                 if(min == 0){
                     s = s + (hour - 12) + ":00:00 PM";
@@ -113,15 +126,15 @@ public class RequetesBDConversion {
             }
             else{
                 if(min == 0){
-                    s = s + "0" + hour + ":00:00 PM";
+                    s = s + "0" + (hour - 12) + ":00:00 PM";
                 }
                 else{
-                    s = s + "0" + hour + ":" + min + ":00 PM";
+                    s = s + "0" + (hour - 12) + ":00:00 PM";
                 }
             }
             
         }
-        else if(0 <= hour && hour <=12){ //si c'est am
+        else if(0 <= hour && hour <13){ //si c'est am
             if(hour >= 10){
                 if(min == 0){
                     s = s + hour + ":00:00 AM";
