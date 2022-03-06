@@ -34,7 +34,7 @@ public class RequetesBDConversion {
         return dateSQL;
     }
     
-    //Convertir une date Java en Date SQL correctement
+    //Convertir une date heure Java en Timestamp SQL correctement
     //VALIDE
     public static java.sql.Timestamp convertDateHeureJavaEnTimestampSQL(DateHeure dh){
         DateHeure dateHeureReelle = new DateHeure(dh.getAnnee()-1900, dh.getMois()-1, dh.getJour(), dh.getHeure(), dh.getMinutes());
@@ -51,7 +51,15 @@ public class RequetesBDConversion {
         int day = ts.getDate();
         int hour = ts.getHours();
         int min = ts.getMinutes();
-        String s = day + "-";
+        String s;
+        
+        //Condition du jour
+        if(day < 10){
+            s = "0" + day + "-";
+        }
+        else{
+            s = day + "-";
+        }
         
         //Conditions des mois
         if(month==1){

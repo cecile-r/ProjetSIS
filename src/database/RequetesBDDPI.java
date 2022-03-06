@@ -736,16 +736,11 @@ public class RequetesBDDPI {
     }
 
     //Creer une fiche de soins et l'ajouter dans la base de données
-    //
+    //VALIDE
     public static void creerFicheDeSoins(Connection conn, FicheDeSoins fiche) throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM FichesDeSoins "
-                + "WHERE IPP = '" + fiche.getDPI().getIPP() + "'");
-
         for (int i = 0; i < fiche.getActe().size(); i++) {
             PreparedStatement stmt2 = null;
             String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
-            System.out.println(ts);
             Timestamp t = Timestamp.valueOf(ts);
 
             if (fiche.getpH() == null) {
@@ -755,12 +750,6 @@ public class RequetesBDDPI {
                 stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
                 stmt2.setString(4, null);
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
-                
-                
-                
-                //stmt2.executeUpdate("INSERT INTO FichesDeSoins(IPP, dateHeure_FichesDeSoins, idActe, idPH, idInfirmier) "
-                //        + "VALUES ('" + fiche.getDPI().getIPP() + "', TO_TIMESTAMP('" + new java.sql.Timestamp(fiche.getDateHeure().getAnnee(), fiche.getDateHeure().getMois(), fiche.getDateHeure().getJour(), fiche.getDateHeure().getHeure(), fiche.getDateHeure().getMinutes(), 0, 0).toString() + "', 'dd-MON-yyyy HH12:MI:SS.FF'),'" + fiche.getActe().get(i) + "','" + null + "', '" + fiche.getInfirmier().getIdInfirmiere() + "')");
-
             }
             if (fiche.getInfirmier() == null) {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
@@ -769,9 +758,6 @@ public class RequetesBDDPI {
                 stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
                 stmt2.setString(4, fiche.getpH().getIdPH());
                 stmt2.setString(5, null);
-                //stmt2.executeUpdate("INSERT INTO FichesDeSoins(IPP, dateHeure_FichesDeSoins, idActe, idPH, idInfirmier) "
-                //        + "VALUES ('" + fiche.getDPI().getIPP() + "', TO_TIMESTAMP('" + new java.sql.Timestamp(fiche.getDateHeure().getAnnee(), fiche.getDateHeure().getMois(), fiche.getDateHeure().getJour(), fiche.getDateHeure().getHeure(), fiche.getDateHeure().getMinutes(), 0, 0).toString() + "', 'dd-MON-yyyy HH12:MI:SS.FF'),'" + fiche.getActe().get(i) + "','" + fiche.getpH().getIdPH() + "', '" + null + "')");
-
             } 
             else {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
@@ -780,15 +766,118 @@ public class RequetesBDDPI {
                 stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
                 stmt2.setString(4, fiche.getpH().getIdPH());
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
-                //stmt2.executeUpdate("INSERT INTO FichesDeSoins(IPP, dateHeure_FichesDeSoins, idActe, idPH, idInfirmier) "
-                //        + "VALUES ('" + fiche.getDPI().getIPP() + "', TO_TIMESTAMP('" + new java.sql.Timestamp(fiche.getDateHeure().getAnnee(), fiche.getDateHeure().getMois(), fiche.getDateHeure().getJour(), fiche.getDateHeure().getHeure(), fiche.getDateHeure().getMinutes(), 0, 0).toString() + "', 'dd-MON-yyyy HH12:MI:SS.FF'),'" + fiche.getActe().get(i) + "','" + fiche.getpH().getIdPH() + "', '" + fiche.getInfirmier().getIdInfirmiere() + "')");
             }
-            
             stmt2.executeUpdate();
             stmt2.close();
         }
-
-        rs.close();
+    }
+    
+    //Creer une prescription et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerPrescription(Connection conn, Prescription p) throws SQLException{
+        PreparedStatement stmt2 = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(p.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt2 = conn.prepareStatement("INSERT INTO Prescription values(?,?,?,?,?,?)");
+        stmt2.setString(1, p.getDPI().getIPP());
+        stmt2.setString(2, p.getpH().getIdPH());
+        stmt2.setTimestamp(3, t);
+        
+        if(p.getTypeExamen() == null){
+            stmt2.setString(4, p.getMedicament());
+            stmt2.setString(5, null);
+        }
+        else if(p.getMedicament() == null){
+            stmt2.setString(4, null);
+            stmt2.setString(5, p.getTypeExamen().toString());
+        }
+        
+        stmt2.setString(6, p.getObservation());
+        
+        stmt2.executeUpdate();
+        stmt2.close();
+    }
+    
+    //Creer une lettre de sortie et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerLettreSortie(Connection conn, LettreDeSortie ls) throws SQLException{
+        PreparedStatement stmt = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(ls.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt = conn.prepareStatement("INSERT INTO LettreDeSortie values(?,?,?,?)");
+        stmt.setString(1, ls.getDPI().getIPP());
+        stmt.setString(2, ls.getPh().getIdPH());
+        stmt.setTimestamp(3, t);
+        stmt.setString(4, ls.getTexte());
+        
+        stmt.executeUpdate();
         stmt.close();
     }
+    
+    //Creer un soin quotidien et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerSoinQuotidien(Connection conn, SoinsQuotidien soin) throws SQLException{
+        PreparedStatement stmt = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(soin.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt = conn.prepareStatement("INSERT INTO SoinsQuotidien values(?,?,?,?,?,?,?)");
+        stmt.setString(1, soin.getDPI().getIPP());
+        stmt.setTimestamp(2, t);
+        stmt.setString(3, soin.getInfirmier().getIdInfirmiere());
+        stmt.setFloat(4, (float) soin.getTemperature());
+        stmt.setInt(5, soin.getSaturationO2());
+        stmt.setFloat(6, (float) soin.getTension());
+        stmt.setString(7, soin.getObservations());
+        
+        stmt.executeUpdate();
+        stmt.close();
+    }
+    
+    //Creer un rdv et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerRendezVous(Connection conn, RendezVous rdv) throws SQLException{
+        PreparedStatement stmt = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(rdv.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous WHERE IPP=? AND idPH=? AND dateHeure_RDV=?");
+        stmt.setString(1, rdv.getDPI().getIPP());
+        stmt.setString(2, rdv.getpH().getIdPH());
+        stmt.setTimestamp(3, t);
+        ResultSet rs = stmt.executeQuery();
+        
+        if (rs.next()) {
+            System.out.println("Ce rendez-vous est déjà ajouté.");
+        } else {
+            System.out.println("ok else");
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("INSERT INTO RendezVous values(?,?,?,?)");
+            stmt2.setString(1, rdv.getDPI().getIPP());
+            stmt2.setString(2, rdv.getpH().getIdPH());
+            stmt2.setTimestamp(3, t);
+            stmt2.setString(4, rdv.getRemarque());
+        
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+        //rs.close();
+        stmt.close();
+    }
+    
+    //Creer un examen et l'ajouter dans la base de données
+    //VALIDE
+    public static void creerExamen(Connection conn, Examen exam) throws SQLException{
+        PreparedStatement stmt = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(exam.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt = conn.prepareStatement("INSERT INTO Examen values(?,?,?,?,?)");
+        stmt.setString(1, exam.getDPI().getIPP());
+        stmt.setString(2, exam.getPh().getIdPH());
+        stmt.setTimestamp(3, t);
+        stmt.setString(4, exam.getType_examen().toString());
+        stmt.setString(5, exam.getResultats());
+        
+        stmt.executeUpdate();
+        stmt.close();
+    }
+    
 }
