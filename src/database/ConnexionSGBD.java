@@ -52,6 +52,8 @@ class ConnexionSGBD {
             Date d = new Date(2000, 12, 20);
             Date date2 = new Date(2021, 12, 14);
             Date date3 = new Date(2021, 12, 13);
+            Date date4 = new Date(2022, 3, 14);
+            Date date5 = new Date(2022, 4, 2);
             DateHeure dh = new DateHeure(2020, 12, 6, 11, 30);
             
             MedecinTraitant m = new MedecinTraitant("bruce.batman@yahoo.com", "Batman", "Bruce", "0696471245");
@@ -59,6 +61,7 @@ class ConnexionSGBD {
             Infirmier inf1 = new Infirmier("totorocec","Totoro","Cecile",Service.Unite_de_soins_intensifs_respiratoires,"dessin");
             PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"cannabis","0433322233","Specialiste en substances psychoactives");
             PH ph2 = new PH("nadalraf","Nadal","Rafael",Service.Neurologie,"grosbras","0611111111","Neurologue");
+            PH ph3 = new PH("marechalou","Marecha","Louise",Service.Endoscopie_digestive,"chaussette","0620240400","chirurgienne");
             
             DM dm1 = new DM();
             Localisation l1 = new Localisation(Service.Unite_de_soins_intensifs_respiratoires,Lit.P,3,Service.Addictologie);
@@ -438,9 +441,9 @@ class ConnexionSGBD {
             
             
             //Test getListeRDVparJour(ph, date) -> VALIDE
-            //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph2, date2)); //date où y'a des rdv
+            //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph1, date2)); //date où y'a des rdv
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph2, date3)); //date où y'a pas de rdv
-            
+            //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph3, date4)); //aucun rdv
             
             
             //Print information about connection warnings
