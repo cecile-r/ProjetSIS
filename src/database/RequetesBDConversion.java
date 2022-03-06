@@ -4,6 +4,7 @@ Fonctions relatives aux conversions
 package database;
 
 import java.util.Date;
+import java.sql.Timestamp;
 import nf.DateHeure;
 
 /**
@@ -11,6 +12,20 @@ import nf.DateHeure;
  * @author cecilerichard
  */
 public class RequetesBDConversion {
+    
+    //Convertir une Date java en DateHeure avec heure et min 00:00
+    //VALIDE
+    public static Timestamp convertDateJavaEnTimestampJavaMin(Date date){
+        Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 0, 0 ,0 ,0);
+        return t;
+    }
+    
+    //Convertir une Date java en DateHeure avec heure et min 23:59
+    //VALIDE
+    public static Timestamp convertDateJavaEnTimestampJavaMax(Date date){
+        Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 23, 59, 0, 0);
+        return t;
+    }
     
     //Convertir une date sql en date java correctement
     //VALIDE
@@ -34,24 +49,32 @@ public class RequetesBDConversion {
         return dateSQL;
     }
     
-    //Convertir une date Java en Date SQL correctement
+    //Convertir une date heure Java en Timestamp SQL correctement
     //VALIDE
     public static java.sql.Timestamp convertDateHeureJavaEnTimestampSQL(DateHeure dh){
         DateHeure dateHeureReelle = new DateHeure(dh.getAnnee()-1900, dh.getMois()-1, dh.getJour(), dh.getHeure(), dh.getMinutes());
         java.sql.Timestamp timestampSQL = new java.sql.Timestamp(dateHeureReelle.getAnnee(),dateHeureReelle.getMois(),dateHeureReelle.getJour(), dateHeureReelle.getHeure(), dateHeureReelle.getMinutes(), 0, 0);
         return timestampSQL;
     }
-    
+   
     //Renvoie en string le timestamp sous la forme DD-MON-YYYY HH:MI:SS AM ou PM
     //VALIDE
     public static String toStringTimestamp(java.sql.Timestamp ts){
         //String year = String.valueOf(ts.getYear()+1900).substring(2, 4);
-        int year = ts.getYear()+1900;
-        int month = ts.getMonth()+1;
+        int year = ts.getYear();
+        int month = ts.getMonth();
         int day = ts.getDate();
         int hour = ts.getHours();
         int min = ts.getMinutes();
-        String s = day + "-";
+        String s;
+        
+        //Condition du jour
+        if(day < 10){
+            s = "0" + day + "-";
+        }
+        else{
+            s = day + "-";
+        }
         
         //Conditions des mois
         if(month==1){
@@ -90,25 +113,62 @@ public class RequetesBDConversion {
         else if(month==12){
             s = s + "DEC-" + year + " ";
         }
-        
-        //s = s + hour + ":" + min + ":00.000000";
 
         //Conditions des heures
-        if(hour > 12 && hour <= 24){//si c'est pm
+        if(hour >= 13){//si c'est pm
             if((hour - 12) >= 10){
-                s = s + (hour - 12) + ":" + min + ":00.000000";
+                if(min == 0){
+                    s = s + (hour - 12) + ":00:00 PM";
+                }
+                else{
+                    s = s + (hour - 12) + ":" + min + ":00 PM";
+                }
             }
             else{
-                s = s + "0" + (hour - 12) + ":" + min + ":00.000000";
+                if(min == 0){
+                    s = s + "0" + (hour - 12) + ":00:00 PM";
+                }
+                else{
+                    s = s + "0" + (hour - 12) + ":00:00 PM";
+                }
             }
             
         }
-        else if(0 <= hour && hour <=12){ //si c'est am
-            s = s + "0" + hour + ":" + min + ":00.000000";
+        else if(0 <= hour && hour <13){ //si c'est am
+            if(hour >= 10){
+                if(min == 0){
+                    s = s + hour + ":00:00 AM";
+                }
+                else{
+                    s = s + hour + ":" + min + ":00 AM";
+                }
+            }
+            else{
+                if(min == 0){
+                    s = s + "0" + hour + ":00:00 AM";
+                }
+                else{
+                    s = s + "0" + hour + ":" + min + ":00 AM";
+                }
+            }
         }
         
         return s;
     }
-
     
+    //Renvoie en string le timestamp sous la forme DD-MON-YYYY HH:MI:SS AM ou PM
+    //VALIDE
+    public static String toStringTimestampJAVA(java.sql.Timestamp ts){
+        //String year = String.valueOf(ts.getYear()+1900).substring(2, 4);
+        int year = ts.getYear()+1900;
+        int month = ts.getMonth()+1;
+        int day = ts.getDate();
+        int hour = ts.getHours();
+        int min = ts.getMinutes();
+        int sec = ts.getSeconds();
+        String s = year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
+        
+        return s;
+    }
+
 }

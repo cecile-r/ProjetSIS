@@ -3,16 +3,28 @@ Fonctions relatives aux professionnels de santé
 */
 package database;
 
+import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
+import static database.RequetesBDConversion.convertDateSQLenJava;
+import static database.RequetesBDConversion.convertTimestampSQLenJava;
+import static database.RequetesBDConversion.toStringTimestampJAVA;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import nf.DPI;
 import nf.MedecinTraitant;
 import nf.PH;
+import nf.RendezVous;
 import nf.Service;
+import nf.Sexe;
 
 /**
  *
@@ -140,6 +152,38 @@ public class RequetesBDProfessionnels {
         return vPHTotal;
     }
 
+    //Renvoie la liste des rdv d'un PH pour un jour donné
+    //VALIDE
+    public static List<RendezVous> getListeRDVparJour(Connection conn, PH ph, Date date) throws SQLException{
+        List<RendezVous> listeRDV = new ArrayList();
+        //Sélection de tous les rdv d'un PH selon la date donnée en paramètre
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous WHERE dateHeure_RDV BETWEEN ? AND ?");
+        stmt.setTimestamp(1, convertDateJavaEnTimestampJavaMin(date));
+        stmt.setTimestamp(2, convertDateJavaEnTimestampJavaMax(date));
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            RendezVous rdv = new RendezVous(convertTimestampSQLenJava(rs.getTimestamp("dateHeure_RDV")), rs.getString("remarque"));
+            rdv.setpH(ph);
+            //Sélection du patient concerné par le rendez vous
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                + "WHERE IPP = '" + rs.getString("IPP") + "'");
+            if (rs2.next()) {
+                MedecinTraitant m = new MedecinTraitant(rs2.getString("mail"), rs2.getString("nom_medecin_traitant"), rs2.getString("prenom_medecin_traitant"), rs2.getString("telephone_medecin_traitant"));
+                DPI dpi = new DPI(rs2.getString("IPP"), rs2.getString("nom_DPI"), rs2.getString("prenom_DPI"), convertDateSQLenJava(rs2.getDate("date_de_naissance")), Sexe.valueOf(rs2.getString("sexe_DPI")), rs2.getString("adresse_DPI"), rs2.getString("telephone_DPI"), m);
+                rdv.setDPI(dpi);
+            }
+            listeRDV.add(rdv);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeRDV;
+    }
+    
     
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions médecin traitant
