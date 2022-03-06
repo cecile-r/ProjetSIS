@@ -4,6 +4,7 @@ import java.beans.Statement;
 import java.sql.Connection;
 //import java.sql.Date;
 import java.util.Date;
+import java.sql.Timestamp;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,12 +50,15 @@ class ConnexionSGBD {
             Service service = Service.valueOf("Anesthesie");
             String serviceS = "Anesthesie";
             Date d = new Date(2000, 12, 20);
+            Date date2 = new Date(2021, 12, 14);
+            Date date3 = new Date(2021, 12, 13);
             DateHeure dh = new DateHeure(2020, 12, 6, 11, 30);
             
             MedecinTraitant m = new MedecinTraitant("bruce.batman@yahoo.com", "Batman", "Bruce", "0696471245");
             MedecinTraitant m1 = new MedecinTraitant("doctor.octopus@gmail.com", "Docteur", "Octopus", "0696874523");
             Infirmier inf1 = new Infirmier("totorocec","Totoro","Cecile",Service.Unite_de_soins_intensifs_respiratoires,"dessin");
-            PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"Specialiste en substances psychoactives","0433322233","cannabis");
+            PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"cannabis","0433322233","Specialiste en substances psychoactives");
+            PH ph2 = new PH("nadalraf","Nadal","Rafael",Service.Neurologie,"grosbras","0611111111","Neurologue");
             
             DM dm1 = new DM();
             Localisation l1 = new Localisation(Service.Unite_de_soins_intensifs_respiratoires,Lit.P,3,Service.Addictologie);
@@ -379,8 +383,17 @@ class ConnexionSGBD {
             System.out.println(convertDateJavaEnSQL(d).getClass());*/
             
             //Test convertDateHeureJavaEnTimestampSQL(date) -> VALIDE
-            /*System.out.println(convertDateHeureJavaEnTimestampSQL(dh));
-            System.out.println(convertDateHeureJavaEnTimestampSQL(dh).getClass());*/
+            /*DateHeure dh3 = new DateHeure(2020, 12, 6, 12, 30);
+            System.out.println(RequetesBDConversion.convertDateHeureJavaEnTimestampSQL(dh3));
+            System.out.println(RequetesBDConversion.convertDateHeureJavaEnTimestampSQL(dh3).getClass());*/
+            
+            //Test conversions convertDateJavaEnDateHeureMin(date) et convertDateJavaEnDateHeureMax(date) -> VALIDE
+            //System.out.println(RequetesBDConversion.convertDateJavaEnTimestampJavaMin(d).toString());
+            //System.out.println(RequetesBDConversion.convertDateJavaEnTimestampJavaMax(d).toString());
+            
+            //Test toStringTimestamp(timestamp) -> VALIDE
+            //Timestamp ts = new Timestamp(2022, 3, 12, 12, 30, 0, 0);
+            //System.out.println(RequetesBDConversion.toStringTimestamp(ts));
             
             
             //Test listePrescription(ipp) -> VALIDE
@@ -422,6 +435,11 @@ class ConnexionSGBD {
             
             //Test creerExamen(exam) -> VALIDE
             //RequetesBDDPI.creerExamen(conn, exam);
+            
+            
+            //Test getListeRDVparJour(ph, date) -> VALIDE
+            //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph2, date2)); //date où y'a des rdv
+            //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph2, date3)); //date où y'a pas de rdv
             
             
             
