@@ -75,7 +75,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jLabel10.setText(dpi.getNom());
         jLabel11.setText(dpi.getPrenom());
         jLabel12.setText(dpi.getSexe().toString());
-        System.out.println(dpi.getDateNaissance().toString());
         String dN = nf.Checker.convertirDatetoString(dpi.getDateNaissance());
         jLabel13.setText(dN);
         

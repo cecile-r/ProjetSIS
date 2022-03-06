@@ -42,7 +42,6 @@ public class Connexion extends javax.swing.JFrame {
      */
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
 
-        
         this.conn = conn;
         initComponents();
 
@@ -55,7 +54,7 @@ public class Connexion extends javax.swing.JFrame {
         java.awt.Image img2 = icone2.getImage();
         icone2 = new ImageIcon(img2);
         Label_Main.setIcon(icone2);
-        
+
     }
 
     /**
@@ -213,43 +212,43 @@ public class Connexion extends javax.swing.JFrame {
         //recupération id et mdp
         String id = Label_Identifiant.getText();
         String mdp = new String(jPasswordField1.getPassword());
-        
+
         //dimension fenetre
         Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
         int longueur = tailleMoniteur.width;
         int hauteur = tailleMoniteur.height;
         boolean c;
         try {
-            CB_item = getStatut(conn,id);
+            CB_item = getStatut(conn, id);
             System.out.println(CB_item);
             c = verifyConnexion(conn, id, mdp, CB_item);
             if (c) {
                 if (CB_item.equals("PH")) {
-                    PH ph = userPH(conn,id);
+                    PH ph = userPH(conn, id);
                     Accueil_Med i;
-                    i = new Accueil_Med(conn,ph);
+                    i = new Accueil_Med(conn, ph);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
                 if (CB_item.equals("SA")) {
-                    SecretaireAdministrative sa = userSA(conn,id);
+                    SecretaireAdministrative sa = userSA(conn, id);
                     Accueil_SA i;
-                    i = new Accueil_SA(conn,sa);
+                    i = new Accueil_SA(conn, sa);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
                 if (CB_item.equals("SM")) {
-                    SecretaireMedicale sm =userSM(conn,id);
+                    SecretaireMedicale sm = userSM(conn, id);
                     Accueil_SM i;
-                    i = new Accueil_SM(conn,sm);
+                    i = new Accueil_SM(conn, sm);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
                 if (CB_item.equals("Inf")) {
-                    Infirmier inf =userInf(conn,id);
+                    Infirmier inf = userInf(conn, id);
                     Accueil_SM i;
                     //i = new Accueil_Inf(conn,sm);
                     //i.setSize(longueur, hauteur);

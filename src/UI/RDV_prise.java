@@ -5,7 +5,9 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.creerRendezVous;
 import static database.RequetesBDProfessionnels.getListePHService;
+import static database.RequetesBDProfessionnels.getListeRDVparJour;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDate;
@@ -18,9 +20,11 @@ import nf.*;
 import static nf.Checker.getVectorPHRDV;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static nf.Checker.convertirDatetoString;
 
 /**
  *
@@ -117,6 +121,9 @@ public class RDV_prise extends javax.swing.JFrame {
         jButton10 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -217,7 +224,7 @@ public class RDV_prise extends javax.swing.JFrame {
         jPanel_rdv.setLayout(jPanel_rdvLayout);
         jPanel_rdvLayout.setHorizontalGroup(
             jPanel_rdvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
+            .addGap(0, 620, Short.MAX_VALUE)
         );
         jPanel_rdvLayout.setVerticalGroup(
             jPanel_rdvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,6 +370,12 @@ public class RDV_prise extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Remarque sur le rendez-vous :");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -377,13 +390,22 @@ public class RDV_prise extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel_rdv2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(147, 147, 147))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel_rdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel_rdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(377, 377, 377)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -398,7 +420,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -408,11 +430,16 @@ public class RDV_prise extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel_rdv2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel_rdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel_rdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -420,7 +447,7 @@ public class RDV_prise extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -453,8 +480,67 @@ public class RDV_prise extends javax.swing.JFrame {
 
     private void jLabel3PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabel3PropertyChange
         //ON CLIQUE A DROITE 
-        if (!jLabel3.getText().equals("")) {
+        if (!jLabel3.getText().equals("") && jComboBox2.getSelectedIndex() != -1) {
             jPanel_rdv2.setVisible(true);
+            List<PH> phs = new ArrayList<>();
+            phs.clear();
+            int index = jComboBox2.getSelectedIndex();
+            Service s = (Service) jComboBox1.getSelectedItem();
+            try {
+                phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                DateHeure dh = DateHeure.convertirStringtoDateHeure(jLabel3.getText());
+                Date d = new Date();
+                d.setDate(dh.getJour());
+                d.setYear(dh.getAnnee());
+                d.setMonth(dh.getMois());
+
+                List<RendezVous> rdvs = getListeRDVparJour(conn, ph, d);
+                
+                jButton1.setEnabled(true);
+                jButton2.setEnabled(true);
+                jButton8.setEnabled(true);
+                jButton3.setEnabled(true);
+                jButton10.setEnabled(true);
+                jButton5.setEnabled(true);
+                jButton6.setEnabled(true);
+                jButton7.setEnabled(true);
+                for (int i = 0; i < rdvs.size(); i++) {
+                    RendezVous rdv = rdvs.get(i);
+                    switch (rdv.getDateHeure().getHeure()) {
+                        case 8:
+                            jButton1.setEnabled(false);
+                            break;
+                        case 9:
+                            jButton2.setEnabled(false);
+                            break;
+                        case 10:
+                            jButton8.setEnabled(false);
+                            break;
+                        case 11:
+                            jButton3.setEnabled(false);
+                            break;
+                        case 13:
+                            jButton10.setEnabled(false);
+                            break;
+                        case 14:
+                            jButton5.setEnabled(false);
+                            break;
+                        case 15:
+                            jButton6.setEnabled(false);
+                            break;
+                        case 16:
+                            jButton7.setEnabled(false);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_jLabel3PropertyChange
 
@@ -466,7 +552,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = ch + dh.getJour() + "/" + dh.getMois() + "/" + dh.getAnnee() + " à 8h";
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -480,7 +579,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -493,7 +605,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -506,7 +631,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -519,7 +657,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -532,7 +683,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -545,7 +709,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -558,7 +735,20 @@ public class RDV_prise extends javax.swing.JFrame {
         ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
-            //ajouter le rdv
+            try {
+                //ph
+                int index = jComboBox2.getSelectedIndex();
+                Service s = (Service) jComboBox1.getSelectedItem();
+                List<PH> phs = getListePHService(conn, s.toString());
+                PH ph = phs.get(index);
+                
+                RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
+                rdv.setpH(ph);
+                rdv.setDPI(dpi);
+                creerRendezVous(conn, rdv);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -566,11 +756,10 @@ public class RDV_prise extends javax.swing.JFrame {
         //SELECTION D'UN SERVICE
         jLabel5.setVisible(true);
         jComboBox2.setVisible(true);
-
+        jLabel3.setText("");
         List<PH> phs;
         try {
             Service s = (Service) jComboBox1.getSelectedItem();
-            System.out.println(s.toString());
             phs = getListePHService(conn, s.toString());
             Vector phsS = getVectorPHRDV(phs);
             DefaultComboBoxModel dbm2 = new DefaultComboBoxModel(phsS);
@@ -584,11 +773,12 @@ public class RDV_prise extends javax.swing.JFrame {
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         //SELECTION D'UN PROFESSIONNEL
         //calendrier
+        jLabel3.setText("");
         jPanel_rdv.setVisible(true);
         LocalDate current_date = LocalDate.now();
         int current_Year = current_date.getYear();
         int current_month = current_date.getMonthValue();
-        Calendrier calendrier = new Calendrier(100, 20, current_month, current_Year, jPanel_rdv, jLabel3);
+        Calendrier calendrier = new Calendrier(100, 0, current_month, current_Year, jPanel_rdv, jLabel3);
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
@@ -713,10 +903,13 @@ public class RDV_prise extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel_rdv;
     private javax.swing.JPanel jPanel_rdv2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel nom;
     private javax.swing.JLabel prenom;
     // End of variables declaration//GEN-END:variables

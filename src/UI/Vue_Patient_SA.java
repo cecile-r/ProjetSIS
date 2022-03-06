@@ -566,7 +566,6 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
     private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
         //AJOUTER UN RDV
-        System.out.println("rentré");
         RDV_prise i = new RDV_prise(conn,sa, dpi);
         i.setVisible(true);
         dispose();

@@ -100,7 +100,6 @@ public class Calendrier extends JPanel implements ActionListener {
         afficherGrille(iMois, iAnnee);
     }
 
-
     public void remplirVectAfficher(DateHeure dh) {
         int ligne = 0;
         while (ligne < 9) {
@@ -119,12 +118,12 @@ public class Calendrier extends JPanel implements ActionListener {
             });
 
             btn.setVisible(true);
-            int debut = ligne+8;
-            int fin = ligne + 8 +1;
+            int debut = ligne + 8;
+            int fin = ligne + 8 + 1;
             btn.setLabel(debut + "h - " + fin + "h");
             container.add(btn);
             btn.addActionListener(this);
-            if (ligne+8 == 12) {
+            if (ligne + 8 == 12) {
                 btn.setEnabled(false);
             }
 
@@ -148,7 +147,6 @@ public class Calendrier extends JPanel implements ActionListener {
             ligne++;
         }
     }
-
 
     //CONSULTATION
     public void afficherGrille(int iMois, int iAnnee, List<RendezVous> rdvs) {
@@ -193,22 +191,23 @@ public class Calendrier extends JPanel implements ActionListener {
             b = (JButton) btnVect.elementAt(i - 1);
             int j = i;
 
+            b.setVisible(true);
+            b.setLabel(new Integer(i - jour(iAnnee, iMois, 1) + 1).toString());
+            add(b);
+
+            int jo = Integer.parseInt(b.getText());
             b.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     //récupérer rdvs de la journee du medecin
-                    DateHeure dh = new DateHeure(iAnnee, iMois, j - 2, 0, 0);
+
+                    DateHeure dh = new DateHeure(iAnnee, iMois, jo, 0, 0);
                     jlabel.setText(DateHeure.convertirDateHeuretoString(dh));
                 }
             });
-
-            b.setVisible(true);
-            b.setLabel(new Integer(i - jour(iAnnee, iMois, 1) + 1).toString());
-            add(b);
             b.addActionListener(this);
         }
     }
-
 
     public int jour(int annee, int mois, int jour) {
         int retour = 0;
