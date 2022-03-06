@@ -57,7 +57,7 @@
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="322" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                           <Component id="Label_Identifiant" alignment="0" max="32767" attributes="0"/>
@@ -102,8 +102,8 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="684" max="32767" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="122" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -112,7 +112,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="107" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -122,9 +122,6 @@
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/image/logo connexa-modified.png"/>
-                </Property>
               </Properties>
             </Component>
           </SubComponents>
@@ -132,9 +129,6 @@
         <Component class="javax.swing.JLabel" name="Label_Main">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/image/profil.png"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="Label_Identifiant">
@@ -186,7 +180,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Component id="Button_Connexion" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="119" max="32767" attributes="0"/>
+                      <EmptySpace pref="112" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

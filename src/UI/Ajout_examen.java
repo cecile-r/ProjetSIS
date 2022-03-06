@@ -52,6 +52,24 @@ public class Ajout_examen extends javax.swing.JFrame {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         String dateL = dtf.format(LocalDateTime.now());
         jLabel3.setText(dateL);
+        
+        //images
+        ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image imgC = iconeC.getImage();
+        iconeC = new ImageIcon(imgC);
+        Panel_logo.setIcon(iconeC);
+        ImageIcon iconeP = new ImageIcon("src/image/profil 2.png");
+        java.awt.Image imgP = iconeP.getImage();
+        iconeP = new ImageIcon(imgP);
+        Panel_icon_perso.setIcon(iconeP);
+        ImageIcon iconeD = new ImageIcon("src/image/se-deconnecter.png");
+        java.awt.Image imgD = iconeD.getImage();
+        iconeD = new ImageIcon(imgD);
+        jButton4.setIcon(iconeD);
+        ImageIcon iconeH = new ImageIcon("src/image/home.png");
+        java.awt.Image imgH = iconeH.getImage();
+        iconeH = new ImageIcon(imgH);
+        jButton9.setIcon(iconeH);
 
         //Jbutton images
         ImageIcon icone2 = new ImageIcon("src/image/plus.png");
@@ -128,9 +146,6 @@ public class Ajout_examen extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Panel_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
-
-        Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
         prenom.setBackground(new java.awt.Color(204, 204, 255));
         prenom.setText("prenom");
@@ -139,7 +154,6 @@ public class Ajout_examen extends javax.swing.JFrame {
         nom.setText("nom");
 
         jButton4.setBackground(new java.awt.Color(204, 102, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -147,7 +161,6 @@ public class Ajout_examen extends javax.swing.JFrame {
         });
 
         jButton9.setBackground(new java.awt.Color(204, 102, 255));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -164,13 +177,13 @@ public class Ajout_examen extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
-                .addComponent(Panel_icon_perso)
-                .addGap(18, 18, 18)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -178,9 +191,6 @@ public class Ajout_examen extends javax.swing.JFrame {
             .addComponent(Panel_icon_perso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(Panel_BandeauLayout.createSequentialGroup()
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Panel_logo))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,6 +202,9 @@ public class Ajout_examen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nom)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(169, 206, 243));
@@ -263,8 +276,8 @@ public class Ajout_examen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

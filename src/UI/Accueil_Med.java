@@ -57,6 +57,20 @@ public class Accueil_Med extends javax.swing.JFrame {
         this.conn = conn;
         this.ph = ph;
         initComponents();
+        
+        //images
+        ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image imgC = iconeC.getImage();
+        iconeC = new ImageIcon(imgC);
+        Panel_logo.setIcon(iconeC);
+        ImageIcon iconeP = new ImageIcon("src/image/profil 2.png");
+        java.awt.Image imgP = iconeP.getImage();
+        iconeP = new ImageIcon(imgP);
+        Panel_icon_perso.setIcon(iconeP);
+        ImageIcon iconeD = new ImageIcon("src/image/se-deconnecter.png");
+        java.awt.Image imgD = iconeD.getImage();
+        iconeD = new ImageIcon(imgD);
+        jButton2.setIcon(iconeD);
 
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
@@ -117,10 +131,6 @@ public class Accueil_Med extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jMenu1 = new javax.swing.JMenu();
-        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jButton1 = new javax.swing.JButton();
         Panel_Main = new javax.swing.JPanel();
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
@@ -151,24 +161,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         ScrollPane_Planning = new javax.swing.JScrollPane();
         Table_Vue_Generale = new javax.swing.JTable();
-        Label_FlecheG = new javax.swing.JLabel();
         Label_Plannig = new javax.swing.JLabel();
-        Label_FlecheD = new javax.swing.JLabel();
-
-        jMenu1.setText("jMenu1");
-
-        jRadioButtonMenuItem1.setSelected(true);
-        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
-
-        jMenu2.setText("jMenu2");
-
-        jButton1.setBackground(new java.awt.Color(204, 102, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -185,9 +178,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Panel_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
-
-        Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
         prenom_medecin.setText("prenom_medecin");
 
@@ -196,7 +186,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         service.setText("service");
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -210,15 +199,15 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(Panel_icon_perso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(prenom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -227,19 +216,22 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addGroup(Panel_BandeauLayout.createSequentialGroup()
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(prenom_medecin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nom_medecin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(service)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Panel_logo))
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(prenom_medecin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nom_medecin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(service)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
@@ -354,7 +346,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                     .addComponent(jButton_actualiser1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jButton_recherche_patient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(Button_Selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
@@ -480,7 +472,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
                                 .addGap(61, 61, 61)))
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
@@ -527,12 +519,8 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
         );
 
-        Label_FlecheG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/fleche_gauche.png"))); // NOI18N
-
         Label_Plannig.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Label_Plannig.setText("Mon planning");
-
-        Label_FlecheD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/fleche_droite.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -541,34 +529,21 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(Label_FlecheG, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(Label_FlecheD))
+                        .addGap(136, 136, 136)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(420, 420, 420)
                         .addComponent(Label_Plannig)))
-                .addContainerGap(188, Short.MAX_VALUE))
+                .addContainerGap(244, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(290, 290, 290)
-                .addComponent(Label_FlecheG)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(Label_Plannig)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(Label_FlecheD)
-                        .addGap(251, 251, 251))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(83, 83, 83))
         );
 
         jTabbedPane1.addTab("Mon planning", jPanel6);
@@ -763,19 +738,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_actualiser_medecin1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Connexion(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Connexion i;
         try {
@@ -861,8 +823,6 @@ public class Accueil_Med extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Selectionner;
-    private javax.swing.JLabel Label_FlecheD;
-    private javax.swing.JLabel Label_FlecheG;
     private javax.swing.JLabel Label_Plannig;
     private javax.swing.JPanel Panel_Bandeau;
     private javax.swing.JPanel Panel_Main;
@@ -874,7 +834,6 @@ public class Accueil_Med extends javax.swing.JFrame {
     private javax.swing.JTextField TextField_Docteur;
     private javax.swing.JTextField TextField_Patient;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton_actualiser1;
     private javax.swing.JButton jButton_actualiser_medecin1;
@@ -882,13 +841,10 @@ public class Accueil_Med extends javax.swing.JFrame {
     private javax.swing.JButton jButton_recherche_patient;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;

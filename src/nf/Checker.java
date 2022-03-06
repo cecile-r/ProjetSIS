@@ -220,4 +220,17 @@ public class Checker {
         }
         return v;
     }
+    
+    public static Vector getVectorPHRDV(List<PH> phs) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < phs.size(); i++) {
+            Vector ls = new Vector();
+            PH ph = phs.get(i);
+            ls.add(ph.toString());
+            v.add(ls);
+        }
+        return v;
+    }
+    
 }

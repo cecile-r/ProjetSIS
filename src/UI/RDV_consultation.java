@@ -7,51 +7,38 @@ package UI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
+import javax.swing.ImageIcon;
+import nf.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import nf.*;
-import static nf.Checker.getVectorActes;
 
 /**
  *
  * @author Audrey
  */
-public class Ajout_lettreDeSortie extends javax.swing.JFrame {
+public class RDV_consultation extends javax.swing.JFrame {
 
-    //Connection conn;
+    Connection conn;
     PH ph;
     DPI dpi;
-    List<Acte> actes;
-    Vector actesS;
-    Vector entetes;
 
     /**
-     * Creates new form Modif_Patient
+     * Creates new form Historique_Prochains_RDV
      */
-    public Ajout_lettreDeSortie(PH ph, DPI dpi) {
+    public RDV_consultation(Connection conn, PH ph, DPI dpi) {
         initComponents();
-        actes = new Vector();
+        this.conn = conn;
         this.ph = ph;
+        this.dpi = dpi;
 
         //infos identité
         prenom.setText(ph.getPrenomPH());
         nom.setText(ph.getNomPH());
-
-        //date courante
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        String dateL = dtf.format(LocalDateTime.now());
-        jLabel3.setText(dateL);
         
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
@@ -72,14 +59,17 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         jButton9.setIcon(iconeH);
 
         //Jbutton images
-        ImageIcon icone2 = new ImageIcon("src/image/plus.png");
-        java.awt.Image img2 = icone2.getImage();
-        icone2 = new ImageIcon(img2);
-        jButton2.setIcon(icone2);
         ImageIcon icone3 = new ImageIcon("src/image/retour.png");
         java.awt.Image img3 = icone3.getImage();
         icone3 = new ImageIcon(img3);
         jButton9.setIcon(icone3);
+
+        //calendrier
+        LocalDate current_date = LocalDate.now();
+        int current_Year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        List<RendezVous> rdvs = dpi.getdMA().getRendezVous();
+        Calendrier calendrier = new Calendrier(100, 10, current_month, current_Year, jPanel_rdv, rdvs);
 
     }
 
@@ -92,11 +82,7 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
         Panel_icon_perso = new javax.swing.JLabel();
@@ -106,34 +92,13 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea = new javax.swing.JTextArea();
+        jPanel_rdv = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
-        jButton8.setBackground(new java.awt.Color(204, 102, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
-        setTitle("Modifications");
+        setLocation(location());
+        setType(java.awt.Window.Type.POPUP);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Date : ");
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("date");
-
-        jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setText("Ajouter la lettre de sortie");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         Panel_Bandeau.setBackground(new java.awt.Color(213, 123, 213));
         Panel_Bandeau.setRequestFocusEnabled(false);
@@ -170,13 +135,13 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
-                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -203,52 +168,56 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(169, 206, 243));
 
         jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
-        jLabel1.setText("Nouvelle lettre de sortie");
+        jLabel1.setText("Consultation des rendez-vous");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jTextArea.setColumns(20);
-        jTextArea.setRows(5);
-        jScrollPane2.setViewportView(jTextArea);
+        jPanel_rdv.setBackground(new java.awt.Color(204, 204, 255));
+
+        javax.swing.GroupLayout jPanel_rdvLayout = new javax.swing.GroupLayout(jPanel_rdv);
+        jPanel_rdv.setLayout(jPanel_rdvLayout);
+        jPanel_rdvLayout.setHorizontalGroup(
+            jPanel_rdvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_rdvLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel_rdvLayout.setVerticalGroup(
+            jPanel_rdvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_rdvLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 387, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(215, 215, 215))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(289, 289, 289)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(105, Short.MAX_VALUE))
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(165, 165, 165)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(181, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel_rdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,15 +225,9 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel_rdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -275,87 +238,33 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /* Connexion i;
+
+        Connexion i;
         try {
             i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RDV_consultation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(RDV_consultation.class.getName()).log(Level.SEVERE, null, ex);
         }
-         */
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-    }//GEN-LAST:event_jButton8ActionPerformed
-
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+
+        Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
+        i.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //CREER lettreDeSortie
-        LocalDateTime ldt = LocalDateTime.now();
-        DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
-        
-        if(!jTextArea.getText().equals("")){
-            String texte = jTextArea.getText();
-            LettreDeSortie ls =new LettreDeSortie(texte,dh);
-            ls.setDPI(dpi);
-            ls.setPh(ph);
-            ///AJOUT BD
-            ///REVENIR PAGE PRECEDENTE
-        }else{
-            JOptionPane.showConfirmDialog(this, "Merci d'ecrire la lettre de sortie", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    public boolean champsCorrects() throws ParseException {
-        /*
-        boolean v = true;
-        if (jTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        }else if (jFormattedTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        }
-        return v;*/
-        return true;
-    }
 
     /**
      * @param args the command line arguments
@@ -374,21 +283,35 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Ajout_FS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RDV_consultation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Ajout_FS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RDV_consultation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Ajout_FS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RDV_consultation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Ajout_FS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RDV_consultation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
+                /*Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
                 PH ph1 = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
 
                 Acte a11 = new Acte("prise de sang", nf.Type.diagnostic, Code.CS, 2, "RAS");
@@ -426,9 +349,13 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 dma1.ajouterLettreDeSortie(ls1);
                 dma1.ajouterExamen(e1);
                 DateHeure d17 = new DateHeure(2022, 02, 15, 10, 00); //date de RDV
+                DateHeure d18 = new DateHeure(2022, 02, 15, 11, 00); //date de RDV
                 RendezVous rdv1 = new RendezVous(d17, "reverifier les resultats");
+                RendezVous rdv2 = new RendezVous(d18, "reverifier les resultats");
                 rdv1.setpH(ph1);
+                rdv2.setpH(ph1);
                 dma1.ajouterRendezVous(rdv1);
+                dma1.ajouterRendezVous(rdv2);
                 MedecinTraitant mt1 = new MedecinTraitant("id@gmail.com", "PAT", "PATROUILLE", "0467894567");
                 Date dn1 = new Date(1997, 07, 13); //date de naissance
                 DPI dpi1 = new DPI("1234567891", "Jones", "Jack", dn1, Sexe.homme, "3 rue Beranger, 45000 Tours", "0657985613", mt1, dma1, dm1);
@@ -440,6 +367,7 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 ph1.ajouterPrescriptions(p1);
                 ph1.ajouterExamen(e1);
                 ph1.ajouterRdv(rdv1);
+                ph1.ajouterRdv(rdv2);
                 sq1.setDPI(dpi1);
                 sq2.setDPI(dpi1);
                 fs1.setDPI(dpi1);
@@ -448,9 +376,11 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 e1.setDPI(dpi1);
                 rdv1.setDPI(dpi1);
 
-                PH ph = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
-                Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(ph, dpi1);
+                
+                PH ph = new PH("1616161616", "Pan", "Peter", Service.Addictologie, "peterpan", "0456486756", "Biologie");
+                RDV_consultation i = new RDV_consultation(ph1,dpi1);
                 i.setVisible(true);
+                 */
             }
         });
     }
@@ -459,17 +389,13 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     private javax.swing.JPanel Panel_Bandeau;
     private javax.swing.JLabel Panel_icon_perso;
     private javax.swing.JLabel Panel_logo;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea;
+    private javax.swing.JPanel jPanel_rdv;
     private javax.swing.JLabel nom;
     private javax.swing.JLabel prenom;
     // End of variables declaration//GEN-END:variables

@@ -7,6 +7,7 @@ package UI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,10 +18,31 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
     /** Creates new form Connexion */
     public Vue_Patient_Inf() {
         initComponents();
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((screen.getWidth() - getWidth()) /2);
-        int y = (int) ((screen.getHeight() -getHeight()) /2);
-        setLocation(x, y);
+        
+        
+        //images
+        ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image imgC = iconeC.getImage();
+        iconeC = new ImageIcon(imgC);
+        Panel_logo.setIcon(iconeC);
+        ImageIcon iconeP = new ImageIcon("src/image/profil 2.png");
+        java.awt.Image imgP = iconeP.getImage();
+        iconeP = new ImageIcon(imgP);
+        Panel_icon_perso.setIcon(iconeP);
+        ImageIcon iconeD = new ImageIcon("src/image/se-deconnecter.png");
+        java.awt.Image imgD = iconeD.getImage();
+        iconeD = new ImageIcon(imgD);
+        jButton4.setIcon(iconeD);
+        ImageIcon iconeH = new ImageIcon("src/image/home.png");
+        java.awt.Image imgH = iconeH.getImage();
+        iconeH = new ImageIcon(imgH);
+        jButton8.setIcon(iconeH);
+        ImageIcon iconeP2 = new ImageIcon("src/image/profil.png");
+        java.awt.Image imgP2 = iconeP2.getImage();
+        iconeP2 = new ImageIcon(imgP2);
+        Label_Icon_Patient.setIcon(iconeP2);
+  
+        
     }
 
     /** This method is called from within the constructor to
@@ -81,9 +103,6 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Panel_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
-
-        Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
         prenom_inf.setText("prenom_inf");
 
@@ -92,7 +111,6 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         service.setText("service");
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -100,7 +118,6 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         });
 
         jButton8.setBackground(new java.awt.Color(204, 102, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -117,14 +134,14 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(Panel_icon_perso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(prenom_inf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nom_inf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -132,9 +149,6 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
             .addComponent(Panel_icon_perso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(Panel_BandeauLayout.createSequentialGroup()
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Panel_logo))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -148,6 +162,9 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(service)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Panle_Gauche.setBackground(new java.awt.Color(250, 247, 247));

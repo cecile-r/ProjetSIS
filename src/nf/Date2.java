@@ -5,30 +5,24 @@
  */
 package nf;
 
+import java.util.Date;
+
 /**
  *
  * @author garci
  */
 public class Date2 {
-    private int jour;
-    private int mois;
-    private int annee;
     
-    public Date2(int jour, int mois, int annee) {
-        this.jour = jour;
-        this.mois = mois;
-        this.annee = annee;
-    }
     
     /**
      * 
      * @return une chaine de caractère sous la forme ..-..-..
      */
-    @Override
-    public String toString() {
-    	return annee + "-" + mois + "-" + jour;
+    
+    public String toString(Date date) {
+        
+    	return date.getYear() + "-" + date.getMonth()+ "-" + date.getDay();
     }
-     
 
     
 }

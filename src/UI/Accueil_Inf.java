@@ -58,6 +58,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
         this.conn = conn;
         this.ph = ph;
         initComponents();
+        
 
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
@@ -75,6 +76,21 @@ public class Accueil_Inf extends javax.swing.JFrame {
         icone_details = new ImageIcon(img_details);
         Button_Selectionner.setIcon(icone_details);
 
+        //images
+        ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image imgC = iconeC.getImage();
+        iconeC = new ImageIcon(imgC);
+        Panel_logo.setIcon(iconeC);
+        ImageIcon iconeP = new ImageIcon("src/image/profil 2.png");
+        java.awt.Image imgP = iconeP.getImage();
+        iconeP = new ImageIcon(imgP);
+        Panel_icon_perso.setIcon(iconeP);
+        ImageIcon iconeD = new ImageIcon("src/image/se-deconnecter.png");
+        java.awt.Image imgD = iconeD.getImage();
+        iconeD = new ImageIcon(imgD);
+        jButton2.setIcon(iconeD);
+        
+        
         //infos identité
         prenom_medecin.setText(inf.getPrenomInfirmiere());
         nom_medecin.setText(inf.getNomInfirmiere());
@@ -188,9 +204,6 @@ public class Accueil_Inf extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Panel_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
-
-        Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
         prenom_medecin.setText("prenom_medecin");
 
@@ -199,7 +212,6 @@ public class Accueil_Inf extends javax.swing.JFrame {
         service.setText("service");
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -213,15 +225,15 @@ public class Accueil_Inf extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(Panel_icon_perso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(prenom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -233,16 +245,16 @@ public class Accueil_Inf extends javax.swing.JFrame {
                         .addGap(37, 37, 37)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Panel_logo))
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(30, 30, 30)
                         .addComponent(prenom_medecin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nom_medecin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(service)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
@@ -357,7 +369,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
                     .addComponent(jButton_actualiser1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jButton_recherche_patient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(Button_Selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
@@ -483,7 +495,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
                                 .addGap(61, 61, 61)))
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
@@ -564,7 +576,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(Label_Plannig)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(Label_FlecheD)
