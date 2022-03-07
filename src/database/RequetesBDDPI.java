@@ -29,12 +29,16 @@ import nf.Type;
 import nf.TypeExamen;
 import database.RequetesBDConversion;
 import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
+import static database.RequetesBDConversion.convertDateJavaEnSQL;
 import static database.RequetesBDConversion.convertDateSQLenJava;
+import static database.RequetesBDConversion.convertLocalDateEnDate;
 import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestamp;
 import static database.RequetesBDConversion.toStringTimestampJAVA;
+import static java.lang.String.valueOf;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.time.LocalDate;
 import nf.DM;
 import nf.DMA;
 import nf.DateHeure;
@@ -66,6 +70,9 @@ public class RequetesBDDPI {
         return ippExiste;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    //Récupération d'éléments
+    
     //Renvoie la liste des DPI fermés -> patients PAS dans le CHU
     //VALIDE
     public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
@@ -713,9 +720,10 @@ public class RequetesBDDPI {
 
     ////////////////////////////////////////////////////////////////////////////
     //Création d'éléments
+    
     //Creer un patient et l'ajouter dans la base de données
     //VALIDE
-    public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, String telephone_medecin_traitant) throws SQLException {
+    public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, MedecinTraitant m) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "WHERE IPP = '" + id + "'");
@@ -723,11 +731,23 @@ public class RequetesBDDPI {
         if (rs.next()) {
             System.out.println("Ce patient est déjà enregistré dans la base de données.");
         } else {
+            //Ajout dans la table DPI
             Date dateNaissanceReelle = new Date(date_de_naissance.getYear(), date_de_naissance.getMonth() - 1, date_de_naissance.getDate());
             Statement stmt2 = conn.createStatement();
             stmt2.executeUpdate("INSERT INTO DPI(IPP, nom_DPI, prenom_DPI, date_de_naissance, sexe_DPI, adresse_DPI, telephone_DPI, telephone_medecin_traitant) "
                     + "VALUES ('" + id + "', '" + nom_DPI + "', '" + prenom_DPI + "', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "'"
-                    + ",'yyyy-MM-dd')" + ", '" + sexe_DPI + "', '" + adresse_DPI + "', '" + telephone_DPI + "', '" + telephone_medecin_traitant + "')");
+                    + ",'yyyy-MM-dd')" + ", '" + sexe_DPI + "', '" + adresse_DPI + "', '" + telephone_DPI + "', '" + m.getTelephoneMedecinTraitant() + "')");
+            //Ajout dans la table Medecin_traitant
+            PreparedStatement stmt3 = null;
+            stmt3 = conn.prepareStatement("INSERT INTO Medecin_traitant VALUES (?,?,?,?,?)");
+            stmt3.setString(1, m.getNomMedecinTraitant());
+            stmt3.setString(2, m.getPrenomMedecinTraitant());
+            stmt3.setString(3, m.getMail());
+            stmt3.setString(4, m.getTelephoneMedecinTraitant());
+            stmt3.setString(5, id);
+            stmt3.executeUpdate();
+            stmt3.close();
+            
             System.out.println("Ce patient a été inséré dans la base de données.");
             stmt2.close();
         }
@@ -747,7 +767,7 @@ public class RequetesBDDPI {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
-                stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
+                stmt2.setString(3, fiche.getActe().get(i).getCode().name());
                 stmt2.setString(4, null);
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
             }
@@ -755,7 +775,7 @@ public class RequetesBDDPI {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
-                stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
+                stmt2.setString(3, fiche.getActe().get(i).getCode().name());
                 stmt2.setString(4, fiche.getpH().getIdPH());
                 stmt2.setString(5, null);
             } 
@@ -763,7 +783,7 @@ public class RequetesBDDPI {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
-                stmt2.setString(3, Integer.toString(fiche.getActe().get(i).getIdActe()));
+                stmt2.setString(3, fiche.getActe().get(i).getCode().name());
                 stmt2.setString(4, fiche.getpH().getIdPH());
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
             }
@@ -880,4 +900,75 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
+    //Creer localisation d'un patient lorsqu'il entre dans le CHU
+    //VALIDE
+    public static void creerLocalisation(Connection conn, String ipp, Localisation loc) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
+        stmt.setString(1, ipp);
+        stmt.setString(2, loc.getService_responsable().toString());
+        stmt.setString(3, loc.getService_geographique().toString());
+        stmt.setString(4, loc.getLit().toString());
+        stmt.setString(5, valueOf(loc.getNchambre()));
+        
+        stmt.executeUpdate();
+        stmt.close();
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Modification d'éléments
+    
+    //Modifier les informations d'un patient dans son DPI et faire les modifs dans la BD
+    //VALIDE
+    public static void modifierDPI(Connection conn, String ipp, String telephone, String adresse, MedecinTraitant m) throws SQLException{
+        //Modification dans la table DPI
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("UPDATE DPI SET adresse_DPI = ?, telephone_DPI = ?, telephone_medecin_traitant = ? WHERE IPP = ?");
+        stmt.setString(1, adresse);
+        stmt.setString(2, telephone);
+        stmt.setString(3, m.getTelephoneMedecinTraitant());
+        stmt.setString(4, ipp);
+        stmt.executeUpdate();
+        stmt.close();
+        
+        //Modification dans la table Medecin_traitant
+        PreparedStatement stmt2 = null;
+        stmt2 = conn.prepareStatement("UPDATE Medecin_traitant SET nom_medecin_traitant = ?, prenom_medecin_traitant = ?, mail = ?, telephone_medecin_traitant = ? WHERE IPP = ?");
+        stmt2.setString(1, m.getNomMedecinTraitant());
+        stmt2.setString(2, m.getPrenomMedecinTraitant());
+        stmt2.setString(3, m.getMail());
+        stmt2.setString(4, m.getTelephoneMedecinTraitant());
+        stmt2.setString(5, ipp);
+        stmt2.executeUpdate();
+        stmt2.close();
+    }
+    
+    //Archivage d'un dossier quand le patient est décédé
+    //VALIDE
+    public static void archiverDPI(Connection conn, String ipp, Date date_deces) throws SQLException{
+        PreparedStatement stmt = null;
+        //Ajout du DPI dans les archives
+        stmt = conn.prepareStatement("INSERT INTO Archive values(?,?,?)");
+        stmt.setString(1, ipp);
+        stmt.setDate(2, convertDateJavaEnSQL(date_deces));
+        stmt.setDate(3, convertDateJavaEnSQL(convertLocalDateEnDate(LocalDate.now())));
+        stmt.executeUpdate();
+        stmt.close();
+        
+        //Fermeture du DPI 
+        fermerDPI(conn, ipp);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Suppression d'éléments
+    
+    //Supprimer la localisation d'un patient lorsqu'on ferme le dossier
+    //VALIDE
+    public static void fermerDPI(Connection conn, String ipp) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("DELETE FROM Localisation WHERE IPP = ?");
+        stmt.setString(1, ipp);
+        stmt.executeUpdate();
+        stmt.close();
+    }
 }

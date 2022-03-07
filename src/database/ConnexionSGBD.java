@@ -15,6 +15,8 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static java.lang.String.valueOf;
+import java.time.LocalDate;
 
 class ConnexionSGBD {
 
@@ -50,6 +52,7 @@ class ConnexionSGBD {
             Service service = Service.valueOf("Anesthesie");
             String serviceS = "Anesthesie";
             Date d = new Date(2000, 12, 20);
+            Date date6 = new Date(1999, 8, 26);
             Date date2 = new Date(2021, 12, 14);
             Date date3 = new Date(2021, 12, 13);
             Date date4 = new Date(2022, 3, 14);
@@ -272,10 +275,12 @@ class ConnexionSGBD {
             System.out.println(userSA(conn, "1451261452").toString());*/
             
             
-            //Test creerNouveauDPI(infos DPI) -> 
+            //Test creerNouveauDPI(infos DPI) -> VALIDE
+            //1er version de la fonction
             //creerNouveauDPI(conn, "1926354276", "Pouet", "Goku", d, "autre", "0798142609", "14 avenue des trousses", "0987123516");
             //creerNouveauDPI(conn, "1800511699", "Ronflex", "Pokemon", d, "autre", "0765342609", "3 avenue des Flutes", "0655445544");
-        
+            //2e version de la fonction
+            //RequetesBDDPI.creerNouveauDPI(conn, "9736482920", "Eclair", "Pika", date6, "homme", "0413256789", "33 bis avenue du tonerre", m);
             
             //Tests conversions dates -> VALIDE
             /*java.sql.Statement stmt = conn.createStatement();
@@ -444,6 +449,30 @@ class ConnexionSGBD {
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph1, date2)); //date où y'a des rdv
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph2, date3)); //date où y'a pas de rdv
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph3, date4)); //aucun rdv
+            
+            
+            //Test modifierDPI(ipp, tel, adresse, tel medecin) -> VALIDE
+            //1er version de la fonction
+            //RequetesBDDPI.modifierDPI(conn, "1876500989", "0476385426", "12 avenue des Pokemons", m);
+            //RequetesBDDPI.modifierDPI(conn, "1876500989", "0476385426", "10 avenue des Pokemons", m);
+            //2e version de la fonction
+            //RequetesBDDPI.modifierDPI(conn, "9736482920", "0413256790", "3 bis avenue du tonerre", m1);
+            
+            //Test creerLocalisation(ipp, loc) -> VALIDE
+            //Ajout d'une localisation pour Ronflex Perle
+            Localisation loc = new Localisation(Service.Medecine_nucleaire, Lit.F, 9, Service.Medecine_nucleaire);
+            //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
+            
+            //Test fermerDPI(ipp) -> VALIDE
+            //RequetesBDDPI.fermerDPI(conn, "1876500989");
+           
+            //Test conversion local date en date -> VALIDE
+            //System.out.println(RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
+            
+            //Test archive (ipp, date deces) -> VALIDE
+            //RequetesBDDPI.archiverDPI(conn, "1111888811", RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
+            
+            
             
             
             //Print information about connection warnings
