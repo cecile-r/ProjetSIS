@@ -5,6 +5,7 @@ package database;
 
 import java.util.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import nf.DateHeure;
 
 /**
@@ -171,4 +172,10 @@ public class RequetesBDConversion {
         return s;
     }
 
+    //Renvoie une Date java à partir d'une LocalDate
+    //VALIDE
+    public static Date convertLocalDateEnDate(LocalDate ld){
+        Date d = new Date(ld.getYear(), ld.getMonthValue(), ld.getDayOfMonth());
+        return d;
+    }
 }
