@@ -754,7 +754,7 @@ public class RequetesBDDPI {
         rs.close();
         stmt.close();
     }
-/*
+
     //Creer une fiche de soins et l'ajouter dans la base de données
     //VALIDE
     public static void creerFicheDeSoins(Connection conn, FicheDeSoins fiche) throws SQLException {
@@ -790,7 +790,7 @@ public class RequetesBDDPI {
             stmt2.executeUpdate();
             stmt2.close();
         }
-    }*/
+    }
     
     //Creer une prescription et l'ajouter dans la base de données
     //VALIDE

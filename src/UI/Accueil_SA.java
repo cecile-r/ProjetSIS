@@ -1282,7 +1282,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                         IPP = getIPPRandom();
                     }
                     //création du patient
-                    creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt.getTelephoneMedecinTraitant());
+                    creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
 
                     //mettre à jour la liste des patients
                     dpis = getListeDPI(conn);
