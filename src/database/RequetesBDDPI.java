@@ -582,7 +582,7 @@ public class RequetesBDDPI {
         Statement stmt2 = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "WHERE IPP = '" + ipp + "'");//Les infos du patient
-        ResultSet rs2 = stmt2.executeQuery("SELECT * FROM FichesDeSoins JOIN Acte USING (idActe)"
+        ResultSet rs2 = stmt2.executeQuery("SELECT * FROM FichesDeSoins JOIN Acte USING (libelle)"
                 + "WHERE IPP = '" + ipp + "'");//Toutes les fiches de soins du patient, fiches n'apparaissent pas en double
         List<FicheDeSoins> listeFiches = new ArrayList();
         List<DateHeure> listeDateHeure = new ArrayList();
