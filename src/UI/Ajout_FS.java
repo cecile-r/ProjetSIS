@@ -5,6 +5,7 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
@@ -19,7 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import static nf.Checker.getVectorActes;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 /**
  *
@@ -31,6 +35,8 @@ public class Ajout_FS extends javax.swing.JFrame {
     PH ph;
     Infirmier inf;
     DPI dpi;
+    Connection conn;
+    DateHeure dh;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
@@ -38,12 +44,20 @@ public class Ajout_FS extends javax.swing.JFrame {
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_FS(PH ph,Infirmier inf,DPI dpi) {
+    public Ajout_FS(Connection conn, PH ph, Infirmier inf, DPI dpi) {
         initComponents();
         actes = new Vector();
-        this.ph=ph;
-        this.inf=inf;
+        this.ph = ph;
+        this.inf = inf;
+        this.dpi = dpi;
         
+        //date
+        LocalDateTime ldt = LocalDateTime.now();
+        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        System.out.println("annnee :"+ ldt.getYear()+", mois :"+ ldt.getMonthValue()+", jour :"+ ldt.getDayOfMonth()+", heure :"+ ldt.getHour()+", minute :"+ldt.getMinute());
+       
+        jLabel3.setText(convertirDateHeuretoString(dh));
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -61,16 +75,15 @@ public class Ajout_FS extends javax.swing.JFrame {
         java.awt.Image imgH = iconeH.getImage();
         iconeH = new ImageIcon(imgH);
         jButton9.setIcon(iconeH);
-        
+
         //infos identité
-        if(ph!=null){
+        if (ph != null) {
             prenom.setText(ph.getPrenomPH());
             nom.setText(ph.getNomPH());
-        }else{
+        } else {
             prenom.setText(inf.getPrenomInfirmiere());
             nom.setText(inf.getNomInfirmiere());
         }
-        
 
         //Jbutton images
         ImageIcon icone = new ImageIcon("src/image/plus.png");
@@ -85,7 +98,6 @@ public class Ajout_FS extends javax.swing.JFrame {
         java.awt.Image img3 = icone3.getImage();
         icone3 = new ImageIcon(img3);
         jButton9.setIcon(icone3);
-        
 
         //Jcombobox
         DefaultComboBoxModel dbm1 = new DefaultComboBoxModel(nf.Type.values());
@@ -429,7 +441,7 @@ public class Ajout_FS extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       /* Connexion i;
+        /* Connexion i;
         try {
             i = new Connexion(conn);
             i.setVisible(true);
@@ -439,7 +451,7 @@ public class Ajout_FS extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+         */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -456,30 +468,94 @@ public class Ajout_FS extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+
+        if (ph != null) {
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Inf i;
+                i = new Vue_Patient_Inf(conn, dpi2, inf);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //CREER FICHE DE SOINS
-        //telephone = telephone.replaceAll("\\s+","");
-        LocalDateTime ldt = LocalDateTime.now();
-        DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
         FicheDeSoins f = new FicheDeSoins(dh);
         f.setDPI(dpi);
         f.setActe(actes);
         f.setpH(ph);
         f.setInfirmier(inf);
-        
+        //dpi.getdM().getFicheDeSoins().add(f);
+        //dpi.getdMA().getFicheDeSoins().add(f);
+
         //AJOUT FICHE DE SOINS DANS LA BD
+        /*
+        try {
+            creerFicheDeSoins(conn,f);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
+        //SORTIE
+        if (ph != null) {
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Inf i;
+                i = new Vue_Patient_Inf(conn, dpi2, inf);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -512,7 +588,7 @@ public class Ajout_FS extends javax.swing.JFrame {
         if (jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jFormattedTextField1.getText().equals("")) {
+        } else if (jFormattedTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }

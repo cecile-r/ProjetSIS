@@ -41,7 +41,6 @@ public class Connexion extends javax.swing.JFrame {
      * Creates new form Connexion
      */
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
-
         this.conn = conn;
         initComponents();
 
@@ -54,7 +53,6 @@ public class Connexion extends javax.swing.JFrame {
         java.awt.Image img2 = icone2.getImage();
         icone2 = new ImageIcon(img2);
         Label_Main.setIcon(icone2);
-
     }
 
     /**

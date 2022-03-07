@@ -6,6 +6,7 @@
 package UI;
 
 import static database.RequetesBDDPI.creerRendezVous;
+import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDProfessionnels.getListePHService;
 import static database.RequetesBDProfessionnels.getListeRDVparJour;
 import java.awt.Dimension;
@@ -25,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static nf.Checker.convertirDatetoString;
+import static nf.DateHeure.estApresDateCourante;
 
 /**
  *
@@ -472,10 +474,21 @@ public class RDV_prise extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        Vue_Patient_SA i;
-        i = new Vue_Patient_SA(conn, dpi, sa);
-        i.setVisible(true);
-        dispose();
+        
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_SA i = new Vue_Patient_SA(conn,dpi2,sa);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jLabel3PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabel3PropertyChange
@@ -547,9 +560,10 @@ public class RDV_prise extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //8H
         DateHeure dh = DateHeure.convertirStringtoDateHeure(jLabel3.getText());
+        dh.setHeure(8);
         String ch = "";
         ch = "Confimez-vous le rendez-vous suivant ?\n";
-        ch = ch + dh.getJour() + "/" + dh.getMois() + "/" + dh.getAnnee() + " à 8h";
+        ch = DateHeure.convertirDateHeuretoString(dh);
         int retour = JOptionPane.showConfirmDialog(this, ch, "Vérification du rendez-vous", JOptionPane.OK_CANCEL_OPTION);
         if (retour == 0) {
             try {
@@ -782,6 +796,8 @@ public class RDV_prise extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    
+    
     /**
      * @param args the command line arguments
      */

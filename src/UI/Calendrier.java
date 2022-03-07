@@ -153,11 +153,14 @@ public class Calendrier extends JPanel implements ActionListener {
         for (int i = jour(iAnnee, iMois, 1); i < (jour(iAnnee, iMois, 1) + nbreJour(iMois, iAnnee)); i++) {
             JButton b = new JButton();
             b = (JButton) btnVect.elementAt(i - 1);
-
+            
+            b.setLabel(new Integer(i - jour(iAnnee, iMois, 1) + 1).toString());
+            int jo = Integer.parseInt(b.getText());
+            
             for (int j = 0; j < rdvs.size(); j++) {
                 RendezVous rdv = rdvs.get(j);
                 DateHeure dh = rdv.getDateHeure();
-                if (dh.getAnnee() == iAnnee && dh.getMois() == iMois && dh.getJour() == i - 2) {
+                if (dh.getAnnee() == iAnnee && dh.getMois() == iMois && dh.getJour() == jo) {
                     if (nf.DateHeure.estApresDateCourante(dh.getAnnee(), dh.getMois(), dh.getJour(), dh.getHeure(), dh.getMinutes())) {
                         b.setBackground(Color.BLUE);
                     } else {
@@ -178,7 +181,6 @@ public class Calendrier extends JPanel implements ActionListener {
             }
 
             b.setVisible(true);
-            b.setLabel(new Integer(i - jour(iAnnee, iMois, 1) + 1).toString());
             add(b);
             b.addActionListener(this);
         }

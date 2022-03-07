@@ -7,7 +7,11 @@ package UI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
 import javax.swing.ImageIcon;
+import nf.DPI;
+import nf.Infirmier;
+import nf.PH;
 
 /**
  *
@@ -15,10 +19,16 @@ import javax.swing.ImageIcon;
  */
 public class Vue_Patient_Inf extends javax.swing.JFrame {
 
+    Connection conn;
+    DPI dpi;
+    Infirmier inf;
+    
     /** Creates new form Connexion */
-    public Vue_Patient_Inf() {
+    public Vue_Patient_Inf(Connection conn, DPI dpi, Infirmier inf) {
         initComponents();
-        
+        this.conn=conn;
+        this.dpi=dpi;
+        this.inf=inf;
         
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
@@ -510,11 +520,11 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Vue_Patient_Inf().setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

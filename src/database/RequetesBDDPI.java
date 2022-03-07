@@ -734,7 +734,7 @@ public class RequetesBDDPI {
         rs.close();
         stmt.close();
     }
-
+/*
     //Creer une fiche de soins et l'ajouter dans la base de données
     //VALIDE
     public static void creerFicheDeSoins(Connection conn, FicheDeSoins fiche) throws SQLException {
@@ -751,7 +751,7 @@ public class RequetesBDDPI {
                 stmt2.setString(4, null);
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
             }
-            if (fiche.getInfirmier() == null) {
+            else if (fiche.getInfirmier() == null) {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
@@ -770,7 +770,7 @@ public class RequetesBDDPI {
             stmt2.executeUpdate();
             stmt2.close();
         }
-    }
+    }*/
     
     //Creer une prescription et l'ajouter dans la base de données
     //VALIDE

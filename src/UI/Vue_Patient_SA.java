@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -26,6 +27,9 @@ import nf.*;
 import static nf.Checker.convertirDatetoString;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static nf.DateHeure.estApresDateCourante;
 
 /**
  *
@@ -52,7 +56,6 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         //infos identité connexion
         prenom_SA.setText(sa.getNomSecretaireAd());
         nom_SA.setText(sa.getPrenomSecretaireAd());
-        
 
         //infos du patient
         jLabel10.setText(dpi.getNom());
@@ -66,13 +69,16 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
         //prochain rdv
         List<RendezVous> rdvsP = dpi.getdMA().getRendezVous();
-        List<Evaluable> evs = new Vector<Evaluable>();
-        evs.addAll(rdvsP);
-        evs = nf.ComparaisonEvaluables.trierEvaluablesParDate(evs);
-        RendezVous rdvP = (RendezVous) evs.get(0);
-        DateHeure dh = rdvP.getDateHeure();
-        if(nf.DateHeure.estApresDateCourante(dh.getAnnee(),dh.getMois(),dh.getJour(),dh.getHeure(),dh.getMinutes())){
-            jTextPane1.setText(rdvP.toStringProchainRDV());
+        if(rdvsP.size()!=0){ //il y a des rdvs
+            List<Evaluable> evs = new Vector<Evaluable>();
+            evs.addAll(rdvsP);
+            evs = nf.ComparaisonEvaluables.trierEvaluablesParDate(evs);
+            RendezVous rdv = nf.RendezVous.getProchainRDV(evs);
+            if(rdv!=null){
+                jTextPane1.setText(rdv.toStringProchainRDV());
+            }else{
+                jTextPane1.setText("Aucun rendez-vous prévu");
+            }
         }else{
             jTextPane1.setText("Aucun rendez-vous prévu");
         }
@@ -103,7 +109,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         java.awt.Image imgCal = iconeCal.getImage();
         iconeCal = new ImageIcon(imgCal);
         jLabel1.setIcon(iconeCal);
-        
+
         //jbutton
         ImageIcon icone1 = new ImageIcon("src/image/petit_crayon.png");
         java.awt.Image img1 = icone1.getImage();
@@ -539,38 +545,37 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        /*Connexion i;
+        Connexion i;
         try {
             i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (SQLException ex) {
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
+        Accueil_SA i;
+
         try {
-            i = new Accueil_Med(conn);
+            i = new Accueil_SA(conn, sa);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
         //AJOUTER UN RDV
-        RDV_prise i = new RDV_prise(conn,sa, dpi);
+        RDV_prise i = new RDV_prise(conn, sa, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_prendreRDVActionPerformed
-
 
     /**
      * @param args the command line arguments
@@ -671,7 +676,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
                 SecretaireAdministrative sa = new SecretaireAdministrative("5678452345", "Blabla", "car", "car");
                 new Vue_Patient_SA(dpi1, sa).setVisible(true);
-                */
+                 */
             }
         });
     }
@@ -715,5 +720,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
     private javax.swing.JLabel nom_SA;
     private javax.swing.JLabel prenom_SA;
     // End of variables declaration//GEN-END:variables
+
+    
 
 }

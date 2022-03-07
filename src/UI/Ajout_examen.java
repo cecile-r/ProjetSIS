@@ -5,6 +5,8 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.creerExamen;
+import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
@@ -22,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
 import static nf.Checker.getVectorActes;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  *
@@ -32,21 +36,27 @@ public class Ajout_examen extends javax.swing.JFrame {
     //Connection conn;
     PH ph;
     DPI dpi;
-    List<Acte> actes;
-    Vector actesS;
-    Vector entetes;
+    Connection conn;
+    DateHeure dh;
 
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_examen(PH ph, DPI dpi) {
+    public Ajout_examen(Connection conn, PH ph, DPI dpi) {
         initComponents();
-        actes = new Vector();
         this.ph = ph;
+        this.conn=conn;
+        this.dpi=dpi;
 
         //infos identité
         prenom.setText(ph.getPrenomPH());
         nom.setText(ph.getNomPH());
+        
+        //date
+        LocalDateTime ldt = LocalDateTime.now();
+        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        System.out.println("annnee :"+ ldt.getYear()+", mois :"+ ldt.getMonthValue()+", jour :"+ ldt.getDayOfMonth()+", heure :"+ ldt.getHour()+", minute :"+ldt.getMinute());
+       
 
         //date courante
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -307,49 +317,41 @@ public class Ajout_examen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /* Connexion i;
         try {
+            Connexion i;
             i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
         }
-         */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        /*Connexion i;
         try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //CREER lettreDeSortie
-        LocalDateTime ldt = LocalDateTime.now();
-        DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        //CREER EXAMEN
         
         if(jComboBox1.getSelectedIndex()>=0 && !jTextArea.getText().equals("")){
             String resultats = jTextArea.getText();
@@ -357,8 +359,16 @@ public class Ajout_examen extends javax.swing.JFrame {
             Examen e =new Examen(te,resultats,dh);
             e.setDPI(dpi);
             e.setPh(ph);
+            
             ///AJOUT BD
+            try {
+                creerExamen(conn,e);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             ///REVENIR PAGE PRECEDENTE
+            jButton9ActionPerformed(evt);
         }else{
             JOptionPane.showConfirmDialog(this, "Tous les champs ne sont pas remplis", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
@@ -410,6 +420,7 @@ public class Ajout_examen extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        /*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
@@ -476,7 +487,7 @@ public class Ajout_examen extends javax.swing.JFrame {
                 Ajout_examen i = new Ajout_examen(ph, dpi1);
                 i.setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

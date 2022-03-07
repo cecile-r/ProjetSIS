@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package UI;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.lowagie.text.Document;
@@ -39,7 +40,7 @@ import nf.*;
 import static nf.ComparaisonEvaluables.trierEvaluables;
 import database.DatabaseAccessProperties;
 import static nf.DateHeure.convertirDateHeuretoString;
-
+import static nf.DateHeure.estApresDateCourante;
 
 public class Vue_Patient_Med extends javax.swing.JFrame {
 
@@ -54,11 +55,11 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     /**
      * Creates new form Connexion
      */
-    public Vue_Patient_Med(Connection conn,DPI dpi, PH ph) {
+    public Vue_Patient_Med(Connection conn, DPI dpi, PH ph) {
         initComponents();
-        this.conn=conn;
+        this.conn = conn;
         this.dpi = dpi;
-        this.ph=ph;
+        this.ph = ph;
         /*
         Icon icon = new ImageIcon("/image/pdf.png");
         JButton btn = new JButton(icon);
@@ -77,7 +78,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jLabel12.setText(dpi.getSexe().toString());
         String dN = nf.Checker.convertirDatetoString(dpi.getDateNaissance());
         jLabel13.setText(dN);
-        
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -194,16 +195,18 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jScrollPane5.setViewportView(jTable2);
         jTable2.setDefaultEditor(Object.class, null);
 
-        
         //Prochain rdv
         List<RendezVous> rdvsP = dpi.getdMA().getRendezVous();
-        List<Evaluable> evs = new Vector<Evaluable>();
-        evs.addAll(rdvsP);
-        evs = nf.ComparaisonEvaluables.trierEvaluablesParDate(evs);
-        RendezVous rdvP = (RendezVous) evs.get(0);
-        DateHeure dh = rdvP.getDateHeure();
-        if(nf.DateHeure.estApresDateCourante(dh.getAnnee(),dh.getMois(),dh.getJour(),dh.getHeure(),dh.getMinutes())){
-            jTextPane1.setText(rdvP.toStringProchainRDV());
+        if(rdvsP.size()!=0){ //il y a des rdvs
+            List<Evaluable> evs = new Vector<Evaluable>();
+            evs.addAll(rdvsP);
+            evs = nf.ComparaisonEvaluables.trierEvaluablesParDate(evs);
+            RendezVous rdv = nf.RendezVous.getProchainRDV(evs);
+            if(rdv!=null){
+                jTextPane1.setText(rdv.toStringProchainRDV());
+            }else{
+                jTextPane1.setText("Aucun rendez-vous prévu");
+            }
         }else{
             jTextPane1.setText("Aucun rendez-vous prévu");
         }
@@ -661,13 +664,13 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane5))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel_constantes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -684,10 +687,10 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                     .addComponent(jPanel_constantes1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -711,6 +714,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         document_temp.addAll(dpi.getdM().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
         document_temp.addAll(dpi.getdMA().getExamens());
+        document_temp = trierEvaluables(document_temp);
         int i = jTable2.getSelectedRow();
         String ch = document_temp.get(i).toStringDM();
         JTextArea_affichage.setText(ch);
@@ -733,13 +737,13 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     }
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        Ajout_FS i = new Ajout_FS(ph,null,dpi);
+        Ajout_FS i = new Ajout_FS(conn, ph, null, dpi);
         i.setVisible(true);
 
     }//GEN-LAST:event_jLabel14MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        /*Connexion i;
+        Connexion i;
         try {
             i = new Connexion(conn);
             i.setVisible(true);
@@ -748,44 +752,49 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        //AJOUTER UNE FICHE DE SOINS 
+        Ajout_FS i;
+        i = new Ajout_FS(conn, ph, null, dpi);
+        i.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Ajout_prescription i = new Ajout_prescription(ph,dpi);
+        Ajout_prescription i = new Ajout_prescription(ph, dpi);
         i.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(ph,dpi);
+        Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(ph, dpi);
         i.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
+        Accueil_Med i;
         try {
-            i = new Accueil_Med(conn);
+            i = new Accueil_Med(conn, ph);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(Vue_Patient_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        Ajout_examen i = new Ajout_examen(ph,dpi);
+        Ajout_examen i = new Ajout_examen(conn,ph, dpi);
         i.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         //CONSULTATION RDV
-        RDV_consultation i = new RDV_consultation(conn,ph,dpi);
+        RDV_consultation i = new RDV_consultation(conn, ph, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
@@ -889,7 +898,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
                 i = new Vue_Patient_Med(dpi1, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
-                */
+                 */
             }
         });
     }
