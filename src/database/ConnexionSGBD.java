@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static java.lang.String.valueOf;
 
 class ConnexionSGBD {
 
@@ -444,6 +445,22 @@ class ConnexionSGBD {
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph1, date2)); //date où y'a des rdv
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph2, date3)); //date où y'a pas de rdv
             //System.out.println(RequetesBDProfessionnels.getListeRDVparJour(conn, ph3, date4)); //aucun rdv
+            
+            
+            //Test modifierDPI(ipp, tel, adresse, tel medecin) -> VALIDE
+            //Modification du telephone DPI et du médecin traitant
+            //RequetesBDDPI.modifierDPI(conn, "1876500989", "0476385426", "12 avenue des Pokemons", m);
+            //RequetesBDDPI.modifierDPI(conn, "1876500989", "0476385426", "10 avenue des Pokemons", m);
+            
+            
+            //Test creerLocalisation(ipp, loc) -> VALIDE
+            //Ajout d'une localisation pour Ronflex Perle
+            Localisation loc = new Localisation(Service.Medecine_nucleaire, Lit.F, 9, Service.Medecine_nucleaire);
+            //RequetesBDDPI.creerLocalisation(conn, "1876500989", loc);
+            
+            //Test fermerDPI(ipp) -> VALIDE
+            //RequetesBDDPI.fermerDPI(conn, "1876500989");
+            
             
             
             //Print information about connection warnings

@@ -33,6 +33,7 @@ import static database.RequetesBDConversion.convertDateSQLenJava;
 import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestamp;
 import static database.RequetesBDConversion.toStringTimestampJAVA;
+import static java.lang.String.valueOf;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import nf.DM;
@@ -66,6 +67,9 @@ public class RequetesBDDPI {
         return ippExiste;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    //Récupération d'éléments
+    
     //Renvoie la liste des DPI fermés -> patients PAS dans le CHU
     //VALIDE
     public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
@@ -880,4 +884,47 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
+    //Creer localisation d'un patient lorsqu'il entre dans le CHU
+    //VALIDE
+    public static void creerLocalisation(Connection conn, String ipp, Localisation loc) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
+        stmt.setString(1, ipp);
+        stmt.setString(2, loc.getService_responsable().toString());
+        stmt.setString(3, loc.getService_geographique().toString());
+        stmt.setString(4, loc.getLit().toString());
+        stmt.setString(5, valueOf(loc.getNchambre()));
+        
+        stmt.executeUpdate();
+        stmt.close();
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Modification d'éléments
+    
+    //Modifier les informations d'un patient dans son DPI et faire les modifs dans la BD
+    //VALIDE
+    public static void modifierDPI(Connection conn, String ipp, String telephone, String adresse, MedecinTraitant m) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("UPDATE DPI SET adresse_DPI = ?, telephone_DPI = ?, telephone_medecin_traitant = ? WHERE IPP = ?");
+        stmt.setString(1, adresse);
+        stmt.setString(2, telephone);
+        stmt.setString(3, m.getTelephoneMedecinTraitant());
+        stmt.setString(4, ipp);
+        stmt.executeUpdate();
+        stmt.close();
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //Suppression d'éléments
+    
+    //Supprimer la localisation d'un patient lorsqu'on ferme le dossier
+    //VALIDE
+    public static void fermerDPI(Connection conn, String ipp) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("DELETE FROM Localisation WHERE IPP = ?");
+        stmt.setString(1, ipp);
+        stmt.executeUpdate();
+        stmt.close();
+    }
 }
