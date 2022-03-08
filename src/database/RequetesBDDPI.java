@@ -763,7 +763,7 @@ public class RequetesBDDPI {
             String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
             Timestamp t = Timestamp.valueOf(ts);
 
-            if (fiche.getpH() == null) {
+            if (fiche.getInfirmier() != null) {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
@@ -771,7 +771,7 @@ public class RequetesBDDPI {
                 stmt2.setString(4, null);
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
             }
-            else if (fiche.getInfirmier() == null) {
+            else if (fiche.getpH() != null) {
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
@@ -901,18 +901,25 @@ public class RequetesBDDPI {
     }
     
     //Creer localisation d'un patient lorsqu'il entre dans le CHU
-    //VALIDE
+    //
     public static void creerLocalisation(Connection conn, String ipp, Localisation loc) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
         stmt.setString(1, ipp);
-        stmt.setString(2, loc.getService_responsable().toString());
-        stmt.setString(3, loc.getService_geographique().toString());
-        stmt.setString(4, loc.getLit().toString());
-        stmt.setString(5, valueOf(loc.getNchambre()));
+        ResultSet rs = stmt.executeQuery();
         
-        stmt.executeUpdate();
-        stmt.close();
+        if(rs.next()){
+            //PreparedStatement stmt = null;
+            stmt = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
+            stmt.setString(1, ipp);
+            stmt.setString(2, loc.getService_responsable().toString());
+            stmt.setString(3, loc.getService_geographique().toString());
+            stmt.setString(4, loc.getLit().toString());
+            stmt.setString(5, valueOf(loc.getNchambre()));
+        
+            stmt.executeUpdate();
+            stmt.close();
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////////
