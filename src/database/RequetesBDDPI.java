@@ -762,34 +762,77 @@ public class RequetesBDDPI {
             PreparedStatement stmt2 = null;
             String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
             Timestamp t = Timestamp.valueOf(ts);
+            int a;
 
             if (fiche.getInfirmier() != null) {
+                //Insertion dans la table Acte
+                a = creerActe(conn, fiche.getActe().get(i));
+                
+                //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
-                stmt2.setString(3, fiche.getActe().get(i).getCode().name());
+                stmt2.setInt(3, a);//idActe
                 stmt2.setString(4, null);
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
+                
             }
             else if (fiche.getpH() != null) {
+                //Insertion dans la table Acte
+                a = creerActe(conn, fiche.getActe().get(i));
+                
+                //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
-                stmt2.setString(3, fiche.getActe().get(i).getCode().name());
+                stmt2.setInt(3, a);//idActe
                 stmt2.setString(4, fiche.getpH().getIdPH());
                 stmt2.setString(5, null);
             } 
             else {
+                //Insertion dans la table Acte
+                a = creerActe(conn, fiche.getActe().get(i));
+                
+                //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
                 stmt2.setTimestamp(2, t);
-                stmt2.setString(3, fiche.getActe().get(i).getCode().name());
+                stmt2.setInt(3, a);
                 stmt2.setString(4, fiche.getpH().getIdPH());
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
             }
             stmt2.executeUpdate();
             stmt2.close();
         }
+    }
+    
+    //Creer un acte et l'ajouter dans la base de donnée
+    //VALIDE
+    public static int creerActe(Connection conn, Acte acte) throws SQLException {
+        //Calcul du nombre d'élément dans la table Acte pour trouver l'id
+        PreparedStatement stmt2 = null;
+        int rowCount = 0;
+        stmt2 = conn.prepareStatement("SELECT COUNT(idActe) AS rowcount FROM Acte");
+        ResultSet rs2 = stmt2.executeQuery();
+        if(rs2.next()){
+            rowCount = rs2.getInt("rowcount");
+        }
+        
+        //Insertion de l'acte
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("INSERT INTO Acte values(?,?,?,?,?,?)");
+        stmt.setInt(1, rowCount+1);
+        stmt.setString(2, acte.getCode().name()); 
+        stmt.setString(3, acte.getType().name()); 
+        stmt.setString(4, acte.getNomA()); 
+        stmt.setFloat(5, acte.getCoeff()); 
+        stmt.setString(6, acte.getObservation()); 
+        stmt.executeUpdate();
+        stmt.close();
+        
+        rs2.close();
+        stmt2.close();
+        return (rowCount+1);
     }
     
     //Creer une prescription et l'ajouter dans la base de données
@@ -904,22 +947,28 @@ public class RequetesBDDPI {
     //
     public static void creerLocalisation(Connection conn, String ipp, Localisation loc) throws SQLException{
         PreparedStatement stmt = null;
-        stmt = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
+        stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
         stmt.setString(1, ipp);
         ResultSet rs = stmt.executeQuery();
         
         if(rs.next()){
-            //PreparedStatement stmt = null;
-            stmt = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
-            stmt.setString(1, ipp);
-            stmt.setString(2, loc.getService_responsable().toString());
-            stmt.setString(3, loc.getService_geographique().toString());
-            stmt.setString(4, loc.getLit().toString());
-            stmt.setString(5, valueOf(loc.getNchambre()));
-        
-            stmt.executeUpdate();
-            stmt.close();
+            System.out.println("Le patient est archivé et ne peut pas être localisé dans le CHU.");
         }
+        else {
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
+            stmt2.setString(1, ipp);
+            stmt2.setString(2, loc.getService_responsable().toString());
+            stmt2.setString(3, loc.getService_geographique().toString());
+            stmt2.setString(4, loc.getLit().toString());
+            stmt2.setString(5, valueOf(loc.getNchambre()));
+        
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+        
+        rs.close();
+        stmt.close();
     }
     
     ////////////////////////////////////////////////////////////////////////////
