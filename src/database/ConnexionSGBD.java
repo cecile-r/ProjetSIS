@@ -75,11 +75,11 @@ class ConnexionSGBD {
             Acte a2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
             //a2.setIdActe(252);
           
-            DateHeure d1 = new DateHeure(2022,02,10,10,00);
+            DateHeure d1 = new DateHeure(2022,3,8,8,00);
             FicheDeSoins fs1 = new FicheDeSoins(d1);
-            //fs1.setpH(ph1);
-            //fs1.ajouterActe(a1);
-            //fs1.ajouterActe(a2);
+            fs1.setpH(ph1);
+            fs1.ajouterActe(a1);
+            fs1.ajouterActe(a2);
             
             DateHeure d2 = new DateHeure(2021,06,27,17,40);
             FicheDeSoins fs2 = new FicheDeSoins(d1);
@@ -104,7 +104,7 @@ class ConnexionSGBD {
             DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
             
             //ph1.ajouterFicheDeSoins(fs1);
-            //fs1.setDPI(dpi1);
+            fs1.setDPI(dpi1);
             //p1.setDPI(dpi1);
             //p2.setDPI(dpi1);
             //p1.setpH(ph1);
@@ -425,7 +425,7 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoins(fiche) -> VALIDE
-            //RequetesBDDPI.creerFicheDeSoins(conn, fs1);
+            RequetesBDDPI.creerFicheDeSoins(conn, fs1);
             
             //Test creerPrescription(p) -> VALIDE
             //RequetesBDDPI.creerPrescription(conn, p1);
@@ -458,9 +458,10 @@ class ConnexionSGBD {
             //2e version de la fonction
             //RequetesBDDPI.modifierDPI(conn, "9736482920", "0413256790", "3 bis avenue du tonerre", m1);
             
-            //Test creerLocalisation(ipp, loc) -> VALIDE
+            //Test creerLocalisation(ipp, loc) -> A TESTER
             //Ajout d'une localisation pour Ronflex Perle
             Localisation loc = new Localisation(Service.Medecine_nucleaire, Lit.F, 9, Service.Medecine_nucleaire);
+            //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
             //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
             
             //Test fermerDPI(ipp) -> VALIDE
