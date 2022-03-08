@@ -493,6 +493,11 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jPanel_constantes1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel_infimiere.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_infimiere.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_infimiereMouseClicked(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel4.setText("12/02/2022 08:22");
@@ -582,6 +587,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AJOUTER", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Console", 1, 11))); // NOI18N
 
         jButton5.setBackground(new java.awt.Color(169, 206, 243));
+        jButton5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton5.setText("Prescription");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -590,6 +596,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         });
 
         jButton7.setBackground(new java.awt.Color(169, 206, 243));
+        jButton7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton7.setText("Lettre de sortie");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -598,6 +605,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         });
 
         jButton4.setBackground(new java.awt.Color(169, 206, 243));
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton4.setText("Fiche de soins");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -606,6 +614,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         });
 
         jButton6.setBackground(new java.awt.Color(169, 206, 243));
+        jButton6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton6.setText("Examen");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -764,13 +773,15 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Ajout_prescription i = new Ajout_prescription(ph, dpi);
+        //AJOUT PRESCRIPTION
+        Ajout_prescription i = new Ajout_prescription(conn,ph, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(ph, dpi);
+        //AJOUT LETTRE DE SORTIE
+        Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(conn, ph, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -788,16 +799,23 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        //AJOUT EXAMEN
         Ajout_examen i = new Ajout_examen(conn,ph, dpi);
         i.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         //CONSULTATION RDV
-        RDV_consultation i = new RDV_consultation(conn, ph, dpi);
+        RDV_consultation i = new RDV_consultation(conn, ph, null, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel_infimiereMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_infimiereMouseClicked
+        // INTERFACE TOUTES LES CONTANSTES 
+        
+    }//GEN-LAST:event_jLabel_infimiereMouseClicked
 
     /**
      * @param args the command line arguments

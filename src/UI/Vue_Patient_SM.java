@@ -426,10 +426,20 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         jButton_consultation.setBackground(new java.awt.Color(169, 206, 243));
         jButton_consultation.setText("Consulter les rendez-vous");
         jButton_consultation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton_consultation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_consultationActionPerformed(evt);
+            }
+        });
 
         jButton_prendreRDV.setBackground(new java.awt.Color(169, 206, 243));
         jButton_prendreRDV.setText("Prendre rendez-vous");
         jButton_prendreRDV.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton_prendreRDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_prendreRDVActionPerformed(evt);
+            }
+        });
 
         jTextPane1.setBackground(new java.awt.Color(169, 206, 243));
         jTextPane1.setEnabled(false);
@@ -450,29 +460,28 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_rendezvousLayout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)))
-                .addGroup(jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_consultation, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(71, 71, 71))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_consultation, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54))
         );
         jPanel_rendezvousLayout.setVerticalGroup(
             jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_rendezvousLayout.createSequentialGroup()
                 .addGroup(jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_rendezvousLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jButton_consultation, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_rendezvousLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel_rendezvousLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jButton_consultation, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_rendezvousLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel_rendezvousLayout.createSequentialGroup()
-                        .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 14, Short.MAX_VALUE))
-                    .addComponent(jScrollPane4))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                    .addComponent(jButton_prendreRDV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -627,9 +636,21 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Vue_Patient_SM.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
+         //AJOUTER UN RDV
+        RDV_prise i = new RDV_prise(conn, null,sm, dpi);
+        i.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton_prendreRDVActionPerformed
+
+    private void jButton_consultationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_consultationActionPerformed
+        //CONSULTATION RDV
+        RDV_consultation i = new RDV_consultation(conn, null, sm, dpi);
+        i.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton_consultationActionPerformed
 
     /**
      * @param args the command line arguments

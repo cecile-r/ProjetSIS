@@ -26,20 +26,27 @@ public class RDV_consultation extends javax.swing.JFrame {
     Connection conn;
     PH ph;
     DPI dpi;
+    SecretaireMedicale sm;
 
     /**
      * Creates new form Historique_Prochains_RDV
      */
-    public RDV_consultation(Connection conn, PH ph, DPI dpi) {
+    public RDV_consultation(Connection conn, PH ph, SecretaireMedicale sm, DPI dpi) {
         initComponents();
         this.conn = conn;
         this.ph = ph;
+        this.sm = sm;
         this.dpi = dpi;
 
         //infos identité
-        prenom.setText(ph.getPrenomPH());
-        nom.setText(ph.getNomPH());
-        
+        if (ph != null) {
+            prenom.setText(ph.getPrenomPH());
+            nom.setText(ph.getNomPH());
+        } else {
+            prenom.setText(sm.getPrenomSecretaireMed());
+            nom.setText(sm.getNomSecretaireMed());
+        }
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -256,13 +263,17 @@ public class RDV_consultation extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(RDV_consultation.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
-        Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
-        i.setVisible(true);
+        if (ph != null) {
+            Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
+            i.setVisible(true);
+        } else {
+            Vue_Patient_SM i = new Vue_Patient_SM(conn, dpi, sm);
+            i.setVisible(true);
+        }
         dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
 

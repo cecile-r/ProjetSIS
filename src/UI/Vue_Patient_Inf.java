@@ -8,6 +8,10 @@ package UI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import nf.DPI;
 import nf.Infirmier;
@@ -22,6 +26,10 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
     Connection conn;
     DPI dpi;
     Infirmier inf;
+    Vector entetesL;
+    Vector localisation;
+    Vector entetesD;
+    Vector documents;
     
     /** Creates new form Connexion */
     public Vue_Patient_Inf(Connection conn, DPI dpi, Infirmier inf) {
@@ -30,6 +38,18 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         this.dpi=dpi;
         this.inf=inf;
         
+        //infos identité connexion
+        prenom_inf.setText(inf.getPrenomInfirmiere());
+        nom_inf.setText(inf.getNomInfirmiere());
+        service.setText(inf.getService().toString());
+
+        //infos du patient
+        jLabel10.setText(dpi.getNom());
+        jLabel11.setText(dpi.getPrenom());
+        jLabel12.setText(dpi.getSexe().toString());
+        String dN = nf.Checker.convertirDatetoString(dpi.getDateNaissance());
+        jLabel13.setText(dN);
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -463,7 +483,7 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        /*Connexion i;
+         Connexion i;
         try {
             i = new Connexion(conn);
             i.setVisible(true);
@@ -472,20 +492,18 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
+        Accueil_Inf i;
         try {
-            i = new Accueil_Med(conn);
+            i = new Accueil_Inf(conn, inf);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(Vue_Patient_Inf.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

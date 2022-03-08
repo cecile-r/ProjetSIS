@@ -82,7 +82,6 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         }else{
             jTextPane1.setText("Aucun rendez-vous prévu");
         }
-        
 
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
@@ -424,6 +423,11 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         jButton_modifier.setBackground(new java.awt.Color(204, 204, 255));
         jButton_modifier.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
         jButton_modifier.setText("Modifier le patient");
+        jButton_modifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_modifierActionPerformed(evt);
+            }
+        });
 
         jButton_fermeture.setBackground(new java.awt.Color(204, 204, 255));
         jButton_fermeture.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
@@ -572,10 +576,17 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
     private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
         //AJOUTER UN RDV
-        RDV_prise i = new RDV_prise(conn, sa, dpi);
+        RDV_prise i = new RDV_prise(conn, sa,null, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_prendreRDVActionPerformed
+
+    private void jButton_modifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_modifierActionPerformed
+        //MODIFIER LES INFOS DU PATIENT
+        Modif_Patient i = new Modif_Patient(conn, sa,null, dpi);
+        i.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton_modifierActionPerformed
 
     /**
      * @param args the command line arguments

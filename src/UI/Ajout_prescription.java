@@ -5,6 +5,8 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.creerPrescription;
+import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
@@ -22,6 +24,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
 import static nf.Checker.getVectorActes;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -29,7 +34,7 @@ import static nf.Checker.getVectorActes;
  */
 public class Ajout_prescription extends javax.swing.JFrame {
 
-    //Connection conn;
+    Connection conn;
     PH ph;
     DPI dpi;
     List<Acte> actes;
@@ -39,10 +44,12 @@ public class Ajout_prescription extends javax.swing.JFrame {
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_prescription(PH ph, DPI dpi) {
+    public Ajout_prescription(Connection conn, PH ph, DPI dpi) {
         initComponents();
         actes = new Vector();
         this.ph = ph;
+        this.dpi=dpi;
+        this.conn=conn;
 
         //infos identité
         prenom.setText(ph.getPrenomPH());
@@ -229,6 +236,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir", "Médicament", "Examen" }));
+        jComboBox1.setSelectedIndex(-1);
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -258,6 +266,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         );
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setSelectedIndex(-1);
         jComboBox2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jComboBox2MouseReleased(evt);
@@ -362,17 +371,16 @@ public class Ajout_prescription extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /* Connexion i;
         try {
+            Connexion i;
             i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
         }
-         */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -389,16 +397,20 @@ public class Ajout_prescription extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+         try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -407,24 +419,42 @@ public class Ajout_prescription extends javax.swing.JFrame {
         DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
         String observation = jTextArea1.getText();
 
-        if (jComboBox1.getSelectedItem().equals("Médicament")) {
+        if (jComboBox1.getSelectedItem().equals("Médicament")&&champsCorrectsMedicament()) {
             String medicament = jTextArea2.getText();
             Prescription p =new Prescription(dh,observation,null,medicament);
             p.setDPI(dpi);
             p.setpH(ph);
+            
             ///AJOUT BD
+            try {
+                creerPrescription(conn,p);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+            }
             ///REVENIR PAGE PRECEDENTE
-        } else if (jComboBox1.getSelectedItem().equals("Examen")) {
+            jButton9ActionPerformed(evt);
+            
+        } else if (jComboBox1.getSelectedItem().equals("Examen")&&champsCorrectsExamen()) {
             TypeExamen typeExamen = (TypeExamen) jComboBox2.getSelectedItem();
             Prescription p =new Prescription(dh,observation,typeExamen,null);
             p.setDPI(dpi);
             p.setpH(ph);
+            
             if(jComboBox2.getSelectedItem()==TypeExamen.radiologie||jComboBox2.getSelectedItem()==TypeExamen.imagerie_par_resonance_magnetique||jComboBox2.getSelectedItem()==TypeExamen.scanner){
                 //TYPE = jComboBox2.getSelectedItem()
                 //ENVOYER EN RADIO
             }
+            
             ///AJOUT BD
+            try {
+                creerPrescription(conn,p);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             ///REVENIR PAGE PREDEDENTE
+            jButton9ActionPerformed(evt);
+            
         }else{
             JOptionPane.showConfirmDialog(this, "Choissisez le type de prescription", "Erreur", JOptionPane.ERROR_MESSAGE);
 
@@ -457,18 +487,24 @@ public class Ajout_prescription extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
-    public boolean champsCorrects() throws ParseException {
-        /*
+    public boolean champsCorrectsMedicament() {
+        
         boolean v = true;
-        if (jTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        }else if (jFormattedTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
+        if (jTextArea2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer une prescription", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
-        return v;*/
-        return true;
+        return v;
+    }
+    
+    public boolean champsCorrectsExamen() {
+        
+        boolean v = true;
+        if (jComboBox2.getSelectedIndex()<0) {
+            JOptionPane.showMessageDialog(this, "Merci de sélectionner un type d'examen", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }
+        return v;
     }
 
     /**
@@ -500,6 +536,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        /*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
@@ -566,7 +603,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 Ajout_prescription i = new Ajout_prescription(ph, dpi1);
                 i.setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

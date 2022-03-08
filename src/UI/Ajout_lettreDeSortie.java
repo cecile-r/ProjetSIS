@@ -5,8 +5,11 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.creerLettreSortie;
+import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
 import static nf.Checker.getVectorActes;
+import java.sql.Connection;
 
 /**
  *
@@ -32,17 +36,21 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     //Connection conn;
     PH ph;
     DPI dpi;
+    Connection conn;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
+    
 
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_lettreDeSortie(PH ph, DPI dpi) {
+    public Ajout_lettreDeSortie(Connection conn, PH ph, DPI dpi) {
         initComponents();
         actes = new Vector();
         this.ph = ph;
+        this.dpi=dpi;
+        this.conn=conn;
 
         //infos identité
         prenom.setText(ph.getPrenomPH());
@@ -284,17 +292,16 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /* Connexion i;
-        try {
+         try {
+            Connexion i;
             i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
         }
-         */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -311,16 +318,20 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        /*Connexion i;
         try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -328,33 +339,32 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         LocalDateTime ldt = LocalDateTime.now();
         DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
         
-        if(!jTextArea.getText().equals("")){
+        if(champsCorrects()){
             String texte = jTextArea.getText();
             LettreDeSortie ls =new LettreDeSortie(texte,dh);
             ls.setDPI(dpi);
             ls.setPh(ph);
+            
             ///AJOUT BD
+            try {
+                creerLettreSortie(conn,ls);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             ///REVENIR PAGE PRECEDENTE
-        }else{
-            JOptionPane.showConfirmDialog(this, "Merci d'ecrire la lettre de sortie", "Erreur", JOptionPane.ERROR_MESSAGE);
+            jButton9ActionPerformed(evt);
         }
-        
-        
-        
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public boolean champsCorrects() throws ParseException {
-        /*
+    public boolean champsCorrects() {
+        
         boolean v = true;
-        if (jTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        }else if (jFormattedTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
+        if (jTextArea.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer la lettre de sortie", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
-        return v;*/
-        return true;
+        return v;
     }
 
     /**
@@ -386,6 +396,7 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        /*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");
@@ -452,7 +463,7 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(ph, dpi1);
                 i.setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

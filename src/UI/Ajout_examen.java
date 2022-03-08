@@ -244,6 +244,7 @@ public class Ajout_examen extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextArea);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setSelectedIndex(-1);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Type d'examen :");
@@ -351,9 +352,9 @@ public class Ajout_examen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //CREER EXAMEN
         
-        if(jComboBox1.getSelectedIndex()>=0 && !jTextArea.getText().equals("")){
+        //CREER EXAMEN        
+        if(champsCorrects()){
             String resultats = jTextArea.getText();
             TypeExamen te = (TypeExamen) jComboBox1.getSelectedItem();
             Examen e =new Examen(te,resultats,dh);
@@ -369,26 +370,21 @@ public class Ajout_examen extends javax.swing.JFrame {
             
             ///REVENIR PAGE PRECEDENTE
             jButton9ActionPerformed(evt);
-        }else{
-            JOptionPane.showConfirmDialog(this, "Tous les champs ne sont pas remplis", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-        
-        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public boolean champsCorrects() throws ParseException {
-        /*
+    public boolean champsCorrects() {
+        
         boolean v = true;
-        if (jTextField1.getText().equals("")) {
+        if (jTextArea.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jFormattedTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
+        }else if(jComboBox1.getSelectedIndex()<0){
+            JOptionPane.showMessageDialog(this, "Merci de sélectionner un examen", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
-        return v;*/
-        return true;
+        return v;
     }
 
     /**

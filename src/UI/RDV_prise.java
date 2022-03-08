@@ -36,15 +36,17 @@ public class RDV_prise extends javax.swing.JFrame {
 
     Connection conn;
     SecretaireAdministrative sa;
+    SecretaireMedicale sm;
     DPI dpi;
 
     /**
      * Creates new form Connexion
      */
-    public RDV_prise(Connection conn, SecretaireAdministrative sa, DPI dpi) {
+    public RDV_prise(Connection conn, SecretaireAdministrative sa, SecretaireMedicale sm, DPI dpi) {
 
         initComponents();
         this.sa = sa;
+        this.sm = sm;
         this.dpi = dpi;
         this.conn = conn;
 
@@ -55,8 +57,13 @@ public class RDV_prise extends javax.swing.JFrame {
         jComboBox2.setVisible(false);
 
         //infos identité
-        prenom.setText(sa.getPrenomSecretaireAd());
-        nom.setText(sa.getNomSecretaireAd());
+        if (sa != null) {
+            prenom.setText(sa.getPrenomSecretaireAd());
+            nom.setText(sa.getNomSecretaireAd());
+        } else {
+            prenom.setText(sm.getPrenomSecretaireMed());
+            nom.setText(sm.getNomSecretaireMed());
+        }
 
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
@@ -474,21 +481,28 @@ public class RDV_prise extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        
-            try {
-                String IPP = dpi.getIPP();
-                DPI dpi2 = getDPI(conn, IPP);
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Vue_Patient_SA i = new Vue_Patient_SA(conn,dpi2,sa);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-                dispose();
 
-            } catch (SQLException ex) {
-                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            String IPP = dpi.getIPP();
+            DPI dpi2 = getDPI(conn, IPP);
+            Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+            int longueur = tailleMoniteur.width;
+            int hauteur = tailleMoniteur.height;
+            if(sa!=null){
+            Vue_Patient_SA i = new Vue_Patient_SA(conn, dpi2, sa);
+            i.setSize(longueur, hauteur);
+            i.setVisible(true);
+            }else{
+                Vue_Patient_SM i = new Vue_Patient_SM(conn, dpi2, sm);
+            i.setSize(longueur, hauteur);
+            i.setVisible(true);
             }
+            
+            dispose();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jLabel3PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabel3PropertyChange
@@ -509,7 +523,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 d.setMonth(dh.getMois());
 
                 List<RendezVous> rdvs = getListeRDVparJour(conn, ph, d);
-                
+
                 jButton1.setEnabled(true);
                 jButton2.setEnabled(true);
                 jButton8.setEnabled(true);
@@ -572,7 +586,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -599,7 +613,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -625,7 +639,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -651,7 +665,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -677,7 +691,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -703,7 +717,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -729,7 +743,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -755,7 +769,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 Service s = (Service) jComboBox1.getSelectedItem();
                 List<PH> phs = getListePHService(conn, s.toString());
                 PH ph = phs.get(index);
-                
+
                 RendezVous rdv = new RendezVous(dh, jTextArea1.getText());
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
@@ -796,8 +810,6 @@ public class RDV_prise extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
-    
-    
     /**
      * @param args the command line arguments
      */
