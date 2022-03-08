@@ -5,6 +5,7 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -517,45 +518,15 @@ public class Ajout_FS extends javax.swing.JFrame {
         //dpi.getdMA().getFicheDeSoins().add(f);
 
         //AJOUT FICHE DE SOINS DANS LA BD
-        /*
+        
         try {
             creerFicheDeSoins(conn,f);
         } catch (SQLException ex) {
             Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         
         //SORTIE
-        if (ph != null) {
-            try {
-                String IPP = dpi.getIPP();
-                DPI dpi2 = getDPI(conn, IPP);
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i;
-                i = new Vue_Patient_Med(conn, dpi2, ph);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-                dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                String IPP = dpi.getIPP();
-                DPI dpi2 = getDPI(conn, IPP);
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Vue_Patient_Inf i;
-                i = new Vue_Patient_Inf(conn, dpi2, inf);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-                dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        jButton9ActionPerformed(evt);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
