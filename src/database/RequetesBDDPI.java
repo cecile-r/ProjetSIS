@@ -80,7 +80,7 @@ public class RequetesBDDPI {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP NOT IN (SELECT IPP FROM Localisation)");
+                + "WHERE IPP NOT IN (SELECT IPP FROM Localisation) AND IPP NOT IN (SELECT IPP FROM Archive)");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -101,7 +101,7 @@ public class RequetesBDDPI {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP NOT IN (SELECT IPP FROM Localisation)");
+                + "WHERE IPP NOT IN (SELECT IPP FROM Localisation) AND IPP NOT IN (SELECT IPP FROM Archive)");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -124,7 +124,7 @@ public class RequetesBDDPI {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) ");
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE IPP NOT IN (SELECT IPP FROM Archive)");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -138,13 +138,13 @@ public class RequetesBDDPI {
         return listeDPI;
     }
 
-    //Renvoie le vecteur des DPI ouverts
+    //Renvoie le vecteur des DPI ouverts ou fermés -> patients dans le CHU ou non
     //VALIDE
     public static Vector getVectorTousDPI(Connection conn) throws SQLException {
         Vector vDPI = new Vector();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) ");
+                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE IPP NOT IN (SELECT IPP FROM Archive)");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -726,7 +726,7 @@ public class RequetesBDDPI {
     public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, MedecinTraitant m) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "WHERE IPP = '" + id + "'");
+                + "WHERE IPP = '" + id + "' AND IPP IN (SELECT IPP FROM Archive)");
 
         if (rs.next()) {
             System.out.println("Ce patient est déjà enregistré dans la base de données.");
@@ -944,7 +944,7 @@ public class RequetesBDDPI {
     }
     
     //Creer localisation d'un patient lorsqu'il entre dans le CHU
-    //
+    //VALIDE
     public static void creerLocalisation(Connection conn, String ipp, Localisation loc) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
