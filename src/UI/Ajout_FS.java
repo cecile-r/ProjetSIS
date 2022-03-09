@@ -442,30 +442,11 @@ public class Ajout_FS extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        /* Connexion i;
-        try {
-            i = new Connexion(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
+ 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+   
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -511,14 +492,12 @@ public class Ajout_FS extends javax.swing.JFrame {
         //CREER FICHE DE SOINS
         FicheDeSoins f = new FicheDeSoins(dh);
         f.setDPI(dpi);
+        
         f.setActe(actes);
         f.setpH(ph);
         f.setInfirmier(inf);
-        //dpi.getdM().getFicheDeSoins().add(f);
-        //dpi.getdMA().getFicheDeSoins().add(f);
 
         //AJOUT FICHE DE SOINS DANS LA BD
-        
         try {
             creerFicheDeSoins(conn,f);
         } catch (SQLException ex) {
@@ -561,6 +540,12 @@ public class Ajout_FS extends javax.swing.JFrame {
             v = false;
         } else if (jFormattedTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextField1.getText().length()>100) {
+            JOptionPane.showMessageDialog(this, "Texte (nom) trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextArea1.getText().length()>800) {
+            JOptionPane.showMessageDialog(this, "Texte (observation) trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
         return v;

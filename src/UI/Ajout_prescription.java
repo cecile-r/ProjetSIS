@@ -498,10 +498,15 @@ public class Ajout_prescription extends javax.swing.JFrame {
     }
     
     public boolean champsCorrectsExamen() {
-        
         boolean v = true;
         if (jComboBox2.getSelectedIndex()<0) {
             JOptionPane.showMessageDialog(this, "Merci de sélectionner un type d'examen", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextArea1.getText().length()>800) {
+            JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextArea2.getText().length()>500) {
+            JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
         return v;

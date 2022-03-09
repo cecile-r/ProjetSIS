@@ -363,6 +363,9 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         if (jTextArea.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer la lettre de sortie", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
+        }else if (jTextArea.getText().length()>800) {
+            JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
         }
         return v;
     }

@@ -60,12 +60,6 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         this.conn = conn;
         this.dpi = dpi;
         this.ph = ph;
-        /*
-        Icon icon = new ImageIcon("/image/pdf.png");
-        JButton btn = new JButton(icon);
-        btn.setBounds(300,20,100,100);  
-        Panel_Bandeau.add(btn);  
-        Panel_Bandeau.setSize(300,250);  */
 
         //infos identité connexion
         prenom_medecin1.setText(ph.getPrenomPH());
@@ -156,6 +150,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         document_temp.addAll(dpi.getdM().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
         document_temp.addAll(dpi.getdMA().getExamens());
+        document_temp.addAll(dpi.getdM().getPrescriptions());
         document_temp = trierEvaluables(document_temp);
         Vector document1 = new Vector();
         for (int i = 0; i < document_temp.size(); i++) { //pour tous les documents
@@ -194,6 +189,8 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(jTable2);
         jTable2.setDefaultEditor(Object.class, null);
+        jTable2.setPreferredSize(new java.awt.Dimension(3000, 70 * jTable2.getRowCount()));
+
 
         //Prochain rdv
         List<RendezVous> rdvsP = dpi.getdMA().getRendezVous();
@@ -723,6 +720,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         document_temp.addAll(dpi.getdM().getFicheDeSoins());
         document_temp.addAll(dpi.getdMA().getLettreDeSortie());
         document_temp.addAll(dpi.getdMA().getExamens());
+        document_temp.addAll(dpi.getdM().getPrescriptions());
         document_temp = trierEvaluables(document_temp);
         int i = jTable2.getSelectedRow();
         String ch = document_temp.get(i).toStringDM();

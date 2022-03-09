@@ -380,6 +380,9 @@ public class Ajout_examen extends javax.swing.JFrame {
         if (jTextArea.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
+        }else if (jTextArea.getText().length()>800) {
+            JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
         }else if(jComboBox1.getSelectedIndex()<0){
             JOptionPane.showMessageDialog(this, "Merci de sélectionner un examen", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
