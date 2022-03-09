@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static database.RequetesBDDPI.getListeDPIFerme;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 
@@ -75,16 +76,16 @@ class ConnexionSGBD {
             Acte a2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
             //a2.setIdActe(252);
           
-            DateHeure d1 = new DateHeure(2022,3,8,8,00);
+            DateHeure d1 = new DateHeure(2022,3,9,11,00);
             FicheDeSoins fs1 = new FicheDeSoins(d1);
             fs1.setpH(ph1);
             fs1.ajouterActe(a1);
             fs1.ajouterActe(a2);
             
-            DateHeure d2 = new DateHeure(2021,06,27,17,40);
-            FicheDeSoins fs2 = new FicheDeSoins(d1);
-            //fs2.setInfirmier(inf1);
-            //fs2.ajouterActe(a2);
+            DateHeure d2 = new DateHeure(2021,06,27,14,00);
+            FicheDeSoins fs2 = new FicheDeSoins(d2);
+            fs2.setInfirmier(inf1);
+            fs2.ajouterActe(a2);
             
             Prescription p1 = new Prescription(d2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             Prescription p2 = new Prescription(d1,"Faire ultrasons au patient, attention epaule droite",TypeExamen.ultrasons,null);
@@ -104,7 +105,8 @@ class ConnexionSGBD {
             DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
             
             //ph1.ajouterFicheDeSoins(fs1);
-            fs1.setDPI(dpi1);
+            //fs1.setDPI(dpi1);
+            //fs2.setDPI(dpi1);
             //p1.setDPI(dpi1);
             //p2.setDPI(dpi1);
             //p1.setpH(ph1);
@@ -425,7 +427,8 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoins(fiche) -> VALIDE
-            RequetesBDDPI.creerFicheDeSoins(conn, fs1);
+            //RequetesBDDPI.creerFicheDeSoins(conn, fs1);
+            //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
             
             //Test creerPrescription(p) -> VALIDE
             //RequetesBDDPI.creerPrescription(conn, p1);
@@ -458,20 +461,23 @@ class ConnexionSGBD {
             //2e version de la fonction
             //RequetesBDDPI.modifierDPI(conn, "9736482920", "0413256790", "3 bis avenue du tonerre", m1);
             
-            //Test creerLocalisation(ipp, loc) -> A TESTER
+            //Test creerLocalisation(ipp, loc) -> VALIDE
             //Ajout d'une localisation pour Ronflex Perle
             Localisation loc = new Localisation(Service.Medecine_nucleaire, Lit.F, 9, Service.Medecine_nucleaire);
-            //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
+            //RequetesBDDPI.creerLocalisation(conn, "9736482920", loc);
             //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
             
             //Test fermerDPI(ipp) -> VALIDE
-            //RequetesBDDPI.fermerDPI(conn, "1876500989");
+            //RequetesBDDPI.fermerDPI(conn, "9736482920");
            
             //Test conversion local date en date -> VALIDE
             //System.out.println(RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
             
             //Test archive (ipp, date deces) -> VALIDE
             //RequetesBDDPI.archiverDPI(conn, "1111888811", RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
+            
+            
+            
             
             
             
