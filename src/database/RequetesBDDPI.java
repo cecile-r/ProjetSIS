@@ -758,6 +758,7 @@ public class RequetesBDDPI {
     //Creer une fiche de soins et l'ajouter dans la base de données
     //VALIDE
     public static void creerFicheDeSoins(Connection conn, FicheDeSoins fiche) throws SQLException {
+        
         for (int i = 0; i < fiche.getActe().size(); i++) {
             PreparedStatement stmt2 = null;
             String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
@@ -778,6 +779,7 @@ public class RequetesBDDPI {
                 
             }
             else if (fiche.getpH() != null) {
+                
                 //Insertion dans la table Acte
                 a = creerActe(conn, fiche.getActe().get(i));
                 

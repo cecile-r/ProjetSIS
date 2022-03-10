@@ -11,7 +11,7 @@ public class DM {
     private List<LettreDeSortie> lettreDeSortie = new ArrayList<LettreDeSortie> ();
     private List<SoinsQuotidien> soinsQuotidien = new ArrayList<SoinsQuotidien> ();
     private List<Examen> examens = new ArrayList<Examen>();
-    ArrayList documents = new ArrayList();
+    private ArrayList documents = new ArrayList();
     
     public DM(){
        this.ficheDeSoins = new Vector<FicheDeSoins>();
@@ -40,11 +40,11 @@ public class DM {
     public String toString(){
         List <Evaluable> documents = new ArrayList<Evaluable>();
         documents = new Vector<>();
-        documents.addAll(ficheDeSoins);
-        documents.addAll(prescriptions);
-        documents.addAll(lettreDeSortie);
-        documents.addAll(soinsQuotidien);
-        documents.addAll(examens);
+        documents.addAll(getFicheDeSoins());
+        documents.addAll(getPrescriptions());
+        documents.addAll(getLettreDeSortie());
+        documents.addAll(getSoinsQuotidien());
+        documents.addAll(getExamens());
         ComparaisonEvaluables c = new ComparaisonEvaluables();
         documents = c.trierEvaluablesParDate(documents);
         
@@ -57,19 +57,19 @@ public class DM {
     }
     
    public void ajouterFicheDeSoins(FicheDeSoins fs){
-       ficheDeSoins.add(fs);
+        getFicheDeSoins().add(fs);
    }
    public void ajouterPrescription(Prescription p){
-       prescriptions.add(p);
+        getPrescriptions().add(p);
    }
    public void ajouterLettreDeSortie(LettreDeSortie l){
-       lettreDeSortie.add(l);
+        getLettreDeSortie().add(l);
    }
    public void ajouterSoinsQuotidien(SoinsQuotidien s){
-       soinsQuotidien.add(s);
+        getSoinsQuotidien().add(s);
    }
    public void ajouterExamen(Examen e){
-       examens.add(e);
+        getExamens().add(e);
    }
     
 
@@ -99,6 +99,62 @@ public class DM {
      */
     public void setPrescriptions(List<Prescription> prescriptions) {
         this.prescriptions = prescriptions;
+    }
+
+    /**
+     * @return the lettreDeSortie
+     */
+    public List<LettreDeSortie> getLettreDeSortie() {
+        return lettreDeSortie;
+    }
+
+    /**
+     * @param lettreDeSortie the lettreDeSortie to set
+     */
+    public void setLettreDeSortie(List<LettreDeSortie> lettreDeSortie) {
+        this.lettreDeSortie = lettreDeSortie;
+    }
+
+    /**
+     * @return the soinsQuotidien
+     */
+    public List<SoinsQuotidien> getSoinsQuotidien() {
+        return soinsQuotidien;
+    }
+
+    /**
+     * @param soinsQuotidien the soinsQuotidien to set
+     */
+    public void setSoinsQuotidien(List<SoinsQuotidien> soinsQuotidien) {
+        this.soinsQuotidien = soinsQuotidien;
+    }
+
+    /**
+     * @return the examens
+     */
+    public List<Examen> getExamens() {
+        return examens;
+    }
+
+    /**
+     * @param examens the examens to set
+     */
+    public void setExamens(List<Examen> examens) {
+        this.examens = examens;
+    }
+
+    /**
+     * @return the documents
+     */
+    public ArrayList getDocuments() {
+        return documents;
+    }
+
+    /**
+     * @param documents the documents to set
+     */
+    public void setDocuments(ArrayList documents) {
+        this.documents = documents;
     }
     
     

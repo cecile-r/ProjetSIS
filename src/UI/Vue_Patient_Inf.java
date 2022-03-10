@@ -51,7 +51,7 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
     Vector entetesD;
     Vector documents;
     Vector entetesC;
-    Vector constantes;
+    List<SoinsQuotidien> constantes;
 
     /**
      * Creates new form Connexion
@@ -152,6 +152,17 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         jTable2.setDefaultEditor(Object.class, null);
         jTable2.setPreferredSize(new java.awt.Dimension(3000, 70 * jTable2.getRowCount()));
 
+        //TABLES CONSTANTES
+        entetesC = new Vector();
+        entetesC.add("Date");
+        entetesC.add("Personnel");
+        entetesC.add("Température");
+        entetesC.add("Saturation O²");
+        entetesC.add("Tension");
+        constantes = dpi.getdM().getSoinsQuotidien();
+        Vector constantesS = new Vector<>();
+        //for(int i = 0;i<)
+        //document_temp.addAll(dpi.getdM().getFicheDeSoins());
     }
 
     /**

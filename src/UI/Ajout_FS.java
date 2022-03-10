@@ -23,6 +23,7 @@ import javax.swing.table.TableModel;
 import nf.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import static nf.Checker.getVectorActes;
 import static nf.DateHeure.convertirDateHeuretoString;
 
@@ -38,7 +39,8 @@ public class Ajout_FS extends javax.swing.JFrame {
     DPI dpi;
     Connection conn;
     DateHeure dh;
-    List<Acte> actes;
+    FicheDeSoins f;
+    List<Acte> actes = new ArrayList<Acte>();
     Vector actesS;
     Vector entetes;
 
@@ -47,10 +49,16 @@ public class Ajout_FS extends javax.swing.JFrame {
      */
     public Ajout_FS(Connection conn, PH ph, Infirmier inf, DPI dpi) {
         initComponents();
-        actes = new Vector();
         this.ph = ph;
         this.inf = inf;
         this.dpi = dpi;
+        
+        //creation fiche de soins
+        FicheDeSoins f = new FicheDeSoins(dh);
+        f.setDPI(dpi);
+        f.setpH(ph);
+        //f.setInfirmier(inf);
+        this.f=f;
         
         //date
         LocalDateTime ldt = LocalDateTime.now();
@@ -490,12 +498,11 @@ public class Ajout_FS extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //CREER FICHE DE SOINS
-        FicheDeSoins f = new FicheDeSoins(dh);
-        f.setDPI(dpi);
         
-        f.setActe(actes);
-        f.setpH(ph);
-        f.setInfirmier(inf);
+        //f.setActe(actes);
+        
+        dpi.getdM().ajouterFicheDeSoins(f);
+        dpi.getdMA().ajouterFicheDeSoins(f);
 
         //AJOUT FICHE DE SOINS DANS LA BD
         try {
@@ -520,9 +527,11 @@ public class Ajout_FS extends javax.swing.JFrame {
                 String observation = jTextArea1.getText();
 
                 Acte a = new Acte(nom, type, code, coeff, observation);
-                actes.add(a);
+                //actes.add(a);
+                f.ajouterActe(a);
 
-                actesS = getVectorActes(actes);
+                actesS = getVectorActes(f.getActe());
+                //actesS = getVectorActes(actes);
                 TableModel tableModel = new DefaultTableModel(actesS, entetes);
                 jTable1.setModel(tableModel);
                 jTable1.setPreferredSize(new java.awt.Dimension(3000, 20 * jTable1.getRowCount()));
