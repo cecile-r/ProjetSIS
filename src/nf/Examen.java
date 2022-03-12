@@ -73,7 +73,7 @@ public class Examen implements Evaluable {
     
     @Override
     public Object getProfessionnel(){
-        return ph;
+        return "PH- "+ph;
     }
     
     @Override

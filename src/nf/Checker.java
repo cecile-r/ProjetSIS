@@ -255,4 +255,23 @@ public class Checker {
         return v;
     }
     
+    public static Vector getVectorSoinsQuotidienPH(List<Evaluable> sqs) {
+        Vector v = new Vector();
+        DecimalFormat df = new DecimalFormat("0.0"); //car sinon les doubles sont sur des grands nb de chiffres
+        for (int i = 0; i < sqs.size(); i++) {
+            Vector ls = new Vector();
+            SoinsQuotidien sq = (SoinsQuotidien) sqs.get(i);
+            ls.add(convertirDateHeuretoString(sq.getDateHeure()));
+            ls.add(sq.getInfirmier().toString());
+            String temp = df.format(sq.getTemperature());
+            ls.add(temp);
+            temp = df.format(sq.getSaturationO2());
+            ls.add(temp);
+            temp = df.format(sq.getTension());
+            ls.add(temp);
+            ls.add(sq.getObservations());
+            v.add(ls);
+        }
+        return v;
+    }
 }

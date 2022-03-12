@@ -39,6 +39,14 @@ import static nf.Checker.convertirDatetoString;
 import nf.*;
 import static nf.ComparaisonEvaluables.trierEvaluables;
 import database.DatabaseAccessProperties;
+import java.text.DecimalFormat;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import static nf.Checker.getVectorSoinsQuotidien;
+import static nf.Checker.getVectorSoinsQuotidienPH;
+import static nf.ComparaisonEvaluables.trierEvaluables;
 import static nf.DateHeure.convertirDateHeuretoString;
 import static nf.DateHeure.estApresDateCourante;
 
@@ -51,6 +59,8 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     Vector documents;
     DPI dpi;
     PH ph;
+    Vector entetesC;
+    List<Evaluable> constantes = new ArrayList<>();
 
     /**
      * Creates new form Connexion
@@ -191,21 +201,46 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         jTable2.setDefaultEditor(Object.class, null);
         jTable2.setPreferredSize(new java.awt.Dimension(3000, 70 * jTable2.getRowCount()));
 
-
         //Prochain rdv
         List<RendezVous> rdvsP = dpi.getdMA().getRendezVous();
-        if(rdvsP.size()!=0){ //il y a des rdvs
+        if (rdvsP.size() != 0) { //il y a des rdvs
             List<Evaluable> evs = new Vector<Evaluable>();
             evs.addAll(rdvsP);
             evs = nf.ComparaisonEvaluables.trierEvaluablesParDate(evs);
             RendezVous rdv = nf.RendezVous.getProchainRDV(evs);
-            if(rdv!=null){
+            if (rdv != null) {
                 jTextPane1.setText(rdv.toStringProchainRDV());
-            }else{
+            } else {
                 jTextPane1.setText("Aucun rendez-vous prévu");
             }
-        }else{
+        } else {
             jTextPane1.setText("Aucun rendez-vous prévu");
+        }
+
+        //TABLES CONSTANTES
+        entetesC = new Vector();
+        entetesC.add("Date");
+        entetesC.add("Personnel");
+        entetesC.add("T°");
+        entetesC.add("Sat O²");
+        entetesC.add("Tension");
+        entetesC.add("Remarque");
+        constantes.addAll(dpi.getdM().getSoinsQuotidien());
+        constantes = trierEvaluables(constantes);
+
+        //constante la plus recente
+        if (constantes.isEmpty()) {
+            jLabel4.setText("Pas de constantes");
+            jLabel19.setText("");
+            jLabel18.setText("");
+            jLabel17.setText("");
+        } else {
+            DecimalFormat df = new DecimalFormat("0.0");
+            SoinsQuotidien sq = (SoinsQuotidien) constantes.get(0);
+            jLabel4.setText(convertirDateHeuretoString(sq.getDateHeure()));
+            jLabel19.setText(df.format(sq.getTemperature()));
+            jLabel18.setText(df.format(sq.getSaturationO2()));
+            jLabel17.setText(df.format(sq.getTension()));
         }
     }
 
@@ -776,7 +811,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //AJOUT PRESCRIPTION
-        Ajout_prescription i = new Ajout_prescription(conn,ph, dpi);
+        Ajout_prescription i = new Ajout_prescription(conn, ph, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -802,7 +837,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         //AJOUT EXAMEN
-        Ajout_examen i = new Ajout_examen(conn,ph, dpi);
+        Ajout_examen i = new Ajout_examen(conn, ph, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -816,7 +851,33 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
 
     private void jLabel_infimiereMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_infimiereMouseClicked
         // INTERFACE TOUTES LES CONTANSTES 
+
+        Vector constantesS = new Vector<>();
+        constantesS = getVectorSoinsQuotidienPH(constantes);
+        jTable_constantes = new javax.swing.JTable();
         
+        TableModel tableModel = new DefaultTableModel(constantesS, entetesC);
+        jTable_constantes.setModel(tableModel);
+        
+        jTable_constantes.getColumnModel().getColumn(0).setPreferredWidth(100);
+        jTable_constantes.getColumnModel().getColumn(1).setPreferredWidth(200);
+        jTable_constantes.getColumnModel().getColumn(2).setPreferredWidth(50);
+        jTable_constantes.getColumnModel().getColumn(3).setPreferredWidth(50);
+        jTable_constantes.getColumnModel().getColumn(4).setPreferredWidth(80);
+        jTable_constantes.getColumnModel().getColumn(5).setPreferredWidth(600);
+        
+        jTable_constantes.setPreferredSize(new java.awt.Dimension(3000, 30 * jTable_constantes.getRowCount()));
+        jTable_constantes.setDefaultEditor(Object.class, null);
+        JScrollPane scrollPane = new JScrollPane(jTable_constantes);
+
+        JFrame frame = new JFrame("Exemple JDialog");
+        JDialog d = new JDialog(frame, "Boite de dialogue");
+        JLabel l = new JLabel("Constantes");
+        d.add(l);
+        d.add(scrollPane);
+        d.setSize(1080, 200);
+        d.setVisible(true);
+
     }//GEN-LAST:event_jLabel_infimiereMouseClicked
 
     /**
@@ -973,4 +1034,5 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private javax.swing.JLabel service;
     // End of variables declaration//GEN-END:variables
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable_constantes;
 }

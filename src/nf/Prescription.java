@@ -62,7 +62,7 @@ public class Prescription implements Evaluable{
     
     @Override
     public Object getProfessionnel(){
-        return pH;
+        return "PH- "+pH;
     }
     
     @Override
