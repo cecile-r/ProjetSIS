@@ -98,9 +98,9 @@ public class FicheDeSoins implements Evaluable{
     @Override
     public Object getProfessionnel(){
         if(pH!=null){
-            return pH;
+            return "PH- "+pH;
         }else if(infirmier!=null){
-            return infirmier;
+            return "IDE- "+infirmier;
         }
         return null;
     }

@@ -764,8 +764,12 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //AJOUTER UNE FICHE DE SOINS 
+        Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+        int longueur = tailleMoniteur.width;
+        int hauteur = tailleMoniteur.height;
         Ajout_FS i;
         i = new Ajout_FS(conn, ph, null, dpi);
+        i.setSize(longueur, hauteur);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed

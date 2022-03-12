@@ -26,6 +26,7 @@ import nf.*;
 import static nf.Checker.getVectorActes;
 import java.sql.Connection;
 import java.sql.SQLException;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 
 /**
@@ -37,6 +38,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
     Connection conn;
     PH ph;
     DPI dpi;
+    DateHeure dh;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
@@ -55,10 +57,10 @@ public class Ajout_prescription extends javax.swing.JFrame {
         prenom.setText(ph.getPrenomPH());
         nom.setText(ph.getNomPH());
 
-        //date courante
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        String dateL = dtf.format(LocalDateTime.now());
-        jLabel3.setText(dateL);
+        //date
+        LocalDateTime ldt = LocalDateTime.now();
+        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        jLabel3.setText(convertirDateHeuretoString(dh));
 
         //cacher
         jLabel6.setVisible(false);
@@ -384,16 +386,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+      
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -415,9 +408,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //CREER PRESCRIPTION
-        LocalDateTime ldt = LocalDateTime.now();
-        DateHeure dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
-        String observation = jTextArea1.getText();
+       String observation = jTextArea1.getText();
 
         if (jComboBox1.getSelectedItem().equals("Médicament")&&champsCorrectsMedicament()) {
             String medicament = jTextArea2.getText();

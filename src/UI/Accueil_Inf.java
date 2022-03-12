@@ -30,6 +30,7 @@ import nf.DPI;
 import nf.PH;
 import nf.Service;
 import database.RequetesBD;
+import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDProfessionnels.getListePH;
@@ -42,7 +43,7 @@ import nf.Infirmier;
  */
 public class Accueil_Inf extends javax.swing.JFrame {
 
-    PH ph;
+    Infirmier inf;
     Connection conn;
     List<PH> medecins;
     Vector medecinsS;
@@ -56,9 +57,8 @@ public class Accueil_Inf extends javax.swing.JFrame {
      */
     public Accueil_Inf(Connection conn, Infirmier inf) throws SQLException {
         this.conn = conn;
-        this.ph = ph;
+        this.inf = inf;
         initComponents();
-        
 
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
@@ -89,8 +89,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
         java.awt.Image imgD = iconeD.getImage();
         iconeD = new ImageIcon(imgD);
         jButton2.setIcon(iconeD);
-        
-        
+
         //infos identité
         prenom_medecin.setText(inf.getPrenomInfirmiere());
         nom_medecin.setText(inf.getNomInfirmiere());
@@ -98,7 +97,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPIService(conn, ph.getService().toString());
+        dpis = getListeDPIService(conn, inf.getService().toString());
         dpis = trierDPI(dpis);
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
@@ -634,6 +633,23 @@ public class Accueil_Inf extends javax.swing.JFrame {
         //VISUALISATION D UN PATIENT PARTICULIER
         if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            try {
+                int index = Table_Vue_Generale1.getSelectedRow();
+                DPI dpi = getDPI(conn, dpis.get(index).getIPP());
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Inf i = new Vue_Patient_Inf(conn, dpi, inf);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
 
@@ -660,9 +676,9 @@ public class Accueil_Inf extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             String recherche = TextField_Patient.getText();
-            try {
-                if (!recherche.equals("")) {
-                    dpis = getListeDPI(conn, recherche, ph.getService().toString());
+            if (!recherche.equals("")) {
+                try {
+                    dpis = getListeDPI(conn, recherche, inf.getService().toString());
                     dpis = trierDPI(dpis);
                     dpisS = getVectorDPI(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
@@ -670,9 +686,10 @@ public class Accueil_Inf extends javax.swing.JFrame {
                     Table_Vue_Generale1.setModel(tableModel);
                     Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
+                } catch (SQLException ex) {
+                    Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
     }//GEN-LAST:event_TextField_PatientKeyPressed
@@ -680,7 +697,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
     private void jButton_actualiser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser1ActionPerformed
         try {
             //RECHARGER DPI
-            dpis = getListeDPIService(conn, ph.getService().toString());
+            dpis = getListeDPIService(conn, inf.getService().toString());
             dpis = trierDPI(dpis);
             dpisS = getVectorDPI(dpis);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
@@ -690,7 +707,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
             TextField_Patient.setText("");
 
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_actualiser1ActionPerformed
 
@@ -698,7 +715,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
         //RECHERCHE PATIENT
         String recherche = TextField_Patient.getText();
         try {
-            dpis = getListeDPI(conn, recherche, ph.getService().toString());
+            dpis = getListeDPI(conn, recherche, inf.getService().toString());
             dpis = trierDPI(dpis);
             dpisS = getVectorDPI(dpis);
             Vector entetes = new Vector();
@@ -711,12 +728,12 @@ public class Accueil_Inf extends javax.swing.JFrame {
             Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_recherche_patientActionPerformed
 
     private void jButton_recherche_medecinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_medecinActionPerformed
-         // VALIDATION DE LA RECHERCHE MEDECIN
+        // VALIDATION DE LA RECHERCHE MEDECIN
         String type_recherche; //Nom ou Service
         type_recherche = jComboBox_recherche_praticien.getSelectedItem().toString();
         String recherche = TextField_Docteur.getText();
@@ -731,7 +748,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
                 tab_medecins.setModel(tableModel2);
                 tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
             } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else if (type_recherche.equals("Service")) {
@@ -742,7 +759,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
                 tab_medecins.setModel(tableModel2);
                 tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
             } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jButton_recherche_medecinActionPerformed
@@ -756,7 +773,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
             tab_medecins.setModel(tableModel2);
             tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_actualiser_medecin1ActionPerformed
 
@@ -780,9 +797,9 @@ public class Accueil_Inf extends javax.swing.JFrame {
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

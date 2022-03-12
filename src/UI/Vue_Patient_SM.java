@@ -512,6 +512,11 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         jButton_modifier.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         jButton_modifier.setText("Modifier le patient");
         jButton_modifier.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton_modifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_modifierActionPerformed(evt);
+            }
+        });
 
         jButton_fermeture.setBackground(new java.awt.Color(204, 204, 255));
         jButton_fermeture.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
@@ -651,6 +656,18 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_consultationActionPerformed
+
+    private void jButton_modifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_modifierActionPerformed
+        //MODIFIER LE PATIENT
+        Modif_Patient i;
+        try {
+            i = new Modif_Patient(conn, null,sm, dpi);
+            i.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Vue_Patient_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dispose();
+    }//GEN-LAST:event_jButton_modifierActionPerformed
 
     /**
      * @param args the command line arguments

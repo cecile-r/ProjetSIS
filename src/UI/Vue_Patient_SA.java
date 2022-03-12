@@ -583,8 +583,13 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
     private void jButton_modifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_modifierActionPerformed
         //MODIFIER LES INFOS DU PATIENT
-        Modif_Patient i = new Modif_Patient(conn, sa,null, dpi);
-        i.setVisible(true);
+        Modif_Patient i;
+        try {
+            i = new Modif_Patient(conn, sa,null, dpi);
+            i.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_jButton_modifierActionPerformed
 

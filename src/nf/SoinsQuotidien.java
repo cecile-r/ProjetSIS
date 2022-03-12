@@ -1,4 +1,8 @@
 package nf;
+
+import java.text.DecimalFormat;
+import static nf.DateHeure.convertirDateHeuretoString;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -49,19 +53,20 @@ public class SoinsQuotidien implements Evaluable {
     }
     
     public String toStringDM(){
-        String ch="############# SOINS QUOTIDIEN ###########\n";
-        ch+=dateHeure.StringDateHeure();
-        ch+="\n";
+        DecimalFormat df = new DecimalFormat("0.0");
+        String ch="------------------------------SOINS QUOTIDIEN------------------------------\n\n";
+        ch+=convertirDateHeuretoString(dateHeure);
+        ch+="\n\n";
         ch+=infirmier.toString();
-        ch+="\n";
-        ch=ch+"Température : "+temperature;
-        ch+="\n";
-        ch=ch+"Saturation 0² : "+saturationO2;
-        ch+="\n";
-        ch=ch+"Tension : "+getTension();
-        ch+="\n";
+        ch+="\n\n";
+        ch=ch+"Température : "+df.format(temperature);
+        ch+="\n\n";
+        ch=ch+"Saturation 0² : "+df.format(saturationO2);
+        ch+="\n\n";
+        ch=ch+"Tension : "+df.format(tension);
+        ch+="\n\n";
         ch=ch+"Remarque : "+remarque;
-        ch+="\n";
+        ch+="\n\n";
         return ch;
     }
     

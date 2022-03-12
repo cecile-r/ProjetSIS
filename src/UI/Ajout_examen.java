@@ -26,6 +26,7 @@ import nf.*;
 import static nf.Checker.getVectorActes;
 import java.sql.Connection;
 import java.sql.SQLException;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 /**
  *
@@ -54,14 +55,8 @@ public class Ajout_examen extends javax.swing.JFrame {
         
         //date
         LocalDateTime ldt = LocalDateTime.now();
-        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
-        System.out.println("annnee :"+ ldt.getYear()+", mois :"+ ldt.getMonthValue()+", jour :"+ ldt.getDayOfMonth()+", heure :"+ ldt.getHour()+", minute :"+ldt.getMinute());
-       
-
-        //date courante
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        String dateL = dtf.format(LocalDateTime.now());
-        jLabel3.setText(dateL);
+        this.dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        jLabel3.setText(convertirDateHeuretoString(dh));
         
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");

@@ -6,6 +6,7 @@
 package UI;
 
 import static database.RequetesBDDPI.creerLettreSortie;
+import static database.RequetesBDDPI.creerSoinQuotidien;
 import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -32,36 +33,36 @@ import static nf.DateHeure.convertirDateHeuretoString;
  *
  * @author Audrey
  */
-public class Ajout_lettreDeSortie extends javax.swing.JFrame {
+public class Ajout_constantes extends javax.swing.JFrame {
 
-    //Connection conn;
-    PH ph;
-    DPI dpi;
-    DateHeure dh;
     Connection conn;
+    Infirmier inf;
+    DPI dpi;
     List<Acte> actes;
     Vector actesS;
     Vector entetes;
+    DateHeure dh;
     
 
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_lettreDeSortie(Connection conn, PH ph, DPI dpi) {
+    public Ajout_constantes(Connection conn, Infirmier inf, DPI dpi) {
         initComponents();
         actes = new Vector();
-        this.ph = ph;
+        this.inf = inf;
         this.dpi=dpi;
         this.conn=conn;
 
         //infos identité
-        prenom.setText(ph.getPrenomPH());
-        nom.setText(ph.getNomPH());
+        prenom.setText(inf.getPrenomInfirmiere());
+        nom.setText(inf.getNomInfirmiere());
 
         //date
         LocalDateTime ldt = LocalDateTime.now();
-        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        this.dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
         jLabel3.setText(convertirDateHeuretoString(dh));
+
         
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
@@ -116,8 +117,15 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jFormattedTextField_temp = new javax.swing.JFormattedTextField();
+        jFormattedTextField_tension = new javax.swing.JFormattedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jFormattedTextField_sat = new javax.swing.JFormattedTextField();
 
         jButton8.setBackground(new java.awt.Color(204, 102, 255));
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
@@ -138,7 +146,7 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         jLabel3.setText("date");
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setText("Ajouter la lettre de sortie");
+        jButton2.setText("Ajouter les constantes");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -213,7 +221,7 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(169, 206, 243));
 
         jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
-        jLabel1.setText("Nouvelle lettre de sortie");
+        jLabel1.setText("Ajouter des constantes");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -232,33 +240,57 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTextArea.setColumns(20);
-        jTextArea.setRows(5);
-        jScrollPane2.setViewportView(jTextArea);
+        jLabel4.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+        jLabel4.setText("Température :");
+
+        jLabel5.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+        jLabel5.setText("Saturation O² :");
+
+        jLabel6.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+        jLabel6.setText("Tension :");
+
+        jLabel7.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+        jLabel7.setText("Remarque :");
+
+        jFormattedTextField_temp.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.0"))));
+
+        jFormattedTextField_tension.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.0"))));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jFormattedTextField_sat.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(215, 215, 215))
+            .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(289, 289, 289)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
+                        .addGap(154, 154, 154)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(105, Short.MAX_VALUE))
-            .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedTextField_temp, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedTextField_tension, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedTextField_sat, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(273, 273, 273)
+                        .addComponent(jButton2)))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,13 +298,28 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel4))
+                    .addComponent(jFormattedTextField_temp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jFormattedTextField_sat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                    .addComponent(jLabel6)
+                    .addComponent(jFormattedTextField_tension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -300,9 +347,9 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
             i.setVisible(true);
             dispose();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ajout_constantes.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ajout_constantes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -317,30 +364,37 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i;
-                i = new Vue_Patient_Med(conn, dpi2, ph);
+                Vue_Patient_Inf i;
+                i = new Vue_Patient_Inf(conn, dpi2, inf);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ajout_constantes.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //CREER lettreDeSortie
-       
+        //CREER constantes
+        
         if(champsCorrects()){
-            String texte = jTextArea.getText();
-            LettreDeSortie ls =new LettreDeSortie(texte,dh);
-            ls.setDPI(dpi);
-            ls.setPh(ph);
+            String observation = jTextArea1.getText();
+            String temp = jFormattedTextField_temp.getText().replaceAll(",",".");
+            double temperature = Double.parseDouble(temp);
+            temp = jFormattedTextField_tension.getText().replaceAll(",",".");
+            double tension = Double.parseDouble(temp);
+            int saturation = Integer.parseInt(jFormattedTextField_sat.getText());
             
-            ///AJOUT BD
+            SoinsQuotidien sq = new SoinsQuotidien(temperature,saturation,tension,observation,dh);
+            sq.setInfirmier(inf);
+            sq.setDPI(dpi);
+            
+            //AJOUT BD
+            
             try {
-                creerLettreSortie(conn,ls);
+                creerSoinQuotidien(conn,sq);
             } catch (SQLException ex) {
-                Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ajout_constantes.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             ///REVENIR PAGE PRECEDENTE
@@ -351,11 +405,17 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     public boolean champsCorrects() {
         
         boolean v = true;
-        if (jTextArea.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer la lettre de sortie", "Attention", JOptionPane.WARNING_MESSAGE);
+        if (jFormattedTextField_temp.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer une température", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jTextArea.getText().length()>800) {
-            JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+        }else if (jFormattedTextField_temp.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer une saturation en O²", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jFormattedTextField_tension.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer une tension", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextArea1.getText().length()>800) {
+            JOptionPane.showMessageDialog(this, "Texte de la remarque trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
         return v;
@@ -468,13 +528,20 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JFormattedTextField jFormattedTextField_sat;
+    private javax.swing.JFormattedTextField jFormattedTextField_temp;
+    private javax.swing.JFormattedTextField jFormattedTextField_tension;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel nom;
     private javax.swing.JLabel prenom;
     // End of variables declaration//GEN-END:variables
