@@ -30,6 +30,8 @@ import nf.TypeExamen;
 import database.RequetesBDConversion;
 import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
 import static database.RequetesBDConversion.convertDateJavaEnSQL;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDConversion.convertDateSQLenJava;
 import static database.RequetesBDConversion.convertLocalDateEnDate;
 import static database.RequetesBDConversion.convertTimestampSQLenJava;
@@ -94,7 +96,7 @@ public class RequetesBDDPI {
         return listeDPI;
     }
 
-    //Renvoie le vecteur des DPI ouverts
+    //Renvoie le vecteur des DPI fermés
     //VALIDE
     public static Vector getVectorDPIFerme(Connection conn) throws SQLException {
         Vector vDPI = new Vector();
@@ -388,6 +390,79 @@ public class RequetesBDDPI {
         return listeRDV;
     }
 
+    //Renvoie la liste des rendez-vous pour un PH et une date donnés
+    //
+    public static List<RendezVous> listeRendezVous(Connection conn, Date date, PH ph) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
+                + "WHERE (idPH = '" + ph.getIdPH() + "') AND (dateHeure_RDV BETWEEN " + convertDateJavaEnTimestampJavaMin(date) + " AND " + convertDateJavaEnTimestampJavaMax(date) + ")");
+        System.out.println("ok");
+        List<RendezVous> listeRDV = new ArrayList();
+
+        //Création de la liste de RDV
+        while (rs.next()) {
+            RendezVous rdv = new RendezVous(convertTimestampSQLenJava(rs.getTimestamp("dateHeure_RDV")), rs.getString("remarque"));
+            rdv.setpH(ph);
+            //Création du DPI
+            Statement stmt3 = conn.createStatement();
+            ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
+                    + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                    + "WHERE IPP = '" + rs.getString("IPP") + "'");//Les infos du DPI du patient qui a le RDV
+            if (rs3.next()) {
+                MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
+                DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
+                rdv.setDPI(dpi);
+            }
+            rs3.close();
+            stmt3.close();
+            listeRDV.add(rdv);
+        }
+        rs.close();
+        stmt.close();
+        return listeRDV;
+    }
+    
+    //Renvoie la liste des rendez-vous pour un service et une date donnés
+    //
+    public static List<RendezVous> listeRendezVous(Connection conn, Date date, Service service) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
+                + "WHERE (idPH IN (SELECT idPH FROM PH WHERE service_PH = '" + service.name() + "'))"
+                        + " AND (dateHeure_RDV BETWEEN " + convertDateJavaEnTimestampJavaMin(date) + " AND " + convertDateJavaEnTimestampJavaMax(date) + ")");
+        List<RendezVous> listeRDV = new ArrayList();
+
+        //Création de la liste de RDV
+        while (rs.next()) { //Tant qu'il y a des RDV pour le patient
+            RendezVous rdv = new RendezVous(convertTimestampSQLenJava(rs.getTimestamp("dateHeure_RDV")), rs.getString("remarque"));
+            //Création du PH
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT * FROM PH "
+                    + "WHERE idPH = '" + rs.getString("idPH") + "'");//Les infos du PH associé au RDV
+            if (rs2.next()) {
+                PH ph = new PH(rs2.getString("idPH"), rs2.getString("nom_PH"), rs2.getString("prenom_PH"), Service.valueOf(rs2.getString("service_PH")), rs2.getString("mdp_PH"), rs2.getString("telephone_PH"), rs2.getString("specialite_PH"));
+                rdv.setpH(ph);
+            }
+            //Création du DPI
+            Statement stmt3 = conn.createStatement();
+            ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
+                    + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                    + "WHERE IPP = '" + rs.getString("IPP") + "'");//Les infos du DPI du patient
+            if (rs3.next()) {
+                MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
+                DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
+                rdv.setDPI(dpi);
+            }
+            rs2.close();
+            rs3.close();
+            stmt2.close();
+            stmt3.close();
+            listeRDV.add(rdv);
+        }
+        rs.close();
+        stmt.close();
+        return listeRDV;
+    }
+    
     //Renvoie la liste des examens pour un patient donné
     //VALIDE
     public static List<Examen> listeExamens(Connection conn, String ipp) throws SQLException {
@@ -763,12 +838,12 @@ public class RequetesBDDPI {
             PreparedStatement stmt2 = null;
             String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
             Timestamp t = Timestamp.valueOf(ts);
-            int a;
+            int a;//idActe
 
             if (fiche.getInfirmier() != null) {
                 //Insertion dans la table Acte
                 a = creerActe(conn, fiche.getActe().get(i));
-                
+                System.out.println("here");
                 //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
@@ -776,13 +851,12 @@ public class RequetesBDDPI {
                 stmt2.setInt(3, a);//idActe
                 stmt2.setString(4, null);
                 stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
-                
             }
             else if (fiche.getpH() != null) {
                 
                 //Insertion dans la table Acte
                 a = creerActe(conn, fiche.getActe().get(i));
-                
+                System.out.println("here2");
                 //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
@@ -973,8 +1047,61 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
+    //Creer localisation d'un patient par une secrétaire administratice -> utilise que le service responsable (géographique??)
+    //
+    public static void creerLocalisationSA(Connection conn, String ipp, Service service_respo) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
+        stmt.setString(1, ipp);
+        ResultSet rs = stmt.executeQuery();
+        
+        if(rs.next()){
+            System.out.println("Le patient est archivé et ne peut pas être localisé dans le CHU.");
+        }
+        else {
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
+            stmt2.setString(1, ipp);
+            stmt2.setString(2, null);
+            stmt2.setString(3, service_respo.toString());
+            stmt2.setString(4, null);
+            stmt2.setString(5, null);
+        
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+        
+        rs.close();
+        stmt.close();
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     //Modification d'éléments
+    
+    //Modifier localisation d'un patient par la secrétaire médicale -> le reste des infos de la localisation comparé à creerLocalisationSA
+    //
+    public static void creerLocalisationSM(Connection conn, String ipp, int numero_chambre, Lit lit) throws SQLException{
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
+        stmt.setString(1, ipp);
+        ResultSet rs = stmt.executeQuery();
+        
+        if(rs.next()){
+            System.out.println("Le patient est archivé et ne peut pas être localisé dans le CHU.");
+        }
+        else {
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("UPDATE Localisation SET lit = ?, nchambre = ?  WHERE IPP = ?");
+            stmt2.setString(1, lit.toString());
+            stmt2.setInt(2, numero_chambre);
+            stmt2.setString(3, ipp);
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+        
+        rs.close();
+        stmt.close();
+    }
     
     //Modifier les informations d'un patient dans son DPI et faire les modifs dans la BD
     //VALIDE

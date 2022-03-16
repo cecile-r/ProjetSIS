@@ -15,7 +15,14 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static database.RequetesBDDPI.creerLocalisationSA;
+import static database.RequetesBDDPI.creerLocalisationSM;
+import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIFerme;
+import static database.RequetesBDDPI.listeRendezVous;
+import static database.RequetesBDUrgences.creerDPITemporaire;
+import static database.RequetesBDUrgences.getListeDPITemporaires;
+import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 
@@ -62,6 +69,7 @@ class ConnexionSGBD {
             
             MedecinTraitant m = new MedecinTraitant("bruce.batman@yahoo.com", "Batman", "Bruce", "0696471245");
             MedecinTraitant m1 = new MedecinTraitant("doctor.octopus@gmail.com", "Docteur", "Octopus", "0696874523");
+            MedecinTraitant m2 = new MedecinTraitant("paul.morin@gmail.com", "Morin", "Paul", "0688822222");
             Infirmier inf1 = new Infirmier("totorocec","Totoro","Cecile",Service.Unite_de_soins_intensifs_respiratoires,"dessin");
             PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"cannabis","0433322233","Specialiste en substances psychoactives");
             PH ph2 = new PH("nadalraf","Nadal","Rafael",Service.Neurologie,"grosbras","0611111111","Neurologue");
@@ -69,7 +77,8 @@ class ConnexionSGBD {
             
             DM dm1 = new DM();
             Localisation l1 = new Localisation(Service.Unite_de_soins_intensifs_respiratoires,Lit.P,3,Service.Addictologie);
-            DMA dma1 = new DMA(l1);
+            Localisation l2 = new Localisation(Service.Medecine_nucleaire,Lit.P,40,Service.Medecine_nucleaire);
+            DMA dma1 = new DMA(l2);
             
             Acte a1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
             //a1.setIdActe(666);
@@ -82,7 +91,7 @@ class ConnexionSGBD {
             fs1.ajouterActe(a1);
             fs1.ajouterActe(a2);
             
-            DateHeure d2 = new DateHeure(2021,06,27,14,00);
+            DateHeure d2 = new DateHeure(2022,2,23,14,00);
             FicheDeSoins fs2 = new FicheDeSoins(d2);
             fs2.setInfirmier(inf1);
             fs2.ajouterActe(a2);
@@ -96,13 +105,17 @@ class ConnexionSGBD {
             
             DateHeure d3 = new DateHeure(2022,04,2,11,50);
             DateHeure d4 = new DateHeure(2022,03,14,15,30);
+            DateHeure d5 = new DateHeure(2022,03,18,9,00);
+            DateHeure d6 = new DateHeure(2022,03,18,10,00);
+            DateHeure d7 = new DateHeure(2022,03,18,15,00);
             RendezVous rdv1 = new RendezVous(d3,"Consultation de controle");
             RendezVous rdv2 = new RendezVous(d4,"Bien surveiller la reaction aux substances psychoactives");
             
             Examen exam = new Examen(TypeExamen.imagerie_par_resonance_magnetique, "tout va bien, rien a signaler", d2);
             
-            Date dn1 = new Date(1977,07,30);
-            DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
+            Date dn1 = new Date(1975,5,25);
+            //DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
+            DPI dpi1 = new DPI("5555888800","Lespagnol","Mikael",dn1,Sexe.homme,"25 rue de la soif, Madrid","0644445555",m2,dma1,dm1);
             
             //ph1.ajouterFicheDeSoins(fs1);
             //fs1.setDPI(dpi1);
@@ -124,6 +137,8 @@ class ConnexionSGBD {
             
             //dm1.ajouterFicheDeSoins(fs1);
             //dma1.ajouterFicheDeSoins(fs1);
+            //dm1.ajouterFicheDeSoins(fs2);
+            //dma1.ajouterFicheDeSoins(fs2);
             //dm1.ajouterPrescription(p1);
             //dm1.ajouterPrescription(p2);
             //dm1.ajouterLettreDeSortie(ls);
@@ -427,7 +442,7 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoins(fiche) -> VALIDE
-            //RequetesBDDPI.creerFicheDeSoins(conn, fs1);
+            //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
             //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
             
             //Test creerPrescription(p) -> VALIDE
@@ -443,6 +458,9 @@ class ConnexionSGBD {
             //Test creerRendezVous(rdv) -> VALIDE
             //RequetesBDDPI.creerRendezVous(conn, rdv1);
             //RequetesBDDPI.creerRendezVous(conn, rdv2);
+            //RequetesBDDPI.creerRendezVous(conn, rdv1);
+            //RequetesBDDPI.creerRendezVous(conn, rdv1);
+            //RequetesBDDPI.creerRendezVous(conn, rdv1);
             
             //Test creerExamen(exam) -> VALIDE
             //RequetesBDDPI.creerExamen(conn, exam);
@@ -462,13 +480,13 @@ class ConnexionSGBD {
             //RequetesBDDPI.modifierDPI(conn, "9736482920", "0413256790", "3 bis avenue du tonerre", m1);
             
             //Test creerLocalisation(ipp, loc) -> VALIDE
-            //Ajout d'une localisation pour Ronflex Perle
-            Localisation loc = new Localisation(Service.Medecine_nucleaire, Lit.F, 9, Service.Medecine_nucleaire);
+            //Localisation loc = new Localisation(Service.Medecine_nucleaire, Lit.F, 9, Service.Medecine_nucleaire);
             //RequetesBDDPI.creerLocalisation(conn, "9736482920", loc);
             //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
             
             //Test fermerDPI(ipp) -> VALIDE
-            //RequetesBDDPI.fermerDPI(conn, "9736482920");
+            System.out.println(getListeDPI(conn));
+            //RequetesBDDPI.fermerDPI(conn, "1800511699");
            
             //Test conversion local date en date -> VALIDE
             //System.out.println(RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
@@ -477,7 +495,42 @@ class ConnexionSGBD {
             //RequetesBDDPI.archiverDPI(conn, "1111888811", RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
             
             
+            //Test nb de DPI temporaires -> VALIDE
+            //System.out.println(RequetesBDUrgences.nbDPITemporaire(conn));
             
+            //Test ajout de DPI temporaire -> A TESTER QUAND LOC ET NULL CA MARCHERA
+            /*Date dn = new Date(1985,3,7);
+            PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
+            DPITemporaire dpit = new DPITemporaire("4444555566", "Tereza", "Smelikova", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            creerDPITemporaire(conn, dpit);*/
+            /*Date dn2 = new Date(1999,8,26);
+            DPITemporaire dpit2 = new DPITemporaire("9999555566", "Arceus", "Goinfrex", dn2, ph_urgence);//DPI temporaire de quelqu'un de nouveau aux urgences
+            creerDPITemporaire(conn, dpit2);*/ 
+            
+            //A tester et exécuter apres martin PB BD IPP FOREIGN KEY
+            //Localisation locUrgences = new Localisation(Service.Urgences, Lit.P, 0, Service.Urgences);
+            //RequetesBDDPI.creerLocalisation(conn, "9999555566", locUrgences);
+            /*Date dn3 = new Date(1995,6,27);
+            DPITemporaire dpit3 = new DPITemporaire("9999555599", "Plante", "Bulbi", dn3, ph_urgence);//DPI temporaire de quelqu'un de nouveau aux urgences
+            
+            //A tester quand la fct localisation marchera avec les dpi temporaires
+            creerDPITemporaire(conn, dpit);*/
+            
+            
+            //Test getListeDPITemporaires() et getVectorDPITemporaires() -> A TESTER
+            //System.out.println(getListeDPITemporaires(conn));
+            //System.out.println(getVectorDPITemporaires(conn));
+            
+            //Test des localisations -> A TESTER avec un patient pas dans le CHU
+            //creerLocalisationSA(conn, "mettre ipp", Service.Anesthesie);
+            //creerLocalisationSM(conn, "mettre ipp", 3, Lit.F);
+            
+            
+            //Test des conditions de RDV -> A TESTER
+            Date dateRDV = new Date(2022, 3, 21);
+            PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
+            //listeRendezVous(conn, dateRDV, phRDV);
+            //listeRendezVous(conn, dateRDV, Service.Medecine_interne);
             
             
             
