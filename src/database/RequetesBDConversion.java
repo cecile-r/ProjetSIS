@@ -14,10 +14,10 @@ import nf.DateHeure;
  */
 public class RequetesBDConversion {
     
-    //Convertir une Date java en DateHeure avec heure et min 00:00
+    //Convertir une Date java en DateHeure avec heure et min 01:00
     //VALIDE
     public static Timestamp convertDateJavaEnTimestampJavaMin(Date date){
-        Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 0, 0 ,0 ,0);
+        Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 1, 0 ,0 ,0);
         return t;
     }
     
