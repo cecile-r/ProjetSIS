@@ -15,10 +15,15 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDDPI.creerLocalisationSA;
 import static database.RequetesBDDPI.creerLocalisationSM;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIFerme;
+import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDDPI.getVectorDPI;
+import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
@@ -485,7 +490,7 @@ class ConnexionSGBD {
             //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
             
             //Test fermerDPI(ipp) -> VALIDE
-            System.out.println(getListeDPI(conn));
+            //System.out.println(getListeDPI(conn));
             //RequetesBDDPI.fermerDPI(conn, "1800511699");
            
             //Test conversion local date en date -> VALIDE
@@ -529,8 +534,14 @@ class ConnexionSGBD {
             //Test des conditions de RDV -> A TESTER
             Date dateRDV = new Date(2022, 3, 21);
             PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
-            //listeRendezVous(conn, dateRDV, phRDV);
-            //listeRendezVous(conn, dateRDV, Service.Medecine_interne);
+            //System.out.println(listeRendezVous(conn, dateRDV, phRDV));
+            //System.out.println(listeRendezVous(conn, dateRDV, Service.Medecine_interne));
+            
+            
+            //Test des conversions min max timestamp
+            /*Timestamp timetime = new Timestamp(2022, 3, 12, 12, 30, 0, 0);
+            System.out.println(convertDateJavaEnTimestampJavaMax(timetime));*/
+            
             
             
             

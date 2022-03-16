@@ -217,7 +217,7 @@ public class RequetesBDDPI {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE (nom_DPI = '" + nom + "'))");
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE (UPPER(nom_DPI) LIKE UPPER('" + nom + "%')))");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -239,7 +239,7 @@ public class RequetesBDDPI {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "NATURAL JOIN Localisation "
-                + "WHERE (nom_DPI = '" + nom + "')");
+                + "WHERE (UPPER(nom_DPI) LIKE UPPER('" + nom + "%'))");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -264,7 +264,7 @@ public class RequetesBDDPI {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_responsable = '" + service + "')");
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE UPPER(service_responsable) LIKE UPPER('" + service + "%'))");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -286,7 +286,7 @@ public class RequetesBDDPI {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "NATURAL JOIN Localisation "
-                + "WHERE service_responsable = '" + service + "'");
+                + "WHERE UPPER(service_responsable) LIKE UPPER('" + service + "%')");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -311,7 +311,7 @@ public class RequetesBDDPI {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE UPPER(service_responsable) LIKE UPPER('" + service + "%') AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%'))");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -333,7 +333,7 @@ public class RequetesBDDPI {
         //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "NATURAL JOIN Localisation "
-                + "WHERE (service_responsable = '" + service + "') AND (nom_DPI = '" + nom + "')");
+                + "WHERE UPPER(service_responsable) LIKE UPPER('" + service + "%') AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
 
         while (rs.next()) {
             Vector vParDPI = new Vector();
@@ -391,12 +391,14 @@ public class RequetesBDDPI {
     }
 
     //Renvoie la liste des rendez-vous pour un PH et une date donnés
-    //
+    //VALIDE
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, PH ph) throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
-                + "WHERE (idPH = '" + ph.getIdPH() + "') AND (dateHeure_RDV BETWEEN " + convertDateJavaEnTimestampJavaMin(date) + " AND " + convertDateJavaEnTimestampJavaMax(date) + ")");
-        System.out.println("ok");
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous "
+                + "WHERE idPH = '" + ph.getIdPH() + "' AND (dateHeure_RDV BETWEEN ? AND ?)");
+        stmt.setTimestamp(1, convertDateJavaEnTimestampJavaMin(date));
+        stmt.setTimestamp(2, convertDateJavaEnTimestampJavaMax(date));
+        ResultSet rs = stmt.executeQuery();
         List<RendezVous> listeRDV = new ArrayList();
 
         //Création de la liste de RDV
@@ -425,10 +427,13 @@ public class RequetesBDDPI {
     //Renvoie la liste des rendez-vous pour un service et une date donnés
     //
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, Service service) throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
-                + "WHERE (idPH IN (SELECT idPH FROM PH WHERE service_PH = '" + service.name() + "'))"
-                        + " AND (dateHeure_RDV BETWEEN " + convertDateJavaEnTimestampJavaMin(date) + " AND " + convertDateJavaEnTimestampJavaMax(date) + ")");
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous "
+                + "JOIN PH USING(idPH)"
+                + "WHERE UPPER(service_PH) LIKE UPPER('" + service.name() + "%') AND (dateHeure_RDV BETWEEN ? AND ?)");
+        stmt.setTimestamp(1, convertDateJavaEnTimestampJavaMin(date));
+        stmt.setTimestamp(2, convertDateJavaEnTimestampJavaMax(date));
+        ResultSet rs = stmt.executeQuery();
         List<RendezVous> listeRDV = new ArrayList();
 
         //Création de la liste de RDV
