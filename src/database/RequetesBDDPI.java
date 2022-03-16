@@ -391,12 +391,14 @@ public class RequetesBDDPI {
     }
 
     //Renvoie la liste des rendez-vous pour un PH et une date donnés
-    //
+    //VALIDE
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, PH ph) throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
-                + "WHERE idPH = '" + ph.getIdPH() + "' AND dateHeure_RDV>=" + convertDateJavaEnTimestampJavaMin(date) + " AND dateHeure_RDV <= " + convertDateJavaEnTimestampJavaMax(date));
-        System.out.println("ok");
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous "
+                + "WHERE idPH = '" + ph.getIdPH() + "' AND (dateHeure_RDV BETWEEN ? AND ?)");
+        stmt.setTimestamp(1, convertDateJavaEnTimestampJavaMin(date));
+        stmt.setTimestamp(2, convertDateJavaEnTimestampJavaMax(date));
+        ResultSet rs = stmt.executeQuery();
         List<RendezVous> listeRDV = new ArrayList();
 
         //Création de la liste de RDV
@@ -425,10 +427,13 @@ public class RequetesBDDPI {
     //Renvoie la liste des rendez-vous pour un service et une date donnés
     //
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, Service service) throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
-                + "WHERE (idPH IN (SELECT idPH FROM PH WHERE service_PH = '" + service.name() + "'))"
-                        + " AND (dateHeure_RDV BETWEEN " + convertDateJavaEnTimestampJavaMin(date) + " AND " + convertDateJavaEnTimestampJavaMax(date) + ")");
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM RendezVous "
+                + "JOIN PH USING(idPH)"
+                + "WHERE UPPER(service_PH) LIKE UPPER('" + service.name() + "%') AND (dateHeure_RDV BETWEEN ? AND ?)");
+        stmt.setTimestamp(1, convertDateJavaEnTimestampJavaMin(date));
+        stmt.setTimestamp(2, convertDateJavaEnTimestampJavaMax(date));
+        ResultSet rs = stmt.executeQuery();
         List<RendezVous> listeRDV = new ArrayList();
 
         //Création de la liste de RDV

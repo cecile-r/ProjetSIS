@@ -15,6 +15,8 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
+import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDDPI.creerLocalisationSA;
 import static database.RequetesBDDPI.creerLocalisationSM;
 import static database.RequetesBDDPI.getListeDPI;
@@ -532,10 +534,16 @@ class ConnexionSGBD {
             //Test des conditions de RDV -> A TESTER
             Date dateRDV = new Date(2022, 3, 21);
             PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
-            //listeRendezVous(conn, dateRDV, phRDV);
-            //listeRendezVous(conn, dateRDV, Service.Medecine_interne);
+            //System.out.println(listeRendezVous(conn, dateRDV, phRDV));
+            //System.out.println(listeRendezVous(conn, dateRDV, Service.Medecine_interne));
             
-            System.out.println(getVectorDPI(conn, "ro", "radi"));
+            
+            //Test des conversions min max timestamp
+            /*Timestamp timetime = new Timestamp(2022, 3, 12, 12, 30, 0, 0);
+            System.out.println(convertDateJavaEnTimestampJavaMax(timetime));*/
+            
+            
+            
             
             
             //Print information about connection warnings
