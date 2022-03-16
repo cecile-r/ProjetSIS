@@ -106,7 +106,9 @@ public class Checker {
 
     public static String convertirDatetoString(Date d) {
         String d2 = "";
-        d2 = d2 + d.getDate() + "/" + d.getMonth() + "/" + d.getYear();
+        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        d2 = s.format(d);
+        //d2 = d2 + d.getDate() + "/" + d.getMonth() + "/" + d.getYear();
         return d2;
     }
 
@@ -188,7 +190,7 @@ public class Checker {
             DPI dpi = dpis.get(i);
             ls.add(dpi.getNom());
             ls.add(dpi.getPrenom());
-            ls.add(dpi.getDateNaissance().toString());
+            ls.add(convertirDatetoString(dpi.getDateNaissance()));
             ls.add(dpi.getSexe().toString());
             v.add(ls);
         }

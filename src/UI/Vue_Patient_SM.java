@@ -683,20 +683,17 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         int retour = JOptionPane.showConfirmDialog(this, "Vous allez fermer le DPI de ce patient\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
 
         if (retour == 0) {
-            //FCT
+
             //BDD
             try {
                 fermerDPI(conn, dpi.getIPP());
                 //message ok
                 JOptionPane.showMessageDialog(this, "Le dossier a bien été fermé", "Information", JOptionPane.INFORMATION_MESSAGE);
-            
+
             } catch (SQLException ex) {
                 Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            //message ok
-            JOptionPane.showMessageDialog(this, "Le dossier a bien été fermé", "Information", JOptionPane.INFORMATION_MESSAGE);
-            
+
             //RETOUR ACCUEIL
             jButton8ActionPerformed(evt);
         }

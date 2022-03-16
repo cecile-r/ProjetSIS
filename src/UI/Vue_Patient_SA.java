@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -612,18 +614,17 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         int retour = JOptionPane.showConfirmDialog(this, "Vous allez fermer le DPI de ce patient\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
 
         if (retour == 0) {
-            
+
             //BDD
             try {
                 fermerDPI(conn, dpi.getIPP());
                 //message ok
                 JOptionPane.showMessageDialog(this, "Le dossier a bien été fermé", "Information", JOptionPane.INFORMATION_MESSAGE);
-            
+
             } catch (SQLException ex) {
                 Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
+
             //RETOUR ACCUEIL
             jButton8ActionPerformed(evt);
         }
@@ -632,20 +633,42 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
     private void jButton_archivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_archivesActionPerformed
         //ARCHIVER LE DOSSIER
-        Date date_deces;
-        //VERIFICATION
-        int retour = JOptionPane.showConfirmDialog(this, "Vous allez placer ce DPI aux archives\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
 
-        if (retour == 0) {
-            //FCT
-            //archiverDPI(conn,dpi.getIPP(),date_deces);
-            //message ok
-            JOptionPane.showMessageDialog(this, "Le dossier a bien été déplacé dans les archives", "Information", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            ImageIcon icone3 = new ImageIcon("src/image/dossier.png");
+            java.awt.Image img3 = icone3.getImage();
+            icone3 = new ImageIcon(img3);
+
+            String dateS = (String) JOptionPane.showInputDialog(this, "Entrez la date de décès (dd/MM/yyyy) :",
+                    "Compléter",
+                    JOptionPane.QUESTION_MESSAGE,
+                    icone3,
+                    null,
+                    "");
             
+            if ((dateS != null) && (dateS.length() == 10)) {
+                SimpleDateFormat formater = null;
+                formater = new SimpleDateFormat("dd/MM/yyyy");
+                Date date_deces = formater.parse(dateS);
 
-            //RETOUR ACCUEIL
-            jButton8ActionPerformed(evt);
+                int retour = JOptionPane.showConfirmDialog(this, "Vous allez placer ce DPI aux archives\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+                if (retour == 0) {
+                    //FCT
+                    archiverDPI(conn, dpi.getIPP(), date_deces);
+                    //message ok
+                    JOptionPane.showMessageDialog(this, "Le dossier a bien été déplacé dans les archives", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+                    //RETOUR ACCUEIL
+                    jButton8ActionPerformed(evt);
+                }
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_jButton_archivesActionPerformed
 
     /**
