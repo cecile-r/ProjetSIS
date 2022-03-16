@@ -19,6 +19,9 @@ import static database.RequetesBDDPI.creerLocalisationSA;
 import static database.RequetesBDDPI.creerLocalisationSM;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIFerme;
+import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDDPI.getVectorDPI;
+import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
@@ -485,7 +488,7 @@ class ConnexionSGBD {
             //RequetesBDDPI.creerLocalisation(conn, "1111888811", loc);
             
             //Test fermerDPI(ipp) -> VALIDE
-            System.out.println(getListeDPI(conn));
+            //System.out.println(getListeDPI(conn));
             //RequetesBDDPI.fermerDPI(conn, "1800511699");
            
             //Test conversion local date en date -> VALIDE
@@ -532,7 +535,7 @@ class ConnexionSGBD {
             //listeRendezVous(conn, dateRDV, phRDV);
             //listeRendezVous(conn, dateRDV, Service.Medecine_interne);
             
-            
+            System.out.println(getVectorDPI(conn, "ro", "radi"));
             
             
             //Print information about connection warnings
