@@ -618,6 +618,9 @@
             <Property name="text" type="java.lang.String" value="Fermer le dossier"/>
             <Property name="horizontalAlignment" type="int" value="2"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_fermetureActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -6,6 +6,7 @@
 package UI;
 
 import database.DatabaseAccessProperties;
+import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.modifierDPI;
 import static database.RequetesBDProfessionnels.getListeMT;
 import static database.RequetesBDProfessionnels.getListeMTNom;
@@ -141,10 +142,10 @@ public class Modif_Patient extends javax.swing.JFrame {
         tab_medecinsT.setPreferredSize(new java.awt.Dimension(3000, 30 * tab_medecinsT.getRowCount()));
 
         int i = 0;
-        while (i <medecins_traitant.size()&&medecins_traitant.get(i).getTelephoneMedecinTraitant().equals(dpi.getMedecin_traitant().getTelephoneMedecinTraitant())) {
+        while (i < medecins_traitant.size() && !medecins_traitant.get(i).getTelephoneMedecinTraitant().equals(dpi.getMedecin_traitant().getTelephoneMedecinTraitant())) {
             i++;
         }
-        tab_medecinsT.getSelectionModel().setSelectionInterval(i, i); 
+        tab_medecinsT.getSelectionModel().setSelectionInterval(i, i);
     }
 
     /**
@@ -605,14 +606,34 @@ public class Modif_Patient extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
+        Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+        int longueur = tailleMoniteur.width;
+        int hauteur = tailleMoniteur.height;
+
         if (sa != null) {
-            Vue_Patient_SA i;
-            i = new Vue_Patient_SA(conn, dpi, sa);
-            i.setVisible(true);
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2;
+                Vue_Patient_SA i;
+                dpi2 = getDPI(conn, IPP);
+                i = new Vue_Patient_SA(conn, dpi2, sa);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(Modif_Patient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         } else { //sm!=null
-            Vue_Patient_SM i;
-            i = new Vue_Patient_SM(conn, dpi, sm);
-            i.setVisible(true);
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2;
+                Vue_Patient_SM i;
+                dpi2 = getDPI(conn, IPP);
+                i = new Vue_Patient_SM(conn, dpi2, sm);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(Modif_Patient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         }
         dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
@@ -639,7 +660,9 @@ public class Modif_Patient extends javax.swing.JFrame {
                 if (retour == 0) { //les informations sont validees
                     //modification du patient
                     modifierDPI(conn, dpi.getIPP(), telephone, adresse, mt);
-                    System.out.println("patient modifié");
+
+                    //SORTIR A LA FIN
+                    jButton9ActionPerformed(evt);
                 }
             }
         } catch (ParseException ex) {

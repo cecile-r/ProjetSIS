@@ -41,9 +41,9 @@ import nf.Infirmier;
  *
  * @author Audrey
  */
-public class Accueil_Inf extends javax.swing.JFrame {
+public class Accueil_urgences extends javax.swing.JFrame {
 
-    Infirmier inf;
+    PH ph;
     Connection conn;
     List<PH> medecins;
     Vector medecinsS;
@@ -55,9 +55,9 @@ public class Accueil_Inf extends javax.swing.JFrame {
     /**
      * Creates new form Connexion
      */
-    public Accueil_Inf(Connection conn, Infirmier inf) throws SQLException {
+    public Accueil_urgences(Connection conn, PH ph) throws SQLException {
         this.conn = conn;
-        this.inf = inf;
+        this.ph = ph;
         initComponents();
 
         //boutons
@@ -91,10 +91,10 @@ public class Accueil_Inf extends javax.swing.JFrame {
         jButton2.setIcon(iconeD);
 
         //infos identité
-        prenom_medecin.setText(inf.getPrenomInfirmiere());
-        nom_medecin.setText(inf.getNomInfirmiere());
-        service.setText(inf.getService().toString());
-
+        prenom_medecin.setText(ph.getPrenomPH());
+        nom_medecin.setText(ph.getNomPH());
+        service.setText(ph.getService().toString());
+/*
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
         dpis = getListeDPIService(conn, inf.getService().toString());
@@ -123,7 +123,8 @@ public class Accueil_Inf extends javax.swing.JFrame {
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-    }
+    */
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -165,6 +166,8 @@ public class Accueil_Inf extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton_actualiser_medecin1 = new javax.swing.JButton();
         jButton_recherche_medecin = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
 
         jMenu1.setText("jMenu1");
 
@@ -500,6 +503,30 @@ public class Accueil_Inf extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Praticien hospitalier", jPanel5);
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1046, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 599, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Dossier temporaire", jPanel1);
+
         javax.swing.GroupLayout Panel_MainLayout = new javax.swing.GroupLayout(Panel_Main);
         Panel_Main.setLayout(Panel_MainLayout);
         Panel_MainLayout.setHorizontalGroup(
@@ -806,6 +833,8 @@ public class Accueil_Inf extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;

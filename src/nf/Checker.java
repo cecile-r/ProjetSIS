@@ -171,7 +171,7 @@ public class Checker {
             DPI dpi = dpis.get(i);
             ls.add(dpi.getNom());
             ls.add(dpi.getPrenom());
-            ls.add(dpi.getDateNaissance().toString());
+            ls.add(convertirDatetoString(dpi.getDateNaissance()));
             ls.add(dpi.getSexe().toString());
             v.add(ls);
         }

@@ -29,11 +29,13 @@ import nf.PH;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static nf.Checker.*;
 import nf.DPI;
 import nf.FicheDeSoins;
+import nf.Lit;
 import nf.SecretaireMedicale;
 import nf.Service;
 
@@ -124,6 +126,12 @@ public class Accueil_SM extends javax.swing.JFrame {
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40*tab_medecins.getRowCount()));
 
+        //selection localisation patient
+        jPanel_localisation.setVisible(false);
+        DefaultComboBoxModel dbm2 = new DefaultComboBoxModel(Service.values());
+        jComboBox_serviceG.setModel(dbm2);
+        DefaultComboBoxModel dbm3 = new DefaultComboBoxModel(Lit.values());
+        jComboBoxLit.setModel(dbm3);
     }
 
     /**
@@ -178,12 +186,12 @@ public class Accueil_SM extends javax.swing.JFrame {
         jButton_recherche_patientOuvrirDPI = new javax.swing.JButton();
         jPanel_localisation = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox_serviceR = new javax.swing.JComboBox<>();
         jComboBox_serviceG = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jComboBoxLit = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -685,20 +693,6 @@ public class Accueil_SM extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
         jLabel1.setText("Choisir la localisation du patient");
 
-        jComboBox_serviceR.setMaximumRowCount(30);
-        jComboBox_serviceR.setMinimumSize(new java.awt.Dimension(30, 500));
-        jComboBox_serviceR.setPreferredSize(new java.awt.Dimension(30, 300));
-        jComboBox_serviceR.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jComboBox_serviceRMouseReleased(evt);
-            }
-        });
-        jComboBox_serviceR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_serviceRActionPerformed(evt);
-            }
-        });
-
         jComboBox_serviceG.setMaximumRowCount(30);
         jComboBox_serviceG.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox_serviceG.setPreferredSize(new java.awt.Dimension(59, 300));
@@ -711,16 +705,14 @@ public class Accueil_SM extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(213, 123, 213));
         jButton1.setText("Affecter la localisation");
 
+        jLabel6.setText("Service géographique");
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+
         javax.swing.GroupLayout jPanel_localisationLayout = new javax.swing.GroupLayout(jPanel_localisation);
         jPanel_localisation.setLayout(jPanel_localisationLayout);
         jPanel_localisationLayout.setHorizontalGroup(
             jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_localisationLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -732,26 +724,32 @@ public class Accueil_SM extends javax.swing.JFrame {
                                 .addGroup(jPanel_localisationLayout.createSequentialGroup()
                                     .addComponent(jLabel4)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(20, 20, 20))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(88, 88, 88))))
+            .addGroup(jPanel_localisationLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel_localisationLayout.setVerticalGroup(
             jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_localisationLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addGap(50, 50, 50)
-                .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel4)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addComponent(jComboBoxLit, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -809,7 +807,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 546, Short.MAX_VALUE)
+            .addGap(0, 549, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1062,14 +1060,6 @@ public class Accueil_SM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
-    private void jComboBox_serviceRMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox_serviceRMouseReleased
-
-    }//GEN-LAST:event_jComboBox_serviceRMouseReleased
-
-    private void jComboBox_serviceRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceRActionPerformed
-
-    }//GEN-LAST:event_jComboBox_serviceRActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -1167,10 +1157,11 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxLit;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
     private javax.swing.JComboBox<String> jComboBox_serviceG;
-    private javax.swing.JComboBox<String> jComboBox_serviceR;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1187,7 +1178,6 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane5;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel nom_SM;
     private javax.swing.JLabel prenom_SM;
     private javax.swing.JTable tab_medecins;

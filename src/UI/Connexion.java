@@ -21,6 +21,7 @@ import static database.RequetesBDConnexion.userPH;
 import static database.RequetesBDConnexion.userSA;
 import static database.RequetesBDConnexion.userSM;
 import static database.RequetesBDConnexion.verifyConnexion;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import nf.Infirmier;
@@ -123,6 +124,11 @@ public class Connexion extends javax.swing.JFrame {
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
+            }
+        });
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordField1KeyPressed(evt);
             }
         });
 
@@ -274,6 +280,10 @@ public class Connexion extends javax.swing.JFrame {
         Label_Identifiant.setText("");
         Label_Identifiant.setForeground(Color.black);
     }//GEN-LAST:event_Label_IdentifiantMouseClicked
+
+    private void jPasswordField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyPressed
+
+    }//GEN-LAST:event_jPasswordField1KeyPressed
 
     /**
      * @param args the command line arguments
