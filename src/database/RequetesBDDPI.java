@@ -209,6 +209,27 @@ public class RequetesBDDPI {
         return vDPIOuvert;
     }
 
+    //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+    //VALIDE
+    public static List<DPI> getListeDPIEntrant(Connection conn) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL)");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
     //Renvoie la liste des DPI ouverts en fonction du nom
     //VALIDE
     public static List<DPI> getListeDPI(Connection conn, String nom) throws SQLException {
@@ -425,7 +446,7 @@ public class RequetesBDDPI {
     }
     
     //Renvoie la liste des rendez-vous pour un service et une date donnés
-    //
+    //VALIDE
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, Service service) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM RendezVous "
@@ -1051,7 +1072,7 @@ public class RequetesBDDPI {
     }
     
     //Creer localisation d'un patient par une secrétaire administratice -> utilise que le service responsable (géographique??)
-    //
+    //VALIDE
     public static void creerLocalisationSA(Connection conn, String ipp, Service service_respo) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
@@ -1065,8 +1086,8 @@ public class RequetesBDDPI {
             PreparedStatement stmt2 = null;
             stmt2 = conn.prepareStatement("INSERT INTO Localisation values(?,?,?,?,?)");
             stmt2.setString(1, ipp);
-            stmt2.setString(2, null);
-            stmt2.setString(3, service_respo.toString());
+            stmt2.setString(2, service_respo.name());
+            stmt2.setString(3, null);
             stmt2.setString(4, null);
             stmt2.setString(5, null);
         
@@ -1082,8 +1103,8 @@ public class RequetesBDDPI {
     //Modification d'éléments
     
     //Modifier localisation d'un patient par la secrétaire médicale -> le reste des infos de la localisation comparé à creerLocalisationSA
-    //
-    public static void creerLocalisationSM(Connection conn, String ipp, int numero_chambre, Lit lit) throws SQLException{
+    //VALIDE
+    public static void modifierLocalisationSM(Connection conn, String ipp, int numero_chambre, Lit lit, Service service_geo) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
         stmt.setString(1, ipp);
@@ -1094,10 +1115,11 @@ public class RequetesBDDPI {
         }
         else {
             PreparedStatement stmt2 = null;
-            stmt2 = conn.prepareStatement("UPDATE Localisation SET lit = ?, nchambre = ?  WHERE IPP = ?");
-            stmt2.setString(1, lit.toString());
+            stmt2 = conn.prepareStatement("UPDATE Localisation SET lit = ?, nchambre = ?, service_geographique = ?  WHERE IPP = ?");
+            stmt2.setString(1, lit.name());
             stmt2.setInt(2, numero_chambre);
-            stmt2.setString(3, ipp);
+            stmt2.setString(3, service_geo.name());
+            stmt2.setString(4, ipp);
             stmt2.executeUpdate();
             stmt2.close();
         }
