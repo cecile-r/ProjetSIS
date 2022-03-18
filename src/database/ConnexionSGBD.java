@@ -18,8 +18,10 @@ import database.*;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDDPI.creerLocalisationSA;
-import static database.RequetesBDDPI.creerLocalisationSM;
+import static database.RequetesBDDPI.fermerDPI;
+import static database.RequetesBDDPI.modifierLocalisationSM;
 import static database.RequetesBDDPI.getListeDPI;
+import static database.RequetesBDDPI.getListeDPIEntrant;
 import static database.RequetesBDDPI.getListeDPIFerme;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDDPI.getVectorDPI;
@@ -500,47 +502,53 @@ class ConnexionSGBD {
             //RequetesBDDPI.archiverDPI(conn, "1111888811", RequetesBDConversion.convertLocalDateEnDate(LocalDate.now()));
             
             
+            //Test des conditions de RDV -> VALIDE
+            /*Date dateRDV = new Date(2022, 3, 21);
+            PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
+            System.out.println(listeRendezVous(conn, dateRDV, phRDV));
+            System.out.println(listeRendezVous(conn, dateRDV, Service.Medecine_interne));*/
+            
+            
+            //Test des conversions min max timestamp -> VALIDE
+            /*Timestamp timetime = new Timestamp(2022, 3, 12, 12, 30, 0, 0);
+            System.out.println(convertDateJavaEnTimestampJavaMax(timetime));*/
+            
+            
+            //Test des localisations -> VALIDE
+            //creerLocalisationSA(conn, "9736482920", Service.Anesthesie);
+            //creerLocalisationSA(conn, "2222000011", Service.Chirurgie_vasculaire);
+            //fermerDPI(conn, "9736482920");
+            //fermerDPI(conn, "2222000011");
+            //modifierLocalisationSM(conn, "9736482920", 3, Lit.F, Service.AMP);
+            
+            //Test getListeDPIEntrant() -> VALIDE
+            //System.out.println(getListeDPIEntrant(conn));
+            
             //Test nb de DPI temporaires -> VALIDE
             //System.out.println(RequetesBDUrgences.nbDPITemporaire(conn));
             
-            //Test ajout de DPI temporaire -> A TESTER QUAND LOC ET NULL CA MARCHERA
-            /*Date dn = new Date(1985,3,7);
-            PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
-            DPITemporaire dpit = new DPITemporaire("4444555566", "Tereza", "Smelikova", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
-            creerDPITemporaire(conn, dpit);*/
+            
+            //Test ajout de DPI temporaire -> VALIDE
+            //Date dn = new Date(1997,3,20);
+            //PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
+            //DPITemporaire dpit = new DPITemporaire("9977554466", "Palmito", "Juan", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            //creerDPITemporaire(conn, dpit);
+            
             /*Date dn2 = new Date(1999,8,26);
-            DPITemporaire dpit2 = new DPITemporaire("9999555566", "Arceus", "Goinfrex", dn2, ph_urgence);//DPI temporaire de quelqu'un de nouveau aux urgences
-            creerDPITemporaire(conn, dpit2);*/ 
+            DPITemporaire dpit2 = new DPITemporaire("9999555566", "Arceus", "Goinfrex", dn2, ph_urgence);//DPI temporaire de quelqu'un déjà aux urgences
+            creerDPITemporaire(conn, dpit2);*/
             
-            //A tester et exécuter apres martin PB BD IPP FOREIGN KEY
-            //Localisation locUrgences = new Localisation(Service.Urgences, Lit.P, 0, Service.Urgences);
-            //RequetesBDDPI.creerLocalisation(conn, "9999555566", locUrgences);
             /*Date dn3 = new Date(1995,6,27);
-            DPITemporaire dpit3 = new DPITemporaire("9999555599", "Plante", "Bulbi", dn3, ph_urgence);//DPI temporaire de quelqu'un de nouveau aux urgences
-            
-            //A tester quand la fct localisation marchera avec les dpi temporaires
-            creerDPITemporaire(conn, dpit);*/
+            DPITemporaire dpit3 = new DPITemporaire("9999555599", "Plante", "Bulbi", dn3, ph_urgence);
+            creerDPITemporaire(conn, dpit3);*/
             
             
-            //Test getListeDPITemporaires() et getVectorDPITemporaires() -> A TESTER
+            //Test getListeDPITemporaires() et getVectorDPITemporaires() -> VALIDE
             //System.out.println(getListeDPITemporaires(conn));
             //System.out.println(getVectorDPITemporaires(conn));
             
-            //Test des localisations -> A TESTER avec un patient pas dans le CHU
-            //creerLocalisationSA(conn, "mettre ipp", Service.Anesthesie);
-            //creerLocalisationSM(conn, "mettre ipp", 3, Lit.F);
             
             
-            //Test des conditions de RDV -> A TESTER
-            Date dateRDV = new Date(2022, 3, 21);
-            PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
-            //System.out.println(listeRendezVous(conn, dateRDV, phRDV));
-            //System.out.println(listeRendezVous(conn, dateRDV, Service.Medecine_interne));
-            
-            
-            //Test des conversions min max timestamp
-            /*Timestamp timetime = new Timestamp(2022, 3, 12, 12, 30, 0, 0);
-            System.out.println(convertDateJavaEnTimestampJavaMax(timetime));*/
             
             
             
