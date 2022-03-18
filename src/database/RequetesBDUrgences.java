@@ -131,7 +131,7 @@ public class RequetesBDUrgences {
     
     //Fusionne les DPI si le DPI des urgences existe déjà au CHU, sinon crée le DPI du patient
     //
-    public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
+    /*public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI "
                 + "WHERE UPPER(nom_DPI) = UPPER(?) AND UPPER(prenom_DPI) = UPPER(?) AND date_de_naissance = ?");
@@ -144,6 +144,16 @@ public class RequetesBDUrgences {
         if(rs.next()){
             //Fusion des DPI
             for (int i = 0; i < dpit.getListe_f().size(); i++) { //parcours de la liste de fiches de soins
+                //Modifier l'IPP du patient sur les fiches de soins pour mettre son IPP réel
+                PreparedStatement stmt2 = null;
+                stmt2 = conn.prepareStatement("UPDATE DPI SET adresse_DPI = ?, telephone_DPI = ?, telephone_medecin_traitant = ? WHERE IPP = ?");
+                stmt2.setString(1, adresse);
+                stmt2.setString(2, telephone);
+                stmt2.setString(3, m.getTelephoneMedecinTraitant());
+                stmt2.setString(4, ipp);
+                stmt2.executeUpdate();
+                stmt2.close();
+                //Création de la fiche de soins
                 creerFicheDeSoins(conn, dpit.getListe_f().get(i));
             }
             for (int i = 0; i < dpit.getListe_p().size(); i++) { //parcours des prescriptions
@@ -164,5 +174,5 @@ public class RequetesBDUrgences {
             //creer nouveau DPI
         }
         stmt.close();
-    }
+    }*/
 }

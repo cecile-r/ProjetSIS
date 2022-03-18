@@ -78,7 +78,7 @@ public class RequetesBDProfessionnels {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
-                + "WHERE nom_PH = '" + nom + "'");
+                + "WHERE UPPER(nom_PH) = UPPER('" + nom + "%')");
 
         while (rs.next()) {
             PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
@@ -96,7 +96,7 @@ public class RequetesBDProfessionnels {
         Vector vPHTotal = new Vector();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
-                + "WHERE nom_PH = '" + nom + "'");
+                + "WHERE UPPER(nom_PH) = UPPER('" + nom + "%')");
 
         while (rs.next()) {
             Vector vParPH = new Vector();
@@ -214,7 +214,7 @@ public class RequetesBDProfessionnels {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT DISTINCT nom_medecin_traitant, prenom_medecin_traitant, mail, telephone_medecin_traitant "
                 + "FROM Medecin_traitant "
-                + "WHERE nom_medecin_traitant = '" + nom + "'");
+                + "WHERE UPPER(nom_medecin_traitant) = UPPER('" + nom + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -255,8 +255,7 @@ public class RequetesBDProfessionnels {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT DISTINCT nom_medecin_traitant, prenom_medecin_traitant, mail, telephone_medecin_traitant "
                 + "FROM Medecin_traitant "
-                + "WHERE nom_medecin_traitant = '" + nom + "'");
-
+                + "WHERE UPPER(nom_medecin_traitant) = UPPER('" + nom + "%')");
         while (rs.next()) {
             Vector vParMT = new Vector();
             vParMT.add(rs.getString("nom_medecin_traitant"));
