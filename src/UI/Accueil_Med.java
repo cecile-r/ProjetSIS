@@ -133,7 +133,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
 
         //PLANNING
-         /*
+         
         LocalDate current_date = LocalDate.now();
         int current_year = current_date.getYear();
         int current_month = current_date.getMonthValue();
@@ -152,7 +152,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         entetesRDV.add("Horaire");
         entetesRDV.add("Personne");
         entetesRDV.add("Remarque");
-        */
+        
     }
 
     /**
