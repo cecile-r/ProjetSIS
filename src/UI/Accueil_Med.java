@@ -10,6 +10,7 @@ import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
 import database.SQLWarningsExceptions;
@@ -19,7 +20,10 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
@@ -33,8 +37,11 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import static nf.Checker.*;
+import static nf.ComparaisonEvaluables.trierEvaluablesParDate;
 import nf.DPI;
+import nf.Evaluable;
 import nf.PH;
+import nf.RendezVous;
 import nf.Service;
 
 /**
@@ -49,8 +56,11 @@ public class Accueil_Med extends javax.swing.JFrame {
     Vector medecinsS;
     List<DPI> dpis;
     Vector dpisS;
+    List<RendezVous> rdvs = new ArrayList<>();
+    Vector rdvsS;
     Vector entetes;
     Vector entetes2;
+    Vector entetesRDV;
 
     /**
      * Creates new form Connexion
@@ -59,7 +69,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         this.conn = conn;
         this.ph = ph;
         initComponents();
-        
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -121,19 +131,28 @@ public class Accueil_Med extends javax.swing.JFrame {
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-        
+
         //PLANNING
-        /*
-        rdvS = new Vector();
-        rdvs = getListeRDV(conn,ph);
-        rdvs = trierRDV(rdvs);
-        rdvS = getVectorPH(rdvs); //vecteur tableau
+         /*
+        LocalDate current_date = LocalDate.now();
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date();
+        date_courante.setDate(current_day);
+        date_courante.setMonth(current_month-1);
+        date_courante.setYear(current_year-1900);
+        rdvsS = new Vector();
+        rdvs = listeRendezVous(conn, date_courante,ph);
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        rdvsS = getVectorPHplanning(evs); //vecteur tableau
         entetesRDV = new Vector();
         entetesRDV.add("Horaire");
         entetesRDV.add("Personne");
         entetesRDV.add("Remarque");
         */
-        
     }
 
     /**
@@ -664,7 +683,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i = new Vue_Patient_Med(conn,dpi,ph);
+                Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
@@ -791,6 +810,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         //RECHARGER MEDECINS
         try {
             medecins = getListePH(conn);
+            medecins = trierPH(medecins); //tri par ordre alphabétique
             medecinsS = getVectorPH(medecins); //vecteur tableau
             TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
             tab_medecins.setModel(tableModel2);

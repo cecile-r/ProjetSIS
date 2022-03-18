@@ -103,12 +103,15 @@ public class Modif_Patient extends javax.swing.JFrame {
             jRadioButton3.setSelected(true);
         } else {
             switch (dpi.getSexe()) {
-                case femme ->
+                case femme:
                     RadioButton_F2.setSelected(true);
-                case homme ->
+                    break;
+                case homme:
                     RadioButton_H2.setSelected(true);
-                default ->
+                    break;
+                default:
                     jRadioButton3.setSelected(true);
+                    break;
             }
         }
         jTextArea_adresse2.setText(dpi.getAdresse());

@@ -276,4 +276,24 @@ public class Checker {
         }
         return v;
     }
+    
+    public static Vector getVectorPHplanning(List<Evaluable> evs){
+        Vector v = new Vector();
+        int j=0;
+        for(int i=8;i<16;i++){
+            Vector ls = new Vector();
+            ls.add(i+"h");
+            RendezVous rdv = (RendezVous) evs.get(j);
+            if(rdv.getDateHeure().getHeure()==i){
+                ls.add(rdv.getProfessionnel());
+                ls.add(rdv.getRemarque());
+                j++;
+            }else{
+                ls.add("");
+                ls.add("");
+            }
+            v.add(ls);
+        }
+        return v;
+    } 
 }

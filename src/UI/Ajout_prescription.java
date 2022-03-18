@@ -431,9 +431,10 @@ public class Ajout_prescription extends javax.swing.JFrame {
             p.setDPI(dpi);
             p.setpH(ph);
             
+            //ENVOYER EN RADIO
             if(jComboBox2.getSelectedItem()==TypeExamen.radiologie||jComboBox2.getSelectedItem()==TypeExamen.imagerie_par_resonance_magnetique||jComboBox2.getSelectedItem()==TypeExamen.scanner){
-                //TYPE = jComboBox2.getSelectedItem()
-                //ENVOYER EN RADIO
+                //TYPE = jComboBox2.getSelectedItem();
+                
             }
             
             ///AJOUT BD
