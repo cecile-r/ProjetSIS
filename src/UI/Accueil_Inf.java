@@ -106,7 +106,6 @@ public class Accueil_Inf extends javax.swing.JFrame {
         entetes.add("Date de naissance");
         entetes.add("Sexe");
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-        Table_Vue_Generale1.setAutoCreateRowSorter(true);
         Table_Vue_Generale1.setModel(tableModel);
         Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
@@ -120,7 +119,6 @@ public class Accueil_Inf extends javax.swing.JFrame {
         entetes2.add("Prénom");
         entetes2.add("Service");
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-        tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
     }
