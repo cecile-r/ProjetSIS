@@ -6,6 +6,7 @@
 package UI;
 
 import database.DatabaseAccessProperties;
+import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIFerme;
 import static database.RequetesBDDPI.getListeDPIService;
@@ -116,7 +117,7 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPI(conn);
+        dpis = getListeDPIService(conn, sm.getService().toString());
         dpis = trierDPI(dpis); //tri par ordre alphabétique
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
@@ -1011,11 +1012,13 @@ public class Accueil_SM extends javax.swing.JFrame {
     private void jButton_actualiserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserActionPerformed
         try {
             //RECHARGER DPI
-            dpis = getListeDPI(conn);
+            dpis = getListeDPIService(conn, sm.getService().toString());
             dpis = trierDPI(dpis); //tri par ordre alphabétique
             dpisS = getVectorDPI(dpis); //vecteur tableau
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setModel(tableModel);
+            Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_Vue_Generale1.getRowCount()));
+
             TextField_Patient.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
@@ -1130,6 +1133,21 @@ public class Accueil_SM extends javax.swing.JFrame {
         //VISUALISATION D UN PATIENT PARTICULIER
         if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
+        }else{
+             try {
+                int index = Table_Vue_Generale1.getSelectedRow();
+                DPI dpi = getDPI(conn, dpis.get(index).getIPP());
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_SM i = new Vue_Patient_SM(conn, dpi, sm);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
 

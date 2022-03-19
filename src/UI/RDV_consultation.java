@@ -17,10 +17,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Audrey
- */
+
 public class RDV_consultation extends javax.swing.JFrame {
 
     Connection conn;

@@ -483,21 +483,20 @@ public class RDV_prise extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
         try {
-            String IPP = dpi.getIPP();
-            DPI dpi2 = getDPI(conn, IPP);
+            DPI dpi2 = getDPI(conn, dpi.getIPP());
             Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
             int longueur = tailleMoniteur.width;
             int hauteur = tailleMoniteur.height;
-            if(sa!=null){
-            Vue_Patient_SA i = new Vue_Patient_SA(conn, dpi2, sa);
-            i.setSize(longueur, hauteur);
-            i.setVisible(true);
-            }else{
+            if (sa != null) {
+                Vue_Patient_SA i = new Vue_Patient_SA(conn, dpi2, sa);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+            } else {
                 Vue_Patient_SM i = new Vue_Patient_SM(conn, dpi2, sm);
-            i.setSize(longueur, hauteur);
-            i.setVisible(true);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
             }
-            
+
             dispose();
 
         } catch (SQLException ex) {
