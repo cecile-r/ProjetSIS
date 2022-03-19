@@ -16,6 +16,7 @@
  */
 package nf;
 
+import java.security.Key;
 import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -23,8 +24,11 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.Random;
+import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import org.jasypt.util.text.BasicTextEncryptor;
 
 /**
  *
@@ -37,21 +41,49 @@ public class Cryptage {
     private static final int ITERATIONS = 65536;
     private static final int KEY_LENGTH = 512;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
-/*
+
     public static void main(String[] args) {
-        
+
         //String salt = generateSalt(512).get();
-        String salt = "kXnMRShQyt02lLrY5UOQwaRPJEXR4BRquS6V8Jnqkxd/ifIdMWOL/+G3bqhxCYrJadNB4JP9YoGxJTopwN6XU7pWgnxWZ5jvlSnsx4RohM5HTn6QVBB3dewc++B9ZWGL416KkuoqPISCfO9Ihtq2mdPZ3wEMi2ZzLD948QCANXuiNHrmwGC+Oyk9MworVH+g2bFuPW2htFZwnnzwz1L/InuB2smwt9m25hmywPHSzW5kv9zix9NGm0y195E8KsEOfYGSJoMj9WJXmfZtwHNRPC1XgE+Lkgxr0bkdiHQ0BhikbPtYntLy9HAs8xnFZrkIIyOkyZFqfxu4z7YanHOjFSrAjKSNAgVRII2AVoc8nA5M4eZQXXzFrNCkAuJXLfCCKQjd/YrLzn+HtMJ/kX+cbDL+xQ1DDov93aQ1qGa/XWGsI4U3JlHgZwgXyFpMok8I27FgPcFadFiW9H4rxvItOQpoIAW9qbe4wLN1OrJRhGVYgWv7FB33LFZE3pv69ikRxsD3OxdYtQy1PSPpYF+1fKzdEMzZlJM3JzW1f6225tLHSKCIqK24biO5115q6Jc0pozSwKANuX7+0Nn2tFf+m66uKHon4yDsAbqbNXYjg+rA9l78KmzA0PGfe+2Z4vw+nZleTsNaT34pXE8T/DAbN01MSaBBpSN6MecFgL1e6m8=";
-        
+        //String salt = "kXnMRShQyt02lLrY5UOQwaRPJEXR4BRquS6V8Jnqkxd/ifIdMWOL/+G3bqhxCYrJadNB4JP9YoGxJTopwN6XU7pWgnxWZ5jvlSnsx4RohM5HTn6QVBB3dewc++B9ZWGL416KkuoqPISCfO9Ihtq2mdPZ3wEMi2ZzLD948QCANXuiNHrmwGC+Oyk9MworVH+g2bFuPW2htFZwnnzwz1L/InuB2smwt9m25hmywPHSzW5kv9zix9NGm0y195E8KsEOfYGSJoMj9WJXmfZtwHNRPC1XgE+Lkgxr0bkdiHQ0BhikbPtYntLy9HAs8xnFZrkIIyOkyZFqfxu4z7YanHOjFSrAjKSNAgVRII2AVoc8nA5M4eZQXXzFrNCkAuJXLfCCKQjd/YrLzn+HtMJ/kX+cbDL+xQ1DDov93aQ1qGa/XWGsI4U3JlHgZwgXyFpMok8I27FgPcFadFiW9H4rxvItOQpoIAW9qbe4wLN1OrJRhGVYgWv7FB33LFZE3pv69ikRxsD3OxdYtQy1PSPpYF+1fKzdEMzZlJM3JzW1f6225tLHSKCIqK24biO5115q6Jc0pozSwKANuX7+0Nn2tFf+m66uKHon4yDsAbqbNXYjg+rA9l78KmzA0PGfe+2Z4vw+nZleTsNaT34pXE8T/DAbN01MSaBBpSN6MecFgL1e6m8=";
         //mot de passe
-        String password = "jeanmariepauline09876";
+        //String password = "facile";
         //mot de passe crypté
-        String key = hashPassword(password, salt).get();
-        System.out.println("mdp = "+ key);
-        System.out.println(verifyPassword("jeanmariepauline09876", key, salt));
-         
         
-    }*/
+        //String passwordHash = key.get();
+        //System.out.println("mdp = " + password);
+        //System.out.println("mdp crypté = " + passwordHash);
+        //System.out.println(verifyPassword(password, key, SALT));
+        //System.out.println(verifyPassword("jeanmariepauline09876", key, salt));
+        //password = "p2FmZ+q0suJhllDAIZKFK70A5Z91nF2zwWJLUVO5K6jlUWxlCmmOx1LYgrmKXRiL5F8EbnWvsJKEbLnfNaUZZw==";
+        //mot de passe crypté
+        //key = hashPassword(password, SALT).get();
+        //System.out.println("mdp=\n" + key);
+        //String SALT = "kXnMRShQyt02lLrY5UOQwaRPJEXR4BRquS6V8Jnqkxd/ifIdMWOL/+G3bqhxCYrJadNB4JP9YoGxJTopwN6XU7pWgnxWZ5jvlSnsx4RohM5HTn6QVBB3dewc++B9ZWGL416KkuoqPISCfO9Ihtq2mdPZ3wEMi2ZzLD948QCANXuiNHrmwGC+Oyk9MworVH+g2bFuPW2htFZwnnzwz1L/InuB2smwt9m25hmywPHSzW5kv9zix9NGm0y195E8KsEOfYGSJoMj9WJXmfZtwHNRPC1XgE+Lkgxr0bkdiHQ0BhikbPtYntLy9HAs8xnFZrkIIyOkyZFqfxu4z7YanHOjFSrAjKSNAgVRII2AVoc8nA5M4eZQXXzFrNCkAuJXLfCCKQjd/YrLzn+HtMJ/kX+cbDL+xQ1DDov93aQ1qGa/XWGsI4U3JlHgZwgXyFpMok8I27FgPcFadFiW9H4rxvItOQpoIAW9qbe4wLN1OrJRhGVYgWv7FB33LFZE3pv69ikRxsD3OxdYtQy1PSPpYF+1fKzdEMzZlJM3JzW1f6225tLHSKCIqK24biO5115q6Jc0pozSwKANuX7+0Nn2tFf+m66uKHon4yDsAbqbNXYjg+rA9l78KmzA0PGfe+2Z4vw+nZleTsNaT34pXE8T/DAbN01MSaBBpSN6MecFgL1e6m8=";
+        
+        
+        String myDataBasePassword = "huile";
+        System.out.println("mdp = "+myDataBasePassword);
+        String cry=cryptage(myDataBasePassword);
+        System.out.println("mdp crypte = "+cry);
+        System.out.println("mdp decrypte = "+decryptage(cry));
+    }
+    
+    public static String cryptage(String password){
+        String salt = "r9ZYeoCR2VSDGVf0M+oYYQ==";
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(salt);
+        String myEncryptedPassword = textEncryptor.encrypt(password);
+        return myEncryptedPassword;
+    }
+    
+    public static String decryptage(String myEncryptedPassword){
+        String salt = "r9ZYeoCR2VSDGVf0M+oYYQ==";
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(salt);
+        String plainText = textEncryptor.decrypt(myEncryptedPassword);
+        return plainText;
+    }
 
     /**
      *
@@ -114,15 +146,15 @@ public class Cryptage {
         }
         return optEncrypted.get().equals(key);
     }
-    
-    public static String getIPPRandom(){
-            int nb;
-            String ch = "";
-            for (int i = 0; i < 10; i++) {
-                nb = (int) (Math.random() * ((10 - 1) + 1));
-                ch = ch + String.valueOf(nb);
-            }
-            return ch;
+
+    public static String getIPPRandom() {
+        int nb;
+        String ch = "";
+        for (int i = 0; i < 10; i++) {
+            nb = (int) (Math.random() * ((10 - 1) + 1));
+            ch = ch + String.valueOf(nb);
+        }
+        return ch;
     }
 
 }
