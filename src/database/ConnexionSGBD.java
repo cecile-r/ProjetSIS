@@ -27,6 +27,7 @@ import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDDPI.getVectorDPI;
 import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
+import static database.RequetesBDProfessionnels.getPH;
 import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 import static database.RequetesBDUrgences.getVectorDPITemporaires;
@@ -503,10 +504,11 @@ class ConnexionSGBD {
             
             
             //Test des conditions de RDV -> VALIDE
-            /*Date dateRDV = new Date(2022, 3, 21);
-            PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
-            System.out.println(listeRendezVous(conn, dateRDV, phRDV));
-            System.out.println(listeRendezVous(conn, dateRDV, Service.Medecine_interne));*/
+            //Date dateRDV = new Date(2022, 3, 18);
+            //PH phHouse = new PH("housedoc", "House", "Docteur", Service.valueOf("Medecine_nucleaire"), "tele", "0611199911", "Radiologue");
+            //PH phRDV = new PH("alaphilippejul", "Alaphilippe", "Julian", Service.valueOf("Medecine_interne"), "jesaispas", "0655555555", "medecin");
+            //System.out.println(listeRendezVous(conn, dateRDV, phHouse));
+            //System.out.println(listeRendezVous(conn, dateRDV, Service.Medecine_interne));
             
             
             //Test des conversions min max timestamp -> VALIDE
@@ -548,7 +550,8 @@ class ConnexionSGBD {
             //System.out.println(getVectorDPITemporaires(conn));
             
             
-            
+            //Test getPH(id) -> VALIDE
+            //System.out.println(getPH(conn, "alerterou"));
             
             
             
