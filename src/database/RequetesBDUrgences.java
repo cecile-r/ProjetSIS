@@ -128,10 +128,10 @@ public class RequetesBDUrgences {
         stmt.close();
         return vDPIOuvert;
     }
-    
+
     //Fusionne les DPI si le DPI des urgences existe déjà au CHU, sinon crée le DPI du patient
     //
-    /*public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
+    public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI "
                 + "WHERE UPPER(nom_DPI) = UPPER(?) AND UPPER(prenom_DPI) = UPPER(?) AND date_de_naissance = ?");
@@ -139,40 +139,69 @@ public class RequetesBDUrgences {
         stmt.setString(2, dpit.getPrenom());
         stmt.setDate(3, convertDateJavaEnSQL(dpit.getDate_naissance()));
         ResultSet rs = stmt.executeQuery();
-        
+
         //Si un DPI correspond à ce DPI Temporaire
-        if(rs.next()){
+        if (rs.next()) {
             //Fusion des DPI
-            for (int i = 0; i < dpit.getListe_f().size(); i++) { //parcours de la liste de fiches de soins
-                //Modifier l'IPP du patient sur les fiches de soins pour mettre son IPP réel
+
+            //FICHES DE SOINS
+            PreparedStatement stmtf = null;
+            stmtf = conn.prepareStatement("SELECT * FROM FichesDeSoins "
+                    + "WHERE IPP = ?");
+            stmtf.setString(1, dpit.getIPP());
+            ResultSet rsf = stmtf.executeQuery();
+            while (rsf.next()) { //parcours des fiches de soins du DPI temporaire
+                //Modifier l'IPP du patient sur la fiche de soins pour le remplacer par son IPP réel
                 PreparedStatement stmt2 = null;
-                stmt2 = conn.prepareStatement("UPDATE DPI SET adresse_DPI = ?, telephone_DPI = ?, telephone_medecin_traitant = ? WHERE IPP = ?");
-                stmt2.setString(1, adresse);
-                stmt2.setString(2, telephone);
-                stmt2.setString(3, m.getTelephoneMedecinTraitant());
-                stmt2.setString(4, ipp);
+                stmt2 = conn.prepareStatement("UPDATE FichesDeSoins SET IPP = ? WHERE IPP = ?");
+                stmt2.setString(1, rs.getString("IPP"));
+                stmt2.setString(2, dpit.getIPP());
                 stmt2.executeUpdate();
                 stmt2.close();
-                //Création de la fiche de soins
-                creerFicheDeSoins(conn, dpit.getListe_f().get(i));
             }
-            for (int i = 0; i < dpit.getListe_p().size(); i++) { //parcours des prescriptions
-                creerPrescription(conn, dpit.getListe_p().get(i));
+
+            //PRESCRIPTIONS
+            PreparedStatement stmtp = null;
+            stmtp = conn.prepareStatement("SELECT * FROM Prescription "
+                    + "WHERE IPP = ?");
+            stmtp.setString(1, dpit.getIPP());
+            ResultSet rsp = stmtp.executeQuery();
+            while (rsp.next()) { //parcours des prescriptions du DPI temporaire
+                //Modifier l'IPP du patient sur la prescription pour le remplacer par son IPP réel
+                PreparedStatement stmt3 = null;
+                stmt3 = conn.prepareStatement("UPDATE Prescription SET IPP = ? WHERE IPP = ?");
+                stmt3.setString(1, rs.getString("IPP"));
+                stmt3.setString(2, dpit.getIPP());
+                stmt3.executeUpdate();
+                stmt3.close();
             }
-            for (int i = 0; i < dpit.getListe_e().size(); i++) { //parcours de la liste des examens définie au dessus
-                creerExamen(conn, dpit.getListe_e().get(i));
+
+            //EXAMENS
+            PreparedStatement stmte = null;
+            stmte = conn.prepareStatement("SELECT * FROM Examen "
+                    + "WHERE IPP = ?");
+            stmte.setString(1, dpit.getIPP());
+            ResultSet rse = stmte.executeQuery();
+            while (rse.next()) { //parcours des prescriptions du DPI temporaire
+                //Modifier l'IPP du patient sur la prescription pour le remplacer par son IPP réel
+                PreparedStatement stmt4 = null;
+                stmt4 = conn.prepareStatement("UPDATE Examen SET IPP = ? WHERE IPP = ?");
+                stmt4.setString(1, rs.getString("IPP"));
+                stmt4.setString(2, dpit.getIPP());
+                stmt4.executeUpdate();
+                stmt4.close();
             }
+
             //Suppression du DPI temporaire
             PreparedStatement stmt2 = null;
             stmt2 = conn.prepareStatement("DELETE FROM DPI_temporaire WHERE IPP = ?");
             stmt2.setString(1, dpit.getIPP());
             stmt2.executeUpdate();
             stmt2.close();
-        }
-        
-        else{
+        } 
+        else {
             //creer nouveau DPI
         }
         stmt.close();
-    }*/
+    }
 }

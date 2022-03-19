@@ -185,6 +185,26 @@ public class RequetesBDProfessionnels {
         return listeRDV;
     }
     
+    //Renvoie le PH qui correspond à l'id donné
+    //VALIDE
+    public static PH getPH(Connection conn, String id) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
+                + "WHERE UPPER(idPH) = UPPER('" + id + "')");
+
+        if (rs.next()) {
+            PH ph = new PH(rs.getString("idPH"), rs.getString("nom_PH"), rs.getString("prenom_PH"), Service.valueOf(rs.getString("service_PH")), rs.getString("mdp_PH"), rs.getString("telephone_PH"), rs.getString("specialite_PH"));
+            rs.close();
+            stmt.close();
+            return ph;
+        }
+        else{
+            System.out.println("Cet identifiant ne correspond à aucun PH.");
+            rs.close();
+            stmt.close();
+            return null;
+        }
+    }
     
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions médecin traitant
