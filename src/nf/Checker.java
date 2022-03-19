@@ -17,6 +17,7 @@
  */
 package nf;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 /**
  *
@@ -104,7 +106,7 @@ public class Checker {
 
     public static String convertirDatetoString(Date d) {
         String d2 = "";
-        d2 = d2 + d.getDay() + "/" + d.getMonth() + "/" + d.getYear();
+        d2 = d2 + d.getDate() + "/" + d.getMonth() + "/" + d.getYear();
         return d2;
     }
 
@@ -159,6 +161,7 @@ public class Checker {
         }
         return dpis;
     }
+    
 
     public static Vector getVectorDPI(List<DPI> dpis) {
         Vector v = new Vector();
@@ -216,6 +219,57 @@ public class Checker {
             ls.add(mt.getNomMedecinTraitant());
             ls.add(mt.getPrenomMedecinTraitant());
             ls.add(mt.getTelephoneMedecinTraitant());
+            v.add(ls);
+        }
+        return v;
+    }
+    
+    public static Vector getVectorPHRDV(List<PH> phs) {
+        Vector v = new Vector();
+
+        for (int i = 0; i < phs.size(); i++) {
+            Vector ls = new Vector();
+            PH ph = phs.get(i);
+            ls.add(ph.toString());
+            v.add(ls);
+        }
+        return v;
+    }
+    
+    public static Vector getVectorSoinsQuotidien(List<Evaluable> sqs) {
+        Vector v = new Vector();
+        DecimalFormat df = new DecimalFormat("0.0"); //car sinon les doubles sont sur des grands nb de chiffres
+        for (int i = 0; i < sqs.size(); i++) {
+            Vector ls = new Vector();
+            SoinsQuotidien sq = (SoinsQuotidien) sqs.get(i);
+            ls.add(convertirDateHeuretoString(sq.getDateHeure()));
+            ls.add(sq.getInfirmier().toString());
+            String temp = df.format(sq.getTemperature());
+            ls.add(temp);
+            temp = df.format(sq.getSaturationO2());
+            ls.add(temp);
+            temp = df.format(sq.getTension());
+            ls.add(temp);
+            v.add(ls);
+        }
+        return v;
+    }
+    
+    public static Vector getVectorSoinsQuotidienPH(List<Evaluable> sqs) {
+        Vector v = new Vector();
+        DecimalFormat df = new DecimalFormat("0.0"); //car sinon les doubles sont sur des grands nb de chiffres
+        for (int i = 0; i < sqs.size(); i++) {
+            Vector ls = new Vector();
+            SoinsQuotidien sq = (SoinsQuotidien) sqs.get(i);
+            ls.add(convertirDateHeuretoString(sq.getDateHeure()));
+            ls.add(sq.getInfirmier().toString());
+            String temp = df.format(sq.getTemperature());
+            ls.add(temp);
+            temp = df.format(sq.getSaturationO2());
+            ls.add(temp);
+            temp = df.format(sq.getTension());
+            ls.add(temp);
+            ls.add(sq.getObservations());
             v.add(ls);
         }
         return v;

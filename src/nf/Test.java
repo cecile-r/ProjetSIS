@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import static nf.DateHeure.convertirStringtoDateHeure;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        /*
     Hopital h = new Hopital();
     
     Infirmier inf1 = new Infirmier("3587492736","Lo","Anna",Service.Biologie_clinique,"momodepasse");
@@ -87,6 +88,7 @@ public class Test {
     
     //System.out.println(dma1.toString());
     System.out.println(rdv1.toStringDMA());
+    */
     
     }
     

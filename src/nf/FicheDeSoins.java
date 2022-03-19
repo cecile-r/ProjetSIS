@@ -3,7 +3,7 @@ package nf;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import static nf.DateHeure.convertirDatetoString;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 
 public class FicheDeSoins implements Evaluable{
@@ -46,7 +46,7 @@ public class FicheDeSoins implements Evaluable{
     @Override
     public String toString() {
         String ch = "";
-        ch = ch + "Fiche de soins du " + convertirDatetoString(dateHeure);
+        ch = ch + "Fiche de soins du " + convertirDateHeuretoString(dateHeure);
         if(getpH()!=null){
             ch = ch + "\n\nPar -PH- : " + getpH().toString();
         }else{
@@ -64,7 +64,7 @@ public class FicheDeSoins implements Evaluable{
     public String toStringDM(){
         String ch="------------------------------FICHE DE SOINS------------------------------\n\n";
         ch+="Le ";
-        ch = ch + convertirDatetoString(dateHeure)+"\n\n";
+        ch = ch + convertirDateHeuretoString(dateHeure)+"\n\n";
         if(getpH()!=null){
             ch = ch + "Par -PH- : " + getpH().toString()+"\n\n";
         }else{
@@ -81,7 +81,7 @@ public class FicheDeSoins implements Evaluable{
     @Override
     public String toStringDMA(){
         String ch="------------------------------FICHE DE SOINS------------------------------\n\n";
-        ch = ch + convertirDatetoString(dateHeure)+"\n\n";
+        ch = ch + convertirDateHeuretoString(dateHeure)+"\n\n";
         if(getpH()!=null){
             ch = ch + "Par -PH- : " + getpH().toString()+"\n\n";
         }else{
@@ -98,9 +98,9 @@ public class FicheDeSoins implements Evaluable{
     @Override
     public Object getProfessionnel(){
         if(pH!=null){
-            return pH;
+            return "PH- "+pH;
         }else if(infirmier!=null){
-            return infirmier;
+            return "IDE- "+infirmier;
         }
         return null;
     }

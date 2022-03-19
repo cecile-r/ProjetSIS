@@ -6,7 +6,7 @@ public class Acte {
     private Code code;
     private int coeff;
     private String observation;
-    private int idActe;
+//    private int idActe;
 
     public Acte(String nomA, Type type, Code code, int coeff, String observation) {
         this.nomA = nomA;
@@ -112,17 +112,4 @@ public class Acte {
         this.observation = observation;
     }
 
-    /**
-     * @return the idActe
-     */
-    public int getIdActe() {
-        return idActe;
-    }
-
-    /**
-     * @param idActe the idActe to set
-     */
-    public void setIdActe(int idActe) {
-        this.idActe = idActe;
-    }
 }

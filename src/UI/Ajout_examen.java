@@ -5,7 +5,7 @@
  */
 package UI;
 
-import static database.RequetesBDDPI.creerPrescription;
+import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -28,45 +28,35 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import static nf.DateHeure.convertirDateHeuretoString;
 
-
 /**
  *
  * @author Audrey
  */
-public class Ajout_prescription extends javax.swing.JFrame {
+public class Ajout_examen extends javax.swing.JFrame {
 
-    Connection conn;
+    //Connection conn;
     PH ph;
     DPI dpi;
+    Connection conn;
     DateHeure dh;
-    List<Acte> actes;
-    Vector actesS;
-    Vector entetes;
 
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_prescription(Connection conn, PH ph, DPI dpi) {
+    public Ajout_examen(Connection conn, PH ph, DPI dpi) {
         initComponents();
-        actes = new Vector();
         this.ph = ph;
-        this.dpi=dpi;
         this.conn=conn;
+        this.dpi=dpi;
 
         //infos identité
         prenom.setText(ph.getPrenomPH());
         nom.setText(ph.getNomPH());
-
+        
         //date
         LocalDateTime ldt = LocalDateTime.now();
-        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        this.dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
         jLabel3.setText(convertirDateHeuretoString(dh));
-
-        //cacher
-        jLabel6.setVisible(false);
-        jLabel5.setVisible(false);
-        jComboBox2.setVisible(false);
-        jTextArea2.setVisible(false);
         
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
@@ -95,10 +85,10 @@ public class Ajout_prescription extends javax.swing.JFrame {
         java.awt.Image img3 = icone3.getImage();
         icone3 = new ImageIcon(img3);
         jButton9.setIcon(icone3);
-
-        //Jcombobox
+        
+        //Jcomcobox
         DefaultComboBoxModel dbm1 = new DefaultComboBoxModel(TypeExamen.values());
-        jComboBox2.setModel(dbm1);
+        jComboBox1.setModel(dbm1);
 
     }
 
@@ -115,7 +105,6 @@ public class Ajout_prescription extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
@@ -124,17 +113,13 @@ public class Ajout_prescription extends javax.swing.JFrame {
         nom = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jLabel7 = new javax.swing.JLabel();
+        jTextArea = new javax.swing.JTextArea();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         jButton8.setBackground(new java.awt.Color(204, 102, 255));
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
@@ -154,11 +139,8 @@ public class Ajout_prescription extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("date");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("Type de prescription :");
-
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setText("Ajouter la prescription");
+        jButton2.setText("Ajouter l'examen");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -200,13 +182,13 @@ public class Ajout_prescription extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
-                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -230,65 +212,40 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Prescription :");
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir", "Médicament", "Examen" }));
-        jComboBox1.setSelectedIndex(-1);
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
         jPanel2.setBackground(new java.awt.Color(169, 206, 243));
 
         jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
-        jLabel1.setText("Nouvelle prescription");
+        jLabel1.setText("Nouvel examen");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setSelectedIndex(-1);
-        jComboBox2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jComboBox2MouseReleased(evt);
-            }
-        });
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
+        jScrollPane2.setViewportView(jTextArea);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Type d'examen :");
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setSelectedIndex(-1);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Type d'examen :");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel7.setText("Observation :");
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Résultats :");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -297,64 +254,47 @@ public class Ajout_prescription extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(243, 243, 243)
+                        .addGap(266, 266, 266)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(68, 68, 68)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(95, 95, 95)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel6)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(jLabel5)))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))))
-                .addContainerGap(170, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(268, 268, 268))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(307, 307, 307)
+                        .addComponent(jButton2)))
+                .addContainerGap(55, Short.MAX_VALUE))
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -366,7 +306,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -386,11 +326,11 @@ public class Ajout_prescription extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-      
+        
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-         try {
+        try {
                 String IPP = dpi.getIPP();
                 DPI dpi2 = getDPI(conn, IPP);
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
@@ -402,102 +342,44 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 i.setVisible(true);
                 dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //CREER PRESCRIPTION
-       String observation = jTextArea1.getText();
-
-        if (jComboBox1.getSelectedItem().equals("Médicament")&&champsCorrectsMedicament()) {
-            String medicament = jTextArea2.getText();
-            Prescription p =new Prescription(dh,observation,null,medicament);
-            p.setDPI(dpi);
-            p.setpH(ph);
+        
+        //CREER EXAMEN        
+        if(champsCorrects()){
+            String resultats = jTextArea.getText();
+            TypeExamen te = (TypeExamen) jComboBox1.getSelectedItem();
+            Examen e =new Examen(te,resultats,dh);
+            e.setDPI(dpi);
+            e.setPh(ph);
             
             ///AJOUT BD
             try {
-                creerPrescription(conn,p);
+                creerExamen(conn,e);
             } catch (SQLException ex) {
-                Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
             ///REVENIR PAGE PRECEDENTE
             jButton9ActionPerformed(evt);
-            
-        } else if (jComboBox1.getSelectedItem().equals("Examen")&&champsCorrectsExamen()) {
-            TypeExamen typeExamen = (TypeExamen) jComboBox2.getSelectedItem();
-            Prescription p =new Prescription(dh,observation,typeExamen,null);
-            p.setDPI(dpi);
-            p.setpH(ph);
-            
-            if(jComboBox2.getSelectedItem()==TypeExamen.radiologie||jComboBox2.getSelectedItem()==TypeExamen.imagerie_par_resonance_magnetique||jComboBox2.getSelectedItem()==TypeExamen.scanner){
-                //TYPE = jComboBox2.getSelectedItem()
-                //ENVOYER EN RADIO
-            }
-            
-            ///AJOUT BD
-            try {
-                creerPrescription(conn,p);
-            } catch (SQLException ex) {
-                Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            ///REVENIR PAGE PREDEDENTE
-            jButton9ActionPerformed(evt);
-            
-        }else{
-            JOptionPane.showConfirmDialog(this, "Choissisez le type de prescription", "Erreur", JOptionPane.ERROR_MESSAGE);
-
         }
-        
-        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jComboBox2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox2MouseReleased
-
-    }//GEN-LAST:event_jComboBox2MouseReleased
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // CHOIX MEDOC OU EXAMEN Chosir,Médicament, Examen
-        if (jComboBox1.getSelectedItem().equals("Médicament")) {
-            jLabel5.setVisible(true);
-            jTextArea2.setVisible(true);
-            jLabel6.setVisible(false);
-            jComboBox2.setVisible(false);
-        } else if (jComboBox1.getSelectedItem().equals("Examen")) {
-            jLabel6.setVisible(true);
-            jComboBox2.setVisible(true);
-            jLabel5.setVisible(false);
-            jTextArea2.setVisible(false);
-        }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    public boolean champsCorrectsMedicament() {
+    public boolean champsCorrects() {
         
         boolean v = true;
-        if (jTextArea2.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Merci d'entrer une prescription", "Attention", JOptionPane.WARNING_MESSAGE);
+        if (jTextArea.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }
-        return v;
-    }
-    
-    public boolean champsCorrectsExamen() {
-        boolean v = true;
-        if (jComboBox2.getSelectedIndex()<0) {
-            JOptionPane.showMessageDialog(this, "Merci de sélectionner un type d'examen", "Attention", JOptionPane.WARNING_MESSAGE);
-            v = false;
-        }else if (jTextArea1.getText().length()>800) {
+        }else if (jTextArea.getText().length()>800) {
             JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jTextArea2.getText().length()>500) {
-            JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+        }else if(jComboBox1.getSelectedIndex()<0){
+            JOptionPane.showMessageDialog(this, "Merci de sélectionner un examen", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
         return v;
@@ -596,7 +478,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 rdv1.setDPI(dpi1);
 
                 PH ph = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
-                Ajout_prescription i = new Ajout_prescription(ph, dpi1);
+                Ajout_examen i = new Ajout_examen(ph, dpi1);
                 i.setVisible(true);
             }
         });*/
@@ -611,20 +493,15 @@ public class Ajout_prescription extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea;
     private javax.swing.JLabel nom;
     private javax.swing.JLabel prenom;
     // End of variables declaration//GEN-END:variables

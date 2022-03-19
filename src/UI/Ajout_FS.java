@@ -5,9 +5,12 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.creerFicheDeSoins;
+import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -18,7 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import static nf.Checker.getVectorActes;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 /**
  *
@@ -29,28 +36,59 @@ public class Ajout_FS extends javax.swing.JFrame {
     //Connection conn;
     PH ph;
     Infirmier inf;
-    List<Acte> actes;
+    DPI dpi;
+    Connection conn;
+    DateHeure dh;
+    FicheDeSoins f;
+    List<Acte> actes = new ArrayList<Acte>();
     Vector actesS;
     Vector entetes;
 
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_FS(PH ph,Infirmier inf) {
+    public Ajout_FS(Connection conn, PH ph, Infirmier inf, DPI dpi) {
         initComponents();
-        actes = new Vector();
-        this.ph=ph;
-        this.inf=inf;
+        this.ph = ph;
+        this.inf = inf;
+        this.dpi = dpi;
+        this.conn=conn;
         
+        
+        //date
+        LocalDateTime ldt = LocalDateTime.now();
+        dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
+        jLabel3.setText(convertirDateHeuretoString(dh));
+
+        //creation fiche de soins
+        FicheDeSoins f = new FicheDeSoins(dh);
+        f.setDPI(dpi);
+        f.setpH(ph);
+        f.setInfirmier(inf);
+        this.f=f;
+        
+        //images
+        ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image imgC = iconeC.getImage();
+        iconeC = new ImageIcon(imgC);
+        Panel_logo.setIcon(iconeC);
+        ImageIcon iconeP = new ImageIcon("src/image/profil 2.png");
+        java.awt.Image imgP = iconeP.getImage();
+        iconeP = new ImageIcon(imgP);
+        Panel_icon_perso.setIcon(iconeP);
+        ImageIcon iconeD = new ImageIcon("src/image/se-deconnecter.png");
+        java.awt.Image imgD = iconeD.getImage();
+        iconeD = new ImageIcon(imgD);
+        jButton4.setIcon(iconeD);
+
         //infos identité
-        if(ph!=null){
+        if (ph != null) {
             prenom.setText(ph.getPrenomPH());
             nom.setText(ph.getNomPH());
-        }else{
+        } else {
             prenom.setText(inf.getPrenomInfirmiere());
             nom.setText(inf.getNomInfirmiere());
         }
-        
 
         //Jbutton images
         ImageIcon icone = new ImageIcon("src/image/plus.png");
@@ -65,7 +103,6 @@ public class Ajout_FS extends javax.swing.JFrame {
         java.awt.Image img3 = icone3.getImage();
         icone3 = new ImageIcon(img3);
         jButton9.setIcon(icone3);
-        
 
         //Jcombobox
         DefaultComboBoxModel dbm1 = new DefaultComboBoxModel(nf.Type.values());
@@ -109,7 +146,6 @@ public class Ajout_FS extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -123,6 +159,8 @@ public class Ajout_FS extends javax.swing.JFrame {
         nom = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         jButton8.setBackground(new java.awt.Color(204, 102, 255));
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
@@ -237,9 +275,6 @@ public class Ajout_FS extends javax.swing.JFrame {
                 .addGap(63, 63, 63))
         );
 
-        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
-        jLabel1.setText("Nouvelle fiche de soins");
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Date : ");
 
@@ -275,9 +310,6 @@ public class Ajout_FS extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Panel_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
-
-        Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
         prenom.setBackground(new java.awt.Color(204, 204, 255));
         prenom.setText("prenom");
@@ -286,7 +318,6 @@ public class Ajout_FS extends javax.swing.JFrame {
         nom.setText("nom");
 
         jButton4.setBackground(new java.awt.Color(204, 102, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -294,7 +325,6 @@ public class Ajout_FS extends javax.swing.JFrame {
         });
 
         jButton9.setBackground(new java.awt.Color(204, 102, 255));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/home.png"))); // NOI18N
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -311,13 +341,13 @@ public class Ajout_FS extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
-                .addComponent(Panel_icon_perso)
-                .addGap(18, 18, 18)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nom, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -325,9 +355,6 @@ public class Ajout_FS extends javax.swing.JFrame {
             .addComponent(Panel_icon_perso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(Panel_BandeauLayout.createSequentialGroup()
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Panel_logo))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -338,6 +365,31 @@ public class Ajout_FS extends javax.swing.JFrame {
                         .addComponent(prenom)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nom)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(169, 206, 243));
+
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
+        jLabel1.setText("Nouvelle fiche de soins");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -359,16 +411,16 @@ public class Ajout_FS extends javax.swing.JFrame {
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE))
                         .addGap(30, 30, 30))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(158, 158, 158))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(227, 227, 227)
+                        .addGap(258, 258, 258)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(179, 179, 179)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
@@ -376,24 +428,25 @@ public class Ajout_FS extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(Panel_Bandeau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel4)
-                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(54, 117, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel4)
+                                .addGap(27, 27, 27))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
         );
 
@@ -407,55 +460,76 @@ public class Ajout_FS extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       /* Connexion i;
-        try {
-            i = new Connexion(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
+ 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+   
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        /*Connexion i;
-        try {
-            i = new Accueil_Med(conn);
-            i.setVisible(true);
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+
+        if (ph != null) {
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+
+            try {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Inf i;
+                i = new Vue_Patient_Inf(conn, dpi2, inf);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //CREER FICHE DE SOINS
-        //telephone = telephone.replaceAll("\\s+","");
+        
+        //f.setActe(actes);
+        
+        dpi.getdM().ajouterFicheDeSoins(f);
+        dpi.getdMA().ajouterFicheDeSoins(f);
+
+        //AJOUT FICHE DE SOINS DANS LA BD
+        try {
+            creerFicheDeSoins(conn,f);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //SORTIE
+        jButton9ActionPerformed(evt);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -470,9 +544,11 @@ public class Ajout_FS extends javax.swing.JFrame {
                 String observation = jTextArea1.getText();
 
                 Acte a = new Acte(nom, type, code, coeff, observation);
-                actes.add(a);
+                //actes.add(a);
+                f.ajouterActe(a);
 
-                actesS = getVectorActes(actes);
+                actesS = getVectorActes(f.getActe());
+                //actesS = getVectorActes(actes);
                 TableModel tableModel = new DefaultTableModel(actesS, entetes);
                 jTable1.setModel(tableModel);
                 jTable1.setPreferredSize(new java.awt.Dimension(3000, 20 * jTable1.getRowCount()));
@@ -488,8 +564,14 @@ public class Ajout_FS extends javax.swing.JFrame {
         if (jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jFormattedTextField1.getText().equals("")) {
+        } else if (jFormattedTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextField1.getText().length()>100) {
+            JOptionPane.showMessageDialog(this, "Texte (nom) trop long", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }else if (jTextArea1.getText().length()>800) {
+            JOptionPane.showMessageDialog(this, "Texte (observation) trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
         return v;
@@ -527,8 +609,8 @@ public class Ajout_FS extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PH ph = new PH("1616161616", "Pan", "Peter", Service.Biologie_clinique, "peterpan", "0456486756", "Biologie");
-                Ajout_FS i = new Ajout_FS(ph,null);
-                i.setVisible(true);
+                //Ajout_FS i = new Ajout_FS(ph,null);
+                //i.setVisible(true);
             }
         });
     }
@@ -557,6 +639,7 @@ public class Ajout_FS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;

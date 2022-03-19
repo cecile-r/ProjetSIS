@@ -30,14 +30,20 @@ import nf.DPI;
 import nf.PH;
 import nf.Service;
 import database.RequetesBD;
+import static database.RequetesBDDPI.getDPI;
+import static database.RequetesBDDPI.getListeDPI;
+import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDProfessionnels.getListePH;
+import static database.RequetesBDProfessionnels.getListePHService;
+import nf.Infirmier;
 
 /**
  *
  * @author Audrey
  */
-public class Accueil_Med extends javax.swing.JFrame {
+public class Accueil_Inf extends javax.swing.JFrame {
 
-    PH ph;
+    Infirmier inf;
     Connection conn;
     List<PH> medecins;
     Vector medecinsS;
@@ -45,16 +51,15 @@ public class Accueil_Med extends javax.swing.JFrame {
     Vector dpisS;
     Vector entetes;
     Vector entetes2;
-    
 
     /**
      * Creates new form Connexion
      */
-    public Accueil_Med(Connection conn, PH ph) throws SQLException {
+    public Accueil_Inf(Connection conn, Infirmier inf) throws SQLException {
         this.conn = conn;
-        this.ph = ph;
+        this.inf = inf;
         initComponents();
-        
+
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
         java.awt.Image img5 = icone.getImage();
@@ -71,15 +76,29 @@ public class Accueil_Med extends javax.swing.JFrame {
         icone_details = new ImageIcon(img_details);
         Button_Selectionner.setIcon(icone_details);
 
+        //images
+        ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image imgC = iconeC.getImage();
+        iconeC = new ImageIcon(imgC);
+        Panel_logo.setIcon(iconeC);
+        ImageIcon iconeP = new ImageIcon("src/image/profil 2.png");
+        java.awt.Image imgP = iconeP.getImage();
+        iconeP = new ImageIcon(imgP);
+        Panel_icon_perso.setIcon(iconeP);
+        ImageIcon iconeD = new ImageIcon("src/image/se-deconnecter.png");
+        java.awt.Image imgD = iconeD.getImage();
+        iconeD = new ImageIcon(imgD);
+        jButton2.setIcon(iconeD);
+
         //infos identité
-        prenom_medecin.setText(ph.getPrenomPH());
-        nom_medecin.setText(ph.getNomPH());
-        service.setText(ph.getService().toString());
+        prenom_medecin.setText(inf.getPrenomInfirmiere());
+        nom_medecin.setText(inf.getNomInfirmiere());
+        service.setText(inf.getService().toString());
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPI(conn);
-        dpis = trierDPI(dpis); //tri par ordre alphabétique
+        dpis = getListeDPIService(conn, inf.getService().toString());
+        dpis = trierDPI(dpis);
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
         entetes.add("Nom");
@@ -93,7 +112,7 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         //TABLEAU PH
         medecinsS = new Vector();
-        medecins = database.RequetesBD.getListePH(conn);
+        medecins = getListePH(conn);
         medecins = trierPH(medecins); //tri par ordre alphabétique
         medecinsS = getVectorPH(medecins); //vecteur tableau
         entetes2 = new Vector();
@@ -184,9 +203,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Panel_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
-
-        Panel_icon_perso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil 2.png"))); // NOI18N
 
         prenom_medecin.setText("prenom_medecin");
 
@@ -195,7 +211,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         service.setText("service");
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/se-deconnecter.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -209,15 +224,15 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(Panel_icon_perso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Panel_icon_perso, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(prenom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nom_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(service, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo)
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
@@ -229,16 +244,16 @@ public class Accueil_Med extends javax.swing.JFrame {
                         .addGap(37, 37, 37)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Panel_logo))
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(30, 30, 30)
                         .addComponent(prenom_medecin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nom_medecin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(service)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Panel_BandeauLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
@@ -353,7 +368,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                     .addComponent(jButton_actualiser1, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jButton_recherche_patient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(Button_Selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
@@ -479,7 +494,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
                                 .addGap(61, 61, 61)))
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
@@ -560,7 +575,7 @@ public class Accueil_Med extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(Label_Plannig)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(Label_FlecheD)
@@ -616,8 +631,25 @@ public class Accueil_Med extends javax.swing.JFrame {
 
     private void Button_SelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SelectionnerActionPerformed
         //VISUALISATION D UN PATIENT PARTICULIER
-        if(Table_Vue_Generale1.getSelectedRow()==-1){
+        if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            try {
+                int index = Table_Vue_Generale1.getSelectedRow();
+                DPI dpi = getDPI(conn, dpis.get(index).getIPP());
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Inf i = new Vue_Patient_Inf(conn, dpi, inf);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
 
@@ -641,20 +673,23 @@ public class Accueil_Med extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_PatientMouseEntered
 
     private void TextField_PatientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PatientKeyPressed
-        //RECHERCHE PATIENT ENTREE
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             String recherche = TextField_Patient.getText();
-            try {
-                if (!recherche.equals("")) {
-                    dpis = database.RequetesBD.getListeDPI(conn, recherche, ph.getService().toString());
-                    dpisS = database.RequetesBD.getVectorDPI(conn, recherche, ph.getService().toString());
+            if (!recherche.equals("")) {
+                try {
+                    dpis = getListeDPI(conn, recherche, inf.getService().toString());
+                    dpis = trierDPI(dpis);
+                    dpisS = getVectorDPI(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setAutoCreateRowSorter(true);
                     Table_Vue_Generale1.setModel(tableModel);
+                    Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
     }//GEN-LAST:event_TextField_PatientKeyPressed
@@ -662,15 +697,17 @@ public class Accueil_Med extends javax.swing.JFrame {
     private void jButton_actualiser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser1ActionPerformed
         try {
             //RECHARGER DPI
-            dpis = database.RequetesBD.getListeDPIService(conn, ph.getService().toString());
-            dpisS = database.RequetesBD.getVectorDPIService(conn, ph.getService().toString());
+            dpis = getListeDPIService(conn, inf.getService().toString());
+            dpis = trierDPI(dpis);
+            dpisS = getVectorDPI(dpis);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-            Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
+            Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
+
             TextField_Patient.setText("");
-            
+
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_actualiser1ActionPerformed
 
@@ -678,18 +715,20 @@ public class Accueil_Med extends javax.swing.JFrame {
         //RECHERCHE PATIENT
         String recherche = TextField_Patient.getText();
         try {
-            dpis = database.RequetesBD.getListeDPI(conn, recherche);
-            dpisS = database.RequetesBD.getVectorDPI(conn, recherche);
+            dpis = getListeDPI(conn, recherche, inf.getService().toString());
+            dpis = trierDPI(dpis);
+            dpisS = getVectorDPI(dpis);
             Vector entetes = new Vector();
             entetes.add("Nom");
             entetes.add("Prénom");
             entetes.add("Date de naissance");
             entetes.add("Sexe");
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-            Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
+            Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
+
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_recherche_patientActionPerformed
 
@@ -702,42 +741,39 @@ public class Accueil_Med extends javax.swing.JFrame {
         if (type_recherche.equals("Nom")) {
 
             try {
-                medecins = database.RequetesBD.getListePH(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHNom(conn, recherche);
+                medecins = getListePH(conn, recherche);
+                medecins = trierPH(medecins); //tri par ordre alphabétique
+                medecinsS = getVectorPH(medecins); //vecteur tableau
                 TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-                tab_medecins.setAutoCreateRowSorter(true);
                 tab_medecins.setModel(tableModel2);
                 tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
             } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else if (type_recherche.equals("Service")) {
             try {
-                medecins = database.RequetesBD.getListePHService(conn, recherche);
-                medecinsS = database.RequetesBD.getVectPHService(conn, recherche);
+                medecins = getListePHService(conn, recherche);
+                medecinsS = getVectorPH(medecins); //vecteur tableau
                 TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-                tab_medecins.setAutoCreateRowSorter(true);
                 tab_medecins.setModel(tableModel2);
                 tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
             } catch (SQLException ex) {
-                Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }//GEN-LAST:event_jButton_recherche_medecinActionPerformed
 
     private void jButton_actualiser_medecin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser_medecin1ActionPerformed
         //RECHARGER MEDECINS
         try {
-            medecins = database.RequetesBD.getListePH(conn);
-            medecinsS = database.RequetesBD.getVectPH(conn);
+            medecins = getListePH(conn);
+            medecinsS = getVectorPH(medecins); //vecteur tableau
             TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-            tab_medecins.setAutoCreateRowSorter(true);
             tab_medecins.setModel(tableModel2);
             tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_actualiser_medecin1ActionPerformed
 
@@ -761,9 +797,9 @@ public class Accueil_Med extends javax.swing.JFrame {
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

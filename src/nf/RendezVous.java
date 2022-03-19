@@ -1,6 +1,7 @@
 package nf;
 
 import java.util.List;
+import static nf.DateHeure.estApresDateCourante;
 
 
 public class RendezVous implements Evaluable{
@@ -16,6 +17,32 @@ public class RendezVous implements Evaluable{
         this.pH=null;
         //SET DPI
         //SET PH
+    }
+    
+    
+    public static RendezVous getProchainRDV(List<Evaluable> evs) {
+        
+        int i = evs.size() - 1;
+        RendezVous rdvP = (RendezVous) evs.get(i);
+        DateHeure dh = rdvP.getDateHeure();
+        if(evs.size()==1 && estApresDateCourante(dh.getAnnee(), dh.getMois(), dh.getJour(), dh.getHeure(), dh.getMinutes())){
+            return (RendezVous) evs.get(0);
+        }
+        
+        while (i > 0 && estApresDateCourante(dh.getAnnee(), dh.getMois(), dh.getJour(), dh.getHeure(), dh.getMinutes()) == false) {
+            i--;
+            if (i > 0) {
+                rdvP = (RendezVous) evs.get(i);
+                dh = rdvP.getDateHeure();
+            }
+        }
+        
+        if(i==0){
+            return null;
+        }else{
+            return rdvP;
+        }
+    
     }
     
     @Override
@@ -35,7 +62,7 @@ public class RendezVous implements Evaluable{
         String ch =  "Le "+dateHeure.getJour() + "/"+  dateHeure.getMois() + "/" + dateHeure.getAnnee();
         ch = ch + "\nA "+dateHeure.getHeure()+":"+dateHeure.getMinutes();
         ch = ch + "\nAvec ";
-        ch =ch + getpH().toString();
+        ch =ch + getpH().getPrenomPH()+" "+getpH().getNomPH()+"\n"+ getpH().getService();
         return ch;
     }
     

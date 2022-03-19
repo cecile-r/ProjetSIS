@@ -15,14 +15,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.*;
-import database.*;
 import static database.RequetesBDConnexion.getStatut;
 import static database.RequetesBDConnexion.userInf;
 import static database.RequetesBDConnexion.userPH;
 import static database.RequetesBDConnexion.userSA;
 import static database.RequetesBDConnexion.userSM;
 import static database.RequetesBDConnexion.verifyConnexion;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import nf.Infirmier;
 import nf.PH;
 import nf.SecretaireAdministrative;
@@ -40,10 +40,18 @@ public class Connexion extends javax.swing.JFrame {
      * Creates new form Connexion
      */
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
-
         this.conn = conn;
         initComponents();
 
+        //images
+        ImageIcon icone = new ImageIcon("src/image/logo connexa-modified.png");
+        java.awt.Image img = icone.getImage();
+        icone = new ImageIcon(img);
+        jLabel1.setIcon(icone);
+        ImageIcon icone2 = new ImageIcon("src/image/profil.png");
+        java.awt.Image img2 = icone2.getImage();
+        icone2 = new ImageIcon(img2);
+        Label_Main.setIcon(icone2);
     }
 
     /**
@@ -75,27 +83,25 @@ public class Connexion extends javax.swing.JFrame {
         Panel_Bandeau.setRequestFocusEnabled(false);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo connexa-modified.png"))); // NOI18N
 
         javax.swing.GroupLayout Panel_BandeauLayout = new javax.swing.GroupLayout(Panel_Bandeau);
         Panel_Bandeau.setLayout(Panel_BandeauLayout);
         Panel_BandeauLayout.setHorizontalGroup(
             Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
-                .addContainerGap(684, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         Panel_BandeauLayout.setVerticalGroup(
             Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_BandeauLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Label_Main.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Label_Main.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profil.png"))); // NOI18N
 
         Label_Identifiant.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         Label_Identifiant.setForeground(new java.awt.Color(153, 153, 153));
@@ -122,7 +128,8 @@ public class Connexion extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
-        Button_Connexion.setBackground(new java.awt.Color(255, 255, 255));
+        Button_Connexion.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Connexion.setFont(new java.awt.Font("Lucida Console", 1, 14)); // NOI18N
         Button_Connexion.setText("Connexion");
         Button_Connexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,15 +143,15 @@ public class Connexion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Button_Connexion)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(Button_Connexion, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(Button_Connexion)
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(Button_Connexion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout Panel_MainLayout = new javax.swing.GroupLayout(Panel_Main);
@@ -157,15 +164,14 @@ public class Connexion extends javax.swing.JFrame {
                 .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_MainLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(286, Short.MAX_VALUE)
                 .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(Label_Identifiant)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Panel_MainLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_MainLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(10, 10, 10))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Label_Identifiant, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(307, 307, 307))
         );
         Panel_MainLayout.setVerticalGroup(
@@ -204,50 +210,52 @@ public class Connexion extends javax.swing.JFrame {
         //recupération id et mdp
         String id = Label_Identifiant.getText();
         String mdp = new String(jPasswordField1.getPassword());
-        
+
         //dimension fenetre
         Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
         int longueur = tailleMoniteur.width;
         int hauteur = tailleMoniteur.height;
         boolean c;
         try {
-            CB_item = getStatut(conn,id);
+            CB_item = getStatut(conn, id);
             System.out.println(CB_item);
             c = verifyConnexion(conn, id, mdp, CB_item);
             if (c) {
                 if (CB_item.equals("PH")) {
-                    System.out.println("rentrer");
-                    PH ph = userPH(conn,id);
+                    PH ph = userPH(conn, id);
                     Accueil_Med i;
-                    i = new Accueil_Med(conn,ph);
+                    i = new Accueil_Med(conn, ph);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
                 if (CB_item.equals("SA")) {
-                    SecretaireAdministrative sa = userSA(conn,id);
+                    SecretaireAdministrative sa = userSA(conn, id);
                     Accueil_SA i;
-                    i = new Accueil_SA(conn,sa);
+                    i = new Accueil_SA(conn, sa);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
                 if (CB_item.equals("SM")) {
-                    SecretaireMedicale sm =userSM(conn,id);
+                    SecretaireMedicale sm = userSM(conn, id);
                     Accueil_SM i;
-                    i = new Accueil_SM(conn,sm);
+                    i = new Accueil_SM(conn, sm);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
                 if (CB_item.equals("Inf")) {
-                    Infirmier inf =userInf(conn,id);
-                    Accueil_SM i;
-                    //i = new Accueil_Inf(conn,sm);
-                    //i.setSize(longueur, hauteur);
-                    //i.setVisible(true);
+                    Infirmier inf = userInf(conn, id);
+                    Accueil_Inf i;
+                    i = new Accueil_Inf(conn, inf);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
                     dispose();
                 }
+            }else{
+                JOptionPane.showMessageDialog(this, "Identifiant ou mot de passe incorrect", "Attention", JOptionPane.WARNING_MESSAGE);
+                jPasswordField1.setText("");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);

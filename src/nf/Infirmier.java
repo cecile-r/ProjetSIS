@@ -12,9 +12,10 @@ public class Infirmier {
     private String prenomInfirmiere;
     private Service service;
     private String mdp;
-    private List<FicheDeSoins> ficheDeSoins = new ArrayList<FicheDeSoins> ();
-    private List<SoinsQuotidien> soinsQuotidien = new ArrayList<SoinsQuotidien> ();
-    private List<Prescription> prescritions = new ArrayList<Prescription> ();
+    private List<FicheDeSoins> ficheDeSoins;
+    private List<SoinsQuotidien> soinsQuotidien;
+    private List<Prescription> prescriptions;
+    private List<Examen> examens;
   
     public Infirmier(String idInfirmier, String nomInfirmier,String prenomInfirmier, Service service, String mdp){
         this.idInfirmiere=idInfirmier;
@@ -24,7 +25,8 @@ public class Infirmier {
         this.mdp=mdp;
         this.ficheDeSoins=new Vector<>();
         this.soinsQuotidien=new Vector<>();
-        this.prescritions =new Vector<>();
+        this.prescriptions =new Vector<>();
+        this.examens=new Vector();
     }
     
     @Override
@@ -33,7 +35,7 @@ public class Infirmier {
     }
      
     public void ajouterSoinsQuotidien(SoinsQuotidien sq){
-        soinsQuotidien.add(sq);
+        getSoinsQuotidien().add(sq);
     }
     
     public void ajouterFicheDeSoins(FicheDeSoins fs){
@@ -122,6 +124,48 @@ public class Infirmier {
      */
     public void setFicheDeSoins(List<FicheDeSoins> ficheDeSoins) {
         this.ficheDeSoins = ficheDeSoins;
+    }
+
+    /**
+     * @return the soinsQuotidien
+     */
+    public List<SoinsQuotidien> getSoinsQuotidien() {
+        return soinsQuotidien;
+    }
+
+    /**
+     * @param soinsQuotidien the soinsQuotidien to set
+     */
+    public void setSoinsQuotidien(List<SoinsQuotidien> soinsQuotidien) {
+        this.soinsQuotidien = soinsQuotidien;
+    }
+
+    /**
+     * @return the prescriptions
+     */
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    /**
+     * @param prescriptions the prescriptions to set
+     */
+    public void setPrescriptions(List<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
+    }
+
+    /**
+     * @return the examens
+     */
+    public List<Examen> getExamens() {
+        return examens;
+    }
+
+    /**
+     * @param examens the examens to set
+     */
+    public void setExamens(List<Examen> examens) {
+        this.examens = examens;
     }
     
    

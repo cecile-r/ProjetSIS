@@ -1,6 +1,6 @@
 package nf;
 
-import static nf.DateHeure.convertirDatetoString;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 public class LettreDeSortie implements Evaluable{
     private String texte;
@@ -32,7 +32,7 @@ public class LettreDeSortie implements Evaluable{
      
     public String toStringDM(){
         String ch="------------------------------LETTRE DE SORTIE------------------------------\n\n";
-        ch+=convertirDatetoString(dateHeure);
+        ch+=convertirDateHeuretoString(dateHeure);
         ch+="\n\nPar ";
         ch+=ph.toString();
         ch+="\n\n";
@@ -43,7 +43,7 @@ public class LettreDeSortie implements Evaluable{
     
     public String toStringDMA(){
         String ch="------------------------------LETTRE DE SORTIE------------------------------\n\n";
-        ch+=convertirDatetoString(dateHeure);
+        ch+=convertirDateHeuretoString(dateHeure);
         ch+="\n\nPar ";
         ch+=ph.toString();
         ch+="\n\n";
@@ -54,7 +54,7 @@ public class LettreDeSortie implements Evaluable{
     
     @Override
     public Object getProfessionnel(){
-        return ph;
+        return "PH- "+ph;
     }
     
     @Override
