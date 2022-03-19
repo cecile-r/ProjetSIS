@@ -41,9 +41,9 @@ import nf.Infirmier;
  *
  * @author Audrey
  */
-public class Accueil_Inf extends javax.swing.JFrame {
+public class Accueil_urgences extends javax.swing.JFrame {
 
-    Infirmier inf;
+    PH ph;
     Connection conn;
     List<PH> medecins;
     Vector medecinsS;
@@ -55,9 +55,9 @@ public class Accueil_Inf extends javax.swing.JFrame {
     /**
      * Creates new form Connexion
      */
-    public Accueil_Inf(Connection conn, Infirmier inf) throws SQLException {
+    public Accueil_urgences(Connection conn, PH ph) throws SQLException {
         this.conn = conn;
-        this.inf = inf;
+        this.ph = ph;
         initComponents();
 
         //boutons
@@ -91,10 +91,10 @@ public class Accueil_Inf extends javax.swing.JFrame {
         jButton2.setIcon(iconeD);
 
         //infos identité
-        prenom_medecin.setText(inf.getPrenomInfirmiere());
-        nom_medecin.setText(inf.getNomInfirmiere());
-        service.setText(inf.getService().toString());
-
+        prenom_medecin.setText(ph.getPrenomPH());
+        nom_medecin.setText(ph.getNomPH());
+        service.setText(ph.getService().toString());
+/*
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
         dpis = getListeDPIService(conn, inf.getService().toString());
@@ -106,6 +106,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
         entetes.add("Date de naissance");
         entetes.add("Sexe");
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+        Table_Vue_Generale1.setAutoCreateRowSorter(true);
         Table_Vue_Generale1.setModel(tableModel);
         Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
@@ -119,9 +120,11 @@ public class Accueil_Inf extends javax.swing.JFrame {
         entetes2.add("Prénom");
         entetes2.add("Service");
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
+        tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-    }
+    */
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,6 +140,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jButton1 = new javax.swing.JButton();
+        Button_Valider2 = new javax.swing.JButton();
         Panel_Main = new javax.swing.JPanel();
         Panel_Bandeau = new javax.swing.JPanel();
         Panel_logo = new javax.swing.JLabel();
@@ -163,6 +167,15 @@ public class Accueil_Inf extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton_actualiser_medecin1 = new javax.swing.JButton();
         jButton_recherche_medecin = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        Label_Nom2 = new javax.swing.JLabel();
+        Label_Prenom2 = new javax.swing.JLabel();
+        jFormattedTextField_date_naissance2 = new javax.swing.JFormattedTextField();
+        Label_Date_Naissance2 = new javax.swing.JLabel();
+        TextField_Nom2 = new javax.swing.JTextField();
+        jTextField_Prenom2 = new javax.swing.JTextField();
+        Button_Valider3 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -176,6 +189,19 @@ public class Accueil_Inf extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        Button_Valider2.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Valider2.setText("CREER LE PATIENT");
+        Button_Valider2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Button_Valider2Button_ValiderMouseClicked(evt);
+            }
+        });
+        Button_Valider2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_Valider2Button_ValiderActionPerformed(evt);
             }
         });
 
@@ -498,6 +524,95 @@ public class Accueil_Inf extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Praticien hospitalier", jPanel5);
 
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+
+        Label_Nom2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Nom2.setText("Nom :");
+        Label_Nom2.setDoubleBuffered(true);
+
+        Label_Prenom2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Prenom2.setText("Prénom :");
+
+        try {
+            jFormattedTextField_date_naissance2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField_date_naissance2.setToolTipText("Format dd/MM/yyyy");
+
+        Label_Date_Naissance2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
+        Label_Date_Naissance2.setText("Date de naissance :");
+
+        Button_Valider3.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Valider3.setText("CREER LE PATIENT TEMPORAIREMENT");
+        Button_Valider3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Button_Valider3Button_ValiderMouseClicked(evt);
+            }
+        });
+        Button_Valider3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_Valider3Button_ValiderActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Label_Date_Naissance2)
+                    .addComponent(Label_Prenom2)
+                    .addComponent(Label_Nom2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField_Prenom2)
+                    .addComponent(TextField_Nom2)
+                    .addComponent(jFormattedTextField_date_naissance2, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
+                .addGap(221, 221, 221))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Button_Valider3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(387, 387, 387))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(148, 148, 148)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextField_Nom2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Label_Nom2))
+                        .addGap(84, 84, 84)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Label_Date_Naissance2)
+                            .addComponent(jFormattedTextField_date_naissance2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField_Prenom2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Label_Prenom2))))
+                .addGap(82, 82, 82)
+                .addComponent(Button_Valider3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(180, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Dossier temporaire", jPanel1);
+
         javax.swing.GroupLayout Panel_MainLayout = new javax.swing.GroupLayout(Panel_Main);
         Panel_Main.setLayout(Panel_MainLayout);
         Panel_MainLayout.setHorizontalGroup(
@@ -552,7 +667,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_Inf i = new Vue_Patient_Inf(conn, dpi, inf);
+                Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
@@ -589,7 +704,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
             String recherche = TextField_Patient.getText();
             if (!recherche.equals("")) {
                 try {
-                    dpis = getListeDPI(conn, recherche, inf.getService().toString());
+                    dpis = getListeDPI(conn, recherche, ph.getService().toString());
                     dpis = trierDPI(dpis);
                     dpisS = getVectorDPI(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
@@ -608,7 +723,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
     private void jButton_actualiser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser1ActionPerformed
         try {
             //RECHARGER DPI
-            dpis = getListeDPIService(conn, inf.getService().toString());
+            dpis = getListeDPIService(conn, ph.getService().toString());
             dpis = trierDPI(dpis);
             dpisS = getVectorDPI(dpis);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
@@ -626,7 +741,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
         //RECHERCHE PATIENT
         String recherche = TextField_Patient.getText();
         try {
-            dpis = getListeDPI(conn, recherche, inf.getService().toString());
+            dpis = getListeDPI(conn, recherche, ph.getService().toString());
             dpis = trierDPI(dpis);
             dpisS = getVectorDPI(dpis);
             Vector entetes = new Vector();
@@ -714,6 +829,155 @@ public class Accueil_Inf extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void Button_Valider2Button_ValiderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_Valider2Button_ValiderMouseClicked
+
+    }//GEN-LAST:event_Button_Valider2Button_ValiderMouseClicked
+
+    private void Button_Valider2Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Valider2Button_ValiderActionPerformed
+       /* try {
+            ///CREATION D'UN PATIENT
+            if (champsCorrects()) {
+                String nom = TextField_Nom2.getText();
+                String prenom = jTextField_Prenom2.getText();
+                SimpleDateFormat formater = null;
+                formater = new SimpleDateFormat("dd/MM/yyyy");
+
+                Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
+                String adresse = jTextArea_adresse2.getText();
+                String telephone = jFormattedTextField_telephone2.getText();
+                telephone = telephone.replaceAll("\\s+", "");
+                System.out.println(telephone);
+                String sexe;
+                if (RadioButton_F2.isSelected()) {
+                    sexe = RadioButton_F2.getText();
+                } else if (RadioButton_H2.isSelected()) {
+                    sexe = RadioButton_H2.getText();
+                } else if (jRadioButton3.isSelected()) {
+                    sexe = jRadioButton3.getText();
+                } else {
+                    sexe = null;
+                }
+                int index = tab_medecinsT.getSelectedRow();
+                MedecinTraitant mt = medecins_traitant.get(index);
+
+                String message = "Etes-vous sûr de vouloir créer le patient suivant ?";
+                message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText() + "\n Sexe : " + sexe + "\n Téléphone : " + telephone + "\n Adresse : " + adresse + "\n Medecin traitant : " + mt.getNomMedecinTraitant() + " " + mt.getPrenomMedecinTraitant();
+                int retour = JOptionPane.showConfirmDialog(this, message, "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+                if (retour == 0) { //les informations sont correctes = validation
+                    //tirer un IPP random qui n'existe pas
+                    String IPP = getIPPRandom();
+                    while (IPPexistant(conn, IPP)) {
+                        IPP = getIPPRandom();
+                    }
+                    //création du patient
+                    creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
+
+                    //mettre à jour la liste des patients
+                    dpis = getListeDPI(conn);
+                    dpisS = getVectorDPI(dpis);
+                    TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+                    Table_Vue_Generale1.setModel(tableModel);
+                    dpisF = getListeDPIFerme(conn);
+                    dpisFS = getVectorDPIFerme(dpisF);
+                    TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+                    Table_DPI_ferme.setModel(tableModel3);
+
+                    //tout remettre à 0
+                    TextField_Nom2.setText("");
+                    jTextField_Prenom2.setText("");
+                    jFormattedTextField_date_naissance2.setText("");
+                    jTextArea_adresse2.setText("");
+                    jFormattedTextField_telephone2.setText("");
+                    buttonGroup.clearSelection();
+                    jCheckBox_medecinsT.setSelected(false);
+                    tab_medecinsT.clearSelection();
+                    JOptionPane.showMessageDialog(this, "Le patient a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }//GEN-LAST:event_Button_Valider2Button_ValiderActionPerformed
+
+    private void Button_Valider3Button_ValiderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_Valider3Button_ValiderMouseClicked
+
+    }//GEN-LAST:event_Button_Valider3Button_ValiderMouseClicked
+
+    private void Button_Valider3Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Valider3Button_ValiderActionPerformed
+        /*try {
+            
+            ///CREATION D'UN PATIENT
+            if (champsCorrects()) {
+                String nom = TextField_Nom2.getText();
+                String prenom = jTextField_Prenom2.getText();
+                SimpleDateFormat formater = null;
+                formater = new SimpleDateFormat("dd/MM/yyyy");
+
+                Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
+                String adresse = jTextArea_adresse2.getText();
+                String telephone = jFormattedTextField_telephone2.getText();
+                telephone = telephone.replaceAll("\\s+", "");
+                System.out.println(telephone);
+                String sexe;
+                if (RadioButton_F2.isSelected()) {
+                    sexe = RadioButton_F2.getText();
+                } else if (RadioButton_H2.isSelected()) {
+                    sexe = RadioButton_H2.getText();
+                } else if (jRadioButton3.isSelected()) {
+                    sexe = jRadioButton3.getText();
+                } else {
+                    sexe = null;
+                }
+                int index = tab_medecinsT.getSelectedRow();
+                MedecinTraitant mt = medecins_traitant.get(index);
+
+                String message = "Etes-vous sûr de vouloir créer le patient suivant ?";
+                message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText() + "\n Sexe : " + sexe + "\n Téléphone : " + telephone + "\n Adresse : " + adresse + "\n Medecin traitant : " + mt.getNomMedecinTraitant() + " " + mt.getPrenomMedecinTraitant();
+                int retour = JOptionPane.showConfirmDialog(this, message, "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+                if (retour == 0) { //les informations sont correctes = validation
+                    //tirer un IPP random qui n'existe pas
+                    String IPP = getIPPRandom();
+                    while (IPPexistant(conn, IPP)) {
+                        IPP = getIPPRandom();
+                    }
+                    //création du patient
+                    creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
+
+                    //mettre à jour la liste des patients
+                    dpis = getListeDPI(conn);
+                    dpisS = getVectorDPI(dpis);
+                    TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+                    Table_Vue_Generale1.setModel(tableModel);
+                    dpisF = getListeDPIFerme(conn);
+                    dpisFS = getVectorDPIFerme(dpisF);
+                    TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+                    Table_DPI_ferme.setModel(tableModel3);
+
+                    //tout remettre à 0
+                    TextField_Nom2.setText("");
+                    jTextField_Prenom2.setText("");
+                    jFormattedTextField_date_naissance2.setText("");
+                    jTextArea_adresse2.setText("");
+                    jFormattedTextField_telephone2.setText("");
+                    buttonGroup.clearSelection();
+                    jCheckBox_medecinsT.setSelected(false);
+                    tab_medecinsT.clearSelection();
+                    JOptionPane.showMessageDialog(this, "Le patient a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }//GEN-LAST:event_Button_Valider3Button_ValiderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -786,12 +1050,18 @@ public class Accueil_Inf extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Selectionner;
+    private javax.swing.JButton Button_Valider2;
+    private javax.swing.JButton Button_Valider3;
+    private javax.swing.JLabel Label_Date_Naissance2;
+    private javax.swing.JLabel Label_Nom2;
+    private javax.swing.JLabel Label_Prenom2;
     private javax.swing.JPanel Panel_Bandeau;
     private javax.swing.JPanel Panel_Main;
     private javax.swing.JLabel Panel_icon_perso;
     private javax.swing.JLabel Panel_logo;
     private javax.swing.JTable Table_Vue_Generale1;
     private javax.swing.JTextField TextField_Docteur;
+    private javax.swing.JTextField TextField_Nom2;
     private javax.swing.JTextField TextField_Patient;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
@@ -801,9 +1071,12 @@ public class Accueil_Inf extends javax.swing.JFrame {
     private javax.swing.JButton jButton_recherche_medecin;
     private javax.swing.JButton jButton_recherche_patient;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
+    private javax.swing.JFormattedTextField jFormattedTextField_date_naissance2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
@@ -812,6 +1085,7 @@ public class Accueil_Inf extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField_Prenom2;
     private javax.swing.JLabel nom_medecin;
     private javax.swing.JLabel prenom_medecin;
     private javax.swing.JLabel service;

@@ -10,15 +10,23 @@ import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
 import database.SQLWarningsExceptions;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
@@ -26,13 +34,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import static nf.Checker.*;
+import static nf.ComparaisonEvaluables.trierEvaluablesParDate;
 import nf.DPI;
+import nf.Evaluable;
 import nf.PH;
+import nf.RendezVous;
 import nf.Service;
 
 /**
@@ -47,8 +61,12 @@ public class Accueil_Med extends javax.swing.JFrame {
     Vector medecinsS;
     List<DPI> dpis;
     Vector dpisS;
+    List<RendezVous> rdvs;
+    Vector rdvsS;
     Vector entetes;
     Vector entetes2;
+    Vector entetesRDV;
+    LocalDateTime current_date;
 
     /**
      * Creates new form Connexion
@@ -57,7 +75,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         this.conn = conn;
         this.ph = ph;
         initComponents();
-        
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -119,6 +137,31 @@ public class Accueil_Med extends javax.swing.JFrame {
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
+
+        //PLANNING
+        current_date = LocalDateTime.now();
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date(current_year,current_month, current_day);
+        Date date_courante2 = new Date(current_year-1900,current_month-1, current_day);
+        jLabel1.setText(convertirDatetoString(date_courante2));
+        this.rdvs = new ArrayList<>();
+        rdvsS = new Vector();
+        this.rdvs = listeRendezVous(conn, date_courante,ph);
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        rdvsS = getVectorPHplanning(evs); //vecteur tableau
+        entetesRDV = new Vector();
+        entetesRDV.add("Horaire");
+        entetesRDV.add("Personne");
+        entetesRDV.add("Remarque");
+        TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
+        tab_planning.setModel(tableModel3);
+        tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
+        tab_planning.setDefaultEditor(Object.class, null);
+        tab_planning.setDefaultRenderer(Object.class, new jTableRender());
     }
 
     /**
@@ -160,8 +203,12 @@ public class Accueil_Med extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         ScrollPane_Planning = new javax.swing.JScrollPane();
-        Table_Vue_Generale = new javax.swing.JTable();
+        tab_planning = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         Label_Plannig = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -335,7 +382,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(418, 418, 418)
                         .addComponent(Button_Selectionner, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(87, 153, Short.MAX_VALUE))
+                .addGap(87, 202, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,7 +486,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
@@ -469,11 +516,11 @@ public class Accueil_Med extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jButton_actualiser_medecin1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
-                                .addGap(61, 61, 61)))
+                                    .addComponent(jButton_recherche_medecin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboBox_recherche_praticien, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                                .addGap(86, 86, 86)))
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
@@ -487,63 +534,131 @@ public class Accueil_Med extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(204, 204, 255));
 
-        Table_Vue_Generale.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel8.setBackground(new java.awt.Color(204, 204, 255));
+
+        tab_planning.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
+        tab_planning.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1"
+                "Horaire", "Personne", "Remarque"
             }
-        ));
-        ScrollPane_Planning.setViewportView(Table_Vue_Generale);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tab_planning.setRowHeight(40);
+        ScrollPane_Planning.setViewportView(tab_planning);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+            .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
-        Label_Plannig.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(204, 204, 255));
+        jButton1.setText(">>");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(204, 204, 255));
+        jButton3.setText("<<");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jPanel3.setBackground(new java.awt.Color(169, 206, 243));
+
+        Label_Plannig.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
+        Label_Plannig.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Label_Plannig.setText("Mon planning");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Label_Plannig, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Label_Plannig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel1.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("jLabel1");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(118, 118, 118)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(161, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(136, 136, 136)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(423, 423, 423)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(420, 420, 420)
-                        .addComponent(Label_Plannig)))
-                .addContainerGap(244, Short.MAX_VALUE))
+                        .addGap(348, 348, 348)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(Label_Plannig)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addContainerGap(103, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(242, 242, 242))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(239, 239, 239))))
         );
 
         jTabbedPane1.addTab("Mon planning", jPanel6);
@@ -602,7 +717,7 @@ public class Accueil_Med extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i = new Vue_Patient_Med(conn,dpi,ph);
+                Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
@@ -729,6 +844,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         //RECHARGER MEDECINS
         try {
             medecins = getListePH(conn);
+            medecins = trierPH(medecins); //tri par ordre alphabétique
             medecinsS = getVectorPH(medecins); //vecteur tableau
             TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
             tab_medecins.setModel(tableModel2);
@@ -751,6 +867,82 @@ public class Accueil_Med extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //JOUR PRECEDENT
+        current_date = current_date.minusDays(1);
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date(current_year,current_month, current_day);
+        Date date_courante2 = new Date(current_year-1900,current_month-1, current_day);
+        jLabel1.setText(convertirDatetoString(date_courante2));
+        try {
+            this.rdvs = listeRendezVous(conn,date_courante ,ph);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        rdvsS = getVectorPHplanning(evs); //vecteur tableau
+        TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
+        tab_planning.setModel(tableModel3);
+        tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //JOUR SUIVANT
+        current_date = current_date.plusDays(1);
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date(current_year,current_month, current_day);
+        Date date_courante2 = new Date(current_year-1900,current_month-1, current_day);
+        jLabel1.setText(convertirDatetoString(date_courante2));
+        try {
+            this.rdvs = listeRendezVous(conn,date_courante ,ph);
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        rdvsS = getVectorPHplanning(evs); //vecteur tableau
+        TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
+        tab_planning.setModel(tableModel3);
+        tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    
+    public class jTableRender extends DefaultTableCellRenderer {
+ 
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        
+        
+        Object o = table.getValueAt(row, 1);
+        if (o != null && component instanceof JLabel) {
+            JLabel label = (JLabel) component;
+            if(row==4){
+                Color gris = new Color(240,240,240);
+                component.setBackground(gris);
+            }else if (row%2==0) {
+                Color bleuclair = new Color(199,229,237);
+                component.setBackground(bleuclair);
+            }else if(row%2==1){
+                Color bleuclair2 = new Color(188,213,220);
+                component.setBackground(bleuclair2);
+            }
+            
+            label.setHorizontalAlignment(CENTER);
+        }
+        return component;
+    }
+}
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -829,18 +1021,21 @@ public class Accueil_Med extends javax.swing.JFrame {
     private javax.swing.JLabel Panel_icon_perso;
     private javax.swing.JLabel Panel_logo;
     private javax.swing.JScrollPane ScrollPane_Planning;
-    private javax.swing.JTable Table_Vue_Generale;
     private javax.swing.JTable Table_Vue_Generale1;
     private javax.swing.JTextField TextField_Docteur;
     private javax.swing.JTextField TextField_Patient;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton_actualiser1;
     private javax.swing.JButton jButton_actualiser_medecin1;
     private javax.swing.JButton jButton_recherche_medecin;
     private javax.swing.JButton jButton_recherche_patient;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -854,6 +1049,7 @@ public class Accueil_Med extends javax.swing.JFrame {
     private javax.swing.JLabel prenom_medecin;
     private javax.swing.JLabel service;
     private javax.swing.JTable tab_medecins;
+    private javax.swing.JTable tab_planning;
     // End of variables declaration//GEN-END:variables
 
 }

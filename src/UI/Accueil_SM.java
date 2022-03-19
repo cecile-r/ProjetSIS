@@ -9,18 +9,22 @@ import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIFerme;
 import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
 import database.SQLWarningsExceptions;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -29,11 +33,20 @@ import nf.PH;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import static javax.swing.SwingConstants.CENTER;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import static nf.Checker.*;
+import static nf.ComparaisonEvaluables.trierEvaluablesParDate;
 import nf.DPI;
+import nf.Evaluable;
 import nf.FicheDeSoins;
+import nf.Lit;
+import nf.RendezVous;
 import nf.SecretaireMedicale;
 import nf.Service;
 
@@ -53,6 +66,10 @@ public class Accueil_SM extends javax.swing.JFrame {
     Vector dpisFS;
     Vector entetes;
     Vector entetes2;
+    LocalDateTime current_date;
+    List<RendezVous> rdvs;
+    Vector rdvsS;
+    Vector entetesRDV;
 
     /**
      * Creates new form Connexion
@@ -61,7 +78,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         this.conn = conn;
         this.sm = sm;
         initComponents();
-        
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -75,7 +92,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         java.awt.Image imgD = iconeD.getImage();
         iconeD = new ImageIcon(imgD);
         jButton4.setIcon(iconeD);
-        
+
         //boutons
         ImageIcon icone = new ImageIcon("src/image/actualise.png");
         java.awt.Image img5 = icone.getImage();
@@ -109,7 +126,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
         Table_Vue_Generale1.setAutoCreateRowSorter(true);
         Table_Vue_Generale1.setModel(tableModel);
-        
+
         //TABLEAU PH
         medecinsS = new Vector();
         medecins = getListePH(conn);
@@ -122,8 +139,37 @@ public class Accueil_SM extends javax.swing.JFrame {
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
-        tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40*tab_medecins.getRowCount()));
+        tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
 
+        //selection localisation patient
+        jPanel_localisation.setVisible(false);
+        DefaultComboBoxModel dbm2 = new DefaultComboBoxModel(Service.values());
+        jComboBox_serviceG.setModel(dbm2);
+        DefaultComboBoxModel dbm3 = new DefaultComboBoxModel(Lit.values());
+        jComboBoxLit.setModel(dbm3);
+
+        //PLANNING
+        current_date = LocalDateTime.now();
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date(current_year, current_month, current_day);
+        Date date_courante2 = new Date(current_year - 1900, current_month - 1, current_day);
+        jLabel3.setText(convertirDatetoString(date_courante2));
+        this.rdvs = new ArrayList<>();
+        rdvsS = new Vector();
+        this.rdvs = listeRendezVous(conn, date_courante, sm.getService());
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        entetesRDV = new Vector();
+        entetesRDV = getVectorHorairePlanning();
+        rdvsS = getVectorSMplanning(evs); //vecteur tableau
+        TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
+        tab_planning.setModel(tableModel3);
+        tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
+        tab_planning.setDefaultEditor(Object.class, null);
+        tab_planning.setDefaultRenderer(Object.class, new jTableRender());
     }
 
     /**
@@ -166,9 +212,13 @@ public class Accueil_SM extends javax.swing.JFrame {
         jButton_recherche_medecin = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        ScrollPane_Planning = new javax.swing.JScrollPane();
-        Table_Vue_Generale = new javax.swing.JTable();
-        Label_Plannig = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        Label_Plannig1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tab_planning = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -178,12 +228,12 @@ public class Accueil_SM extends javax.swing.JFrame {
         jButton_recherche_patientOuvrirDPI = new javax.swing.JButton();
         jPanel_localisation = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox_serviceR = new javax.swing.JComboBox<>();
         jComboBox_serviceG = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jComboBoxLit = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexa");
@@ -553,51 +603,104 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
-        Table_Vue_Generale.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel10.setBackground(new java.awt.Color(169, 206, 243));
+
+        Label_Plannig1.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
+        Label_Plannig1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Label_Plannig1.setText("Planning du service");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Label_Plannig1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Label_Plannig1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tab_planning.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        tab_planning.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        ScrollPane_Planning.setViewportView(Table_Vue_Generale);
+        tab_planning.setRowHeight(40);
+        jScrollPane1.setViewportView(tab_planning);
 
-        Label_Plannig.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        Label_Plannig.setText("Planning");
+        jButton2.setBackground(new java.awt.Color(169, 206, 243));
+        jButton2.setText(">>");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(169, 206, 243));
+        jButton3.setText("<<");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Lucida Console", 1, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Date");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE)
-                .addGap(62, 62, 62))
+                .addGap(402, 402, 402)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(416, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Label_Plannig)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(Label_Plannig)
-                .addGap(3, 3, 3)
-                .addComponent(ScrollPane_Planning, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(280, Short.MAX_VALUE))
+                .addGap(23, 23, 23)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(27, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(188, 188, 188))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(192, 192, 192))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -685,20 +788,6 @@ public class Accueil_SM extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
         jLabel1.setText("Choisir la localisation du patient");
 
-        jComboBox_serviceR.setMaximumRowCount(30);
-        jComboBox_serviceR.setMinimumSize(new java.awt.Dimension(30, 500));
-        jComboBox_serviceR.setPreferredSize(new java.awt.Dimension(30, 300));
-        jComboBox_serviceR.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jComboBox_serviceRMouseReleased(evt);
-            }
-        });
-        jComboBox_serviceR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_serviceRActionPerformed(evt);
-            }
-        });
-
         jComboBox_serviceG.setMaximumRowCount(30);
         jComboBox_serviceG.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox_serviceG.setPreferredSize(new java.awt.Dimension(59, 300));
@@ -711,16 +800,14 @@ public class Accueil_SM extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(213, 123, 213));
         jButton1.setText("Affecter la localisation");
 
+        jLabel6.setText("Service géographique");
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+
         javax.swing.GroupLayout jPanel_localisationLayout = new javax.swing.GroupLayout(jPanel_localisation);
         jPanel_localisation.setLayout(jPanel_localisationLayout);
         jPanel_localisationLayout.setHorizontalGroup(
             jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_localisationLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -732,26 +819,32 @@ public class Accueil_SM extends javax.swing.JFrame {
                                 .addGroup(jPanel_localisationLayout.createSequentialGroup()
                                     .addComponent(jLabel4)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(20, 20, 20))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_localisationLayout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(88, 88, 88))))
+            .addGroup(jPanel_localisationLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel_localisationLayout.setVerticalGroup(
             jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_localisationLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addGap(50, 50, 50)
-                .addComponent(jComboBox_serviceR, javax.swing.GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel_localisationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel4)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addComponent(jComboBoxLit, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -809,7 +902,7 @@ public class Accueil_SM extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 546, Short.MAX_VALUE)
+            .addGap(0, 549, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1025,7 +1118,7 @@ public class Accueil_SM extends javax.swing.JFrame {
 
     private void Button_SelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SelectionnerActionPerformed
         //VISUALISATION D UN PATIENT PARTICULIER
-        if(Table_Vue_Generale1.getSelectedRow()==-1){
+        if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
@@ -1062,13 +1155,78 @@ public class Accueil_SM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
-    private void jComboBox_serviceRMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox_serviceRMouseReleased
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //JOUR PREDECENT
+        current_date = current_date.minusDays(1);
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date(current_year, current_month, current_day);
+        Date date_courante2 = new Date(current_year - 1900, current_month - 1, current_day);
+        jLabel3.setText(convertirDatetoString(date_courante2));
+        try {
+            this.rdvs = listeRendezVous(conn, date_courante, sm.getService());
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        entetesRDV = new Vector();
+        entetesRDV = getVectorHorairePlanning();
+        rdvsS = getVectorSMplanning(evs); //vecteur tableau
+        TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
+        tab_planning.setModel(tableModel3);
+        tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-    }//GEN-LAST:event_jComboBox_serviceRMouseReleased
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //JOUR SUIVANT
+        current_date = current_date.plusDays(1);
+        int current_year = current_date.getYear();
+        int current_month = current_date.getMonthValue();
+        int current_day = current_date.getDayOfMonth();
+        Date date_courante = new Date(current_year, current_month, current_day);
+        Date date_courante2 = new Date(current_year - 1900, current_month - 1, current_day);
+        jLabel3.setText(convertirDatetoString(date_courante2));
+        try {
+            this.rdvs = listeRendezVous(conn, date_courante, sm.getService());
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        List<Evaluable> evs = new ArrayList<>();
+        evs.addAll(rdvs);
+        evs = trierEvaluablesParDate(evs);
+        entetesRDV = new Vector();
+        entetesRDV = getVectorHorairePlanning();
+        rdvsS = getVectorSMplanning(evs); //vecteur tableau
+        TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
+        tab_planning.setModel(tableModel3);
+        tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jComboBox_serviceRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceRActionPerformed
+    public class jTableRender extends DefaultTableCellRenderer {
 
-    }//GEN-LAST:event_jComboBox_serviceRActionPerformed
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            Object o = table.getValueAt(row, 1);
+            if (o != null && component instanceof JLabel) {
+                JLabel label = (JLabel) component;
+                if (row % 2 == 0) {
+                    Color bleuclair = new Color(199, 229, 237);
+                    component.setBackground(bleuclair);
+                } else if (row % 2 == 1) {
+                    Color bleuclair2 = new Color(188, 213, 220);
+                    component.setBackground(bleuclair2);
+                }
+
+                label.setHorizontalAlignment(CENTER);
+            }
+            return component;
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -1143,20 +1301,20 @@ public class Accueil_SM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Selectionner;
-    private javax.swing.JLabel Label_Plannig;
+    private javax.swing.JLabel Label_Plannig1;
     private javax.swing.JPanel Panel_Bandeau;
     private javax.swing.JPanel Panel_Hospitalisations;
     private javax.swing.JPanel Panel_Main;
     private javax.swing.JLabel Panel_icon_perso;
     private javax.swing.JLabel Panel_logo;
-    private javax.swing.JScrollPane ScrollPane_Planning;
     private javax.swing.JTable Table_DPI_ferme;
-    private javax.swing.JTable Table_Vue_Generale;
     private javax.swing.JTable Table_Vue_Generale1;
     private javax.swing.JTextField TextField_Docteur1;
     private javax.swing.JTextField TextField_Patient;
     private javax.swing.JTextField TextField_Patient1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton_actualiser;
     private javax.swing.JButton jButton_actualiserOuvrirDPI;
@@ -1167,11 +1325,14 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxLit;
     private javax.swing.JComboBox<String> jComboBox_recherche_praticien;
     private javax.swing.JComboBox<String> jComboBox_serviceG;
-    private javax.swing.JComboBox<String> jComboBox_serviceR;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1181,16 +1342,17 @@ public class Accueil_SM extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanel_localisation;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane5;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel nom_SM;
     private javax.swing.JLabel prenom_SM;
     private javax.swing.JTable tab_medecins;
+    private javax.swing.JTable tab_planning;
     // End of variables declaration//GEN-END:variables
 
 }
