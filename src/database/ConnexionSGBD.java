@@ -104,6 +104,12 @@ class ConnexionSGBD {
             fs2.setInfirmier(inf1);
             fs2.ajouterActe(a2);
             
+            DateHeure dT = new DateHeure(2022,3,23,14,00);
+            FicheDeSoins fs3 = new FicheDeSoins(dT);
+            PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
+            fs3.setpH(ph_urgence);
+            fs3.ajouterActe(a1);
+            
             Prescription p1 = new Prescription(d2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             Prescription p2 = new Prescription(d1,"Faire ultrasons au patient, attention epaule droite",TypeExamen.ultrasons,null);
             
@@ -450,7 +456,7 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoins(fiche) -> VALIDE
-            //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
+            RequetesBDDPI.creerFicheDeSoins(conn, fs3);
             //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
             
             //Test creerPrescription(p) -> VALIDE
