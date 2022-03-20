@@ -5,6 +5,7 @@
  */
 package UI;
 
+import HL7.HL7_SIH;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.lowagie.text.Document;
@@ -70,7 +71,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         this.conn = conn;
         this.dpi = dpi;
         this.ph = ph;
-
+        
         //infos identité connexion
         prenom_medecin1.setText(ph.getPrenomPH());
         nom_medecin.setText(ph.getNomPH());

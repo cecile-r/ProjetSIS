@@ -5,11 +5,14 @@
  */
 package HL7;
 
+import UI.Ajout_examen;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import nf.*;
 import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.creerExamen;
+import static database.RequetesBDDPI.getDPI;
+import static database.RequetesBDProfessionnels.getPH;
 import database.SQLWarningsExceptions;
 import javax.swing.JLabel;
 import java.sql.Connection;
@@ -31,6 +34,7 @@ import library.interfaces.Patient;
 import library.interfaces.PatientLocation;
 import library.interfaces.ServeurHL7;
 import library.structure.groupe.messages.Message;
+import static nf.DateHeure.convertirDateHeuretoString;
 
 /**
  *
@@ -56,10 +60,14 @@ public class HL7_SIH {
         c.connection(4445);
     }
 
-    public void envoyerDonnees(DPI dpi) {
-        creerPatient(dpi);
-        setValPatient(dpi);
+    public void envoyerDonnees(Prescription p) {
+        //INFOS PATIENT
+        creerPatient(p.getDPI());
+        setValPatient(p.getDPI());
         this.action = new Action("AD", "AD", "Madiou"); // normalement la 2ème et 3ème entrée variables
+
+        //INFOS PRESCRIPTION
+        setInfosPrescription(p);
 
         // insertion du code du bouton connexion
         ClientHL7 c = new ClientHL7();
@@ -78,18 +86,42 @@ public class HL7_SIH {
                 break;
             }
         }
-
         MessageInterface messageAck = c.getMsg();
         c = new ClientHL7();
-
     }
 
+    //met les infos de l'examen dans HL7
+    private void setInfosPrescription(Prescription p) {
+        PatientLocation assignedLocation = new PatientLocation(this.patient);
+        //Lit => Type d'examen
+        if (p.getTypeExamen() == TypeExamen.radiologie) {
+            assignedLocation.setBed("Radiologie");
+        } else if (p.getTypeExamen() == TypeExamen.imagerie_par_resonance_magnetique) {
+            assignedLocation.setBed("IRM");
+        } else if (p.getTypeExamen() == TypeExamen.scanner) {
+            assignedLocation.setBed("Scanner");
+        } else {
+            assignedLocation.setBed("");
+        }
+        this.patient.setAssignedPatLocation(assignedLocation);
+
+        //Room --> date_presciption
+        assignedLocation.setRoom(convertirDateHeuretoString(p.getDateHeure()));
+
+        //Status --> observation
+        String observation = p.getObservation();
+        observation = observation.replaceAll("\n", "");
+        assignedLocation.setStatus(observation);
+    }
+
+    //creer le patient dans HL7
     private void creerPatient(DPI dpi) { // peut etre une erreur ici
         Integer id = Integer.parseInt(dpi.getIPP());
         this.patient = new Patient(id, dpi.getNom(), 'U');
 
     }
 
+    //rentre les infos du patient dans HL7
     private void setValPatient(DPI dpi) {
         //prenom
         this.patient.setFirstName(dpi.getPrenom());
@@ -101,6 +133,8 @@ public class HL7_SIH {
         }
         //Date de naissance
         this.patient.setBirth(dpi.getDateNaissance());
+        //locPat.setBed(""); //voir comment ajouter type examen
+        //locPat.setStatus(""); //voir comment ajouter l'observation
     }
 
     public static java.sql.Date convertDateJavaEnSQL(Date d) {
@@ -150,22 +184,28 @@ public class HL7_SIH {
 
                 ////////////////////////////////CREER EXAMEN //////////////////
                 TypeExamen te;
-                if(ExamOK.equals("Scanner")){
+                if (ExamOK.equals("Scanner")) {
                     te = TypeExamen.scanner;
-                }else if(ExamOK.equals("IRM")){
+                } else if (ExamOK.equals("IRM")) {
                     te = TypeExamen.imagerie_par_resonance_magnetique;
-                }else{
-                    te= TypeExamen.radiologie;
+                } else {
+                    te = TypeExamen.radiologie;
                 }
                 String resultats = CROK;
-                /*
-                Examen e =new Examen(te,resultats,dh);
-                e.setDPI(dpi);
-                e.setPh(ph);
-                creerExamen(conn,e);
-                */
-                
-                
+
+                try {
+                    DPI dpi = getDPI(conn, IPPOK); //voir comment recup l'IPP avec nom et prenom
+                    PH ph = getPH(conn, MedRefOK); //voir comment recup le medecin avec nom et prenom
+                    /*
+                    Examen e =new Examen(te,resultats,dh); //voir comment recup la dateHeure
+                    e.setDPI(dpi);
+                    e.setPh(ph);
+                    //creerExamen(conn,e);*/
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(HL7_SIH.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 // Fin ajout BD 
                 this.patient = null;
                 this.message = null;
@@ -188,4 +228,3 @@ public class HL7_SIH {
     }
 
 }
-
