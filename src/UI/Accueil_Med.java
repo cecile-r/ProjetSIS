@@ -5,6 +5,7 @@
  */
 package UI;
 
+import HL7.HL7_SIH;
 import java.sql.Connection;
 import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.getDPI;
@@ -712,6 +713,9 @@ public class Accueil_Med extends javax.swing.JFrame {
         } else {
 
             try {
+                //HL7_SIH hl = new HL7_SIH(conn,4445);
+                //hl.recuperationDonnees();
+                
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();

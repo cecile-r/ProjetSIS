@@ -5,6 +5,7 @@
  */
 package UI;
 
+import HL7.HL7_SIH;
 import database.DatabaseAccessProperties;
 import database.SQLWarningsExceptions;
 import java.awt.Color;
@@ -36,6 +37,7 @@ import nf.SecretaireMedicale;
 public class Connexion extends javax.swing.JFrame {
 
     Connection conn;
+    HL7_SIH hl;
 
     /**
      * Creates new form Connexion
@@ -43,6 +45,8 @@ public class Connexion extends javax.swing.JFrame {
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
         this.conn = conn;
         initComponents();
+        
+        this.hl = new HL7_SIH(conn,4445);
 
         //images
         ImageIcon icone = new ImageIcon("src/image/logo connexa-modified.png");
@@ -259,6 +263,8 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
+                hl.recuperationDonnees();
+                
             }else{
                 JOptionPane.showMessageDialog(this, "Identifiant ou mot de passe incorrect", "Attention", JOptionPane.WARNING_MESSAGE);
                 jPasswordField1.setText("");

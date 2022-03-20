@@ -1140,7 +1140,7 @@ public class Accueil_SM extends javax.swing.JFrame {
                 //recup donnees radio
                 try {
                     HL7_SIH hl;
-                    hl = new HL7_SIH(conn);
+                    hl = new HL7_SIH(conn,4445);
                     hl.recuperationDonnees();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
