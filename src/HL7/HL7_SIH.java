@@ -35,6 +35,7 @@ import library.interfaces.PatientLocation;
 import library.interfaces.ServeurHL7;
 import library.structure.groupe.messages.Message;
 import static nf.DateHeure.convertirDateHeuretoString;
+import static nf.DateHeure.convertirStringtoDateHeure;
 
 /**
  *
@@ -93,6 +94,7 @@ public class HL7_SIH {
     //met les infos de l'examen dans HL7
     private void setInfosPrescription(Prescription p) {
         PatientLocation assignedLocation = new PatientLocation(this.patient);
+        this.patient.setAssignedPatLocation(assignedLocation);
         //Lit => Type d'examen
         if (p.getTypeExamen() == TypeExamen.radiologie) {
             assignedLocation.setBed("Radiologie");
@@ -103,7 +105,6 @@ public class HL7_SIH {
         } else {
             assignedLocation.setBed("");
         }
-        this.patient.setAssignedPatLocation(assignedLocation);
 
         //Room --> date_presciption
         assignedLocation.setRoom(convertirDateHeuretoString(p.getDateHeure()));
@@ -171,13 +172,16 @@ public class HL7_SIH {
                 String MedRefOK = locPat.getRoom(); //numero medecin
                 String ExamOK = locPat.getBed(); //type examen
                 String CROK = locPat.getStatus(); //CR
-                if (SexeOK == "Female") {
-                    SexeOK = "femme";
+                String dateHeure = locPat.getFloor();
+                DateHeure dh = convertirStringtoDateHeure(dateHeure);
+                Sexe sexe;
+                if (SexeOK == "F") {
+                    sexe= Sexe.femme;
                 }
-                if (SexeOK == "Male") {
-                    SexeOK = "homme";
+                if (SexeOK == "M") {
+                    sexe= Sexe.homme;
                 } else {
-                    SexeOK = "autre";
+                    sexe= Sexe.autre;
                 }
                 //Affichage BD SIH
                 java.sql.Date NaissanceOK = convertDateJavaEnSQL(patient.getBirth());

@@ -155,7 +155,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         rdvsS = getVectorPHplanning(evs); //vecteur tableau
         entetesRDV = new Vector();
         entetesRDV.add("Horaire");
-        entetesRDV.add("Personne");
+        entetesRDV.add("Patient");
         entetesRDV.add("Remarque");
         TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
         tab_planning.setModel(tableModel3);
