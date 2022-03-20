@@ -202,6 +202,7 @@ public class RequetesBDUrgences {
         else {
             //creer nouveau DPI
         }
+        rs.close();
         stmt.close();
     }
 }

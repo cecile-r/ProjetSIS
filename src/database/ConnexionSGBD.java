@@ -19,11 +19,17 @@ import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDDPI.creerLocalisationSA;
 import static database.RequetesBDDPI.fermerDPI;
+import static database.RequetesBDDPI.getIPPPatient;
 import static database.RequetesBDDPI.modifierLocalisationSM;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIEntrant;
+import static database.RequetesBDDPI.getListeDPIEntrantNom;
+import static database.RequetesBDDPI.getListeDPIEntrantService;
+import static database.RequetesBDDPI.getListeDPIEntrantServiceNom;
 import static database.RequetesBDDPI.getListeDPIFerme;
+import static database.RequetesBDDPI.getListeDPIFermeNom;
 import static database.RequetesBDDPI.getListeDPIService;
+import static database.RequetesBDDPI.getListeTousDPI;
 import static database.RequetesBDDPI.getVectorDPI;
 import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
@@ -103,6 +109,12 @@ class ConnexionSGBD {
             FicheDeSoins fs2 = new FicheDeSoins(d2);
             fs2.setInfirmier(inf1);
             fs2.ajouterActe(a2);
+            
+            DateHeure dT = new DateHeure(2022,3,23,14,00);
+            FicheDeSoins fs3 = new FicheDeSoins(dT);
+            PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
+            fs3.setpH(ph_urgence);
+            fs3.ajouterActe(a1);
             
             Prescription p1 = new Prescription(d2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             Prescription p2 = new Prescription(d1,"Faire ultrasons au patient, attention epaule droite",TypeExamen.ultrasons,null);
@@ -209,8 +221,8 @@ class ConnexionSGBD {
             
             
             //Test getListeDPI() -> VALIDE
-            /*System.out.println(getListeDPI(conn));
-            List<DPI> ldpi = getListeDPI(conn);
+            //System.out.println(getListeDPI(conn));
+            /*List<DPI> ldpi = getListeDPI(conn);
             for (int i = 0; i < ldpi.size(); i++){
                 System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
                 System.out.println(ldpi.get(i).toString());
@@ -305,7 +317,7 @@ class ConnexionSGBD {
             //creerNouveauDPI(conn, "1926354276", "Pouet", "Goku", d, "autre", "0798142609", "14 avenue des trousses", "0987123516");
             //creerNouveauDPI(conn, "1800511699", "Ronflex", "Pokemon", d, "autre", "0765342609", "3 avenue des Flutes", "0655445544");
             //2e version de la fonction
-            //RequetesBDDPI.creerNouveauDPI(conn, "9736482920", "Eclair", "Pika", date6, "homme", "0413256789", "33 bis avenue du tonerre", m);
+            //RequetesBDDPI.creerNouveauDPI(conn, "9736482923", "Mandalorian", "Grogu", date6, "homme", "0483256789", "33 bis avenue du tonerre", m);
             
             //Tests conversions dates -> VALIDE
             /*java.sql.Statement stmt = conn.createStatement();
@@ -376,12 +388,12 @@ class ConnexionSGBD {
             
             
             //Test getListeTousDPI() -> VALIDE
-            /*System.out.println(getListeTousDPI(conn));
+            System.out.println(getListeTousDPI(conn));
             List<DPI> ldpi = getListeTousDPI(conn);
             for (int i = 0; i < ldpi.size(); i++){
                 System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
                 System.out.println(ldpi.get(i).toString());
-            }*/
+            }
             
             
             // Test getVectorTousDPI() -> VALIDE
@@ -450,7 +462,7 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoins(fiche) -> VALIDE
-            //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
+            //RequetesBDDPI.creerFicheDeSoins(conn, fs3);
             //RequetesBDDPI.creerFicheDeSoins(conn, fs2);
             
             //Test creerPrescription(p) -> VALIDE
@@ -526,6 +538,16 @@ class ConnexionSGBD {
             //Test getListeDPIEntrant() -> VALIDE
             //System.out.println(getListeDPIEntrant(conn));
             
+            //Test getListeDPIEntrantService(service) -> VALIDE
+            //System.out.println(getListeDPIEntrantService(conn, Service.Anesthesie));
+            
+            //Test getListeDPIEntrantNom(nom) -> VALIDE
+            //System.out.println(getListeDPIEntrantNom(conn, "ecl"));
+            
+            //Test getListeDPIEntrantServiceNom(service, nom) -> VALIDE
+            //System.out.println(getListeDPIEntrantServiceNom(conn, Service.Anesthesie, "ecl"));
+            
+            
             //Test nb de DPI temporaires -> VALIDE
             //System.out.println(RequetesBDUrgences.nbDPITemporaire(conn));
             
@@ -536,9 +558,9 @@ class ConnexionSGBD {
             //DPITemporaire dpit = new DPITemporaire("9977554466", "Palmito", "Juan", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpit);
             
-            /*Date dn2 = new Date(1999,8,26);
-            DPITemporaire dpit2 = new DPITemporaire("9999555566", "Arceus", "Goinfrex", dn2, ph_urgence);//DPI temporaire de quelqu'un déjà aux urgences
-            creerDPITemporaire(conn, dpit2);*/
+            //Date dn2 = new Date(1999,8,26);
+            //DPITemporaire dpit2 = new DPITemporaire("9999555566", "Arceus", "Goinfrex", dn2, ph_urgence);//DPI temporaire de quelqu'un déjà aux urgences
+            //creerDPITemporaire(conn, dpit2);*/
             
             /*Date dn3 = new Date(1995,6,27);
             DPITemporaire dpit3 = new DPITemporaire("9999555599", "Plante", "Bulbi", dn3, ph_urgence);
@@ -554,7 +576,12 @@ class ConnexionSGBD {
             //System.out.println(getPH(conn, "alerterou"));
             
             
+            //Test getIPPPatient(nom, prenom, dateNaissance) -> VALIDE
+            //System.out.println(getIPPPatient(conn, "ronflex", "perle", d));
             
+            
+            //Test getListeDPIFermeNom(nom) -> VALIDE
+            //System.out.println(getListeDPIFermeNom(conn, "man"));
             
             
             //Print information about connection warnings

@@ -71,6 +71,24 @@ public class RequetesBDDPI {
         stmt.close();
         return ippExiste;
     }
+    
+    //Renvoie l'IPP du patient en donnant un nom, prénom, date de naissance
+    //VALIDE
+    public static String getIPPPatient(Connection conn, String nom, String prenom, Date date_naissance) throws SQLException{
+        String ipp = "";
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT IPP FROM DPI "
+                + "WHERE UPPER(nom_DPI) = UPPER(?) AND UPPER(prenom_DPI) = UPPER(?) AND date_de_naissance = ?");
+        stmt.setString(1, nom);
+        stmt.setString(2, prenom);
+        stmt.setDate(3, convertDateJavaEnSQL(date_naissance));
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            ipp = rs.getString("IPP");
+        }
+        stmt.close();
+        return ipp;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     //Récupération d'éléments
@@ -83,6 +101,27 @@ public class RequetesBDDPI {
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
                 + "WHERE IPP NOT IN (SELECT IPP FROM Localisation) AND IPP NOT IN (SELECT IPP FROM Archive)");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie la liste des DPI fermés en fonction du nom
+    //VALIDE
+    public static List<DPI> getListeDPIFermeNom(Connection conn, String nom) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
+                + "WHERE IPP NOT IN (SELECT IPP FROM Localisation) AND IPP NOT IN (SELECT IPP FROM Archive) AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -217,6 +256,69 @@ public class RequetesBDDPI {
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
                 + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL)");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie la liste des DPI ayant un début de localisation selon le service entré -> patient passé seulement au secrétariat administratif
+    //VALIDE
+    public static List<DPI> getListeDPIEntrantService(Connection conn, Service service) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND service_responsable = '" + service.name() + "')");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+    //VALIDE
+    public static List<DPI> getListeDPIEntrantNom(Connection conn, String nom) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL) AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
+
+        while (rs.next()) {
+            MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
+            Date d = new Date(rs.getDate("date_de_naissance").getTime());
+            DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+    
+    //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+    //VALIDE
+    public static List<DPI> getListeDPIEntrantServiceNom(Connection conn, Service service, String nom) throws SQLException {
+        List<DPI> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
+                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND service_responsable = '" + service.name() + "') AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -833,7 +935,7 @@ public class RequetesBDDPI {
             System.out.println("Ce patient est déjà enregistré dans la base de données.");
         } else {
             //Ajout dans la table DPI
-            Date dateNaissanceReelle = new Date(date_de_naissance.getYear(), date_de_naissance.getMonth() - 1, date_de_naissance.getDate());
+            Date dateNaissanceReelle = new Date(date_de_naissance.getYear()-1900, date_de_naissance.getMonth() - 1, date_de_naissance.getDate());
             Statement stmt2 = conn.createStatement();
             stmt2.executeUpdate("INSERT INTO DPI(IPP, nom_DPI, prenom_DPI, date_de_naissance, sexe_DPI, adresse_DPI, telephone_DPI, telephone_medecin_traitant) "
                     + "VALUES ('" + id + "', '" + nom_DPI + "', '" + prenom_DPI + "', TO_DATE('" + new java.sql.Date(dateNaissanceReelle.getTime()).toString() + "'"
