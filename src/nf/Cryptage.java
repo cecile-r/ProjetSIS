@@ -62,11 +62,23 @@ public class Cryptage {
         //String SALT = "kXnMRShQyt02lLrY5UOQwaRPJEXR4BRquS6V8Jnqkxd/ifIdMWOL/+G3bqhxCYrJadNB4JP9YoGxJTopwN6XU7pWgnxWZ5jvlSnsx4RohM5HTn6QVBB3dewc++B9ZWGL416KkuoqPISCfO9Ihtq2mdPZ3wEMi2ZzLD948QCANXuiNHrmwGC+Oyk9MworVH+g2bFuPW2htFZwnnzwz1L/InuB2smwt9m25hmywPHSzW5kv9zix9NGm0y195E8KsEOfYGSJoMj9WJXmfZtwHNRPC1XgE+Lkgxr0bkdiHQ0BhikbPtYntLy9HAs8xnFZrkIIyOkyZFqfxu4z7YanHOjFSrAjKSNAgVRII2AVoc8nA5M4eZQXXzFrNCkAuJXLfCCKQjd/YrLzn+HtMJ/kX+cbDL+xQ1DDov93aQ1qGa/XWGsI4U3JlHgZwgXyFpMok8I27FgPcFadFiW9H4rxvItOQpoIAW9qbe4wLN1OrJRhGVYgWv7FB33LFZE3pv69ikRxsD3OxdYtQy1PSPpYF+1fKzdEMzZlJM3JzW1f6225tLHSKCIqK24biO5115q6Jc0pozSwKANuX7+0Nn2tFf+m66uKHon4yDsAbqbNXYjg+rA9l78KmzA0PGfe+2Z4vw+nZleTsNaT34pXE8T/DAbN01MSaBBpSN6MecFgL1e6m8=";
         
         
-        String myDataBasePassword = "huile";
+        String myDataBasePassword = "Retour";
         System.out.println("mdp = "+myDataBasePassword);
         String cry=cryptage(myDataBasePassword);
         System.out.println("mdp crypte = "+cry);
         System.out.println("mdp decrypte = "+decryptage(cry));
+        
+        myDataBasePassword = "Osurgences";
+        System.out.println("mdp = "+myDataBasePassword);
+        cry=cryptage(myDataBasePassword);
+        System.out.println("mdp crypte = "+cry);
+        System.out.println("mdp decrypte = "+decryptage(cry));
+        /*
+        myDataBasePassword = "Garcin";
+        System.out.println("mdp = "+myDataBasePassword);
+        cry=cryptage(myDataBasePassword);
+        System.out.println("mdp crypte = "+cry);
+        System.out.println("mdp decrypte = "+decryptage(cry));*/
     }
     
     public static String cryptage(String password){

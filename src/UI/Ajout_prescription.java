@@ -5,6 +5,7 @@
  */
 package UI;
 
+import HL7.HL7_SIH;
 import static database.RequetesBDDPI.creerPrescription;
 import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
@@ -433,7 +434,14 @@ public class Ajout_prescription extends javax.swing.JFrame {
             
             //ENVOYER EN RADIO
             if(jComboBox2.getSelectedItem()==TypeExamen.radiologie||jComboBox2.getSelectedItem()==TypeExamen.imagerie_par_resonance_magnetique||jComboBox2.getSelectedItem()==TypeExamen.scanner){
-                //TYPE = jComboBox2.getSelectedItem();
+                try {
+                    HL7_SIH hl = new HL7_SIH(conn);
+                    hl.envoyerDonnees(p);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }
             

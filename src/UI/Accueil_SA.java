@@ -1374,6 +1374,8 @@ public class Accueil_SA extends javax.swing.JFrame {
             dpisFS = getVectorDPIFerme(dpisF);
             TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
             Table_DPI_ferme.setModel(tableModel3);
+            Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
+        
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1393,7 +1395,7 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_Patient1KeyPressed
 
     private void jButton_recherche_patientOuvrirDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_patientOuvrirDPIActionPerformed
-        // TODO add your handling code here:
+        //RECHERCHER DANS DPI FERME
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
     private void jComboBox_serviceRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceRActionPerformed

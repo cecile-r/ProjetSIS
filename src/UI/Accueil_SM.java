@@ -5,6 +5,7 @@
  */
 package UI;
 
+import HL7.HL7_SIH;
 import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
@@ -1133,8 +1134,20 @@ public class Accueil_SM extends javax.swing.JFrame {
         //VISUALISATION D UN PATIENT PARTICULIER
         if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
-        }else{
-             try {
+        } else {
+            try {
+
+                //recup donnees radio
+                try {
+                    HL7_SIH hl;
+                    hl = new HL7_SIH(conn);
+                    hl.recuperationDonnees();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
