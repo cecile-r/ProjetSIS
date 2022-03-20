@@ -5,6 +5,8 @@
  */
 package UI;
 
+import static database.RequetesBDDPI.archiverDPI;
+import static database.RequetesBDDPI.fermerDPI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -12,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -69,17 +73,17 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
         //prochain rdv
         List<RendezVous> rdvsP = dpi.getdMA().getRendezVous();
-        if(rdvsP.size()!=0){ //il y a des rdvs
+        if (rdvsP.size() != 0) { //il y a des rdvs
             List<Evaluable> evs = new Vector<Evaluable>();
             evs.addAll(rdvsP);
             evs = nf.ComparaisonEvaluables.trierEvaluablesParDate(evs);
             RendezVous rdv = nf.RendezVous.getProchainRDV(evs);
-            if(rdv!=null){
+            if (rdv != null) {
                 jTextPane1.setText(rdv.toStringProchainRDV());
-            }else{
+            } else {
                 jTextPane1.setText("Aucun rendez-vous prévu");
             }
-        }else{
+        } else {
             jTextPane1.setText("Aucun rendez-vous prévu");
         }
 
@@ -417,7 +421,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         ));
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         jTable1.setEnabled(false);
-        jTable1.setPreferredSize(new java.awt.Dimension(225, 27));
+        jTable1.setPreferredSize(new java.awt.Dimension(300, 27));
         jScrollPane1.setViewportView(jTable1);
 
         jButton_modifier.setBackground(new java.awt.Color(204, 204, 255));
@@ -432,10 +436,20 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         jButton_fermeture.setBackground(new java.awt.Color(204, 204, 255));
         jButton_fermeture.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
         jButton_fermeture.setText("Fermer le dossier");
+        jButton_fermeture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_fermetureActionPerformed(evt);
+            }
+        });
 
         jButton_archives.setBackground(new java.awt.Color(204, 204, 255));
         jButton_archives.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
         jButton_archives.setText("Envoyer aux archives");
+        jButton_archives.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_archivesActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(169, 206, 243));
 
@@ -554,7 +568,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
             i = new Connexion(conn);
             i.setVisible(true);
             dispose();
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
@@ -576,7 +590,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
 
     private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
         //AJOUTER UN RDV
-        RDV_prise i = new RDV_prise(conn, sa,null, dpi);
+        RDV_prise i = new RDV_prise(conn, sa, null, dpi);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_prendreRDVActionPerformed
@@ -585,13 +599,77 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         //MODIFIER LES INFOS DU PATIENT
         Modif_Patient i;
         try {
-            i = new Modif_Patient(conn, sa,null, dpi);
+            i = new Modif_Patient(conn, sa, null, dpi);
             i.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
         }
         dispose();
     }//GEN-LAST:event_jButton_modifierActionPerformed
+
+    private void jButton_fermetureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_fermetureActionPerformed
+        //FERMER LE DOSSIER
+
+        //VERIFICATION
+        int retour = JOptionPane.showConfirmDialog(this, "Vous allez fermer le DPI de ce patient\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+        if (retour == 0) {
+
+            //BDD
+            try {
+                fermerDPI(conn, dpi.getIPP());
+                //message ok
+                JOptionPane.showMessageDialog(this, "Le dossier a bien été fermé", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //RETOUR ACCUEIL
+            jButton8ActionPerformed(evt);
+        }
+
+    }//GEN-LAST:event_jButton_fermetureActionPerformed
+
+    private void jButton_archivesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_archivesActionPerformed
+        //ARCHIVER LE DOSSIER
+
+        try {
+            ImageIcon icone3 = new ImageIcon("src/image/dossier.png");
+            java.awt.Image img3 = icone3.getImage();
+            icone3 = new ImageIcon(img3);
+
+            String dateS = (String) JOptionPane.showInputDialog(this, "Entrez la date de décès (dd/MM/yyyy) :",
+                    "Compléter",
+                    JOptionPane.QUESTION_MESSAGE,
+                    icone3,
+                    null,
+                    "");
+            
+            if ((dateS != null) && (dateS.length() == 10)) {
+                SimpleDateFormat formater = null;
+                formater = new SimpleDateFormat("dd/MM/yyyy");
+                Date date_deces = formater.parse(dateS);
+
+                int retour = JOptionPane.showConfirmDialog(this, "Vous allez placer ce DPI aux archives\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+                if (retour == 0) {
+                    //FCT
+                    archiverDPI(conn, dpi.getIPP(), date_deces);
+                    //message ok
+                    JOptionPane.showMessageDialog(this, "Le dossier a bien été déplacé dans les archives", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+                    //RETOUR ACCUEIL
+                    jButton8ActionPerformed(evt);
+                }
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton_archivesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -736,7 +814,5 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
     private javax.swing.JLabel nom_SA;
     private javax.swing.JLabel prenom_SA;
     // End of variables declaration//GEN-END:variables
-
-    
 
 }

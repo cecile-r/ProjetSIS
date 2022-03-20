@@ -11,6 +11,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 import database.DatabaseAccessProperties;
+import static database.RequetesBDDPI.fermerDPI;
 import database.SQLWarningsExceptions;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -28,6 +29,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
@@ -522,6 +524,11 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         jButton_fermeture.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         jButton_fermeture.setText("Fermer le dossier");
         jButton_fermeture.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton_fermeture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_fermetureActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -668,6 +675,29 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         }
         dispose();
     }//GEN-LAST:event_jButton_modifierActionPerformed
+
+    private void jButton_fermetureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_fermetureActionPerformed
+        //FERMER LE DOSSIER
+
+        //VERIFICATION
+        int retour = JOptionPane.showConfirmDialog(this, "Vous allez fermer le DPI de ce patient\nEtes-vous sûr de vouloir poursuivre ?", "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
+
+        if (retour == 0) {
+
+            //BDD
+            try {
+                fermerDPI(conn, dpi.getIPP());
+                //message ok
+                JOptionPane.showMessageDialog(this, "Le dossier a bien été fermé", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //RETOUR ACCUEIL
+            jButton8ActionPerformed(evt);
+        }
+    }//GEN-LAST:event_jButton_fermetureActionPerformed
 
     /**
      * @param args the command line arguments

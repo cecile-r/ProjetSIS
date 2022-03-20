@@ -106,7 +106,9 @@ public class Checker {
 
     public static String convertirDatetoString(Date d) {
         String d2 = "";
-        d2 = d2 + d.getDate() + "/" + d.getMonth() + "/" + d.getYear();
+        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        d2 = s.format(d);
+        //d2 = d2 + d.getDate() + "/" + d.getMonth() + "/" + d.getYear();
         return d2;
     }
 
@@ -161,7 +163,6 @@ public class Checker {
         }
         return dpis;
     }
-    
 
     public static Vector getVectorDPI(List<DPI> dpis) {
         Vector v = new Vector();
@@ -171,14 +172,12 @@ public class Checker {
             DPI dpi = dpis.get(i);
             ls.add(dpi.getNom());
             ls.add(dpi.getPrenom());
-            ls.add(dpi.getDateNaissance().toString());
+            ls.add(convertirDatetoString(dpi.getDateNaissance()));
             ls.add(dpi.getSexe().toString());
             v.add(ls);
         }
         return v;
     }
-    
-    
 
     public static Vector getVectorDPIFerme(List<DPI> dpis) {
         Vector v = new Vector();
@@ -188,13 +187,13 @@ public class Checker {
             DPI dpi = dpis.get(i);
             ls.add(dpi.getNom());
             ls.add(dpi.getPrenom());
-            ls.add(dpi.getDateNaissance().toString());
+            ls.add(convertirDatetoString(dpi.getDateNaissance()));
             ls.add(dpi.getSexe().toString());
             v.add(ls);
         }
         return v;
     }
-    
+
     public static Vector getVectorActes(List<Acte> actes) {
         Vector v = new Vector();
 
@@ -209,7 +208,7 @@ public class Checker {
         }
         return v;
     }
-    
+
     public static Vector getVectorMT(List<MedecinTraitant> mts) {
         Vector v = new Vector();
 
@@ -223,7 +222,7 @@ public class Checker {
         }
         return v;
     }
-    
+
     public static Vector getVectorPHRDV(List<PH> phs) {
         Vector v = new Vector();
 
@@ -235,7 +234,7 @@ public class Checker {
         }
         return v;
     }
-    
+
     public static Vector getVectorSoinsQuotidien(List<Evaluable> sqs) {
         Vector v = new Vector();
         DecimalFormat df = new DecimalFormat("0.0"); //car sinon les doubles sont sur des grands nb de chiffres
@@ -254,7 +253,7 @@ public class Checker {
         }
         return v;
     }
-    
+
     public static Vector getVectorSoinsQuotidienPH(List<Evaluable> sqs) {
         Vector v = new Vector();
         DecimalFormat df = new DecimalFormat("0.0"); //car sinon les doubles sont sur des grands nb de chiffres
@@ -273,5 +272,99 @@ public class Checker {
             v.add(ls);
         }
         return v;
+    }
+
+    public static Vector getVectorPHplanning(List<Evaluable> evs) {
+        Vector v = new Vector();
+        /*if(evs.isEmpty()){
+            for(int i=8;i<17;i++){
+                Vector ls = new Vector();
+                ls.add(i+"h");
+                ls.add("");
+                ls.add("");
+                v.add(ls);
+            }
+            return v;
+        }*/
+        int j = 0;
+        for (int i = 8; i < 17; i++) {
+            Vector ls = new Vector();
+            ls.add(i + "h");
+            if (evs.size() > j) {
+                RendezVous rdv = (RendezVous) evs.get(j);
+                if (rdv.getDateHeure().getHeure() == i) {
+                    ls.add(rdv.getDPI().toStringSimple());
+                    ls.add(rdv.getRemarque());
+                    j++;
+                } else {
+                    ls.add("");
+                    ls.add("");
+                }
+                v.add(ls);
+            } else {
+                ls.add("");
+                ls.add("");
+                v.add(ls);
+            }
+        }
+        return v;
+    }
+
+    public static Vector getVectorSMplanningEntete(List<Evaluable> evs) {
+        Vector v = new Vector();
+        List<PH> phs = new ArrayList<>();
+        for (int i = 0; i < evs.size(); i++) {
+            RendezVous rdv = (RendezVous) evs.get(i);
+            if (!phs.contains(rdv.getpH())) {
+                phs.add(rdv.getpH());
+                v.add(rdv.getpH().toStringDetail());
+            }
+        }
+        return v;
+    }
+    
+    public static Vector getVectorHorairePlanning() {
+        Vector v = new Vector();
+        v.add("PH");
+        for (int i = 8; i < 17; i++) {
+            v.add(i+"h");
+        }
+        return v;
+    }
+
+    public static Vector getVectorSMplanning(List<Evaluable> evs) {
+        List<PH> phs = new ArrayList<>();
+        List<String> phString = new ArrayList<>();
+        for (int i = 0; i < evs.size(); i++) {
+            RendezVous rdv = (RendezVous) evs.get(i);
+            if (!phString.contains(rdv.getpH().getIdPH())) {
+                phs.add(rdv.getpH());
+                phString.add(rdv.getpH().getIdPH());
+            }
+        }
+
+        Vector v = new Vector();
+        
+        int index = 8;
+        for (int i = 0; i < phs.size(); i++) { //pour chaque ph
+            Vector ls= new Vector();
+            ls.add(phs.get(i).toString());
+            for (int j = 0; j < evs.size(); j++) {//on parcours la liste des rdvs
+                RendezVous rdv = (RendezVous) evs.get(j);
+                PH phActu = rdv.getpH();
+                if (phActu.getIdPH().equals(phs.get(i).getIdPH())) {//si on trouve notre ph
+                    while(rdv.getDateHeure().getHeure() != index) {
+                        ls.add("");
+                        index++;
+                    }
+                    ls.add(rdv.getDPI().toStringSimple());
+                    
+                }
+            }
+            index=8;
+            v.add(ls);
+        }
+        return v;
+
     }
 }

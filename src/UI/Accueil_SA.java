@@ -41,6 +41,7 @@ import static nf.Checker.*;
 import static nf.Cryptage.getIPPRandom;
 import nf.DPI;
 import nf.Lit;
+import nf.Localisation;
 import nf.MedecinTraitant;
 import nf.PH;
 import nf.SecretaireAdministrative;
@@ -72,7 +73,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         this.conn = conn;
         this.sa = sa;
         initComponents();
-        
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -111,10 +112,10 @@ public class Accueil_SA extends javax.swing.JFrame {
         jPanel_localisation.setVisible(false);
         DefaultComboBoxModel dbm = new DefaultComboBoxModel(Service.values());
         jComboBox_serviceR.setModel(dbm);
+        jComboBox_serviceR.setSelectedIndex(-1);
         DefaultComboBoxModel dbm2 = new DefaultComboBoxModel(Service.values());
         jComboBox_serviceG.setModel(dbm2);
-        //DefaultComboBoxModel dbm3 = new DefaultComboBoxModel(Lit.values());
-        //jComboBoxLit.setModel(dbm3);
+        jComboBox_serviceG.setSelectedIndex(-1);
 
         //onglet désactivé
         jTabbedPane2.setEnabledAt(1, false);
@@ -160,7 +161,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         Table_DPI_ferme.setModel(tableModel3);
         Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
         Table_DPI_ferme.setDefaultEditor(Object.class, null);
-                
+
         //Medecins traitant
         medecinsS_traitant = new Vector();
     }
@@ -283,8 +284,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                     .addComponent(nom_SA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(prenom_SA, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         Panel_BandeauLayout.setVerticalGroup(
             Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,11 +298,9 @@ public class Accueil_SA extends javax.swing.JFrame {
                         .addComponent(nom_SA))
                     .addGroup(Panel_BandeauLayout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(31, Short.MAX_VALUE))
+            .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -952,9 +950,19 @@ public class Accueil_SA extends javax.swing.JFrame {
         jComboBox_serviceG.setMaximumRowCount(30);
         jComboBox_serviceG.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox_serviceG.setPreferredSize(new java.awt.Dimension(59, 300));
+        jComboBox_serviceG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_serviceGActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(213, 123, 213));
-        jButton1.setText("Ouvrir son DPI");
+        jButton1.setText("Ouvrir ce DPI");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Service responsable");
 
@@ -991,8 +999,8 @@ public class Accueil_SA extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(78, 78, 78)
+                .addComponent(jComboBox_serviceG, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(71, 71, 71))
         );
@@ -1256,7 +1264,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                 Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
                 String adresse = jTextArea_adresse2.getText();
                 String telephone = jFormattedTextField_telephone2.getText();
-                telephone = telephone.replaceAll("\\s+","");
+                telephone = telephone.replaceAll("\\s+", "");
                 System.out.println(telephone);
                 String sexe;
                 if (RadioButton_F2.isSelected()) {
@@ -1383,7 +1391,8 @@ public class Accueil_SA extends javax.swing.JFrame {
         //RECHARGER LES DPI FERMES
         try {
             dpisF = getListeDPIFerme(conn);
-            dpisFS = getVectorDPI(dpisF); //vecteur tableau
+            dpisF = trierDPI(dpisF);
+            dpisFS = getVectorDPIFerme(dpisF);
             TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
             Table_DPI_ferme.setModel(tableModel3);
         } catch (SQLException ex) {
@@ -1409,6 +1418,9 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
     private void jComboBox_serviceRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceRActionPerformed
+        //SELECTION AUTOMATIQUE DU 2EME SERVICE
+        int index = jComboBox_serviceR.getSelectedIndex();
+        jComboBox_serviceG.setSelectedIndex(index);
 
     }//GEN-LAST:event_jComboBox_serviceRActionPerformed
 
@@ -1421,7 +1433,7 @@ public class Accueil_SA extends javax.swing.JFrame {
     }//GEN-LAST:event_Table_DPI_fermeMouseClicked
 
     private void Button_SelectionnerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SelectionnerActionPerformed
-        
+
         //VISUALISATION D UN PATIENT PARTICULIER
         if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
@@ -1433,7 +1445,7 @@ public class Accueil_SA extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_SA i = new Vue_Patient_SA(conn,dpi,sa);
+                Vue_Patient_SA i = new Vue_Patient_SA(conn, dpi, sa);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
@@ -1444,6 +1456,29 @@ public class Accueil_SA extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //OUVRIR LE DPI
+
+        if (jComboBox_serviceR.getSelectedIndex() < 0) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un service responsable", "Attention", JOptionPane.WARNING_MESSAGE);
+
+        } else if (jComboBox_serviceG.getSelectedIndex() < 0) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un service géographique", "Attention", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            Service service_responsable = (Service) jComboBox_serviceR.getSelectedItem();
+            Service service_geographique = (Service) jComboBox_serviceG.getSelectedItem();
+            Localisation l = new Localisation(service_responsable, Lit.P, 0, service_geographique);
+
+            //FONCTION BD
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox_serviceGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceGActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_serviceGActionPerformed
 
     public boolean champsCorrects() throws ParseException {
         boolean v = true;
