@@ -48,6 +48,7 @@ import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static database.RequetesBDUrgences.listeExamensTemporaire;
 import static database.RequetesBDUrgences.listeFichesDeSoinsTemporaire;
 import static database.RequetesBDUrgences.listePrescriptionTemporaire;
+import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 

@@ -1142,16 +1142,6 @@ public class Accueil_SM extends javax.swing.JFrame {
         } else {
             try {
 
-                //recup donnees radio
-                try {
-                    HL7_SIH hl;
-                    hl = new HL7_SIH(conn, 4445);
-                    hl.recuperationDonnees();
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());

@@ -29,11 +29,16 @@ import static nf.Checker.*;
 import nf.DPI;
 import nf.PH;
 import nf.Service;
+import static database.RequetesBDDPI.IPPexistant;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import static nf.Cryptage.getIPPRandom;
 import nf.Infirmier;
 
 /**
@@ -93,10 +98,10 @@ public class Accueil_urgences extends javax.swing.JFrame {
         prenom_medecin.setText(ph.getPrenomPH());
         nom_medecin.setText(ph.getNomPH());
         service.setText(ph.getService().toString());
-/*
+
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPIService(conn, inf.getService().toString());
+        dpis = getListeDPIService(conn, ph.getService().toString());
         dpis = trierDPI(dpis);
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
@@ -122,7 +127,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-    */
+    
         }
 
     /**
@@ -907,7 +912,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_Valider3Button_ValiderMouseClicked
 
     private void Button_Valider3Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Valider3Button_ValiderActionPerformed
-        /*try {
+        try {
             
             ///CREATION D'UN PATIENT
             if (champsCorrects()) {
@@ -915,27 +920,10 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 String prenom = jTextField_Prenom2.getText();
                 SimpleDateFormat formater = null;
                 formater = new SimpleDateFormat("dd/MM/yyyy");
-
                 Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
-                String adresse = jTextArea_adresse2.getText();
-                String telephone = jFormattedTextField_telephone2.getText();
-                telephone = telephone.replaceAll("\\s+", "");
-                System.out.println(telephone);
-                String sexe;
-                if (RadioButton_F2.isSelected()) {
-                    sexe = RadioButton_F2.getText();
-                } else if (RadioButton_H2.isSelected()) {
-                    sexe = RadioButton_H2.getText();
-                } else if (jRadioButton3.isSelected()) {
-                    sexe = jRadioButton3.getText();
-                } else {
-                    sexe = null;
-                }
-                int index = tab_medecinsT.getSelectedRow();
-                MedecinTraitant mt = medecins_traitant.get(index);
 
-                String message = "Etes-vous sûr de vouloir créer le patient suivant ?";
-                message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText() + "\n Sexe : " + sexe + "\n Téléphone : " + telephone + "\n Adresse : " + adresse + "\n Medecin traitant : " + mt.getNomMedecinTraitant() + " " + mt.getPrenomMedecinTraitant();
+                String message = "Etes-vous sûr de vouloir créer le patient temporaire suivant ?";
+                message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText();
                 int retour = JOptionPane.showConfirmDialog(this, message, "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
 
                 if (retour == 0) { //les informations sont correctes = validation
@@ -945,38 +933,48 @@ public class Accueil_urgences extends javax.swing.JFrame {
                         IPP = getIPPRandom();
                     }
                     //création du patient
-                    creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
+                    //creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
 
                     //mettre à jour la liste des patients
                     dpis = getListeDPI(conn);
                     dpisS = getVectorDPI(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setModel(tableModel);
-                    dpisF = getListeDPIFerme(conn);
-                    dpisFS = getVectorDPIFerme(dpisF);
-                    TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
-                    Table_DPI_ferme.setModel(tableModel3);
 
                     //tout remettre à 0
                     TextField_Nom2.setText("");
                     jTextField_Prenom2.setText("");
                     jFormattedTextField_date_naissance2.setText("");
-                    jTextArea_adresse2.setText("");
-                    jFormattedTextField_telephone2.setText("");
-                    buttonGroup.clearSelection();
-                    jCheckBox_medecinsT.setSelected(false);
-                    tab_medecinsT.clearSelection();
                     JOptionPane.showMessageDialog(this, "Le patient a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
                 }
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            Logger.getLogger(Accueil_urgences.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Accueil_urgences.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Button_Valider3Button_ValiderActionPerformed
 
+     public boolean champsCorrects() throws ParseException {
+        boolean v = true;
+        if (TextField_Nom2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        } else if (jTextField_Prenom2.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un prénom", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        } else if (jFormattedTextField_date_naissance2.getText().equals("  /  /    ")) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer une date de naissance", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        } else if (!checkerDate(jFormattedTextField_date_naissance2.getText())) {
+            JOptionPane.showMessageDialog(this, "Merci d'entrer un format de date correct", "Attention", JOptionPane.WARNING_MESSAGE);
+            v = false;
+        }
+
+        return v;
+    }
+     
     /**
      * @param args the command line arguments
      */
