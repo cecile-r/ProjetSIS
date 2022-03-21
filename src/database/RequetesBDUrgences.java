@@ -5,6 +5,7 @@
  */
 package database;
 
+import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
 import static database.RequetesBDConversion.convertDateJavaEnSQL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,12 +26,17 @@ import nf.PH;
 import nf.Service;
 import nf.Sexe;
 import static database.RequetesBDConversion.convertDateJavaEnSQL;
+import static database.RequetesBDConversion.toStringTimestampJAVA;
+import static database.RequetesBDDPI.creerActe;
 import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.creerPrescription;
 import nf.Examen;
+import nf.ExamenTemp;
 import nf.FicheDeSoins;
+import nf.FicheDeSoinsTemp;
 import nf.Prescription;
+import nf.PrescriptionTemp;
 
 /**
  *
@@ -140,24 +146,24 @@ public class RequetesBDUrgences {
         stmt.setDate(3, convertDateJavaEnSQL(dpit.getDate_naissance()));
         ResultSet rs = stmt.executeQuery();
 
-        //Si un DPI correspond à ce DPI Temporaire
+        //Si un DPI correspond à ce DPI Temporaire -> fusion des DPI
         if (rs.next()) {
-            //Fusion des DPI
-
             //FICHES DE SOINS
             PreparedStatement stmtf = null;
-            stmtf = conn.prepareStatement("SELECT * FROM FichesDeSoins "
+            stmtf = conn.prepareStatement("SELECT * FROM FichesDeSoins_temporaire "
                     + "WHERE IPP = ?");
             stmtf.setString(1, dpit.getIPP());
             ResultSet rsf = stmtf.executeQuery();
-            while (rsf.next()) { //parcours des fiches de soins du DPI temporaire
-                //Modifier l'IPP du patient sur la fiche de soins pour le remplacer par son IPP réel
-                PreparedStatement stmt2 = null;
-                stmt2 = conn.prepareStatement("UPDATE FichesDeSoins SET IPP = ? WHERE IPP = ?");
+            while (rsf.next()) { //Parcours des fiches de soins temporaires
+                //Ajout de la fiche de soin dans la table FichesDeSoins
+                //FicheDeSoins creer avec la fct
+                /*PreparedStatement stmt2 = null;
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins VALUES()");
                 stmt2.setString(1, rs.getString("IPP"));
                 stmt2.setString(2, dpit.getIPP());
                 stmt2.executeUpdate();
-                stmt2.close();
+                stmt2.close();*/
+                //Suppression de la fiche dans FichesDeSoins_temporaire
             }
 
             //PRESCRIPTIONS
@@ -199,10 +205,100 @@ public class RequetesBDUrgences {
             stmt2.executeUpdate();
             stmt2.close();
         } 
-        else {
+        
+        else { //Le DPIT n'existe pas -> création d'un DPI
             //creer nouveau DPI
         }
+        
         rs.close();
+        stmt.close();
+    }
+
+    //Creer une fiche de soins d'urgence (temporaire) et l'ajouter dans la base de données
+    //
+    public static void creerFicheDeSoinsTemp(Connection conn, FicheDeSoinsTemp fiche) throws SQLException {
+
+        for (int i = 0; i < fiche.getActe().size(); i++) {
+            PreparedStatement stmt2 = null;
+            String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
+            Timestamp t = Timestamp.valueOf(ts);
+            int a;//idActe
+
+            if (fiche.getInfirmier() != null) {
+                //Insertion dans la table Acte
+                a = creerActe(conn, fiche.getActe().get(i));
+                //Insertion dans la table FichesDeSoins_temporaire
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
+                stmt2.setString(1, fiche.getDPI().getIPP());
+                stmt2.setTimestamp(2, t);
+                stmt2.setInt(3, a);//idActe
+                stmt2.setString(4, null);
+                stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
+            } else if (fiche.getpH() != null) {
+                //Insertion dans la table Acte
+                a = creerActe(conn, fiche.getActe().get(i));
+                //Insertion dans la table FichesDeSoins_temporaire
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
+                stmt2.setString(1, fiche.getDPI().getIPP());
+                stmt2.setTimestamp(2, t);
+                stmt2.setInt(3, a);//idActe
+                stmt2.setString(4, fiche.getpH().getIdPH());
+                stmt2.setString(5, null);
+            } else {
+                //Insertion dans la table Acte
+                a = creerActe(conn, fiche.getActe().get(i));
+                //Insertion dans la table FichesDeSoins_temporaire
+                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
+                stmt2.setString(1, fiche.getDPI().getIPP());
+                stmt2.setTimestamp(2, t);
+                stmt2.setInt(3, a);
+                stmt2.setString(4, fiche.getpH().getIdPH());
+                stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
+            }
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+    }
+        
+    //Creer une prescription d'urgence (temporaire) et l'ajouter dans la base de données
+    //
+    public static void creerPrescriptionTemp(Connection conn, PrescriptionTemp p) throws SQLException {
+        PreparedStatement stmt2 = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(p.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt2 = conn.prepareStatement("INSERT INTO Prescription_temporaire values(?,?,?,?,?,?)");
+        stmt2.setString(1, p.getDPI().getIPP());
+        stmt2.setString(2, p.getpH().getIdPH());
+        stmt2.setTimestamp(3, t);
+
+        if (p.getTypeExamen() == null) {
+            stmt2.setString(4, p.getMedicament());
+            stmt2.setString(5, null);
+        } else if (p.getMedicament() == null) {
+            stmt2.setString(4, null);
+            stmt2.setString(5, p.getTypeExamen().toString());
+        }
+
+        stmt2.setString(6, p.getObservation());
+
+        stmt2.executeUpdate();
+        stmt2.close();
+    }
+    
+    //Creer un examen d'urgence (temporaire) et l'ajouter dans la base de données
+    //
+    public static void creerExamenTemp(Connection conn, ExamenTemp exam) throws SQLException{
+        PreparedStatement stmt = null;
+        String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(exam.getDateHeure()));
+        Timestamp t = Timestamp.valueOf(ts);
+        stmt = conn.prepareStatement("INSERT INTO Examen_temporaire values(?,?,?,?,?)");
+        stmt.setString(1, exam.getDPI().getIPP());
+        stmt.setString(2, exam.getPh().getIdPH());
+        stmt.setTimestamp(3, t);
+        stmt.setString(4, exam.getType_examen().toString());
+        stmt.setString(5, exam.getResultats());
+        
+        stmt.executeUpdate();
         stmt.close();
     }
 }
