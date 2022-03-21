@@ -37,7 +37,6 @@ import nf.SecretaireMedicale;
 public class Connexion extends javax.swing.JFrame {
 
     Connection conn;
-    HL7_SIH hl;
 
     /**
      * Creates new form Connexion
@@ -45,8 +44,6 @@ public class Connexion extends javax.swing.JFrame {
     public Connexion(Connection conn) throws ClassNotFoundException, SQLException {
         this.conn = conn;
         initComponents();
-        
-        this.hl = new HL7_SIH(conn,4445);
 
         //images
         ImageIcon icone = new ImageIcon("src/image/logo connexa-modified.png");
@@ -263,9 +260,8 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-                hl.recuperationDonnees();
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(this, "Identifiant ou mot de passe incorrect", "Attention", JOptionPane.WARNING_MESSAGE);
                 jPasswordField1.setText("");
             }
@@ -339,6 +335,9 @@ public class Connexion extends javax.swing.JFrame {
                     // Get a connection to the database
                     Connection conn = DriverManager.getConnection(dbUrl, username, password);
                     SQLWarningsExceptions.printWarnings(conn);
+
+                    HL7_SIH hl = new HL7_SIH(conn, 4445);
+                    hl.recuperationDonnees();
 
                     Connexion i;
                     i = new Connexion(conn);

@@ -9,6 +9,8 @@ import HL7.HL7_SIH;
 import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
+import static database.RequetesBDDPI.getListeDPIEntrantService;
+import static database.RequetesBDDPI.getListeDPIEntrantServiceNom;
 import static database.RequetesBDDPI.getListeDPIFerme;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
@@ -102,11 +104,13 @@ public class Accueil_SM extends javax.swing.JFrame {
         icone = new ImageIcon(img5);
         jButton_actualiser.setIcon(icone);
         jButton_actualiser_medecin.setIcon(icone);
+        jButton_actualiserOuvrirDPI.setIcon(icone);
         ImageIcon icone_recherche = new ImageIcon("src/image/loupe2.png");
         java.awt.Image img_recherche = icone_recherche.getImage();
         icone_recherche = new ImageIcon(img_recherche);
         jButton_recherche_medecin.setIcon(icone_recherche);
         jButton_recherche_patient.setIcon(icone_recherche);
+        jButton_recherche_patientOuvrirDPI.setIcon(icone_recherche);
         ImageIcon icone_details = new ImageIcon("src/image/details.png");
         java.awt.Image img_details = icone_details.getImage();
         icone_details = new ImageIcon(img_details);
@@ -145,8 +149,9 @@ public class Accueil_SM extends javax.swing.JFrame {
 
         //TABLEAU DPI DEMI-OUVERTS
         dpisF = new ArrayList<>();
-        //dpisF = getListeDPIEntrant(conn,sm.getService());
-        dpisFS = getVectorDPIFerme(dpisF);
+        dpisF = getListeDPIEntrantService(conn, sm.getService());
+        dpisF = trierDPI(dpisF);
+        dpisFS = getVectorDPI(dpisF);
         TableModel tableModel4 = new DefaultTableModel(dpisFS, entetes);
         Table_DPI_ferme.setModel(tableModel4);
         Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_DPI_ferme.getRowCount()));
@@ -1140,7 +1145,7 @@ public class Accueil_SM extends javax.swing.JFrame {
                 //recup donnees radio
                 try {
                     HL7_SIH hl;
-                    hl = new HL7_SIH(conn,4445);
+                    hl = new HL7_SIH(conn, 4445);
                     hl.recuperationDonnees();
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
@@ -1169,18 +1174,23 @@ public class Accueil_SM extends javax.swing.JFrame {
     }//GEN-LAST:event_Table_DPI_fermeMouseClicked
 
     private void jButton_actualiserOuvrirDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiserOuvrirDPIActionPerformed
-        //RECHARGER LES DPI FERMES
+        try {
+            //RECHARGER LES DPI FERMES
+            dpisF = getListeDPIEntrantService(conn, sm.getService());
+            dpisF = trierDPI(dpisF);
+            dpisFS = getVectorDPI(dpisF);
+            TableModel tableModel4 = new DefaultTableModel(dpisFS, entetes);
+            Table_DPI_ferme.setModel(tableModel4);
+            Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_DPI_ferme.getRowCount()));
 
-        //dpisF = getListeDPIEntrant(conn,sm.getService());
-        dpisFS = getVectorDPIFerme(dpisF);
-        TableModel tableModel4 = new DefaultTableModel(dpisFS, entetes);
-        Table_DPI_ferme.setModel(tableModel4);
-        Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_DPI_ferme.getRowCount()));
-
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton_actualiserOuvrirDPIActionPerformed
 
     private void TextField_Patient1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextField_Patient1MouseClicked
-        // TODO add your handling code here:
+        TextField_Patient1.setText("");
+        TextField_Patient1.setForeground(Color.black);
     }//GEN-LAST:event_TextField_Patient1MouseClicked
 
     private void TextField_Patient1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_Patient1ActionPerformed
@@ -1188,17 +1198,23 @@ public class Accueil_SM extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_Patient1ActionPerformed
 
     private void TextField_Patient1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_Patient1KeyPressed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_TextField_Patient1KeyPressed
 
     private void jButton_recherche_patientOuvrirDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_patientOuvrirDPIActionPerformed
-        /*
-        dpisF = getListeDPI(conn, recherche);
-            dpisS = getVectorDPI(dpis);
-            TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+        String recherche = TextField_Patient1.getText();
+        try {
+            dpisF = getListeDPIEntrantServiceNom(conn, sm.getService(), recherche);
+            dpisF = trierDPI(dpisF);
+            dpisFS = getVectorDPI(dpisF);
+            TableModel tableModel = new DefaultTableModel(dpisFS, entetes);
             Table_Vue_Generale1.setAutoCreateRowSorter(true);
             Table_Vue_Generale1.setModel(tableModel);
-         */
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1266,12 +1282,23 @@ public class Accueil_SM extends javax.swing.JFrame {
             //recup informations
             Service service_geo = (Service) jComboBox_serviceG.getSelectedItem();
             int indexSelected = Table_DPI_ferme.getSelectedRow();
-            DPI dpi = (DPI) dpisFS.get(indexSelected);
+            DPI dpi = (DPI) dpisF.get(indexSelected);
             int numero = Integer.parseInt(jFormattedTextField1.getText());
             Lit lit = (Lit) jComboBoxLit.getSelectedItem();
             //creer lalocalisation
             try {
                 modifierLocalisationSM(conn, dpi.getIPP(), numero, lit, service_geo);
+                dpisF = getListeDPIEntrantService(conn, sm.getService());
+                dpisF = trierDPI(dpisF);
+                dpisFS = getVectorDPI(dpisF);
+                TableModel tableModel4 = new DefaultTableModel(dpisFS, entetes);
+                Table_DPI_ferme.setModel(tableModel4);
+                Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_DPI_ferme.getRowCount()));
+
+                JOptionPane.showMessageDialog(this, "Le patient a maintenant une localisation dans le service", "Information", JOptionPane.INFORMATION_MESSAGE);
+                jComboBox_serviceG.setSelectedIndex(-1);
+                jComboBoxLit.setSelectedIndex(-1);
+                jFormattedTextField1.setText("");
             } catch (SQLException ex) {
                 Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
             }
