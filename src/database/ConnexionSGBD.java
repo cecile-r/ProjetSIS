@@ -38,6 +38,7 @@ import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.creerExamenTemp;
 import static database.RequetesBDUrgences.creerFicheDeSoinsTemp;
 import static database.RequetesBDUrgences.creerPrescriptionTemp;
+import static database.RequetesBDUrgences.dpiExiste;
 import static database.RequetesBDUrgences.fusionDPI;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 import static database.RequetesBDUrgences.getVectorDPITemporaires;
@@ -139,9 +140,11 @@ class ConnexionSGBD {
             
             Date dn1 = new Date(1975,5,25);
             Date dateNai = new Date(1990,1,5);
+            Date dateNai2 = new Date(1997,3,20);
             //DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
             DPI dpi1 = new DPI("5555888800","Lespagnol","Mikael",dn1,Sexe.homme,"25 rue de la soif, Madrid","0644445555",m2,dma1,dm1);
             DPITemporaire dpit = new DPITemporaire("1100000011", "Retour", "Osurgences", dateNai, ph_urgence);
+            DPITemporaire dpit2 = new DPITemporaire("9977554466", "Palmito", "Juan", dateNai2, ph_urgence);
             
             //ph1.ajouterFicheDeSoins(fs1);
             //fs1.setDPI(dpi1);
@@ -592,8 +595,8 @@ class ConnexionSGBD {
             //System.out.println(getListeDPIFermeNom(conn, "man"));
             
             
-            //Test creerFicheDeSoinsTemp(fiche) -> A TESTER
-            Acte at1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
+            //Test creerFicheDeSoinsTemp(fiche) -> A verifier martin
+            /*Acte at1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
             Acte at2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
           
             DateHeure dht1 = new DateHeure(2022,3,9,11,00);
@@ -602,23 +605,28 @@ class ConnexionSGBD {
             fst1.ajouterActe(at1);
             fst1.ajouterActe(at2);
             fst1.setDPI(dpit);
-            creerFicheDeSoinsTemp(conn, fst1);
+            creerFicheDeSoinsTemp(conn, fst1);*/
             
             
-            //Test creerPrescriptionTemp(prescription) -> A TESTER
-            DateHeure dht2 = new DateHeure(2022,3,9,13,00);
+            //Test creerPrescriptionTemp(prescription) -> A verifier medecin
+            /*DateHeure dht2 = new DateHeure(2022,3,9,13,00);
             PrescriptionTemp pt1 = new PrescriptionTemp(dht2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             pt1.setpH(ph_urgence);
             pt1.setDPI(dpit);
-            creerPrescriptionTemp(conn,pt1);
+            creerPrescriptionTemp(conn,pt1);*/
             
             
-            //Test creerExamenTemp(examen) -> A TESTER
-            DateHeure dht3 = new DateHeure(2022,3,9,14,00);
+            //Test creerExamenTemp(examen) -> A martinverifier
+            /*DateHeure dht3 = new DateHeure(2022,3,9,14,00);
             ExamenTemp examt = new ExamenTemp(TypeExamen.imagerie_par_resonance_magnetique, "tout va bien, rien a signaler mais surveiller", dht3);
             examt.setPh(ph_urgence);
             examt.setDPI(dpit);
-            creerExamenTemp(conn, examt);
+            creerExamenTemp(conn, examt);*/
+            
+            
+            //Test dpiExiste(dpit) -> VALIDE
+            //System.out.println(dpiExiste(conn, dpit)); //Existe dans les DPI -> doit renvoyer true
+            //System.out.println(dpiExiste(conn, dpit2)); //N'existe pas dans les DPI -> doit renvoyer false
             
             
             //Test fusionDPI(dpit) -> 
