@@ -971,7 +971,6 @@ public class RequetesBDDPI {
             if (fiche.getInfirmier() != null) {
                 //Insertion dans la table Acte
                 a = creerActe(conn, fiche.getActe().get(i));
-                System.out.println("here");
                 //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());
@@ -984,7 +983,6 @@ public class RequetesBDDPI {
                 
                 //Insertion dans la table Acte
                 a = creerActe(conn, fiche.getActe().get(i));
-                System.out.println("here2");
                 //Insertion dans la table FichesDeSoins
                 stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins values(?,?,?,?,?)");
                 stmt2.setString(1, fiche.getDPI().getIPP());

@@ -23,6 +23,7 @@ public class RequetesBDConnexion {
     //VALIDE
     public static boolean verifyConnexion(Connection conn, String id, String mdp, String statut) throws SQLException {
         boolean correct = false;
+        mdp = hashPassword(mdp).get();
         Statement stmt = conn.createStatement();
         //Requete ci dessous juste pour initialiser le resultset et pas faire buger la suite du programme, pas utilisée
         ResultSet rs = stmt.executeQuery("SELECT idPH from PH");
