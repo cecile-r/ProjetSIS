@@ -32,6 +32,9 @@ import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDDPI.getListeTousDPI;
 import static database.RequetesBDDPI.getVectorDPI;
 import static database.RequetesBDDPI.getVectorDPIService;
+import static database.RequetesBDDPI.listeExamens;
+import static database.RequetesBDDPI.listeFichesDeSoins;
+import static database.RequetesBDDPI.listePrescription;
 import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getPH;
 import static database.RequetesBDUrgences.creerDPITemporaire;
@@ -42,6 +45,9 @@ import static database.RequetesBDUrgences.dpiExiste;
 import static database.RequetesBDUrgences.fusionDPI;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 import static database.RequetesBDUrgences.getVectorDPITemporaires;
+import static database.RequetesBDUrgences.listeExamensTemporaire;
+import static database.RequetesBDUrgences.listeFichesDeSoinsTemporaire;
+import static database.RequetesBDUrgences.listePrescriptionTemporaire;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 
@@ -143,8 +149,8 @@ class ConnexionSGBD {
             Date dateNai2 = new Date(1997,3,20);
             //DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
             DPI dpi1 = new DPI("5555888800","Lespagnol","Mikael",dn1,Sexe.homme,"25 rue de la soif, Madrid","0644445555",m2,dma1,dm1);
-            DPITemporaire dpit = new DPITemporaire("1100000011", "Retour", "Osurgences", dateNai, ph_urgence);
-            DPITemporaire dpit2 = new DPITemporaire("9977554466", "Palmito", "Juan", dateNai2, ph_urgence);
+            DPITemporaire dpit = new DPITemporaire("1100000011", "Retour", "Osurgences", dateNai);
+            DPITemporaire dpit2 = new DPITemporaire("9977554466", "Palmito", "Juan", dateNai2);
             
             //ph1.ajouterFicheDeSoins(fs1);
             //fs1.setDPI(dpi1);
@@ -567,6 +573,10 @@ class ConnexionSGBD {
             //DPITemporaire dpit = new DPITemporaire("9977554466", "Palmito", "Juan", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpit);
             
+            Date dn = new Date(1999,8,26);
+            DPITemporaire dpitu = new DPITemporaire("9538539548", "Eclair", "Pika", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            //creerDPITemporaire(conn, dpitu);
+            
             //Date dn2 = new Date(1999,8,26);
             //DPITemporaire dpit2 = new DPITemporaire("9999555566", "Arceus", "Goinfrex", dn2, ph_urgence);//DPI temporaire de quelqu'un déjà aux urgences
             //creerDPITemporaire(conn, dpit2);*/
@@ -595,20 +605,20 @@ class ConnexionSGBD {
             //System.out.println(getListeDPIFermeNom(conn, "man"));
             
             
-            //Test creerFicheDeSoinsTemp(fiche) -> A verifier martin
-            /*Acte at1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
-            Acte at2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
+            //Test creerFicheDeSoinsTemp(fiche) -> VALIDE
+            Acte at1 = new Acte("prise de sang",Type.therapeutique,Code.KE,2, "Realisee avec succes");
+            Acte at2 = new Acte("changement pansement",Type.diagnostic,Code.CSC,1, "Cicatrisation normale");
           
-            DateHeure dht1 = new DateHeure(2022,3,9,11,00);
+            DateHeure dht1 = new DateHeure(2022,3,14,11,00);
             FicheDeSoinsTemp fst1 = new FicheDeSoinsTemp(dht1);
             fst1.setpH(ph_urgence);
             fst1.ajouterActe(at1);
             fst1.ajouterActe(at2);
-            fst1.setDPI(dpit);
-            creerFicheDeSoinsTemp(conn, fst1);*/
+            fst1.setDPI(dpitu);
+            creerFicheDeSoinsTemp(conn, fst1);
             
             
-            //Test creerPrescriptionTemp(prescription) -> A verifier medecin
+            //Test creerPrescriptionTemp(prescription) -> VALIDE
             /*DateHeure dht2 = new DateHeure(2022,3,9,13,00);
             PrescriptionTemp pt1 = new PrescriptionTemp(dht2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             pt1.setpH(ph_urgence);
@@ -616,7 +626,7 @@ class ConnexionSGBD {
             creerPrescriptionTemp(conn,pt1);*/
             
             
-            //Test creerExamenTemp(examen) -> A martinverifier
+            //Test creerExamenTemp(examen) -> VALIDE
             /*DateHeure dht3 = new DateHeure(2022,3,9,14,00);
             ExamenTemp examt = new ExamenTemp(TypeExamen.imagerie_par_resonance_magnetique, "tout va bien, rien a signaler mais surveiller", dht3);
             examt.setPh(ph_urgence);
@@ -628,9 +638,24 @@ class ConnexionSGBD {
             //System.out.println(dpiExiste(conn, dpit)); //Existe dans les DPI -> doit renvoyer true
             //System.out.println(dpiExiste(conn, dpit2)); //N'existe pas dans les DPI -> doit renvoyer false
             
+            //Test affichage dpi temporaire -> VALIDE
+            //System.out.println(listeFichesDeSoinsTemporaire(conn, "1100000011"));
+            //System.out.println(listeFichesDeSoinsTemporaire(conn, "9538539548"));
+            //System.out.println(listePrescriptionTemporaire(conn, "1100000011"));
+            //System.out.println(listeExamensTemporaire(conn, "1100000011"));
             
             //Test fusionDPI(dpit) -> 
             //fusionDPI(conn, dpit);
+            //Pour le patient retour osurgence
+            //Fusion faite : fiches de soins, examens et prescriptions bien supprémées des tables temporaires
+            //DPI temporaire bien supprimé
+            //System.out.println(listeFichesDeSoins(conn, "5550000555")); //Fiches bien ajoutées MAIS pb actes en double dans la fiche
+            //System.out.println(listePrescription(conn, "5550000555")); //Prescription bien ajoutée  
+            //System.out.println(listeExamens(conn, "5550000555")); //Examen bien ajouté
+                    
+            
+            
+            
             
             
             //Print information about connection warnings

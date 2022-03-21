@@ -29,7 +29,6 @@ import static nf.Checker.*;
 import nf.DPI;
 import nf.PH;
 import nf.Service;
-import database.RequetesBD;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;

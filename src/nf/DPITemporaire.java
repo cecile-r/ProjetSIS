@@ -18,17 +18,15 @@ public class DPITemporaire {
     private String nom;
     private String prenom;
     private Date date_naissance;
-    private PH ph;
     private List <FicheDeSoins> liste_f;
     private List <Prescription> liste_p;
     private List <Examen> liste_e;
     
-    public DPITemporaire(String IPP, String nom, String prenom, Date date_naissance, PH ph){
+    public DPITemporaire(String IPP, String nom, String prenom, Date date_naissance){
         this.IPP = IPP;
         this.nom = nom;
         this.prenom = prenom;
         this.date_naissance = date_naissance;
-        this.ph = ph;
         List <FicheDeSoins> liste_f = new ArrayList();
         List <Prescription> liste_p = new ArrayList();
         List <Examen> liste_e = new ArrayList();
@@ -97,20 +95,6 @@ public class DPITemporaire {
      */
     public void setDate_naissance(Date date_naissance) {
         this.date_naissance = date_naissance;
-    }
-
-    /**
-     * @return the ph
-     */
-    public PH getPh() {
-        return ph;
-    }
-
-    /**
-     * @param ph the ph to set
-     */
-    public void setPh(PH ph) {
-        this.ph = ph;
     }
 
     /**
