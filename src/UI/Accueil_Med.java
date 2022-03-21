@@ -719,10 +719,10 @@ public class Accueil_Med extends javax.swing.JFrame {
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                //int longueur = tailleMoniteur.width;
-                //int hauteur = tailleMoniteur.height;
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
                 Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
-                //i.setSize(longueur, hauteur);
+                i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
 

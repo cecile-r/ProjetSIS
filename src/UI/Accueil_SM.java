@@ -1142,24 +1142,14 @@ public class Accueil_SM extends javax.swing.JFrame {
         } else {
             try {
 
-                //recup donnees radio
-                try {
-                    HL7_SIH hl;
-                    hl = new HL7_SIH(conn, 4445);
-                    hl.recuperationDonnees();
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
-                //Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                //int longueur = tailleMoniteur.width;
-                //int hauteur = tailleMoniteur.height;
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
                 Vue_Patient_SM i = new Vue_Patient_SM(conn, dpi, sm);
-                //i.setSize(longueur, hauteur);
+                i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
 

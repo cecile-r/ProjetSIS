@@ -33,7 +33,7 @@ import static database.RequetesBDDPI.getListeTousDPI;
 import static database.RequetesBDDPI.getVectorDPI;
 import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
-import static database.RequetesBDProfessionnels.getPH;
+import static database.RequetesBDProfessionnels.getPH;/*
 import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.creerExamenTemp;
 import static database.RequetesBDUrgences.creerFicheDeSoinsTemp;
@@ -41,7 +41,7 @@ import static database.RequetesBDUrgences.creerPrescriptionTemp;
 import static database.RequetesBDUrgences.dpiExiste;
 import static database.RequetesBDUrgences.fusionDPI;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
-import static database.RequetesBDUrgences.getVectorDPITemporaires;
+import static database.RequetesBDUrgences.getVectorDPITemporaires;*/
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 

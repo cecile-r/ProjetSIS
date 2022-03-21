@@ -29,7 +29,6 @@ import static nf.Checker.*;
 import nf.DPI;
 import nf.PH;
 import nf.Service;
-import database.RequetesBD;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
@@ -550,10 +549,10 @@ public class Accueil_Inf extends javax.swing.JFrame {
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                //int longueur = tailleMoniteur.width;
-                //int hauteur = tailleMoniteur.height;
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
                 Vue_Patient_Inf i = new Vue_Patient_Inf(conn, dpi, inf);
-                //i.setSize(longueur, hauteur);
+                i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
 

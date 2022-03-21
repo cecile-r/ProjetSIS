@@ -29,7 +29,6 @@ import static nf.Checker.*;
 import nf.DPI;
 import nf.PH;
 import nf.Service;
-import database.RequetesBD;
 import static database.RequetesBDDPI.IPPexistant;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
@@ -99,10 +98,10 @@ public class Accueil_urgences extends javax.swing.JFrame {
         prenom_medecin.setText(ph.getPrenomPH());
         nom_medecin.setText(ph.getNomPH());
         service.setText(ph.getService().toString());
-/*
+
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPIService(conn, inf.getService().toString());
+        dpis = getListeDPIService(conn, ph.getService().toString());
         dpis = trierDPI(dpis);
         dpisS = getVectorDPI(dpis); //vecteur tableau
         entetes = new Vector();
@@ -128,7 +127,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-    */
+    
         }
 
     /**

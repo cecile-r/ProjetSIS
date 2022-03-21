@@ -219,9 +219,9 @@ public class Connexion extends javax.swing.JFrame {
         String mdp = new String(jPasswordField1.getPassword());
 
         //dimension fenetre
-        //Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-        //int longueur = tailleMoniteur.width;
-        //int hauteur = tailleMoniteur.height;
+        Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+        int longueur = tailleMoniteur.width;
+        int hauteur = tailleMoniteur.height;
         boolean c;
         try {
             CB_item = getStatut(conn, id);
@@ -232,31 +232,31 @@ public class Connexion extends javax.swing.JFrame {
                     PH ph = userPH(conn, id);
                     Accueil_Med i;
                     i = new Accueil_Med(conn, ph);
-                    //i.setSize(longueur, hauteur);
+                    i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("SA")) {
+                else if (CB_item.equals("SA")) {
                     SecretaireAdministrative sa = userSA(conn, id);
                     Accueil_SA i;
                     i = new Accueil_SA(conn, sa);
-                    //i.setSize(longueur, hauteur);
+                    i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("SM")) {
+                else if (CB_item.equals("SM")) {
                     SecretaireMedicale sm = userSM(conn, id);
                     Accueil_SM i;
                     i = new Accueil_SM(conn, sm);
-                    //i.setSize(longueur, hauteur);
+                    i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("Inf")) {
+                else if (CB_item.equals("Inf")) {
                     Infirmier inf = userInf(conn, id);
                     Accueil_Inf i;
                     i = new Accueil_Inf(conn, inf);
-                    //i.setSize(longueur, hauteur);
+                    i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
                 }
