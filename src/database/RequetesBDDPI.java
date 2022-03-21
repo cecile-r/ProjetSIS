@@ -43,7 +43,9 @@ import java.lang.System.Logger.Level;
 import java.time.LocalDate;
 import nf.DM;
 import nf.DMA;
+import nf.DPITemporaire;
 import nf.DateHeure;
+import nf.FicheDeSoinsTemp;
 import nf.Lit;
 import nf.Localisation;
 import nf.Prescription;
@@ -873,7 +875,13 @@ public class RequetesBDDPI {
             DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
 
             //Création du DMA
-            Localisation loc = new Localisation(Service.valueOf(rs.getString("service_responsable")), Lit.valueOf(rs.getString("lit")), rs.getInt("nchambre"), Service.valueOf(rs.getString("service_geographique")));
+            Localisation loc;
+            if(rs.getString("service_geographique") == null){
+                loc = new Localisation(Service.valueOf(rs.getString("service_responsable")), null, 0, null);
+            }
+            else{
+                loc = new Localisation(Service.valueOf(rs.getString("service_responsable")), Lit.valueOf(rs.getString("lit")), rs.getInt("nchambre"), Service.valueOf(rs.getString("service_geographique")));
+            }
             DMA dma = new DMA(loc);
             //Remplissage du DMA
             List<FicheDeSoins> listeFiches = listeFichesDeSoins(conn, ipp);
