@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import static nf.Cryptage.hashPassword;
 import nf.Infirmier;
 import nf.PH;
 import nf.SecretaireAdministrative;

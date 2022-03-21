@@ -276,7 +276,7 @@ public class RequetesBDDPI {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND service_responsable = '" + service.name() + "')");
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND UPPER(service_responsable) LIKE UPPER('" + service.name() + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -318,7 +318,7 @@ public class RequetesBDDPI {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND service_responsable = '" + service.name() + "') AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
+                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND UPPER(service_responsable) LIKE UPPER('" + service.name() + "%')) AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
