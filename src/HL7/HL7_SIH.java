@@ -13,6 +13,7 @@ import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDProfessionnels.getPH;
+import static database.RequetesBDDPI.getIPPPatient;
 import database.SQLWarningsExceptions;
 import javax.swing.JLabel;
 import java.sql.Connection;
@@ -35,6 +36,7 @@ import library.interfaces.PatientLocation;
 import library.interfaces.ServeurHL7;
 import library.structure.groupe.messages.Message;
 import static nf.DateHeure.convertirDateHeuretoString;
+import static nf.DateHeure.convertirStringtoDateHeure;
 
 /**
  *
@@ -52,12 +54,12 @@ public class HL7_SIH {
     /**
      * Creates new form HL7_SIS
      */
-    public HL7_SIH(Connection conn) throws ClassNotFoundException, SQLException {
+    public HL7_SIH(Connection conn,int port) throws ClassNotFoundException, SQLException {
         this.patient = null;
         this.message = null;
         this.conn = conn;
         c = new ServeurHL7();
-        c.connection(4445);
+        c.connection(port);
     }
 
     public void envoyerDonnees(Prescription p) {
@@ -93,6 +95,7 @@ public class HL7_SIH {
     //met les infos de l'examen dans HL7
     private void setInfosPrescription(Prescription p) {
         PatientLocation assignedLocation = new PatientLocation(this.patient);
+        this.patient.setAssignedPatLocation(assignedLocation);
         //Lit => Type d'examen
         if (p.getTypeExamen() == TypeExamen.radiologie) {
             assignedLocation.setBed("Radiologie");
@@ -103,7 +106,6 @@ public class HL7_SIH {
         } else {
             assignedLocation.setBed("");
         }
-        this.patient.setAssignedPatLocation(assignedLocation);
 
         //Room --> date_presciption
         assignedLocation.setRoom(convertirDateHeuretoString(p.getDateHeure()));
@@ -171,16 +173,20 @@ public class HL7_SIH {
                 String MedRefOK = locPat.getRoom(); //numero medecin
                 String ExamOK = locPat.getBed(); //type examen
                 String CROK = locPat.getStatus(); //CR
-                if (SexeOK == "Female") {
-                    SexeOK = "femme";
+                String dateHeure = locPat.getFloor();
+                DateHeure dh = convertirStringtoDateHeure(dateHeure);
+                Sexe sexe;
+                if (SexeOK == "F") {
+                    sexe= Sexe.femme;
                 }
-                if (SexeOK == "Male") {
-                    SexeOK = "homme";
+                if (SexeOK == "M") {
+                    sexe= Sexe.homme;
                 } else {
-                    SexeOK = "autre";
+                    sexe= Sexe.autre;
                 }
                 //Affichage BD SIH
-                java.sql.Date NaissanceOK = convertDateJavaEnSQL(patient.getBirth());
+                //java.sql.Date NaissanceOK = convertDateJavaEnSQL(patient.getBirth());
+                Date NaissanceOK = patient.getBirth();
 
                 ////////////////////////////////CREER EXAMEN //////////////////
                 TypeExamen te;
@@ -191,16 +197,15 @@ public class HL7_SIH {
                 } else {
                     te = TypeExamen.radiologie;
                 }
-                String resultats = CROK;
 
                 try {
-                    DPI dpi = getDPI(conn, IPPOK); //voir comment recup l'IPP avec nom et prenom
-                    PH ph = getPH(conn, MedRefOK); //voir comment recup le medecin avec nom et prenom
-                    /*
-                    Examen e =new Examen(te,resultats,dh); //voir comment recup la dateHeure
+                    String ipp = getIPPPatient(conn, nomOK,prenomOK,NaissanceOK);
+                    DPI dpi = getDPI(conn,ipp); 
+                    PH ph = getPH(conn, MedRefOK); 
+                    Examen e =new Examen(te,CROK,dh); 
                     e.setDPI(dpi);
                     e.setPh(ph);
-                    //creerExamen(conn,e);*/
+                    creerExamen(conn,e);
 
                 } catch (SQLException ex) {
                     Logger.getLogger(HL7_SIH.class.getName()).log(Level.SEVERE, null, ex);

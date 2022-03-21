@@ -47,12 +47,10 @@ public class Cryptage {
         //String salt = generateSalt(512).get();
         //String salt = "kXnMRShQyt02lLrY5UOQwaRPJEXR4BRquS6V8Jnqkxd/ifIdMWOL/+G3bqhxCYrJadNB4JP9YoGxJTopwN6XU7pWgnxWZ5jvlSnsx4RohM5HTn6QVBB3dewc++B9ZWGL416KkuoqPISCfO9Ihtq2mdPZ3wEMi2ZzLD948QCANXuiNHrmwGC+Oyk9MworVH+g2bFuPW2htFZwnnzwz1L/InuB2smwt9m25hmywPHSzW5kv9zix9NGm0y195E8KsEOfYGSJoMj9WJXmfZtwHNRPC1XgE+Lkgxr0bkdiHQ0BhikbPtYntLy9HAs8xnFZrkIIyOkyZFqfxu4z7YanHOjFSrAjKSNAgVRII2AVoc8nA5M4eZQXXzFrNCkAuJXLfCCKQjd/YrLzn+HtMJ/kX+cbDL+xQ1DDov93aQ1qGa/XWGsI4U3JlHgZwgXyFpMok8I27FgPcFadFiW9H4rxvItOQpoIAW9qbe4wLN1OrJRhGVYgWv7FB33LFZE3pv69ikRxsD3OxdYtQy1PSPpYF+1fKzdEMzZlJM3JzW1f6225tLHSKCIqK24biO5115q6Jc0pozSwKANuX7+0Nn2tFf+m66uKHon4yDsAbqbNXYjg+rA9l78KmzA0PGfe+2Z4vw+nZleTsNaT34pXE8T/DAbN01MSaBBpSN6MecFgL1e6m8=";
         //mot de passe
-        //String password = "facile";
+        //String password = "cigarette";
         //mot de passe crypté
-        
+        //String cry = hashPassword(password).get();
         //String passwordHash = key.get();
-        //System.out.println("mdp = " + password);
-        //System.out.println("mdp crypté = " + passwordHash);
         //System.out.println(verifyPassword(password, key, SALT));
         //System.out.println(verifyPassword("jeanmariepauline09876", key, salt));
         //password = "p2FmZ+q0suJhllDAIZKFK70A5Z91nF2zwWJLUVO5K6jlUWxlCmmOx1LYgrmKXRiL5F8EbnWvsJKEbLnfNaUZZw==";
@@ -60,8 +58,18 @@ public class Cryptage {
         //key = hashPassword(password, SALT).get();
         //System.out.println("mdp=\n" + key);
         //String SALT = "kXnMRShQyt02lLrY5UOQwaRPJEXR4BRquS6V8Jnqkxd/ifIdMWOL/+G3bqhxCYrJadNB4JP9YoGxJTopwN6XU7pWgnxWZ5jvlSnsx4RohM5HTn6QVBB3dewc++B9ZWGL416KkuoqPISCfO9Ihtq2mdPZ3wEMi2ZzLD948QCANXuiNHrmwGC+Oyk9MworVH+g2bFuPW2htFZwnnzwz1L/InuB2smwt9m25hmywPHSzW5kv9zix9NGm0y195E8KsEOfYGSJoMj9WJXmfZtwHNRPC1XgE+Lkgxr0bkdiHQ0BhikbPtYntLy9HAs8xnFZrkIIyOkyZFqfxu4z7YanHOjFSrAjKSNAgVRII2AVoc8nA5M4eZQXXzFrNCkAuJXLfCCKQjd/YrLzn+HtMJ/kX+cbDL+xQ1DDov93aQ1qGa/XWGsI4U3JlHgZwgXyFpMok8I27FgPcFadFiW9H4rxvItOQpoIAW9qbe4wLN1OrJRhGVYgWv7FB33LFZE3pv69ikRxsD3OxdYtQy1PSPpYF+1fKzdEMzZlJM3JzW1f6225tLHSKCIqK24biO5115q6Jc0pozSwKANuX7+0Nn2tFf+m66uKHon4yDsAbqbNXYjg+rA9l78KmzA0PGfe+2Z4vw+nZleTsNaT34pXE8T/DAbN01MSaBBpSN6MecFgL1e6m8=";
+        String password = "wimbled";
+        String cry = hashPassword(password).get();
+        System.out.println("mdp = " + password);
+        System.out.println("mdp crypté = " + cry);
+        
+        password = "terrains";
+        cry = hashPassword(password).get();
+        System.out.println("mdp = " + password);
+        System.out.println("mdp crypté = " + cry);
         
         
+        /*
         String myDataBasePassword = "Retour";
         System.out.println("mdp = "+myDataBasePassword);
         String cry=cryptage(myDataBasePassword);
@@ -72,7 +80,7 @@ public class Cryptage {
         System.out.println("mdp = "+myDataBasePassword);
         cry=cryptage(myDataBasePassword);
         System.out.println("mdp crypte = "+cry);
-        System.out.println("mdp decrypte = "+decryptage(cry));
+        System.out.println("mdp decrypte = "+decryptage(cry));*/
         /*
         myDataBasePassword = "Garcin";
         System.out.println("mdp = "+myDataBasePassword);
@@ -103,8 +111,8 @@ public class Cryptage {
      * @param salt
      * @return mot de passe crypté
      */
-    public static Optional<String> hashPassword(String password, String salt) {
-
+    public static Optional<String> hashPassword(String password) {
+        String salt = "r9ZYeoCR2VSDGVf0M+oYYQ==";
         char[] chars = password.toCharArray();
         byte[] bytes = salt.getBytes();
 
@@ -151,8 +159,8 @@ public class Cryptage {
      * @param salt
      * @return vrai si le mot de passe est bon
      */
-    public static boolean verifyPassword(String password, String key, String salt) {
-        Optional<String> optEncrypted = hashPassword(password, salt);
+    public static boolean verifyPassword(String password, String key) {
+        Optional<String> optEncrypted = hashPassword(password);
         if (!optEncrypted.isPresent()) {
             return false;
         }

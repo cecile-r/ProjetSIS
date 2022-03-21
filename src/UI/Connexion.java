@@ -5,6 +5,7 @@
  */
 package UI;
 
+import HL7.HL7_SIH;
 import database.DatabaseAccessProperties;
 import database.SQLWarningsExceptions;
 import java.awt.Color;
@@ -259,7 +260,8 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(this, "Identifiant ou mot de passe incorrect", "Attention", JOptionPane.WARNING_MESSAGE);
                 jPasswordField1.setText("");
             }
@@ -333,6 +335,9 @@ public class Connexion extends javax.swing.JFrame {
                     // Get a connection to the database
                     Connection conn = DriverManager.getConnection(dbUrl, username, password);
                     SQLWarningsExceptions.printWarnings(conn);
+
+                    HL7_SIH hl = new HL7_SIH(conn, 4445);
+                    hl.recuperationDonnees();
 
                     Connexion i;
                     i = new Connexion(conn);

@@ -12,6 +12,7 @@ import static database.RequetesBDDPI.creerNouveauDPI;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIFerme;
+import static database.RequetesBDDPI.getListeDPIFermeNom;
 import static database.RequetesBDProfessionnels.getListeMT;
 import static database.RequetesBDProfessionnels.getListeMTNom;
 import static database.RequetesBDProfessionnels.getListePH;
@@ -1375,7 +1376,7 @@ public class Accueil_SA extends javax.swing.JFrame {
             TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
             Table_DPI_ferme.setModel(tableModel3);
             Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
-        
+
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1396,6 +1397,20 @@ public class Accueil_SA extends javax.swing.JFrame {
 
     private void jButton_recherche_patientOuvrirDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_patientOuvrirDPIActionPerformed
         //RECHERCHER DANS DPI FERME
+
+        try {
+            String recherche = TextField_Patient1.getText();
+            dpisF = getListeDPIFermeNom(conn, recherche);
+            dpisF = trierDPI(dpisF);
+            dpisFS = getVectorDPIFerme(dpisF);
+            TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+            Table_DPI_ferme.setModel(tableModel3);
+            Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton_recherche_patientOuvrirDPIActionPerformed
 
     private void jComboBox_serviceRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_serviceRActionPerformed
@@ -1446,10 +1461,27 @@ public class Accueil_SA extends javax.swing.JFrame {
             //recup informations
             Service service_responsable = (Service) jComboBox_serviceR.getSelectedItem();
             int indexSelected = Table_DPI_ferme.getSelectedRow();
-            DPI dpi = (DPI) dpisFS.get(indexSelected);
-            //creer lalocalisation
+            DPI dpi = (DPI) dpisF.get(indexSelected);
+
+            //creer la localisation
             try {
-                creerLocalisationSA(conn,dpi.getIPP(),service_responsable);
+                creerLocalisationSA(conn, dpi.getIPP(), service_responsable);
+                JOptionPane.showMessageDialog(this, "Le patient a maintenant une localisation", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+                dpisF = getListeDPIFerme(conn);
+                dpisF = trierDPI(dpisF);
+                dpisFS = getVectorDPIFerme(dpisF);
+                TableModel tableModel3 = new DefaultTableModel(dpisFS, entetes);
+                Table_DPI_ferme.setModel(tableModel3);
+                Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_DPI_ferme.getRowCount()));
+                jComboBox_serviceR.setSelectedIndex(-1);
+
+                //patients 
+                dpis = getListeDPI(conn);
+                dpis = trierDPI(dpis); //tri par ordre alphabétique
+                dpisS = getVectorDPI(dpis); //vecteur tableau
+                TableModel tableModel = new DefaultTableModel(dpisS, entetes);
+                Table_Vue_Generale1.setModel(tableModel);
             } catch (SQLException ex) {
                 Logger.getLogger(Accueil_SA.class.getName()).log(Level.SEVERE, null, ex);
             }
