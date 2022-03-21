@@ -1436,11 +1436,11 @@ public class Accueil_SA extends javax.swing.JFrame {
             try {
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
+                //Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                //int longueur = tailleMoniteur.width;
+                //int hauteur = tailleMoniteur.height;
                 Vue_Patient_SA i = new Vue_Patient_SA(conn, dpi, sa);
-                i.setSize(longueur, hauteur);
+                //i.setSize(longueur, hauteur);
                 i.setVisible(true);
                 dispose();
 
