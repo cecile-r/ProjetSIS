@@ -3,15 +3,15 @@ package nf;
 import java.util.Date;
 import static nf.DateHeure.convertirDateHeuretoString;
 
-public class Prescription implements Evaluable{
+public class PrescriptionTemp implements Evaluable{
     private DateHeure date_presciption;
     private String observation;
     private TypeExamen typeExamen;
     private String medicament;
     private PH pH;
-    private DPI DPI;
+    private DPITemporaire DPI;
     
-    public Prescription(DateHeure date_presciption,String observation, TypeExamen typeExamen, String medicament){
+    public PrescriptionTemp(DateHeure date_presciption,String observation, TypeExamen typeExamen, String medicament){
         this.date_presciption = date_presciption;
         this.observation=observation;
         this.typeExamen=typeExamen;
@@ -162,15 +162,15 @@ public class Prescription implements Evaluable{
     /**
      * @return the DPI
      */
-    public DPI getDPI() {
+    public DPITemporaire getDPI() {
         return DPI;
     }
 
     /**
      * @param DPI the DPI to set
      */
-    public void setDPI(DPI DPI) {
+    public void setDPI(DPITemporaire DPI) {
         this.DPI = DPI;
     }
-    
+
 }

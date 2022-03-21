@@ -35,6 +35,10 @@ import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getPH;
 import static database.RequetesBDUrgences.creerDPITemporaire;
+import static database.RequetesBDUrgences.creerExamenTemp;
+import static database.RequetesBDUrgences.creerFicheDeSoinsTemp;
+import static database.RequetesBDUrgences.creerPrescriptionTemp;
+import static database.RequetesBDUrgences.fusionDPI;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static java.lang.String.valueOf;
@@ -134,8 +138,10 @@ class ConnexionSGBD {
             Examen exam = new Examen(TypeExamen.imagerie_par_resonance_magnetique, "tout va bien, rien a signaler", d2);
             
             Date dn1 = new Date(1975,5,25);
+            Date dateNai = new Date(1990,1,5);
             //DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
             DPI dpi1 = new DPI("5555888800","Lespagnol","Mikael",dn1,Sexe.homme,"25 rue de la soif, Madrid","0644445555",m2,dma1,dm1);
+            DPITemporaire dpit = new DPITemporaire("1100000011", "Retour", "Osurgences", dateNai, ph_urgence);
             
             //ph1.ajouterFicheDeSoins(fs1);
             //fs1.setDPI(dpi1);
@@ -388,12 +394,12 @@ class ConnexionSGBD {
             
             
             //Test getListeTousDPI() -> VALIDE
-            System.out.println(getListeTousDPI(conn));
+            /*System.out.println(getListeTousDPI(conn));
             List<DPI> ldpi = getListeTousDPI(conn);
             for (int i = 0; i < ldpi.size(); i++){
                 System.out.println("\n Dossier Patient Informatisé " + i + " :\n");
                 System.out.println(ldpi.get(i).toString());
-            }
+            }*/
             
             
             // Test getVectorTousDPI() -> VALIDE
@@ -578,10 +584,45 @@ class ConnexionSGBD {
             
             //Test getIPPPatient(nom, prenom, dateNaissance) -> VALIDE
             //System.out.println(getIPPPatient(conn, "ronflex", "perle", d));
+            //Date duv = new Date(1977, 7, 30);
+            //System.out.println(getIPPPatient(conn, "lampe", "uv", duv));
             
             
             //Test getListeDPIFermeNom(nom) -> VALIDE
             //System.out.println(getListeDPIFermeNom(conn, "man"));
+            
+            
+            //Test creerFicheDeSoinsTemp(fiche) -> A TESTER
+            Acte at1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
+            Acte at2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
+          
+            DateHeure dht1 = new DateHeure(2022,3,9,11,00);
+            FicheDeSoinsTemp fst1 = new FicheDeSoinsTemp(dht1);
+            fst1.setpH(ph_urgence);
+            fst1.ajouterActe(at1);
+            fst1.ajouterActe(at2);
+            fst1.setDPI(dpit);
+            creerFicheDeSoinsTemp(conn, fst1);
+            
+            
+            //Test creerPrescriptionTemp(prescription) -> A TESTER
+            DateHeure dht2 = new DateHeure(2022,3,9,13,00);
+            PrescriptionTemp pt1 = new PrescriptionTemp(dht2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
+            pt1.setpH(ph_urgence);
+            pt1.setDPI(dpit);
+            creerPrescriptionTemp(conn,pt1);
+            
+            
+            //Test creerExamenTemp(examen) -> A TESTER
+            DateHeure dht3 = new DateHeure(2022,3,9,14,00);
+            ExamenTemp examt = new ExamenTemp(TypeExamen.imagerie_par_resonance_magnetique, "tout va bien, rien a signaler mais surveiller", dht3);
+            examt.setPh(ph_urgence);
+            examt.setDPI(dpit);
+            creerExamenTemp(conn, examt);
+            
+            
+            //Test fusionDPI(dpit) -> 
+            //fusionDPI(conn, dpit);
             
             
             //Print information about connection warnings
