@@ -26,6 +26,7 @@ import nf.PH;
 import nf.Service;
 import nf.Sexe;
 import static database.RequetesBDConversion.convertDateJavaEnSQL;
+import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestampJAVA;
 import static database.RequetesBDDPI.creerActe;
 import static database.RequetesBDDPI.creerExamen;
@@ -135,9 +136,10 @@ public class RequetesBDUrgences {
         return vDPIOuvert;
     }
 
-    //Fusionne les DPI si le DPI des urgences existe déjà au CHU, sinon crée le DPI du patient
-    //
-    public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
+    //Renvoie true si le dpi existe déjà, sinon renvoie false
+    //VALIDE
+    public static boolean dpiExiste(Connection conn, DPITemporaire dpit) throws SQLException {
+        boolean exist = false;
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI "
                 + "WHERE UPPER(nom_DPI) = UPPER(?) AND UPPER(prenom_DPI) = UPPER(?) AND date_de_naissance = ?");
@@ -146,77 +148,84 @@ public class RequetesBDUrgences {
         stmt.setDate(3, convertDateJavaEnSQL(dpit.getDate_naissance()));
         ResultSet rs = stmt.executeQuery();
 
-        //Si un DPI correspond à ce DPI Temporaire -> fusion des DPI
         if (rs.next()) {
-            //FICHES DE SOINS
-            PreparedStatement stmtf = null;
-            stmtf = conn.prepareStatement("SELECT * FROM FichesDeSoins_temporaire "
-                    + "WHERE IPP = ?");
-            stmtf.setString(1, dpit.getIPP());
-            ResultSet rsf = stmtf.executeQuery();
-            while (rsf.next()) { //Parcours des fiches de soins temporaires
-                //Ajout de la fiche de soin dans la table FichesDeSoins
-                //FicheDeSoins creer avec la fct
-                /*PreparedStatement stmt2 = null;
-                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins VALUES()");
-                stmt2.setString(1, rs.getString("IPP"));
-                stmt2.setString(2, dpit.getIPP());
-                stmt2.executeUpdate();
-                stmt2.close();*/
-                //Suppression de la fiche dans FichesDeSoins_temporaire
-            }
+            exist = true;
+        }
 
-            //PRESCRIPTIONS
-            PreparedStatement stmtp = null;
-            stmtp = conn.prepareStatement("SELECT * FROM Prescription "
-                    + "WHERE IPP = ?");
-            stmtp.setString(1, dpit.getIPP());
-            ResultSet rsp = stmtp.executeQuery();
-            while (rsp.next()) { //parcours des prescriptions du DPI temporaire
-                //Modifier l'IPP du patient sur la prescription pour le remplacer par son IPP réel
-                PreparedStatement stmt3 = null;
-                stmt3 = conn.prepareStatement("UPDATE Prescription SET IPP = ? WHERE IPP = ?");
-                stmt3.setString(1, rs.getString("IPP"));
-                stmt3.setString(2, dpit.getIPP());
-                stmt3.executeUpdate();
-                stmt3.close();
-            }
+        return exist;
+    }
 
-            //EXAMENS
-            PreparedStatement stmte = null;
-            stmte = conn.prepareStatement("SELECT * FROM Examen "
-                    + "WHERE IPP = ?");
-            stmte.setString(1, dpit.getIPP());
-            ResultSet rse = stmte.executeQuery();
-            while (rse.next()) { //parcours des prescriptions du DPI temporaire
-                //Modifier l'IPP du patient sur la prescription pour le remplacer par son IPP réel
-                PreparedStatement stmt4 = null;
-                stmt4 = conn.prepareStatement("UPDATE Examen SET IPP = ? WHERE IPP = ?");
-                stmt4.setString(1, rs.getString("IPP"));
-                stmt4.setString(2, dpit.getIPP());
-                stmt4.executeUpdate();
-                stmt4.close();
-            }
+    //Fusionne les DPI si le DPI des urgences existe déjà au CHU
+    //
+    public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
+        //FICHES DE SOINS
+        PreparedStatement stmtf = null;
+        stmtf = conn.prepareStatement("SELECT * FROM FichesDeSoins_temporaire "
+                + "WHERE IPP = ?");
+        stmtf.setString(1, dpit.getIPP());
+        ResultSet rsf = stmtf.executeQuery();
+        while (rsf.next()) { //Parcours des fiches de soins temporaires
+            //Ajout de la fiche de soin dans la table FichesDeSoins
+            FicheDeSoins f = new FicheDeSoins(convertTimestampSQLenJava(rsf.getTimestamp("dateHeure_FichesDeSoins")));
+            
+            //Suppression de la fiche dans FichesDeSoins_temporaire
+        }
 
-            //Suppression du DPI temporaire
-            PreparedStatement stmt2 = null;
-            stmt2 = conn.prepareStatement("DELETE FROM DPI_temporaire WHERE IPP = ?");
-            stmt2.setString(1, dpit.getIPP());
-            stmt2.executeUpdate();
-            stmt2.close();
-        } 
-        
-        else { //Le DPIT n'existe pas -> création d'un DPI
+        //PRESCRIPTIONS
+        PreparedStatement stmtp = null;
+        stmtp = conn.prepareStatement("SELECT * FROM Prescription "
+                + "WHERE IPP = ?");
+        stmtp.setString(1, dpit.getIPP());
+        ResultSet rsp = stmtp.executeQuery();
+        while (rsp.next()) { //parcours des prescriptions du DPI temporaire
+            //Modifier l'IPP du patient sur la prescription pour le remplacer par son IPP réel
+            PreparedStatement stmt3 = null;
+            stmt3 = conn.prepareStatement("UPDATE Prescription SET IPP = ? WHERE IPP = ?");
+            stmt3.setString(1, rs.getString("IPP"));
+            stmt3.setString(2, dpit.getIPP());
+            stmt3.executeUpdate();
+            stmt3.close();
+        }
+
+        //EXAMENS
+        PreparedStatement stmte = null;
+        stmte = conn.prepareStatement("SELECT * FROM Examen "
+                + "WHERE IPP = ?");
+        stmte.setString(1, dpit.getIPP());
+        ResultSet rse = stmte.executeQuery();
+        while (rse.next()) { //parcours des prescriptions du DPI temporaire
+            //Modifier l'IPP du patient sur la prescription pour le remplacer par son IPP réel
+            PreparedStatement stmt4 = null;
+            stmt4 = conn.prepareStatement("UPDATE Examen SET IPP = ? WHERE IPP = ?");
+            stmt4.setString(1, rs.getString("IPP"));
+            stmt4.setString(2, dpit.getIPP());
+            stmt4.executeUpdate();
+            stmt4.close();
+        }
+
+        //Suppression du DPI temporaire
+        PreparedStatement stmt2 = null;
+        stmt2 = conn.prepareStatement("DELETE FROM DPI_temporaire WHERE IPP = ?");
+        stmt2.setString(1, dpit.getIPP());
+        stmt2.executeUpdate();
+        stmt2.close();
+    }
+
+    
+    
+
+    else { //Le DPIT n'existe pas -> création d'un DPI
             //creer nouveau DPI
         }
         
-        rs.close();
-        stmt.close();
-    }
+    rs.close ();
 
-    //Creer une fiche de soins d'urgence (temporaire) et l'ajouter dans la base de données
-    //
-    public static void creerFicheDeSoinsTemp(Connection conn, FicheDeSoinsTemp fiche) throws SQLException {
+    stmt.close ();
+}
+
+//Creer une fiche de soins d'urgence (temporaire) et l'ajouter dans la base de données
+//
+public static void creerFicheDeSoinsTemp(Connection conn, FicheDeSoinsTemp fiche) throws SQLException {
 
         for (int i = 0; i < fiche.getActe().size(); i++) {
             PreparedStatement stmt2 = null;
