@@ -18,18 +18,18 @@ public class DPITemporaire {
     private String nom;
     private String prenom;
     private Date date_naissance;
-    private List <FicheDeSoins> liste_f;
-    private List <Prescription> liste_p;
-    private List <Examen> liste_e;
+    private List <FicheDeSoinsTemp> liste_f;
+    private List <PrescriptionTemp> liste_p;
+    private List <ExamenTemp> liste_e;
     
     public DPITemporaire(String IPP, String nom, String prenom, Date date_naissance){
         this.IPP = IPP;
         this.nom = nom;
         this.prenom = prenom;
         this.date_naissance = date_naissance;
-        List <FicheDeSoins> liste_f = new ArrayList();
-        List <Prescription> liste_p = new ArrayList();
-        List <Examen> liste_e = new ArrayList();
+        List <FicheDeSoinsTemp> liste_f = new ArrayList();
+        List <PrescriptionTemp> liste_p = new ArrayList();
+        List <ExamenTemp> liste_e = new ArrayList();
     }
 
     @Override
@@ -100,43 +100,53 @@ public class DPITemporaire {
     /**
      * @return the liste_f
      */
-    public List <FicheDeSoins> getListe_f() {
+    public List <FicheDeSoinsTemp> getListe_f() {
         return liste_f;
     }
 
     /**
      * @param liste_f the liste_f to set
      */
-    public void setListe_f(List <FicheDeSoins> liste_f) {
+    public void setListe_f(List <FicheDeSoinsTemp> liste_f) {
         this.liste_f = liste_f;
     }
 
     /**
      * @return the liste_p
      */
-    public List <Prescription> getListe_p() {
+    public List <PrescriptionTemp> getListe_p() {
         return liste_p;
     }
 
     /**
      * @param liste_p the liste_p to set
      */
-    public void setListe_p(List <Prescription> liste_p) {
+    public void setListe_p(List <PrescriptionTemp> liste_p) {
         this.liste_p = liste_p;
     }
 
     /**
      * @return the liste_e
      */
-    public List <Examen> getListe_e() {
+    public List <ExamenTemp> getListe_e() {
         return liste_e;
     }
 
     /**
      * @param liste_e the liste_e to set
      */
-    public void setListe_e(List <Examen> liste_e) {
+    public void setListe_e(List <ExamenTemp> liste_e) {
         this.liste_e = liste_e;
     }
+    
+    public void ajouterFicheDeSoins(FicheDeSoinsTemp fs){
+        getListe_f().add(fs);
+   }
+   public void ajouterPrescription(PrescriptionTemp p){
+        getListe_p().add(p);
+   }
+   public void ajouterExamen(ExamenTemp e){
+        getListe_e().add(e);
+   }
     
 }

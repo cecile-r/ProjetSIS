@@ -39,6 +39,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import static nf.Cryptage.getIPPRandom;
+import nf.DPITemporaire;
 import nf.Infirmier;
 
 /**
@@ -665,21 +666,15 @@ public class Accueil_urgences extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
         } else {
 
-            try {
                 int index = Table_Vue_Generale1.getSelectedRow();
-                DPI dpi = getDPI(conn, dpis.get(index).getIPP());
+                //DPITemporaire dpiTemp = getDPI(conn, dpis.get(index).getIPP());
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-                dispose();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+                //Vue_Patient_Med_Urgences i = new Vue_Patient_Med_Urgences(conn,dpiTemp, ph);
+                //i.setSize(longueur, hauteur);
+                //i.setVisible(true);
+                //dispose();
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
 

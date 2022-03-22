@@ -37,6 +37,7 @@ public class Ajout_FS extends javax.swing.JFrame {
     PH ph;
     Infirmier inf;
     DPI dpi;
+    DPITemporaire dpiTemp;
     Connection conn;
     DateHeure dh;
     FicheDeSoins f;
@@ -47,14 +48,14 @@ public class Ajout_FS extends javax.swing.JFrame {
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_FS(Connection conn, PH ph, Infirmier inf, DPI dpi) {
+    public Ajout_FS(Connection conn, PH ph, Infirmier inf, DPI dpi, DPITemporaire dpiTemp) {
         initComponents();
         this.ph = ph;
         this.inf = inf;
         this.dpi = dpi;
-        this.conn=conn;
-        
-        
+        this.dpiTemp = dpiTemp;
+        this.conn = conn;
+
         //date
         LocalDateTime ldt = LocalDateTime.now();
         dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
@@ -65,8 +66,8 @@ public class Ajout_FS extends javax.swing.JFrame {
         f.setDPI(dpi);
         f.setpH(ph);
         f.setInfirmier(inf);
-        this.f=f;
-        
+        this.f = f;
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -467,32 +468,45 @@ public class Ajout_FS extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
- 
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-   
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
         if (ph != null) {
-            try {
-                String IPP = dpi.getIPP();
-                DPI dpi2 = getDPI(conn, IPP);
+            if (dpi != null) {
+                try {
+                    String IPP = dpi.getIPP();
+                    DPI dpi2 = getDPI(conn, IPP);
+                    Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                    int longueur = tailleMoniteur.width;
+                    int hauteur = tailleMoniteur.height;
+                    Vue_Patient_Med i;
+                    i = new Vue_Patient_Med(conn, dpi2, ph);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    dispose();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {//DPI TEMPORAIRE
+                String IPP = dpiTemp.getIPP();
+                //DPITemporaire dpi2 = getDPI(conn, IPP);
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i;
-                i = new Vue_Patient_Med(conn, dpi2, ph);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
+                Vue_Patient_Med_Urgences i;
+                //i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
+                //i.setSize(longueur, hauteur);
+                //i.setVisible(true);
                 dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else {
+        } else { //INFIRMIER
 
             try {
                 String IPP = dpi.getIPP();
@@ -515,19 +529,27 @@ public class Ajout_FS extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //CREER FICHE DE SOINS
-        
-        //f.setActe(actes);
-        
-        dpi.getdM().ajouterFicheDeSoins(f);
-        dpi.getdMA().ajouterFicheDeSoins(f);
 
-        //AJOUT FICHE DE SOINS DANS LA BD
-        try {
-            creerFicheDeSoins(conn,f);
-        } catch (SQLException ex) {
-            Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+        if (dpi != null) {
+            dpi.getdM().ajouterFicheDeSoins(f);
+            dpi.getdMA().ajouterFicheDeSoins(f);
+
+            //AJOUT FICHE DE SOINS DANS LA BD
+            try {
+                creerFicheDeSoins(conn, f);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {//DPI TEMPORAIRE
+            FicheDeSoinsTemp f = new FicheDeSoinsTemp(dh);
+            f.setDPI(dpiTemp);
+            f.setpH(ph);
+            f.setInfirmier(inf);
+            dpiTemp.ajouterFicheDeSoins(f);
+            f.setActe(this.f.getActe());
+            //creerFicheDeSoins(conn, f);
         }
-        
+
         //SORTIE
         jButton9ActionPerformed(evt);
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -567,10 +589,10 @@ public class Ajout_FS extends javax.swing.JFrame {
         } else if (jFormattedTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un coefficient", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jTextField1.getText().length()>100) {
+        } else if (jTextField1.getText().length() > 100) {
             JOptionPane.showMessageDialog(this, "Texte (nom) trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jTextArea1.getText().length()>800) {
+        } else if (jTextArea1.getText().length() > 800) {
             JOptionPane.showMessageDialog(this, "Texte (observation) trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
