@@ -452,7 +452,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 //ENVOYER EN RADIO
                 if (jComboBox2.getSelectedItem() == TypeExamen.radiologie || jComboBox2.getSelectedItem() == TypeExamen.imagerie_par_resonance_magnetique || jComboBox2.getSelectedItem() == TypeExamen.scanner) {
                     try {
-                        HL7_SIH hl = new HL7_SIH(conn, 4444);
+                        HL7_SIH hl = new HL7_SIH(conn, 4444);//4444
                         hl.envoyerDonnees(p);
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);

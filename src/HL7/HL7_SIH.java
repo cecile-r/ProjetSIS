@@ -78,7 +78,7 @@ public class HL7_SIH {
 
         // insertion du code du bouton connexion
         ClientHL7 c = new ClientHL7();
-        c.connexion("192.168.43.182", 4444);
+        c.connexion("localhost", 4445);//4444
         switch (this.nbr) {
             case 0: {
                 c.admit(patient);
