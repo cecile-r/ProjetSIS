@@ -34,12 +34,14 @@ import static database.RequetesBDDPI.getListeDPI;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
+import static database.RequetesBDDPI.*;
+import static database.RequetesBDProfessionnels.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import static nf.Cryptage.getIPPRandom;
-import nf.DPITemporaire;
-import nf.Infirmier;
+import nf.*;
+import static UI.Vector.*;
 
 /**
  *

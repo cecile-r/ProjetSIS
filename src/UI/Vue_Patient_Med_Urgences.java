@@ -5,14 +5,9 @@
  */
 package UI;
 
-import HL7.HL7_SIH;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
@@ -23,33 +18,18 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import nf.Acte;
-import static nf.Checker.convertirDatetoString;
 import nf.*;
 import static nf.ComparaisonEvaluables.trierEvaluables;
-import database.DatabaseAccessProperties;
-import java.text.DecimalFormat;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import static nf.Checker.getVectorSoinsQuotidien;
-import static nf.Checker.getVectorSoinsQuotidienPH;
-import static nf.ComparaisonEvaluables.trierEvaluables;
+import static nf.Date2.convertirDatetoString;
 import static nf.DateHeure.convertirDateHeuretoString;
-import static nf.DateHeure.estApresDateCourante;
 
 public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
 
@@ -80,7 +60,7 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         //infos du patient
         jLabel10.setText(dpi.getNom());
         jLabel11.setText(dpi.getPrenom());
-        String dN = nf.Checker.convertirDatetoString(dpi.getDate_naissance());
+        String dN = convertirDatetoString(dpi.getDate_naissance());
         jLabel13.setText(dN);
 
         //images

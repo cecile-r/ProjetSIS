@@ -185,7 +185,7 @@ public class PH {
         rendezVous.add(rdv);
     }
 
-    int compareTo(PH ph) {
+    public int compareTo(PH ph) {
         return getNomPH().compareTo(ph.getNomPH());
     }
     

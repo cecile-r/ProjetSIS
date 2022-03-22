@@ -1,3 +1,8 @@
+/**
+ *
+ * @author garci
+ */
+
 package nf;
 
 public enum Code {
@@ -26,8 +31,8 @@ public enum Code {
     
     /** 
      * 
-     * @param coefficient
-     * @return le prix pour un coefficient donne 
+     * @param coefficient --> coefficient pour le calcul de cout
+     * @return le prix pour un coefficient donné
      */
     public double calculerCout(int coefficient) {
         return coefficient * getCout();
@@ -39,39 +44,12 @@ public enum Code {
      * 
      * @return une chaine de caractères sous la forme code : ... , cout = ... euros
      */
+    @Override
     public String toString() {
         return super.toString() + " : " + getLibelle() + ", cout=" + getCout() + " euros";
         }
     
-    
-    
-    public String toString2(Code code){
-    	if(null != code)switch (code) {
-            case CS:
-                return "CS";
-            case CSC:
-                return "CSC";
-            case FP:
-                return "FP";
-            case KC:
-                return "KC";
-            case ORT:
-                return "ORT";
-            case KE:
-                return "KE";
-            case K:
-                return "K";
-            case KFA:
-                return "KFA";
-            case KFB:
-                return "KFB";
-            case PRO:
-                return "PRO";
-            default:
-                break;
-        }
-    	return null;
-	}
+   
 
     /**
      * @return the libelle

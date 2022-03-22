@@ -204,7 +204,7 @@ public class DPI {
         this.dM = dM;
     }
 
-    int compareTo(DPI dpi) {
+    public int compareTo(DPI dpi) {
         return getNom().compareTo(dpi.getNom());
     }
     

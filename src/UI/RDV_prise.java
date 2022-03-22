@@ -18,15 +18,13 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import nf.*;
-import static nf.Checker.getVectorPHRDV;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import static nf.Checker.convertirDatetoString;
-import static nf.DateHeure.estApresDateCourante;
+import static UI.Vector.*;
 
 /**
  *

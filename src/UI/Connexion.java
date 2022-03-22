@@ -336,8 +336,8 @@ public class Connexion extends javax.swing.JFrame {
                     Connection conn = DriverManager.getConnection(dbUrl, username, password);
                     SQLWarningsExceptions.printWarnings(conn);
 
-                    HL7_SIH hl = new HL7_SIH(conn, 4445);
-                    hl.recuperationDonnees();
+                    //HL7_SIH hl = new HL7_SIH(conn, 6502);//4445
+                    //hl.recuperationDonnees();
 
                     Connexion i;
                     i = new Connexion(conn);

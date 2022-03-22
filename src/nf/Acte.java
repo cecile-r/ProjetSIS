@@ -1,13 +1,27 @@
+/**
+ *
+ * @author garci
+ */
+
 package nf;
 
 public class Acte {
+
     private String nomA;
     private Type type;
     private Code code;
     private int coeff;
     private String observation;
-//    private int idActe;
 
+    /**
+     * Constructeur -> creer un acte
+     *
+     * @param nomA  --> nom de l'acte
+     * @param type --> type d'acte
+     * @param code --> code de l'acte
+     * @param coeff --> coefficient de l'acte
+     * @param observation --> observation quelconque 
+     */
     public Acte(String nomA, Type type, Code code, int coeff, String observation) {
         this.nomA = nomA;
         this.type = type;
@@ -16,34 +30,40 @@ public class Acte {
         this.observation = observation;
 
     }
-    
+
+    /**
+     * Calcule le cout d'un acte
+     *
+     * @return double
+     */
     public double cout() {
-      return getCode().calculerCout(getCoeff());
+        return getCode().calculerCout(getCoeff());
     }
-    
-        /**
-     * @return une chaine de caractère avec nom, prenom, code, coefficient , type, observation
-     * */
+
+    /**
+     * Réécriture toString Retourne une chaine de caractere de la forme nom,
+     * code, coefficient, type, observation
+     *
+     * @return String
+     */
     @Override
     public String toString() {
         return "         Nom : " + getNomA() + "\n         Code : " + getCode().toString() + "\n         Coefficient : " + getCoeff() + "\n         Type : " + getType() + "\n         Observation : " + getObservation();
     }
 
     /**
-     * @return une chaine de caractère avec code, coefficient , type, observation
+     * Retour la chaine de caractere qui affiche l'acte pour le DMA
+     * Avec les restrictions d'affichage appliquées au DMA
+     *
+     * @return String
      */
-    
-    public String toString2() {
-        return getCode().toString() + " Coefficient : " + getCoeff() + " Type : " + getType() + " Observation : " + getObservation();
-    }
-    
     public String toStringDMA() {
         return "         Nom : " + getNomA() + "\n";
     }
 
-
     /**
-     * @return the nomA
+     * 
+     * @return String
      */
     public String getNomA() {
         return nomA;

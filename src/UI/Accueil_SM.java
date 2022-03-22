@@ -5,20 +5,11 @@
  */
 package UI;
 
-import HL7.HL7_SIH;
 import database.DatabaseAccessProperties;
-import static database.RequetesBDDPI.getDPI;
-import static database.RequetesBDDPI.getListeDPI;
-import static database.RequetesBDDPI.getListeDPIEntrantService;
-import static database.RequetesBDDPI.getListeDPIEntrantServiceNom;
-import static database.RequetesBDDPI.getListeDPIFerme;
-import static database.RequetesBDDPI.getListeDPIService;
-import static database.RequetesBDDPI.listeRendezVous;
-import static database.RequetesBDDPI.modifierLocalisationSM;
+import static database.RequetesBDDPI.*;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
 import database.SQLWarningsExceptions;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -44,16 +35,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import static nf.Checker.*;
 import static nf.ComparaisonEvaluables.trierEvaluablesParDate;
-import nf.DPI;
-import nf.Evaluable;
-import nf.FicheDeSoins;
-import nf.Lit;
-import nf.RendezVous;
-import nf.SecretaireMedicale;
-import nf.Service;
+import nf.*;
+import static UI.Vector.*;
+import static nf.Date2.convertirDatetoString;
 
 /**
  *
