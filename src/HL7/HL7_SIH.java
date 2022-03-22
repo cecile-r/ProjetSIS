@@ -77,7 +77,7 @@ public class HL7_SIH {
 
         // insertion du code du bouton connexion
         ClientHL7 c = new ClientHL7();
-        c.connexion("localhost", 4444);
+        c.connexion("172.20.10.5", 6504);//4444
         switch (this.nbr) {
             case 0: {
                 c.admit(patient);
@@ -133,7 +133,8 @@ public class HL7_SIH {
      * @param DPI 
      */
     private void creerPatient(DPI dpi) { // peut etre une erreur ici
-        Integer id = Integer.parseInt(dpi.getIPP());
+        //Integer id = Integer.parseInt(dpi.getIPP());
+        Integer id = 1;
         this.patient = new Patient(id, dpi.getNom(), 'U');
 
     }
