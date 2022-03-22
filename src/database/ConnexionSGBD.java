@@ -17,6 +17,7 @@ import nf.*;
 import database.*;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
+import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.creerLocalisationSA;
 import static database.RequetesBDDPI.fermerDPI;
 import static database.RequetesBDDPI.getIPPPatient;
@@ -37,6 +38,8 @@ import static database.RequetesBDDPI.listeFichesDeSoins;
 import static database.RequetesBDDPI.listePrescription;
 import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getPH;
+import static database.RequetesBDProfessionnels.getPHNomPrenom;
+import static database.RequetesBDUrgences.creerActeTemp;
 import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.creerExamenTemp;
 import static database.RequetesBDUrgences.creerFicheDeSoinsTemp;
@@ -96,6 +99,7 @@ class ConnexionSGBD {
             MedecinTraitant m = new MedecinTraitant("bruce.batman@yahoo.com", "Batman", "Bruce", "0696471245");
             MedecinTraitant m1 = new MedecinTraitant("doctor.octopus@gmail.com", "Docteur", "Octopus", "0696874523");
             MedecinTraitant m2 = new MedecinTraitant("paul.morin@gmail.com", "Morin", "Paul", "0688822222");
+            MedecinTraitant m3 = new MedecinTraitant("jamela.culture@gmail.com", "Culture", "Jamela", "0677777777");
             Infirmier inf1 = new Infirmier("totorocec","Totoro","Cecile",Service.Unite_de_soins_intensifs_respiratoires,"dessin");
             PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"cannabis","0433322233","Specialiste en substances psychoactives");
             PH ph2 = new PH("nadalraf","Nadal","Rafael",Service.Neurologie,"grosbras","0611111111","Neurologue");
@@ -122,11 +126,14 @@ class ConnexionSGBD {
             fs2.setInfirmier(inf1);
             fs2.ajouterActe(a2);
             
-            DateHeure dT = new DateHeure(2022,3,23,14,00);
+            DateHeure dT = new DateHeure(2022,3,22,14,00);
             FicheDeSoins fs3 = new FicheDeSoins(dT);
             PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
-            fs3.setpH(ph_urgence);
+            fs3.setpH(ph2);
             fs3.ajouterActe(a1);
+            //Date datedi = new Date(1980, 7, 26);
+            //DPI di = new DPI("3333444411","Petit","Aurore",datedi,Sexe.femme,"10 rue des tilleuls, Mayotte","0677067706",m2,dma1,dm1);
+            //fs3.setDPI(di);
             
             Prescription p1 = new Prescription(d2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             Prescription p2 = new Prescription(d1,"Faire ultrasons au patient, attention epaule droite",TypeExamen.ultrasons,null);
@@ -156,6 +163,8 @@ class ConnexionSGBD {
             //ph1.ajouterFicheDeSoins(fs1);
             //fs1.setDPI(dpi1);
             //fs2.setDPI(dpi1);
+            fs3.setDPI(dpi1);
+            creerFicheDeSoins(conn, fs3);
             //p1.setDPI(dpi1);
             //p2.setDPI(dpi1);
             //p1.setpH(ph1);
@@ -574,8 +583,12 @@ class ConnexionSGBD {
             //DPITemporaire dpit = new DPITemporaire("9977554466", "Palmito", "Juan", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpit);
             
-            Date dn = new Date(1999,8,26);
-            DPITemporaire dpitu = new DPITemporaire("9538539548", "Eclair", "Pika", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            //Date dn = new Date(1999,8,26);
+            //DPITemporaire dpitu = new DPITemporaire("9538539548", "Eclair", "Pika", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            //creerDPITemporaire(conn, dpitu);
+            
+            Date dn = new Date(2000,12,20);
+            DPITemporaire dpitu = new DPITemporaire("1000054276", "Pouet", "Goku", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpitu);
             
             //Date dn2 = new Date(1999,8,26);
@@ -607,23 +620,28 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoinsTemp(fiche) -> VALIDE
-            Acte at1 = new Acte("prise de sang",Type.therapeutique,Code.KE,2, "Realisee avec succes");
+            Acte at1 = new Acte("prise de sang",Type.therapeutique,Code.KE,2, "RAS");
             Acte at2 = new Acte("changement pansement",Type.diagnostic,Code.CSC,1, "Cicatrisation normale");
           
-            DateHeure dht1 = new DateHeure(2022,3,14,11,00);
+            DateHeure dht1 = new DateHeure(2022,3,18,16,00);
             FicheDeSoinsTemp fst1 = new FicheDeSoinsTemp(dht1);
             fst1.setpH(ph_urgence);
             fst1.ajouterActe(at1);
             fst1.ajouterActe(at2);
             fst1.setDPI(dpitu);
-            creerFicheDeSoinsTemp(conn, fst1);
+            //creerFicheDeSoinsTemp(conn, fst1);
+            
+            
+            //Test creerActeTemp(acte) -> VALIDE
+            //creerActeTemp(conn, at1);
+            //creerActeTemp(conn, at2);
             
             
             //Test creerPrescriptionTemp(prescription) -> VALIDE
             /*DateHeure dht2 = new DateHeure(2022,3,9,13,00);
             PrescriptionTemp pt1 = new PrescriptionTemp(dht2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             pt1.setpH(ph_urgence);
-            pt1.setDPI(dpit);
+            pt1.setDPI(dpitu);
             creerPrescriptionTemp(conn,pt1);*/
             
             
@@ -631,7 +649,7 @@ class ConnexionSGBD {
             /*DateHeure dht3 = new DateHeure(2022,3,9,14,00);
             ExamenTemp examt = new ExamenTemp(TypeExamen.imagerie_par_resonance_magnetique, "tout va bien, rien a signaler mais surveiller", dht3);
             examt.setPh(ph_urgence);
-            examt.setDPI(dpit);
+            examt.setDPI(dpitu);
             creerExamenTemp(conn, examt);*/
             
             
@@ -641,21 +659,28 @@ class ConnexionSGBD {
             
             //Test affichage dpi temporaire -> VALIDE
             //System.out.println(listeFichesDeSoinsTemporaire(conn, "1100000011"));
-            //System.out.println(listeFichesDeSoinsTemporaire(conn, "9538539548"));
-            //System.out.println(listePrescriptionTemporaire(conn, "1100000011"));
-            //System.out.println(listeExamensTemporaire(conn, "1100000011"));
+            //System.out.println(listeFichesDeSoinsTemporaire(conn, "1000054276"));
+            //System.out.println(listePrescriptionTemporaire(conn, "9538539548"));
+            //System.out.println(listeExamensTemporaire(conn, "9538539548"));
             
             //Test fusionDPI(dpit) -> 
-            //fusionDPI(conn, dpit);
+            //fusionDPI(conn, dpitu);
             //Pour le patient retour osurgence
-            //Fusion faite : fiches de soins, examens et prescriptions bien supprémées des tables temporaires
+            //Fusion faite : fiches de soins, examens et prescriptions bien supprimées des tables temporaires
             //DPI temporaire bien supprimé
-            //System.out.println(listeFichesDeSoins(conn, "5550000555")); //Fiches bien ajoutées MAIS pb actes en double dans la fiche
-            //System.out.println(listePrescription(conn, "5550000555")); //Prescription bien ajoutée  
-            //System.out.println(listeExamens(conn, "5550000555")); //Examen bien ajouté
-                    
+            //System.out.println(listeFichesDeSoins(conn, "9736482920"));
+            //System.out.println(listeFichesDeSoins(conn, "5550000555"));
+            //System.out.println(listePrescription(conn, "9736482920")); //Prescription bien ajoutée  
+            //System.out.println(listeExamens(conn, "9736482920")); //Examen bien ajouté
+            
+            /*System.out.println(dpitu.getNom());
+            System.out.println(dpitu.getPrenom());
+            System.out.println(dpitu.getDate_naissance().toString());
+            System.out.println(getIPPPatient(conn, dpitu.getNom(), dpitu.getPrenom(), dpitu.getDate_naissance()));*/
             
             
+            //Test getPHNomPrenom(nom, prenom) -> VALIDE
+            //System.out.println(getPHNomPrenom(conn, "Fuentes", "Alejandro"));
             
             
             
