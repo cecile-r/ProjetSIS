@@ -236,7 +236,7 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("SA")) {
+                else if (CB_item.equals("SA")) {
                     SecretaireAdministrative sa = userSA(conn, id);
                     Accueil_SA i;
                     i = new Accueil_SA(conn, sa);
@@ -244,7 +244,7 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("SM")) {
+                else if (CB_item.equals("SM")) {
                     SecretaireMedicale sm = userSM(conn, id);
                     Accueil_SM i;
                     i = new Accueil_SM(conn, sm);
@@ -252,7 +252,7 @@ public class Connexion extends javax.swing.JFrame {
                     i.setVisible(true);
                     dispose();
                 }
-                if (CB_item.equals("Inf")) {
+                else if (CB_item.equals("Inf")) {
                     Infirmier inf = userInf(conn, id);
                     Accueil_Inf i;
                     i = new Accueil_Inf(conn, inf);

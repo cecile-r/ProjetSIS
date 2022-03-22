@@ -71,7 +71,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         this.conn = conn;
         this.dpi = dpi;
         this.ph = ph;
-        
+
         //infos identité connexion
         prenom_medecin1.setText(ph.getPrenomPH());
         nom_medecin.setText(ph.getNomPH());
@@ -142,9 +142,15 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         localisation = new Vector();
         Vector localisation1 = new Vector();
         localisation1.add(dpi.getdMA().getLocalisation().getService_responsable().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
-        localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        if (dpi.getdMA().getLocalisation().getService_geographique() != null) {
+            localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
+            localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
+            localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        } else {
+            localisation1.add("/");
+            localisation1.add("/");
+            localisation1.add("/");
+        }
         localisation.add(localisation1);
         TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
         jTable1.setModel(tableModelL);
@@ -856,17 +862,17 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         Vector constantesS = new Vector<>();
         constantesS = getVectorSoinsQuotidienPH(constantes);
         jTable_constantes = new javax.swing.JTable();
-        
+
         TableModel tableModel = new DefaultTableModel(constantesS, entetesC);
         jTable_constantes.setModel(tableModel);
-        
+
         jTable_constantes.getColumnModel().getColumn(0).setPreferredWidth(100);
         jTable_constantes.getColumnModel().getColumn(1).setPreferredWidth(200);
         jTable_constantes.getColumnModel().getColumn(2).setPreferredWidth(50);
         jTable_constantes.getColumnModel().getColumn(3).setPreferredWidth(50);
         jTable_constantes.getColumnModel().getColumn(4).setPreferredWidth(80);
         jTable_constantes.getColumnModel().getColumn(5).setPreferredWidth(600);
-        
+
         jTable_constantes.setPreferredSize(new java.awt.Dimension(3000, 30 * jTable_constantes.getRowCount()));
         jTable_constantes.setDefaultEditor(Object.class, null);
         JScrollPane scrollPane = new JScrollPane(jTable_constantes);
