@@ -37,27 +37,29 @@ public class Ajout_examen extends javax.swing.JFrame {
     //Connection conn;
     PH ph;
     DPI dpi;
+    DPITemporaire dpiTemp;
     Connection conn;
     DateHeure dh;
 
     /**
      * Creates new form Modif_Patient
      */
-    public Ajout_examen(Connection conn, PH ph, DPI dpi) {
+    public Ajout_examen(Connection conn, PH ph, DPI dpi, DPITemporaire dpiTemp) {
         initComponents();
         this.ph = ph;
-        this.conn=conn;
-        this.dpi=dpi;
+        this.conn = conn;
+        this.dpi = dpi;
+        this.dpiTemp = dpiTemp;
 
         //infos identité
         prenom.setText(ph.getPrenomPH());
         nom.setText(ph.getNomPH());
-        
+
         //date
         LocalDateTime ldt = LocalDateTime.now();
         this.dh = new DateHeure(ldt.getYear(), ldt.getMonthValue(), ldt.getDayOfMonth(), ldt.getHour(), ldt.getMinute());
         jLabel3.setText(convertirDateHeuretoString(dh));
-        
+
         //images
         ImageIcon iconeC = new ImageIcon("src/image/logo connexa-modified.png");
         java.awt.Image imgC = iconeC.getImage();
@@ -85,7 +87,7 @@ public class Ajout_examen extends javax.swing.JFrame {
         java.awt.Image img3 = icone3.getImage();
         icone3 = new ImageIcon(img3);
         jButton9.setIcon(icone3);
-        
+
         //Jcomcobox
         DefaultComboBoxModel dbm1 = new DefaultComboBoxModel(TypeExamen.values());
         jComboBox1.setModel(dbm1);
@@ -326,59 +328,68 @@ public class Ajout_examen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         try {
-                String IPP = dpi.getIPP();
-                DPI dpi2 = getDPI(conn, IPP);
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med i;
-                i = new Vue_Patient_Med(conn, dpi2, ph);
-                i.setSize(longueur, hauteur);
-                i.setVisible(true);
-                dispose();
-            } catch (SQLException ex) {
-                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String IPP = dpi.getIPP();
+            DPI dpi2 = getDPI(conn, IPP);
+            Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+            int longueur = tailleMoniteur.width;
+            int hauteur = tailleMoniteur.height;
+            Vue_Patient_Med i;
+            i = new Vue_Patient_Med(conn, dpi2, ph);
+            i.setSize(longueur, hauteur);
+            i.setVisible(true);
+            dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         //CREER EXAMEN        
-        if(champsCorrects()){
+        if (champsCorrects()) {
             String resultats = jTextArea.getText();
             TypeExamen te = (TypeExamen) jComboBox1.getSelectedItem();
-            Examen e =new Examen(te,resultats,dh);
-            e.setDPI(dpi);
-            e.setPh(ph);
-            
-            ///AJOUT BD
-            try {
-                creerExamen(conn,e);
-            } catch (SQLException ex) {
-                Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+            if (dpi != null) {
+                Examen e = new Examen(te, resultats, dh);
+                e.setDPI(dpi);
+                e.setPh(ph);
+
+                ///AJOUT BD
+                try {
+                    creerExamen(conn, e);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{//DPI TEMPORAIRE
+                ExamenTemp e = new ExamenTemp(te, resultats, dh);
+                e.setDPI(dpiTemp);
+                e.setPh(ph);
+
+                ///AJOUT BD
+                //creerExamen(conn, e);
             }
-            
+
             ///REVENIR PAGE PRECEDENTE
             jButton9ActionPerformed(evt);
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public boolean champsCorrects() {
-        
+
         boolean v = true;
         if (jTextArea.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if (jTextArea.getText().length()>800) {
+        } else if (jTextArea.getText().length() > 800) {
             JOptionPane.showMessageDialog(this, "Texte trop long", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
-        }else if(jComboBox1.getSelectedIndex()<0){
+        } else if (jComboBox1.getSelectedIndex() < 0) {
             JOptionPane.showMessageDialog(this, "Merci de sélectionner un examen", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
@@ -414,7 +425,7 @@ public class Ajout_examen extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        /*
+ /*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Infirmier inf1 = new Infirmier("3587492736", "Lo", "Anna", Service.Biologie_clinique, "momodepasse");

@@ -695,7 +695,7 @@ private void jTable2MouseClicked(java.awt.event.MouseEvent evt) throws IOExcepti
         int longueur = tailleMoniteur.width;
         int hauteur = tailleMoniteur.height;
         Ajout_FS i;
-        i = new Ajout_FS(conn, null, inf, dpi);
+        i = new Ajout_FS(conn, null, inf, dpi,null);
         i.setSize(longueur, hauteur);
         i.setVisible(true);
         dispose();
