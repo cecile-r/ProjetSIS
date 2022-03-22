@@ -6,16 +6,12 @@
 package UI;
 
 import database.DatabaseAccessProperties;
-import static database.RequetesBDDPI.getDPI;
-import static database.RequetesBDDPI.modifierDPI;
-import static database.RequetesBDProfessionnels.getListeMT;
-import static database.RequetesBDProfessionnels.getListeMTNom;
+import static database.RequetesBDDPI.*;
+import static database.RequetesBDProfessionnels.*;
 import database.SQLWarningsExceptions;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,10 +24,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.Acte;
-import static nf.Checker.checkerDate;
-import static nf.Checker.convertirDatetoString;
 import nf.*;
-import static nf.Checker.getVectorMT;
+import static UI.Vector.*;
+import static nf.Date2.convertirDatetoString;
 
 /**
  *

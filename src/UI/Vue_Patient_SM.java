@@ -10,20 +10,14 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.fermerDPI;
-import database.SQLWarningsExceptions;
 import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -33,10 +27,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
-import static nf.Checker.convertirDatetoString;
 import static nf.ComparaisonEvaluables.trierEvaluables;
+import static nf.Date2.convertirDatetoString;
 import static nf.DateHeure.convertirDateHeuretoString;
-import static nf.DateHeure.estApresDateCourante;
 
 /**
  *

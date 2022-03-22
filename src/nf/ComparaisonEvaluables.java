@@ -14,7 +14,12 @@ import java.util.Vector;
  */
 public class ComparaisonEvaluables {
     
-    
+    /** 
+     * 
+     * @param o1 --> evaluable 1
+     * @param o2 --> evaluable 2
+     * @return un entier représentant la différence entre les 2 dates 
+     */
     public static int comparer(Evaluable o1, Evaluable o2){
         DateHeure d1= o1.getDateHeure();
         DateHeure d2= o2.getDateHeure();
@@ -22,10 +27,13 @@ public class ComparaisonEvaluables {
     }
     
         
-    /* TRI D'EVALUABLES PAR DATE*/
-     public static List<Evaluable> trierEvaluablesParDate(List<Evaluable> liste) {
+    /** 
+     * 
+     * @param liste --> liste d'evaluables (examen, lettre de sortie, fiche de soins, prescription, constantes, rdv)
+     * @return le prix pour un coefficient donné
+     */
+    public static List<Evaluable> trierEvaluablesParDate(List<Evaluable> liste) {
         Vector<Evaluable> newListe = new Vector<Evaluable>();
-
         while (!liste.isEmpty()) {
             // on cherche la fiche de soins de date minimale :
             int imin = 0;

@@ -62,6 +62,10 @@ public class HL7_SIH {
         c.connection(port);
     }
 
+    /**
+     * envoie les données nécessaires de la prescription dans HL7 pour le SIR
+     * @param Prescription 
+     */
     public void envoyerDonnees(Prescription p) {
         //INFOS PATIENT
         creerPatient(p.getDPI());
@@ -92,7 +96,10 @@ public class HL7_SIH {
         c = new ClientHL7();
     }
 
-    //met les infos de l'examen dans HL7
+    /**
+     * met les informations de la prescription dans HL7 pour le SIR
+     * @param Prescription 
+     */
     private void setInfosPrescription(Prescription p) {
         PatientLocation assignedLocation = new PatientLocation(this.patient);
         this.patient.setAssignedPatLocation(assignedLocation);
@@ -112,18 +119,31 @@ public class HL7_SIH {
 
         //Status --> observation
         String observation = p.getObservation();
-        observation = observation.replaceAll("\n", "");
+        observation = observation.replaceAll("\n","*");
         assignedLocation.setStatus(observation);
+        
+        //Floor --> adresse
+        String adresse = p.getDPI().getAdresse();
+        adresse = adresse.replaceAll("\n","*");
+        assignedLocation.setFloor(adresse);
     }
 
-    //creer le patient dans HL7
+    /**
+     * créer le patient dans HL7 (id,nom,classe)
+     * @param DPI 
+     */
     private void creerPatient(DPI dpi) { // peut etre une erreur ici
         Integer id = Integer.parseInt(dpi.getIPP());
         this.patient = new Patient(id, dpi.getNom(), 'U');
 
     }
 
-    //rentre les infos du patient dans HL7
+    /**
+     * met les informations du patient dans HL7 pour le SIR Prenom, Sexe, Date
+     * de naissance
+     *
+     * @param DPI
+     */
     private void setValPatient(DPI dpi) {
         //prenom
         this.patient.setFirstName(dpi.getPrenom());
@@ -139,12 +159,10 @@ public class HL7_SIH {
         //locPat.setStatus(""); //voir comment ajouter l'observation
     }
 
-    public static java.sql.Date convertDateJavaEnSQL(Date d) {
-        Date dateReelle = new Date(d.getYear() - 1900, d.getMonth() - 1, d.getDate());
-        java.sql.Date dateSQL = new java.sql.Date(dateReelle.getTime());
-        return dateSQL;
-    }
-
+    /**
+     * récupère les données dans HL7 venant du SIR
+     * creer un nouvel examen dans la base données
+     */
     public void recuperationDonnees() {
 
         Timer t = new Timer();

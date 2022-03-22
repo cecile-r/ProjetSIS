@@ -26,21 +26,14 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import static nf.Checker.*;
-import nf.DPI;
-import nf.PH;
-import nf.Service;
-import static database.RequetesBDDPI.IPPexistant;
-import static database.RequetesBDDPI.getDPI;
-import static database.RequetesBDDPI.getListeDPI;
-import static database.RequetesBDDPI.getListeDPIService;
-import static database.RequetesBDProfessionnels.getListePH;
-import static database.RequetesBDProfessionnels.getListePHService;
+import static database.RequetesBDDPI.*;
+import static database.RequetesBDProfessionnels.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import static nf.Cryptage.getIPPRandom;
-import nf.DPITemporaire;
-import nf.Infirmier;
+import nf.*;
+import static UI.Vector.*;
 
 /**
  *

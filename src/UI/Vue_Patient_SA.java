@@ -7,11 +7,6 @@ package UI;
 
 import static database.RequetesBDDPI.archiverDPI;
 import static database.RequetesBDDPI.fermerDPI;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -20,20 +15,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import nf.*;
-import static nf.Checker.convertirDatetoString;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static nf.DateHeure.estApresDateCourante;
+import static nf.Date2.convertirDatetoString;
 
 /**
  *

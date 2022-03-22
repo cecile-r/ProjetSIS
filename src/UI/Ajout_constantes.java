@@ -5,29 +5,22 @@
  */
 package UI;
 
-import static database.RequetesBDDPI.creerLettreSortie;
 import static database.RequetesBDDPI.creerSoinQuotidien;
 import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import nf.*;
-import static nf.Checker.getVectorActes;
 import java.sql.Connection;
 import static nf.DateHeure.convertirDateHeuretoString;
+import static UI.Vector.*;
 
 /**
  *

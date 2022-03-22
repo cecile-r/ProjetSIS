@@ -41,13 +41,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import static nf.Checker.*;
 import static nf.Cryptage.getIPPRandom;
-import nf.DPI;
-import nf.Lit;
-import nf.Localisation;
-import nf.MedecinTraitant;
-import nf.PH;
-import nf.SecretaireAdministrative;
-import nf.Service;
+import nf.*;
+import static UI.Vector.*;
 
 /**
  *

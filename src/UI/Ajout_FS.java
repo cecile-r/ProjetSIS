@@ -5,8 +5,7 @@
  */
 package UI;
 
-import static database.RequetesBDDPI.creerFicheDeSoins;
-import static database.RequetesBDDPI.getDPI;
+import static database.RequetesBDDPI.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.ParseException;
@@ -24,8 +23,8 @@ import nf.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import static nf.Checker.getVectorActes;
 import static nf.DateHeure.convertirDateHeuretoString;
+import static UI.Vector.*;
 
 /**
  *

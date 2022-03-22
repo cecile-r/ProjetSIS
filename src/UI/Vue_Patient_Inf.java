@@ -16,17 +16,14 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import java.sql.Connection;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.lang.System.Logger.Level;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.TableModel;
@@ -34,10 +31,10 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import nf.*;
-import static nf.Checker.getVectorSoinsQuotidien;
 import static nf.ComparaisonEvaluables.trierEvaluables;
-import static nf.ComparaisonEvaluables.trierEvaluablesParDate;
 import static nf.DateHeure.convertirDateHeuretoString;
+import static UI.Vector.*;
+import static nf.Date2.convertirDatetoString;
 
 /**
  *
@@ -73,7 +70,7 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         jLabel10.setText(dpi.getNom());
         jLabel11.setText(dpi.getPrenom());
         jLabel12.setText(dpi.getSexe().toString());
-        String dN = nf.Checker.convertirDatetoString(dpi.getDateNaissance());
+        String dN = convertirDatetoString(dpi.getDateNaissance());
         jLabel13.setText(dN);
 
         //images

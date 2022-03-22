@@ -35,6 +35,7 @@ import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
 import nf.Infirmier;
+import static UI.Vector.*;
 
 /**
  *
