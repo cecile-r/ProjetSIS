@@ -54,7 +54,7 @@ public class HL7_SIH {
     /**
      * Creates new form HL7_SIS
      */
-    public HL7_SIH(Connection conn,int port) throws ClassNotFoundException, SQLException {
+    public HL7_SIH(Connection conn, int port) throws ClassNotFoundException, SQLException {
         this.patient = null;
         this.message = null;
         this.conn = conn;
@@ -64,7 +64,8 @@ public class HL7_SIH {
 
     /**
      * envoie les données nécessaires de la prescription dans HL7 pour le SIR
-     * @param Prescription 
+     *
+     * @param Prescription
      */
     public void envoyerDonnees(Prescription p) {
         //INFOS PATIENT
@@ -77,7 +78,7 @@ public class HL7_SIH {
 
         // insertion du code du bouton connexion
         ClientHL7 c = new ClientHL7();
-        c.connexion("localhost", 4444);
+        c.connexion("192.168.43.182", 4444);
         switch (this.nbr) {
             case 0: {
                 c.admit(patient);
@@ -98,7 +99,8 @@ public class HL7_SIH {
 
     /**
      * met les informations de la prescription dans HL7 pour le SIR
-     * @param Prescription 
+     *
+     * @param Prescription
      */
     private void setInfosPrescription(Prescription p) {
         PatientLocation assignedLocation = new PatientLocation(this.patient);
@@ -119,21 +121,23 @@ public class HL7_SIH {
 
         //Status --> observation
         String observation = p.getObservation();
-        observation = observation.replaceAll("\n","*");
+        observation = observation.replaceAll("\n", "*");
         assignedLocation.setStatus(observation);
-        
+
         //Floor --> adresse
         String adresse = p.getDPI().getAdresse();
-        adresse = adresse.replaceAll("\n","*");
+        adresse = adresse.replaceAll("\n", "*");
         assignedLocation.setFloor(adresse);
     }
 
     /**
      * créer le patient dans HL7 (id,nom,classe)
-     * @param DPI 
+     *
+     * @param DPI
      */
     private void creerPatient(DPI dpi) { // peut etre une erreur ici
-        Integer id = Integer.parseInt(dpi.getIPP());
+        //Integer id = Integer.parseInt(dpi.getIPP());
+        Integer id = 1;
         this.patient = new Patient(id, dpi.getNom(), 'U');
 
     }
@@ -160,12 +164,14 @@ public class HL7_SIH {
     }
 
     /**
-     * récupère les données dans HL7 venant du SIR
-     * creer un nouvel examen dans la base données
+     * récupère les données dans HL7 venant du SIR creer un nouvel examen dans
+     * la base données
      */
     public void recuperationDonnees() {
 
         Timer t = new Timer();
+        c.ecoute();
+        
         TimerTask task = new TimerTask() {
             int i = 1;
             private Patient patient;
@@ -173,7 +179,6 @@ public class HL7_SIH {
 
             public void run() {
 
-                c.ecoute();
                 String messageHL7 = c.protocole();
 
                 System.out.println("Reçu :" + messageHL7);
@@ -195,12 +200,12 @@ public class HL7_SIH {
                 DateHeure dh = convertirStringtoDateHeure(dateHeure);
                 Sexe sexe;
                 if (SexeOK == "F") {
-                    sexe= Sexe.femme;
+                    sexe = Sexe.femme;
                 }
                 if (SexeOK == "M") {
-                    sexe= Sexe.homme;
+                    sexe = Sexe.homme;
                 } else {
-                    sexe= Sexe.autre;
+                    sexe = Sexe.autre;
                 }
                 //Affichage BD SIH
                 //java.sql.Date NaissanceOK = convertDateJavaEnSQL(patient.getBirth());
@@ -217,13 +222,13 @@ public class HL7_SIH {
                 }
 
                 try {
-                    String ipp = getIPPPatient(conn, nomOK,prenomOK,NaissanceOK);
-                    DPI dpi = getDPI(conn,ipp); 
-                    PH ph = getPH(conn, MedRefOK); 
-                    Examen e =new Examen(te,CROK,dh); 
+                    String ipp = getIPPPatient(conn, nomOK, prenomOK, NaissanceOK);
+                    DPI dpi = getDPI(conn, ipp);
+                    PH ph = getPH(conn, MedRefOK);
+                    Examen e = new Examen(te, CROK, dh);
                     e.setDPI(dpi);
                     e.setPh(ph);
-                    creerExamen(conn,e);
+                    creerExamen(conn, e);
 
                 } catch (SQLException ex) {
                     Logger.getLogger(HL7_SIH.class.getName()).log(Level.SEVERE, null, ex);

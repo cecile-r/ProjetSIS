@@ -37,6 +37,7 @@ import nf.SecretaireMedicale;
 public class Connexion extends javax.swing.JFrame {
 
     Connection conn;
+    HL7_SIH hl;
 
     /**
      * Creates new form Connexion
@@ -235,24 +236,23 @@ public class Connexion extends javax.swing.JFrame {
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
-                }
-                else if (CB_item.equals("SA")) {
+                } else if (CB_item.equals("SA")) {
                     SecretaireAdministrative sa = userSA(conn, id);
                     Accueil_SA i;
                     i = new Accueil_SA(conn, sa);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
-                }
-                else if (CB_item.equals("SM")) {
+                } else if (CB_item.equals("SM")) {
+
                     SecretaireMedicale sm = userSM(conn, id);
                     Accueil_SM i;
                     i = new Accueil_SM(conn, sm);
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
                     dispose();
-                }
-                else if (CB_item.equals("Inf")) {
+
+                } else if (CB_item.equals("Inf")) {
                     Infirmier inf = userInf(conn, id);
                     Accueil_Inf i;
                     i = new Accueil_Inf(conn, inf);
@@ -336,8 +336,8 @@ public class Connexion extends javax.swing.JFrame {
                     Connection conn = DriverManager.getConnection(dbUrl, username, password);
                     SQLWarningsExceptions.printWarnings(conn);
 
-                    HL7_SIH hl = new HL7_SIH(conn, 4445);
-                    hl.recuperationDonnees();
+                    //HL7_SIH hl = new HL7_SIH(conn, 4445);
+                    //hl.recuperationDonnees();
 
                     Connexion i;
                     i = new Connexion(conn);
