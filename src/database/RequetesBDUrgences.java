@@ -627,7 +627,7 @@ public class RequetesBDUrgences {
     }
 
     //Supprime un DPI temporaire à partir d'un IPP
-    //
+    //VALIDE
     public static void supprimerDPITemp(Connection conn, String ipp) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI_temporaire "
@@ -644,4 +644,60 @@ public class RequetesBDUrgences {
         rs.close();
         stmt.close();
     }
-}
+    
+    //Transfert les fiches de soins, prescriptions, examens d'un DPI temporaire dans un DPI et suppression des temporaires
+    //VALIDE
+    public static void transfertDPI(Connection conn, DPI dpi, DPITemporaire dpit) throws SQLException {
+        //Récupération des données de dpit
+        //FICHES DE SOINS
+        for (int i = 0 ; i < listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).size() ; i++){
+            FicheDeSoinsTemp ft = listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i);
+            FicheDeSoins f = new FicheDeSoins(ft.getDateHeure());
+            f.setActe(ft.getActe());
+            f.setDPI(dpi);
+            if(ft.getpH() != null){ //si c'est un PH sur la fiche de soins
+                f.setpH(ft.getpH());
+            }
+            else if(ft.getInfirmier() != null){ //si c'est un infirmier sur la fiche de soins
+                f.setInfirmier(ft.getInfirmier());
+            }
+            creerFicheDeSoins(conn, f);
+        }
+        //PRESCRIPTIONS
+        for (int i = 0 ; i < listePrescriptionTemporaire(conn, dpit.getIPP()).size() ; i++){
+            PrescriptionTemp pt = listePrescriptionTemporaire(conn, dpit.getIPP()).get(i);
+            Prescription p = new Prescription(pt.getDateHeure(), pt.getObservation(), pt.getTypeExamen(), pt.getMedicament());
+            p.setDPI(dpi);
+            p.setpH(pt.getpH());
+            creerPrescription(conn, p);
+        }
+        //EXAMENS
+        for (int i = 0 ; i < listeExamensTemporaire(conn, dpit.getIPP()).size() ; i++){
+            ExamenTemp et = listeExamensTemporaire(conn, dpit.getIPP()).get(i);
+            Examen e = new Examen(et.getType_examen(), et.getResultats(), et.getDateHeure());
+            e.setDPI(dpi);
+            e.setPh(et.getPh());
+            creerExamen(conn, e);
+        }
+        
+        //Suppression des données
+        //Suppression des fiches dans FichesDeSoins_temporaire
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("DELETE FROM FichesDeSoins_temporaire WHERE IPP = ?");
+        stmt.setString(1, dpit.getIPP());
+        stmt.executeUpdate();
+        stmt.close();
+        //Suppression des prescriptions dans Prescription_temporaire
+        PreparedStatement stmtp = null;
+        stmtp = conn.prepareStatement("DELETE FROM Prescription_temporaire WHERE IPP = ?");
+        stmtp.setString(1, dpit.getIPP());
+        stmtp.executeUpdate();
+        stmtp.close();
+        //Suppression des examens dans Examen_temporaire
+        PreparedStatement stmte = null;
+        stmte = conn.prepareStatement("DELETE FROM Examen_temporaire WHERE IPP = ?");
+        stmte.setString(1, dpit.getIPP());
+        stmte.executeUpdate();
+        stmte.close();
+    }
+}       

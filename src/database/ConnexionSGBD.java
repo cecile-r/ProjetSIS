@@ -21,6 +21,7 @@ import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDDPI.creerActe;
 import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.creerLocalisationSA;
+import static database.RequetesBDDPI.creerNouveauDPI;
 import static database.RequetesBDDPI.fermerDPI;
 import static database.RequetesBDDPI.getIPPPatient;
 import static database.RequetesBDDPI.modifierLocalisationSM;
@@ -56,6 +57,7 @@ import static database.RequetesBDUrgences.listeFichesDeSoinsTemporaire;
 import static database.RequetesBDUrgences.listePrescriptionTemporaire;
 import static database.RequetesBDUrgences.miseAttente;
 import static database.RequetesBDUrgences.supprimerDPITemp;
+import static database.RequetesBDUrgences.transfertDPI;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 
@@ -726,6 +728,43 @@ class ConnexionSGBD {
             //System.out.println(getListeDPIAttente(conn)); //-> VALIDE
             //System.out.println(getListeDPITemporaires(conn));
             //supprimerDPITemp(conn, "1100000011");
+            
+            DPI dpinormal = new DPI("1800003456","Fuego","Salameche",dateNai,Sexe.homme,"2 bis avenue des Briquets","0765342609",md,dma1,dm1);
+            DPITemporaire dpitemp = new DPITemporaire("1937463529", "Fuego", "Salameche", dateNai);
+            //Remplissage DPI temporaire
+            //Fiche de soins
+            DateHeure dtemp1 = new DateHeure(2022,3,23,22,00);
+            FicheDeSoinsTemp fstemp1 = new FicheDeSoinsTemp(dtemp1);
+            Acte atemp1 = new Acte("prise de tension",Type.diagnostic,Code.ORT,2, "Un peu élevée");
+            Acte atemp2 = new Acte("prise de sang",Type.therapeutique,Code.KC,2, "Attente du résultat, de l'échantillon.");
+            fstemp1.ajouterActe(atemp1);
+            fstemp1.ajouterActe(atemp2);
+            fstemp1.setpH(ph_urgence);
+            fstemp1.setDPI(dpitemp);
+            //creerFicheDeSoinsTemp(conn, fstemp1); -> fait
+            
+            //Prescription
+            PrescriptionTemp ptemp1 = new PrescriptionTemp(d2,"à prendre 2 fois par jour pendant 7 jours",null,"Sirop spécial");
+            ptemp1.setDPI(dpitemp);
+            ptemp1.setpH(ph_urgence);
+            //creerPrescriptionTemp(conn, ptemp1); -> fait
+            
+            //Examen
+            ExamenTemp examtemp1 = new ExamenTemp(TypeExamen.examen_vue, "Tout va bien, rien à signaler", d2);
+            examtemp1.setPh(ph_urgence);
+            examtemp1.setDPI(dpitemp);
+            //creerExamenTemp(conn, examtemp1);
+            
+            //System.out.println(listeFichesDeSoinsTemporaire(conn, "1937463529"));
+            //System.out.println(listePrescriptionTemporaire(conn, "1937463529"));
+            //System.out.println(listeExamensTemporaire(conn, "1937463529"));
+            
+            //creerDPITemporaire(conn, dpitemp); 
+            //creerNouveauDPI(conn, "1800003456","Fuego","Salameche",dateNai, "homme", "0765342609", "2 bis avenue des Briquets", md);
+            //transfertDPI(conn, dpinormal, dpitemp); -> réalisé
+            
+            
+            
             
             //Print information about connection warnings
             SQLWarningsExceptions.printWarnings(conn);
