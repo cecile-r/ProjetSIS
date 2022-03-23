@@ -585,4 +585,63 @@ public class RequetesBDUrgences {
         return null;
     }
 
+    //Renvoie la liste de DPI temporaires en attente
+    //VALIDE
+    public static List<DPITemporaire> getListeDPIAttente(Connection conn) throws SQLException {
+        List<DPITemporaire> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        //Sélection des DPI temporaires
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire "
+                + "WHERE attente = 1");
+
+        while (rs.next()) {
+            Date d = new Date(rs.getDate("date_de_naissance_temp").getTime());
+            DPITemporaire dpi = new DPITemporaire(rs.getString("IPP"), rs.getString("nom_DPI_temp"), rs.getString("prenom_DPI_temp"), d);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
+
+    //Met les DPI temporaires en liste attente lorsqu'un patient sort des urgences pour la fusion ou création de DPI
+    //VALIDE
+    public static void miseAttente(Connection conn, String ipp) throws SQLException {
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM DPI_temporaire "
+                + "WHERE IPP = ?");
+        stmt.setString(1, ipp);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("UPDATE DPI_temporaire SET attente = ? "
+                    + "WHERE IPP = ?");
+            stmt2.setInt(1, 1);
+            stmt2.setString(2, ipp);
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+        rs.close();
+        stmt.close();
+    }
+
+    //Supprime un DPI temporaire à partir d'un IPP
+    //
+    public static void supprimerDPITemp(Connection conn, String ipp) throws SQLException {
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("SELECT * FROM DPI_temporaire "
+                + "WHERE IPP = ?");
+        stmt.setString(1, ipp);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("DELETE FROM DPI_temporaire WHERE IPP = ?");
+            stmt2.setString(1, ipp);
+            stmt2.executeUpdate();
+            stmt2.close();
+        }
+        rs.close();
+        stmt.close();
+    }
 }

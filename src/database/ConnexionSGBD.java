@@ -49,10 +49,13 @@ import static database.RequetesBDUrgences.creerPrescriptionTemp;
 import static database.RequetesBDUrgences.dpiExiste;
 import static database.RequetesBDUrgences.fusionDPI;
 import static database.RequetesBDUrgences.getDPITemp;
+import static database.RequetesBDUrgences.getListeDPIAttente;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 import static database.RequetesBDUrgences.listeExamensTemporaire;
 import static database.RequetesBDUrgences.listeFichesDeSoinsTemporaire;
 import static database.RequetesBDUrgences.listePrescriptionTemporaire;
+import static database.RequetesBDUrgences.miseAttente;
+import static database.RequetesBDUrgences.supprimerDPITemp;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 
@@ -719,7 +722,10 @@ class ConnexionSGBD {
             
             //System.out.println(convertDateJavaEnSQL(dpitjuan.getDate_naissance()));
             
-            
+            //miseAttente(conn, "1100000011"); //retour osurgence mis en attente -> VALIDE
+            //System.out.println(getListeDPIAttente(conn)); //-> VALIDE
+            //System.out.println(getListeDPITemporaires(conn));
+            //supprimerDPITemp(conn, "1100000011");
             
             //Print information about connection warnings
             SQLWarningsExceptions.printWarnings(conn);
