@@ -582,7 +582,9 @@ public class RequetesBDUrgences {
 
             return dpi;
         }
-        return null;
+        else{
+            return null;
+        }
     }
 
     //Renvoie la liste de DPI temporaires en attente
