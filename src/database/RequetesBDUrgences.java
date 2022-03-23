@@ -53,6 +53,23 @@ import nf.TypeExamen;
  */
 public class RequetesBDUrgences {
 
+    //Renvoie true si l'ipp existe sinon renvoie false
+    //VALIDE
+    public static boolean IPPTempExistant(Connection conn, String ipp) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT IPP FROM DPI_temporaire "
+                + "WHERE IPP = '" + ipp + "'");
+        boolean ippExiste = false;
+
+        if (rs.next()) {
+            ippExiste = true;
+        }
+
+        rs.close();
+        stmt.close();
+        return ippExiste;
+    }
+    
     //Renvoie le nombre de DPI temporaire
     //VALIDE
     public static int nbDPITemporaire(Connection conn) throws SQLException {
@@ -155,25 +172,30 @@ public class RequetesBDUrgences {
     }
 
     //Fusionne les DPI si le DPI des urgences existe déjà au CHU
-    //
+    //VALIDE
     public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
         //FICHES DE SOINS
         for (int i = 0; i < listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).size(); i++) { //Parcours des fiches de soins temporaires
             //Ajout de la fiche de soin dans la table FichesDeSoins
             FicheDeSoins f = new FicheDeSoins(listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getDateHeure());
             f.setActe(listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getActe());
-
+            
             //Création DPI avec l'IPP réel du patient dans la table DPI
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                    + "JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                    + "WHERE IPP = '" + getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()) + "'");//Les infos du DPI du patient
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement("SELECT * FROM DPI "
+                    + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
+                    + "WHERE IPP = ?");
+            stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            ResultSet rs = stmt.executeQuery();//Les infos du DPI du patient
+            
             if(rs.next()){
                 MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
                 Date d = new Date(rs.getDate("date_de_naissance").getTime());
                 DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
                 f.setDPI(dpi);
             }
+            stmt.close();
+            rs.close();
             
             //Création du professionnel de santé qui réalise la fiche de soins
             if (listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getpH() != null) { //Si l'éditeur/celui qui réalise les actes est un PH
@@ -186,7 +208,8 @@ public class RequetesBDUrgences {
                 }
                 rs4.close();
                 stmt4.close();
-            } else if (listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getInfirmier() != null) { //L'éditeur/celui qui réalise les actes est un infirmier
+            } 
+            else if (listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getInfirmier() != null) { //L'éditeur/celui qui réalise les actes est un infirmier
                 Statement stmt5 = conn.createStatement();
                 ResultSet rs5 = stmt5.executeQuery("SELECT * FROM Infirmier "
                         + "WHERE idInfirmier = '" + listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getInfirmier().getIdInfirmiere() + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
@@ -221,10 +244,12 @@ public class RequetesBDUrgences {
             }
 
             //Création du DPI
-            Statement stmt3 = conn.createStatement();
-            ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
+            PreparedStatement stmt3 = null;
+            stmt3 = conn.prepareStatement("SELECT * FROM DPI "
                     + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                    + "WHERE IPP = '" + getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()) + "'");//Les infos du DPI du patient
+                    + "WHERE IPP = ?");
+            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            ResultSet rs3 = stmt3.executeQuery();//Les infos du DPI du patient
             if (rs3.next()) {
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
                 DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
@@ -287,7 +312,7 @@ public class RequetesBDUrgences {
     }
 
     //Creer une fiche de soins d'urgence (temporaire) et l'ajouter dans la base de données
-    //A TESTER AVEC NOUVELLE TABLE
+    //VALIDE
     public static void creerFicheDeSoinsTemp(Connection conn, FicheDeSoinsTemp fiche) throws SQLException {
 
         for (int i = 0; i < fiche.getActe().size(); i++) {
@@ -333,7 +358,7 @@ public class RequetesBDUrgences {
     }
 
     //Creer un acte et l'ajouter dans la base de donnée
-    //A TESTER AVEC NOUVELLE TABLE
+    //VALIDE
     public static int creerActeTemp(Connection conn, Acte acte) throws SQLException {
         //Calcul du nombre d'élément dans la table Acte pour trouver l'id
         PreparedStatement stmt2 = null;
@@ -404,7 +429,7 @@ public class RequetesBDUrgences {
     }
 
     //Renvoie la liste des fiches de soins pour un patient donné aux urgences
-    //A TESTER AVEC NOUVELLE TABLE
+    //VALIDE
     public static List<FicheDeSoinsTemp> listeFichesDeSoinsTemporaire(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         Statement stmt2 = conn.createStatement();
