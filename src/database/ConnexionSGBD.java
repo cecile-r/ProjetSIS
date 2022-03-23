@@ -102,6 +102,8 @@ class ConnexionSGBD {
             MedecinTraitant m1 = new MedecinTraitant("doctor.octopus@gmail.com", "Docteur", "Octopus", "0696874523");
             MedecinTraitant m2 = new MedecinTraitant("paul.morin@gmail.com", "Morin", "Paul", "0688822222");
             MedecinTraitant m3 = new MedecinTraitant("jamela.culture@gmail.com", "Culture", "Jamela", "0677777777");
+            MedecinTraitant md = new MedecinTraitant("didierledruide@gmail.com", "Raoult", "Didier", "0655445544");
+            
             Infirmier inf1 = new Infirmier("totorocec","Totoro","Cecile",Service.Unite_de_soins_intensifs_respiratoires,"dessin");
             PH ph1 = new PH("roussecha","Rousse","Charlotte",Service.Addictologie,"cannabis","0433322233","Specialiste en substances psychoactives");
             PH ph2 = new PH("nadalraf","Nadal","Rafael",Service.Neurologie,"grosbras","0611111111","Neurologue");
@@ -113,6 +115,8 @@ class ConnexionSGBD {
             DMA dma1 = new DMA(l2);
             
             Acte a1 = new Acte("prise de sang",Type.diagnostic,Code.PRO,2, "RAS");
+            Acte a3 = new Acte("prise de tension",Type.diagnostic,Code.KC,2, "Un peu élevée");
+            Acte a4 = new Acte("prise de sang",Type.diagnostic,Code.KC,2, "Attente du résultat, de l'échantillon.");
             //a1.setIdActe(666);
             Acte a2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
             //a2.setIdActe(252);
@@ -128,14 +132,15 @@ class ConnexionSGBD {
             fs2.setInfirmier(inf1);
             fs2.ajouterActe(a2);
             
-            DateHeure dT = new DateHeure(2022,3,22,14,00);
+            DateHeure dT = new DateHeure(2022,3,25,9,00);
             FicheDeSoins fs3 = new FicheDeSoins(dT);
             PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
             fs3.setpH(ph2);
-            fs3.ajouterActe(a1);
+            fs3.ajouterActe(a4);
             //Date datedi = new Date(1980, 7, 26);
             //DPI di = new DPI("3333444411","Petit","Aurore",datedi,Sexe.femme,"10 rue des tilleuls, Mayotte","0677067706",m2,dma1,dm1);
             //fs3.setDPI(di);
+            
             
             Prescription p1 = new Prescription(d2,"a prendre 2 fois par jour pendant 7 jours",null,"Doliprane");
             Prescription p2 = new Prescription(d1,"Faire ultrasons au patient, attention epaule droite",TypeExamen.ultrasons,null);
@@ -159,13 +164,15 @@ class ConnexionSGBD {
             Date dateNai2 = new Date(1997,3,20);
             //DPI dpi1 = new DPI("1314532074","Lampe","uv",dn1,Sexe.femme,"Rue chambre, Lit","0635674533",m1,dma1,dm1);
             DPI dpi1 = new DPI("5555888800","Lespagnol","Mikael",dn1,Sexe.homme,"25 rue de la soif, Madrid","0644445555",m2,dma1,dm1);
+            DPI dpi2 = new DPI("1800511989","Ronflex","Pokeball",d,Sexe.autre,"9 avenue des Flutes","0765342609",md,dma1,dm1);
             DPITemporaire dpit = new DPITemporaire("1100000011", "Retour", "Osurgences", dateNai);
             DPITemporaire dpit2 = new DPITemporaire("9977554466", "Palmito", "Juan", dateNai2);
             
             //ph1.ajouterFicheDeSoins(fs1);
             //fs1.setDPI(dpi1);
             //fs2.setDPI(dpi1);
-            fs3.setDPI(dpi1);
+            //fs3.setDPI(dpi1);
+            fs3.setDPI(dpi2);
             //creerFicheDeSoins(conn, fs3);
             //creerActe(conn, a1);
             
@@ -674,6 +681,7 @@ class ConnexionSGBD {
             //DPI temporaire bien supprimé
             //System.out.println(listeFichesDeSoins(conn, "9736482920"));
             //System.out.println(listeFichesDeSoins(conn, "1926354276"));
+            System.out.println(listeFichesDeSoins(conn, "1800511989"));
             //System.out.println(listePrescription(conn, "9736482920")); //Prescription bien ajoutée  
             //System.out.println(listeExamens(conn, "9736482920")); //Examen bien ajouté
             
@@ -687,9 +695,9 @@ class ConnexionSGBD {
             //System.out.println(getPHNomPrenom(conn, "Fuentes", "Alejandro"));
             
             
-            //Test IPPTempExistant(ipp) -> 
-            System.out.println(IPPTempExistant(conn, "1000054276")); //Renvoie false
-            System.out.println(IPPTempExistant(conn, "9999555566")); //Renvoie true
+            //Test IPPTempExistant(ipp) -> VALIDE
+            //System.out.println(IPPTempExistant(conn, "1000054276")); //Renvoie false
+            //System.out.println(IPPTempExistant(conn, "9999555566")); //Renvoie true
             
             
             

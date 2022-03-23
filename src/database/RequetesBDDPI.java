@@ -1029,23 +1029,19 @@ public class RequetesBDDPI {
         
         //Insertion de l'acte
         PreparedStatement stmt = null;
-        System.out.println("ok avant insert");
-        System.out.println(rowCount);
         stmt = conn.prepareStatement("INSERT INTO Acte values(?,?,?,?,?,?)");
         stmt.setInt(1, rowCount+2);
         stmt.setString(2, acte.getCode().name()); 
         stmt.setString(3, acte.getType().name()); 
         stmt.setString(4, acte.getNomA()); 
         stmt.setFloat(5, acte.getCoeff()); 
-        stmt.setString(6, acte.getObservation()); 
-        System.out.println("ok apres insert");
+        stmt.setString(6, acte.getObservation());
         stmt.executeUpdate();
-        System.out.println("ok apres insert 2");
         stmt.close();
         
         rs2.close();
         stmt2.close();
-        return (rowCount+1);
+        return (rowCount+2);
     }
     
     //Creer une prescription et l'ajouter dans la base de données
