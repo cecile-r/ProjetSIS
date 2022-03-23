@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import static nf.DateHeure.convertirDateHeuretoString;
 import static UI.Vector.*;
+import static database.RequetesBDUrgences.creerFicheDeSoinsTemp;
+import static database.RequetesBDUrgences.getDPITemp;
 
 /**
  *
@@ -495,16 +497,20 @@ public class Ajout_FS extends javax.swing.JFrame {
                     Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {//DPI TEMPORAIRE
-                String IPP = dpiTemp.getIPP();
-                //DPITemporaire dpi2 = getDPI(conn, IPP);
-                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-                int longueur = tailleMoniteur.width;
-                int hauteur = tailleMoniteur.height;
-                Vue_Patient_Med_Urgences i;
-                //i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
-                //i.setSize(longueur, hauteur);
-                //i.setVisible(true);
-                dispose();
+                try {
+                    String IPP = dpiTemp.getIPP();
+                    DPITemporaire dpi2 = getDPITemp(conn, IPP);
+                    Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                    int longueur = tailleMoniteur.width;
+                    int hauteur = tailleMoniteur.height;
+                    Vue_Patient_Med_Urgences i;
+                    i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
+                    i.setSize(longueur, hauteur);
+                    i.setVisible(true);
+                    dispose();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         } else { //INFIRMIER
@@ -548,7 +554,11 @@ public class Ajout_FS extends javax.swing.JFrame {
             f.setInfirmier(inf);
             dpiTemp.ajouterFicheDeSoins(f);
             f.setActe(this.f.getActe());
-            //creerFicheDeSoins(conn, f);
+            try {
+                creerFicheDeSoinsTemp(conn, f);
+            } catch (SQLException ex) {
+                Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         //SORTIE

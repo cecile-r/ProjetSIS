@@ -8,6 +8,8 @@ package UI;
 import HL7.HL7_SIH_Client;
 import static database.RequetesBDDPI.creerPrescription;
 import static database.RequetesBDDPI.getDPI;
+import static database.RequetesBDUrgences.creerPrescriptionTemp;
+import static database.RequetesBDUrgences.getDPITemp;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDateTime;
@@ -399,14 +401,14 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 i.setVisible(true);
             } else { //DPI TEMPORAIRE
                 String IPP = dpiTemp.getIPP();
-                //DPITemporaire dpi2 = getDPI(conn, IPP);
+                DPITemporaire dpi2 = getDPITemp(conn, IPP);
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
                 Vue_Patient_Med_Urgences i;
-                //i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
-                //i.setSize(longueur, hauteur);
-                //i.setVisible(true);
+                i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
             }
             dispose();
         } catch (SQLException ex) {
@@ -439,7 +441,11 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 PrescriptionTemp p = new PrescriptionTemp(dh, observation, null, medicament);
                 p.setDPI(dpiTemp);
                 p.setpH(ph);
-                //creerPrescription(conn, p);
+                try {
+                    creerPrescriptionTemp(conn, p);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             ///REVENIR PAGE PRECEDENTE
             jButton9ActionPerformed(evt);

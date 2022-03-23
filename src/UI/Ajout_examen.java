@@ -7,6 +7,7 @@ package UI;
 
 import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.getDPI;
+import static database.RequetesBDUrgences.creerExamenTemp;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDateTime;
@@ -359,13 +360,18 @@ public class Ajout_examen extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{//DPI TEMPORAIRE
+                
+            } else {//DPI TEMPORAIRE
                 ExamenTemp e = new ExamenTemp(te, resultats, dh);
                 e.setDPI(dpiTemp);
                 e.setPh(ph);
 
                 ///AJOUT BD
-                //creerExamen(conn, e);
+                try {
+                    creerExamenTemp(conn, e);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             ///REVENIR PAGE PRECEDENTE

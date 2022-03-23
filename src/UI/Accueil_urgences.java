@@ -42,6 +42,8 @@ import java.util.Date;
 import static nf.Cryptage.getIPPRandom;
 import nf.*;
 import static UI.Vector.*;
+import static database.RequetesBDUrgences.IPPTempExistant;
+import static database.RequetesBDUrgences.getDPITemp;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 
 /**
@@ -129,8 +131,8 @@ public class Accueil_urgences extends javax.swing.JFrame {
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-    
-        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -667,15 +669,21 @@ public class Accueil_urgences extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
         } else {
 
+            try {
+
                 int index = Table_Vue_Generale1.getSelectedRow();
-                //DPITemporaire dpiTemp = getDPI(conn, dpis.get(index).getIPP());
+                DPITemporaire dpiTemp;
+                dpiTemp = getDPITemp(conn, dpis.get(index).getIPP());
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-                //Vue_Patient_Med_Urgences i = new Vue_Patient_Med_Urgences(conn,dpiTemp, ph);
-                //i.setSize(longueur, hauteur);
-                //i.setVisible(true);
-                //dispose();
+                Vue_Patient_Med_Urgences i = new Vue_Patient_Med_Urgences(conn, dpiTemp, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+                dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(Accueil_urgences.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
 
@@ -699,12 +707,12 @@ public class Accueil_urgences extends javax.swing.JFrame {
     }//GEN-LAST:event_TextField_PatientMouseEntered
 
     private void TextField_PatientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_PatientKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        /*if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             String recherche = TextField_Patient.getText();
             if (!recherche.equals("")) {
                 try {
-                    //dpis = getListeDPI(conn, recherche, ph.getService().toString());
+                    dpis = getListeDPITemporaires(conn, recherche, ph.getService().toString());
                     dpis = trierDPITemp(dpis);
                     dpisS = getVectorDPITemp(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
@@ -717,15 +725,15 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 }
 
             }
-        }
+        }*/
     }//GEN-LAST:event_TextField_PatientKeyPressed
 
     private void jButton_actualiser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_actualiser1ActionPerformed
         try {
             //RECHARGER DPI
-            dpis = getListeDPIService(conn, ph.getService().toString());
-            dpis = trierDPI(dpis);
-            dpisS = getVectorDPI(dpis);
+            dpis = getListeDPITemporaires(conn);
+            dpis = trierDPITemp(dpis);
+            dpisS = getVectorDPITemp(dpis);
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setModel(tableModel);
             Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
@@ -739,11 +747,12 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
     private void jButton_recherche_patientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_patientActionPerformed
         //RECHERCHE PATIENT
+        /*
         String recherche = TextField_Patient.getText();
         try {
-            dpis = getListeDPI(conn, recherche, ph.getService().toString());
-            dpis = trierDPI(dpis);
-            dpisS = getVectorDPI(dpis);
+            dpis = getListeDPITemporaires(conn, recherche);
+            dpis = trierDPITemp(dpis);
+            dpisS = getVectorDPITemp(dpis);
             Vector entetes = new Vector();
             entetes.add("Nom");
             entetes.add("Prénom");
@@ -755,7 +764,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }//GEN-LAST:event_jButton_recherche_patientActionPerformed
 
     private void jButton_recherche_medecinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_medecinActionPerformed
@@ -834,7 +843,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
     }//GEN-LAST:event_Button_Valider2Button_ValiderMouseClicked
 
     private void Button_Valider2Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Valider2Button_ValiderActionPerformed
-       /* try {
+        /* try {
             ///CREATION D'UN PATIENT
             if (champsCorrects()) {
                 String nom = TextField_Nom2.getText();
@@ -909,7 +918,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
     private void Button_Valider3Button_ValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Valider3Button_ValiderActionPerformed
         try {
-            
+
             ///CREATION D'UN PATIENT
             if (champsCorrects()) {
                 String nom = TextField_Nom2.getText();
@@ -925,15 +934,15 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 if (retour == 0) { //les informations sont correctes = validation
                     //tirer un IPP random qui n'existe pas
                     String IPP = getIPPRandom();
-                    while (IPPexistant(conn, IPP)) {
+                    while (IPPTempExistant(conn, IPP)) {
                         IPP = getIPPRandom();
                     }
                     //création du patient
                     //creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
 
                     //mettre à jour la liste des patients
-                    dpis = getListeDPI(conn);
-                    dpisS = getVectorDPI(dpis);
+                    dpis = getListeDPITemporaires(conn);
+                    dpisS = getVectorDPITemp(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setModel(tableModel);
 
@@ -952,7 +961,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_Button_Valider3Button_ValiderActionPerformed
 
-     public boolean champsCorrects() throws ParseException {
+    public boolean champsCorrects() throws ParseException {
         boolean v = true;
         if (TextField_Nom2.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un nom", "Attention", JOptionPane.WARNING_MESSAGE);
@@ -970,7 +979,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
         return v;
     }
-     
+
     /**
      * @param args the command line arguments
      */
