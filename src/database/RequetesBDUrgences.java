@@ -6,7 +6,6 @@
 package database;
 
 import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
-import static database.RequetesBDConversion.convertDateJavaEnSQL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,11 +15,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import nf.DPI;
 import nf.DPITemporaire;
-import nf.Lit;
-import nf.Localisation;
 import nf.MedecinTraitant;
 import nf.PH;
 import nf.Service;
@@ -29,32 +25,20 @@ import static database.RequetesBDConversion.convertDateJavaEnSQL;
 import static database.RequetesBDConversion.convertDateSQLenJava;
 import static database.RequetesBDConversion.convertTimestampSQLenJava;
 import static database.RequetesBDConversion.toStringTimestampJAVA;
-import static database.RequetesBDDPI.creerActe;
 import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.creerPrescription;
 import static database.RequetesBDDPI.getIPPPatient;
-import static database.RequetesBDDPI.listeExamens;
-import static database.RequetesBDDPI.listeFichesDeSoins;
-import static database.RequetesBDDPI.listeLettreSortie;
-import static database.RequetesBDDPI.listePrescription;
-import static database.RequetesBDDPI.listeRendezVous;
-import static database.RequetesBDDPI.listeSoinQuotidien;
 import nf.Acte;
 import nf.Code;
-import nf.DM;
-import nf.DMA;
 import nf.DateHeure;
 import nf.Examen;
 import nf.ExamenTemp;
 import nf.FicheDeSoins;
 import nf.FicheDeSoinsTemp;
 import nf.Infirmier;
-import nf.LettreDeSortie;
 import nf.Prescription;
 import nf.PrescriptionTemp;
-import nf.RendezVous;
-import nf.SoinsQuotidien;
 import nf.Type;
 import nf.TypeExamen;
 
@@ -138,29 +122,6 @@ public class RequetesBDUrgences {
         rs.close();
         stmt.close();
         return listeDPI;
-    }
-
-    //Renvoie le vecteur des DPI temporaires
-    //VALIDE
-    public static Vector getVectorDPITemporaires(Connection conn) throws SQLException {
-        Vector vDPIOuvert = new Vector();
-        Statement stmt = conn.createStatement();
-        //Sélection des DPI temporaires
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance_temp").getTime());
-            vParDPI.add(rs.getString("IPP"));
-            vParDPI.add(rs.getString("nom_DPI_temp"));
-            vParDPI.add(rs.getString("prenom_DPI_temp"));
-            vParDPI.add(d);
-            vDPIOuvert.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPIOuvert;
     }
 
     //Renvoie true si le dpi existe déjà, sinon renvoie false
@@ -594,7 +555,7 @@ public class RequetesBDUrgences {
     }
 
     //Renvoie le DPI temporaire associé à l'ipp donné
-    //
+    //VALIDE
     public static DPITemporaire getDPITemp(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire "

@@ -32,12 +32,11 @@ import static database.RequetesBDDPI.getListeDPIFerme;
 import static database.RequetesBDDPI.getListeDPIFermeNom;
 import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDDPI.getListeTousDPI;
-import static database.RequetesBDDPI.getVectorDPI;
-import static database.RequetesBDDPI.getVectorDPIService;
 import static database.RequetesBDDPI.listeExamens;
 import static database.RequetesBDDPI.listeFichesDeSoins;
 import static database.RequetesBDDPI.listePrescription;
 import static database.RequetesBDDPI.listeRendezVous;
+import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getPH;
 import static database.RequetesBDProfessionnels.getPHNomPrenom;
 import static database.RequetesBDUrgences.IPPTempExistant;
@@ -50,11 +49,9 @@ import static database.RequetesBDUrgences.dpiExiste;
 import static database.RequetesBDUrgences.fusionDPI;
 import static database.RequetesBDUrgences.getDPITemp;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
-import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static database.RequetesBDUrgences.listeExamensTemporaire;
 import static database.RequetesBDUrgences.listeFichesDeSoinsTemporaire;
 import static database.RequetesBDUrgences.listePrescriptionTemporaire;
-import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static java.lang.String.valueOf;
 import java.time.LocalDate;
 
@@ -224,8 +221,8 @@ class ConnexionSGBD {
             
             
             // Test getListePH(nom) -> VALIDE
-            /*System.out.println(getListePH(conn, "Wawrinka"));
-            List<PH> lphn = getListePH(conn, "Wawrinka");
+            //System.out.println(getListePH(conn, "wa"));
+            /*List<PH> lphn = getListePH(conn, "Wawrinka");
             for (int i = 0; i < lphn.size(); i++){
                 System.out.println("\n Praticien hospitalier " + i + " :\n");
                 System.out.println(lphn.get(i).toString());
