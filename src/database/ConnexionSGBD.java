@@ -17,6 +17,7 @@ import nf.*;
 import database.*;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
+import static database.RequetesBDDPI.creerActe;
 import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.creerLocalisationSA;
 import static database.RequetesBDDPI.fermerDPI;
@@ -39,6 +40,7 @@ import static database.RequetesBDDPI.listePrescription;
 import static database.RequetesBDDPI.listeRendezVous;
 import static database.RequetesBDProfessionnels.getPH;
 import static database.RequetesBDProfessionnels.getPHNomPrenom;
+import static database.RequetesBDUrgences.IPPTempExistant;
 import static database.RequetesBDUrgences.creerActeTemp;
 import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.creerExamenTemp;
@@ -110,7 +112,7 @@ class ConnexionSGBD {
             Localisation l2 = new Localisation(Service.Medecine_nucleaire,Lit.P,40,Service.Medecine_nucleaire);
             DMA dma1 = new DMA(l2);
             
-            Acte a1 = new Acte("prise de sang",Type.diagnostic,Code.CS,2, "RAS");
+            Acte a1 = new Acte("prise de sang",Type.diagnostic,Code.PRO,2, "RAS");
             //a1.setIdActe(666);
             Acte a2 = new Acte("changement pansement",Type.therapeutique,Code.FP,1, "Cicatrisation normale");
             //a2.setIdActe(252);
@@ -164,7 +166,9 @@ class ConnexionSGBD {
             //fs1.setDPI(dpi1);
             //fs2.setDPI(dpi1);
             fs3.setDPI(dpi1);
-            creerFicheDeSoins(conn, fs3);
+            //creerFicheDeSoins(conn, fs3);
+            //creerActe(conn, a1);
+            
             //p1.setDPI(dpi1);
             //p2.setDPI(dpi1);
             //p1.setpH(ph1);
@@ -660,16 +664,16 @@ class ConnexionSGBD {
             //Test affichage dpi temporaire -> VALIDE
             //System.out.println(listeFichesDeSoinsTemporaire(conn, "1100000011"));
             //System.out.println(listeFichesDeSoinsTemporaire(conn, "1000054276"));
-            //System.out.println(listePrescriptionTemporaire(conn, "9538539548"));
-            //System.out.println(listeExamensTemporaire(conn, "9538539548"));
+            //System.out.println(listePrescriptionTemporaire(conn, "1000054276"));
+            //System.out.println(listeExamensTemporaire(conn, "1000054276"));
             
-            //Test fusionDPI(dpit) -> 
+            //Test fusionDPI(dpit) -> VALIDE
             //fusionDPI(conn, dpitu);
             //Pour le patient retour osurgence
             //Fusion faite : fiches de soins, examens et prescriptions bien supprimées des tables temporaires
             //DPI temporaire bien supprimé
             //System.out.println(listeFichesDeSoins(conn, "9736482920"));
-            //System.out.println(listeFichesDeSoins(conn, "5550000555"));
+            //System.out.println(listeFichesDeSoins(conn, "1926354276"));
             //System.out.println(listePrescription(conn, "9736482920")); //Prescription bien ajoutée  
             //System.out.println(listeExamens(conn, "9736482920")); //Examen bien ajouté
             
@@ -681,6 +685,12 @@ class ConnexionSGBD {
             
             //Test getPHNomPrenom(nom, prenom) -> VALIDE
             //System.out.println(getPHNomPrenom(conn, "Fuentes", "Alejandro"));
+            
+            
+            //Test IPPTempExistant(ipp) -> 
+            System.out.println(IPPTempExistant(conn, "1000054276")); //Renvoie false
+            System.out.println(IPPTempExistant(conn, "9999555566")); //Renvoie true
+            
             
             
             

@@ -53,6 +53,23 @@ import nf.TypeExamen;
  */
 public class RequetesBDUrgences {
 
+    //Renvoie true si l'ipp existe sinon renvoie false
+    //VALIDE
+    public static boolean IPPTempExistant(Connection conn, String ipp) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT IPP FROM DPI_temporaire "
+                + "WHERE IPP = '" + ipp + "'");
+        boolean ippExiste = false;
+
+        if (rs.next()) {
+            ippExiste = true;
+        }
+
+        rs.close();
+        stmt.close();
+        return ippExiste;
+    }
+    
     //Renvoie le nombre de DPI temporaire
     //VALIDE
     public static int nbDPITemporaire(Connection conn) throws SQLException {
@@ -155,7 +172,7 @@ public class RequetesBDUrgences {
     }
 
     //Fusionne les DPI si le DPI des urgences existe déjà au CHU
-    //
+    //VALIDE
     public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
         //FICHES DE SOINS
         for (int i = 0; i < listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).size(); i++) { //Parcours des fiches de soins temporaires
@@ -203,10 +220,14 @@ public class RequetesBDUrgences {
                 rs5.close();
                 stmt5.close();
             }
-            System.out.println(f.toString());
             creerFicheDeSoins(conn, f);
-            System.out.println("ok");
         }
+        //Suppression des fiches dans FichesDeSoins_temporaire
+        PreparedStatement stmt = null;
+        stmt = conn.prepareStatement("DELETE FROM FichesDeSoins_temporaire WHERE IPP = ?");
+        stmt.setString(1, dpit.getIPP());
+        stmt.executeUpdate();
+        stmt.close();
 
         //PRESCRIPTIONS
         for (int i = 0; i < listePrescriptionTemporaire(conn, dpit.getIPP()).size(); i++) { //Parcours des prescriptions temporaires
@@ -241,6 +262,12 @@ public class RequetesBDUrgences {
 
             creerPrescription(conn, p);
         }
+        //Suppression des prescriptions dans Prescription_temporaire
+        PreparedStatement stmtp = null;
+        stmtp = conn.prepareStatement("DELETE FROM Prescription_temporaire WHERE IPP = ?");
+        stmtp.setString(1, dpit.getIPP());
+        stmtp.executeUpdate();
+        stmtp.close();
 
         //EXAMENS
         for (int i = 0; i < listeExamensTemporaire(conn, dpit.getIPP()).size(); i++) { //Parcours des prescriptions temporaires
@@ -269,6 +296,12 @@ public class RequetesBDUrgences {
             
             creerExamen(conn, e);
         }
+        //Suppression des examens dans Examen_temporaire
+        PreparedStatement stmte = null;
+        stmte = conn.prepareStatement("DELETE FROM Examen_temporaire WHERE IPP = ?");
+        stmte.setString(1, dpit.getIPP());
+        stmte.executeUpdate();
+        stmte.close();
 
         //Suppression du DPI temporaire
         PreparedStatement stmt2 = null;
