@@ -3,90 +3,104 @@ package nf;
 import java.util.Date;
 import static nf.DateHeure.convertirDateHeuretoString;
 
-public class Prescription implements Evaluable{
+public class Prescription implements Evaluable {
+
     private DateHeure date_presciption;
     private String observation;
     private TypeExamen typeExamen;
     private String medicament;
     private PH pH;
     private DPI DPI;
-    
-    public Prescription(DateHeure date_presciption,String observation, TypeExamen typeExamen, String medicament){
+
+    public Prescription(DateHeure date_presciption, String observation, TypeExamen typeExamen, String medicament) {
         this.date_presciption = date_presciption;
-        this.observation=observation;
-        this.typeExamen=typeExamen;
+        this.observation = observation;
+        this.typeExamen = typeExamen;
         this.medicament = medicament;
-        this.pH=null;
-        this.DPI=null;
+        this.pH = null;
+        this.DPI = null;
         //SET PH
         //SET DPI
     }
 
     @Override
-    public String toString(){
-        String ch="";
-        ch+=date_presciption.StringDateHeure();
-        ch+="\n";
-        ch+=pH.toString();
-        ch+="\n";
-        if(typeExamen!=null){
-            ch+=typeExamen;
-            ch+="\n";
-        }else{
-            ch+=medicament;
-            ch+="\n";
+    public String toString() {
+        String ch = "";
+        ch += date_presciption.StringDateHeure();
+        ch += "\n";
+        ch += pH.toString();
+        ch += "\n";
+        if (typeExamen != null) {
+            ch += typeExamen;
+            ch += "\n";
+        } else {
+            ch += medicament;
+            ch += "\n";
         }
-        ch+=observation;
-        ch+="\n";
+        ch += observation;
+        ch += "\n";
         return ch;
     }
-    
-    public String toStringDM(){
-        String ch="------------------------------PRESCRIPTION------------------------------\n\n";
-        ch+=convertirDateHeuretoString(date_presciption);
-        ch+="\n\nPar ";
-        ch+=pH.toString();
-        ch+="\n\n";
-        if(typeExamen!=null){
-            ch+=typeExamen;
-            ch+="\n";
-        }else{
-            ch+=medicament;
-            ch+="\n";
+
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une precription pour
+     * le DM
+     */
+    public String toStringDM() {
+        String ch = "------------------------------PRESCRIPTION------------------------------\n\n";
+        ch += convertirDateHeuretoString(date_presciption);
+        ch += "\n\nPar ";
+        ch += pH.toString();
+        ch += "\n\n";
+        if (typeExamen != null) {
+            ch += typeExamen;
+            ch += "\n";
+        } else {
+            ch += medicament;
+            ch += "\n";
         }
-        ch+=observation;
-        ch+="\n";
+        ch += observation;
+        ch += "\n";
         return ch;
     }
-    
-    public String toStringDMA(){return null;};
-    
-    @Override
-    public Object getProfessionnel(){
-        return "PH- "+pH;
+
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une precription pour
+     * le DMA
+     */
+    public String toStringDMA() {
+        return null;
     }
+
+    ;
     
     @Override
-    public String getTypeEvaluable(){
+    public Object getProfessionnel() {
+        return "PH- " + pH;
+    }
+
+    @Override
+    public String getTypeEvaluable() {
         return "Prescription";
     }
-    
+
     @Override
-    public String getContenu(){
-        if(typeExamen!=null){
+    public String getContenu() {
+        if (typeExamen != null) {
             return typeExamen.toString();
-        }else if(medicament!=null){
+        } else if (medicament != null) {
             return medicament;
         }
         return null;
     }
-    
+
     @Override
-    public String getObservations(){
+    public String getObservations() {
         return observation;
     }
-    
-    
+
     /**
      * @return the date_presciption
      */
@@ -144,7 +158,6 @@ public class Prescription implements Evaluable{
         this.medicament = medicament;
     }
 
-
     /**
      * @return the pH
      */
@@ -172,5 +185,5 @@ public class Prescription implements Evaluable{
     public void setDPI(DPI DPI) {
         this.DPI = DPI;
     }
-    
+
 }

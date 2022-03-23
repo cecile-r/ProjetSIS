@@ -53,6 +53,11 @@ public class ComparaisonEvaluables {
         return newListe;
     }
      
+    /** 
+     * Tri les evaluables par date
+     * @param es --> liste d'evaluables (examen, lettre de sortie, fiche de soins, prescription, constantes, rdv)
+     * @return la liste d'evaluables triee
+     */
      public static List<Evaluable> trierEvaluables(List<Evaluable> es) {
         int nbr = es.size();
         Evaluable tmp;

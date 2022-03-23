@@ -60,6 +60,10 @@ public class FicheDeSoins implements Evaluable{
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une fiche de soins pour le DM
+     */
     @Override
     public String toStringDM(){
         String ch="------------------------------FICHE DE SOINS------------------------------\n\n";
@@ -78,6 +82,10 @@ public class FicheDeSoins implements Evaluable{
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un fiche de soins pour le DMA
+     */
     @Override
     public String toStringDMA(){
         String ch="------------------------------FICHE DE SOINS------------------------------\n\n";
@@ -162,7 +170,7 @@ public class FicheDeSoins implements Evaluable{
     }
 
     /**
-     * @param DateHeure the DateHeure to set
+     * @param dateHeure the DateHeure to set
      */
     public void setDateHeure(DateHeure dateHeure) {
         this.dateHeure = dateHeure;
@@ -205,7 +213,7 @@ public class FicheDeSoins implements Evaluable{
     }
 
     /**
-     * @param infirmiere the infirmiere to set
+     * @param infirmier the infirmiere to set
      */
     public void setInfirmier(Infirmier infirmier) {
         this.infirmier = infirmier;

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nf.Acte;
 import nf.DPI;
+import nf.DPITemporaire;
 import static nf.Date2.convertirDatetoString;
 import static nf.DateHeure.convertirDateHeuretoString;
 import nf.Evaluable;
@@ -69,7 +70,23 @@ public class Vector {
         }
         return dpis;
     }
+    
+    public static List<DPITemporaire> trierDPITemp(List<DPITemporaire> dpis) {
+        int nbr = dpis.size();
+        DPITemporaire tmp;
 
+        for (int i = 0; i < nbr; i++) {
+            for (int j = i + 1; j < nbr; j++) {
+                if (dpis.get(i).compareTo(dpis.get(j)) > 0) {
+                    tmp = dpis.get(i);
+                    dpis.set(i, dpis.get(j));
+                    dpis.set(j, tmp);
+                }
+            }
+        }
+        return dpis;
+    }
+    
     public static java.util.Vector getVectorDPI(List<DPI> dpis) {
         java.util.Vector v = new java.util.Vector();
 
@@ -80,6 +97,20 @@ public class Vector {
             ls.add(dpi.getPrenom());
             ls.add(convertirDatetoString(dpi.getDateNaissance()));
             ls.add(dpi.getSexe().toString());
+            v.add(ls);
+        }
+        return v;
+    }
+
+    public static java.util.Vector getVectorDPITemp(List<DPITemporaire> dpis) {
+        java.util.Vector v = new java.util.Vector();
+
+        for (int i = 0; i < dpis.size(); i++) {
+            java.util.Vector ls = new java.util.Vector();
+            DPITemporaire dpi = dpis.get(i);
+            ls.add(dpi.getNom());
+            ls.add(dpi.getPrenom());
+            ls.add(convertirDatetoString(dpi.getDate_naissance()));
             v.add(ls);
         }
         return v;

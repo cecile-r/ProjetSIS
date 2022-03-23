@@ -42,6 +42,7 @@ import java.util.Date;
 import static nf.Cryptage.getIPPRandom;
 import nf.*;
 import static UI.Vector.*;
+import static database.RequetesBDUrgences.getListeDPITemporaires;
 
 /**
  *
@@ -53,7 +54,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
     Connection conn;
     List<PH> medecins;
     Vector medecinsS;
-    List<DPI> dpis;
+    List<DPITemporaire> dpis;
     Vector dpisS;
     Vector entetes;
     Vector entetes2;
@@ -103,14 +104,13 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
         //TABLEAU PATIENTS
         dpisS = new Vector<>();
-        dpis = getListeDPIService(conn, ph.getService().toString());
-        dpis = trierDPI(dpis);
-        dpisS = getVectorDPI(dpis); //vecteur tableau
+        dpis = getListeDPITemporaires(conn);
+        dpis = trierDPITemp(dpis);
+        dpisS = getVectorDPITemp(dpis); //vecteur tableau
         entetes = new Vector();
         entetes.add("Nom");
         entetes.add("Prénom");
         entetes.add("Date de naissance");
-        entetes.add("Sexe");
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
         Table_Vue_Generale1.setAutoCreateRowSorter(true);
         Table_Vue_Generale1.setModel(tableModel);
@@ -704,9 +704,9 @@ public class Accueil_urgences extends javax.swing.JFrame {
             String recherche = TextField_Patient.getText();
             if (!recherche.equals("")) {
                 try {
-                    dpis = getListeDPI(conn, recherche, ph.getService().toString());
-                    dpis = trierDPI(dpis);
-                    dpisS = getVectorDPI(dpis);
+                    //dpis = getListeDPI(conn, recherche, ph.getService().toString());
+                    dpis = trierDPITemp(dpis);
+                    dpisS = getVectorDPITemp(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setAutoCreateRowSorter(true);
                     Table_Vue_Generale1.setModel(tableModel);

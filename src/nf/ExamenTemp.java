@@ -31,6 +31,10 @@ public class ExamenTemp implements Evaluable {
         //SET DPI
     }
     
+    /**
+     *
+     * @return une chaine de caractere avec la date heure, ph, type_examen, resultats
+     */
     @Override
     public String toString(){
         String ch="";
@@ -45,6 +49,11 @@ public class ExamenTemp implements Evaluable {
         return ch; 
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un examen temporaire pour le DM
+     */
+    @Override
     public String toStringDM(){
         String ch="------------------------------EXAMEN------------------------------\n\n";
         ch+="Le ";
@@ -59,6 +68,10 @@ public class ExamenTemp implements Evaluable {
         return ch; 
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un examen temporaire pour le DM
+     */
     public String toStringDMA(){
         String ch="------------------------------EXAMEN------------------------------\n\n";
         ch+="Le ";
@@ -70,6 +83,7 @@ public class ExamenTemp implements Evaluable {
         ch+="\n\n";
         return ch; 
     }
+    
     
     @Override
     public Object getProfessionnel(){

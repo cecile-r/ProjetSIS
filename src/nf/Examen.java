@@ -3,93 +3,106 @@ package nf;
 import static nf.DateHeure.convertirDateHeuretoString;
 
 public class Examen implements Evaluable {
-    
+
     private String resultats;
     private TypeExamen type_examen;
     private PH ph;
     private DateHeure dateHeure;
     private DPI DPI;
 
-    public Examen(TypeExamen type_examen, String resultats,DateHeure dateHeure){
-        this.type_examen=type_examen;
+    public Examen(TypeExamen type_examen, String resultats, DateHeure dateHeure) {
+        this.type_examen = type_examen;
         this.resultats = resultats;
-        this.dateHeure=dateHeure;  
-        this.ph=null;
-        this.DPI=null;
+        this.dateHeure = dateHeure;
+        this.ph = null;
+        this.DPI = null;
         //SET PH
         //SET DPI
     }
-    
+
     //Constructeur pour les examens mis dans les DMA -> pas de résultats
-    public Examen(TypeExamen type_examen, DateHeure dateHeure){
-        this.type_examen=type_examen;
+    public Examen(TypeExamen type_examen, DateHeure dateHeure) {
+        this.type_examen = type_examen;
         this.resultats = null;
-        this.dateHeure=dateHeure;  
-        this.ph=null;
-        this.DPI=null;
+        this.dateHeure = dateHeure;
+        this.ph = null;
+        this.DPI = null;
         //SET PH
         //SET DPI
     }
-    
+
+    /**
+     * réércriture
+     *
+     * @return chaine de caractere avec dateheure, ph, typre examen, resultats
+     */
     @Override
-    public String toString(){
-        String ch="";
-        ch+=dateHeure.StringDateHeure();
-        ch+="\n";
-        ch+=ph.toString();
-        ch+="\n";
-        ch+=type_examen;
-        ch+="\n";
-        ch=ch + "Résultats : " + resultats;
-        ch+="\n";
-        return ch; 
+    public String toString() {
+        String ch = "";
+        ch += dateHeure.StringDateHeure();
+        ch += "\n";
+        ch += ph.toString();
+        ch += "\n";
+        ch += type_examen;
+        ch += "\n";
+        ch = ch + "Résultats : " + resultats;
+        ch += "\n";
+        return ch;
     }
-    
-    public String toStringDM(){
-        String ch="------------------------------EXAMEN------------------------------\n\n";
-        ch+="Le ";
-        ch+=convertirDateHeuretoString(dateHeure);
-        ch+="\n\nPar ";
-        ch+=ph.toString();
-        ch+="\n\nType d'examen : ";
-        ch+=type_examen;
-        ch+="\n\n";
-        ch=ch + "Résultats : " + resultats;
-        ch+="\n";
-        return ch; 
+
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un examen pour le DM
+     */
+    public String toStringDM() {
+        String ch = "------------------------------EXAMEN------------------------------\n\n";
+        ch += "Le ";
+        ch += convertirDateHeuretoString(dateHeure);
+        ch += "\n\nPar ";
+        ch += ph.toString();
+        ch += "\n\nType d'examen : ";
+        ch += type_examen;
+        ch += "\n\n";
+        ch = ch + "Résultats : " + resultats;
+        ch += "\n";
+        return ch;
     }
-    
-    public String toStringDMA(){
-        String ch="------------------------------EXAMEN------------------------------\n\n";
-        ch+="Le ";
-        ch+=convertirDateHeuretoString(dateHeure);
-        ch+="\n\nPar ";
-        ch+=ph.toString();
-        ch+="\n\nType d'examen : ";
-        ch+=type_examen;
-        ch+="\n\n";
-        return ch; 
+
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un examen pour le DMA
+     */
+    public String toStringDMA() {
+        String ch = "------------------------------EXAMEN------------------------------\n\n";
+        ch += "Le ";
+        ch += convertirDateHeuretoString(dateHeure);
+        ch += "\n\nPar ";
+        ch += ph.toString();
+        ch += "\n\nType d'examen : ";
+        ch += type_examen;
+        ch += "\n\n";
+        return ch;
     }
-    
+
     @Override
-    public Object getProfessionnel(){
-        return "PH- "+ph;
+    public Object getProfessionnel() {
+        return "PH- " + ph;
     }
-    
+
     @Override
-    public String getTypeEvaluable(){
+    public String getTypeEvaluable() {
         return "Examen";
     }
-    
-    public String getContenu(){
+
+    public String getContenu() {
         return type_examen.toString();
     }
-    
+
     @Override
-    public String getObservations(){
+    public String getObservations() {
         return resultats;
     }
-    
+
     /**
      * @return the resultats
      */
@@ -160,5 +173,5 @@ public class Examen implements Evaluable {
     public void setDPI(DPI DPI) {
         this.DPI = DPI;
     }
-    
+
 }

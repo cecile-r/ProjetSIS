@@ -46,6 +46,10 @@ public class DPI {
         this.dMA=dMA;
     }
     
+    /**
+     * retourne une chaine de caractere pour afficher les informations d'un patient
+     * @return Nom prénom date de naissance sexe adresse telephone
+     */
     @Override
     public String toString (){
         String ch = "";
@@ -58,6 +62,10 @@ public class DPI {
         return ch;
     }
     
+    /**
+     * retourne une chaine de caractere pour afficher prenom + nom du patient
+     * @return prenom nom
+     */
     public String toStringSimple(){
         String ch = "";
         ch = ch +prenom+ " "+nom+"\n";
@@ -204,6 +212,10 @@ public class DPI {
         this.dM = dM;
     }
 
+    /**
+     * compare 2 dpi en fonction de l'ordre alphabetique du nom
+     * @return un nombre représentant la comparaison alphabetique 
+     */
     public int compareTo(DPI dpi) {
         return getNom().compareTo(dpi.getNom());
     }

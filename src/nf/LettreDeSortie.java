@@ -2,72 +2,82 @@ package nf;
 
 import static nf.DateHeure.convertirDateHeuretoString;
 
-public class LettreDeSortie implements Evaluable{
+public class LettreDeSortie implements Evaluable {
+
     private String texte;
     private PH ph;
     private DateHeure dateHeure;
     private DPI DPI;
 
-    public LettreDeSortie(String texte,DateHeure dateHeure){
-        this.texte=texte;
-        this.dateHeure=dateHeure;
-        this.ph=null;
-        this.DPI=null;
+    public LettreDeSortie(String texte, DateHeure dateHeure) {
+        this.texte = texte;
+        this.dateHeure = dateHeure;
+        this.ph = null;
+        this.DPI = null;
         //SET PH
         //SET DPI
     }
-    
+
     @Override
-    public String toString(){
-        String ch="";
-        ch+=dateHeure.StringDateHeure();
-        ch+="\n";
-        ch+=ph.toString();
-        ch+="\n";
-        ch+=texte;
-        ch+="\n";
+    public String toString() {
+        String ch = "";
+        ch += dateHeure.StringDateHeure();
+        ch += "\n";
+        ch += ph.toString();
+        ch += "\n";
+        ch += texte;
+        ch += "\n";
         return ch;
     }
-    
-     
-    public String toStringDM(){
-        String ch="------------------------------LETTRE DE SORTIE------------------------------\n\n";
-        ch+=convertirDateHeuretoString(dateHeure);
-        ch+="\n\nPar ";
-        ch+=ph.toString();
-        ch+="\n\n";
-        ch+=texte;
-        ch+="\n";
+
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une lettre de sortie pour
+     * le DM
+     */
+    public String toStringDM() {
+        String ch = "------------------------------LETTRE DE SORTIE------------------------------\n\n";
+        ch += convertirDateHeuretoString(dateHeure);
+        ch += "\n\nPar ";
+        ch += ph.toString();
+        ch += "\n\n";
+        ch += texte;
+        ch += "\n";
         return ch;
     }
-    
-    public String toStringDMA(){
-        String ch="------------------------------LETTRE DE SORTIE------------------------------\n\n";
-        ch+=convertirDateHeuretoString(dateHeure);
-        ch+="\n\nPar ";
-        ch+=ph.toString();
-        ch+="\n\n";
-        ch+=texte;
-        ch+="\n";
+
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une lettre de sortie pour
+     * le DMA
+     */
+    public String toStringDMA() {
+        String ch = "------------------------------LETTRE DE SORTIE------------------------------\n\n";
+        ch += convertirDateHeuretoString(dateHeure);
+        ch += "\n\nPar ";
+        ch += ph.toString();
+        ch += "\n\n";
+        ch += texte;
+        ch += "\n";
         return ch;
     }
-    
+
     @Override
-    public Object getProfessionnel(){
-        return "PH- "+ph;
+    public Object getProfessionnel() {
+        return "PH- " + ph;
     }
-    
+
     @Override
-    public String getTypeEvaluable(){
+    public String getTypeEvaluable() {
         return "Lettre de sortie";
     }
-    
-    public String getContenu(){
+
+    public String getContenu() {
         return texte;
     }
-    
+
     @Override
-    public String getObservations(){
+    public String getObservations() {
         return null;
     }
 

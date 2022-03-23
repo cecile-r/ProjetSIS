@@ -29,6 +29,7 @@ import nf.Infirmier;
 import nf.PH;
 import nf.SecretaireAdministrative;
 import nf.SecretaireMedicale;
+import nf.Service;
 
 /**
  *
@@ -231,11 +232,19 @@ public class Connexion extends javax.swing.JFrame {
             if (c) {
                 if (CB_item.equals("PH")) {
                     PH ph = userPH(conn, id);
-                    Accueil_Med i;
-                    i = new Accueil_Med(conn, ph);
-                    i.setSize(longueur, hauteur);
-                    i.setVisible(true);
-                    dispose();
+                    if (ph.getService() == Service.Urgences) {
+                        Accueil_urgences i;
+                        i = new Accueil_urgences(conn, ph);
+                        i.setSize(longueur, hauteur);
+                        i.setVisible(true);
+                        dispose();
+                    } else {
+                        Accueil_Med i;
+                        i = new Accueil_Med(conn, ph);
+                        i.setSize(longueur, hauteur);
+                        i.setVisible(true);
+                        dispose();
+                    }
                 } else if (CB_item.equals("SA")) {
                     SecretaireAdministrative sa = userSA(conn, id);
                     Accueil_SA i;

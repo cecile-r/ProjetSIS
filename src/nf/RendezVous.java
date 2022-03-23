@@ -66,9 +66,19 @@ public class RendezVous implements Evaluable{
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un rdv pour
+     * le DM
+     */
     @Override
     public String toStringDM(){return null;}
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un rdv pour
+     * le DMA
+     */
     @Override
     public String toStringDMA(){
         String ch = "############# RENDEZ VOUS ###########\n";

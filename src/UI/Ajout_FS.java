@@ -491,6 +491,8 @@ public class Ajout_FS extends javax.swing.JFrame {
                     dispose();
                 } catch (SQLException ex) {
                     Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {//DPI TEMPORAIRE
                 String IPP = dpiTemp.getIPP();

@@ -52,6 +52,11 @@ public class SoinsQuotidien implements Evaluable {
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un soin quotidien pour
+     * le DM
+     */
     public String toStringDM(){
         DecimalFormat df = new DecimalFormat("0.0");
         String ch="------------------------------SOINS QUOTIDIEN------------------------------\n\n";
@@ -70,6 +75,11 @@ public class SoinsQuotidien implements Evaluable {
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'un soin quotidien pour
+     * le DMA
+     */
     public String toStringDMA(){return null;}
     
       @Override

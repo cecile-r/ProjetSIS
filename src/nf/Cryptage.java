@@ -42,6 +42,7 @@ public class Cryptage {
     private static final int KEY_LENGTH = 512;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
 
+    /*
     public static void main(String[] args) {
 
         //String salt = generateSalt(512).get();
@@ -68,8 +69,6 @@ public class Cryptage {
         System.out.println("mdp = " + password);
         System.out.println("mdp crypté = " + cry);
         
-        
-        /*
         String myDataBasePassword = "Retour";
         System.out.println("mdp = "+myDataBasePassword);
         String cry=cryptage(myDataBasePassword);
@@ -80,15 +79,20 @@ public class Cryptage {
         System.out.println("mdp = "+myDataBasePassword);
         cry=cryptage(myDataBasePassword);
         System.out.println("mdp crypte = "+cry);
-        System.out.println("mdp decrypte = "+decryptage(cry));*/
-        /*
+        System.out.println("mdp decrypte = "+decryptage(cry));
+        
         myDataBasePassword = "Garcin";
         System.out.println("mdp = "+myDataBasePassword);
         cry=cryptage(myDataBasePassword);
         System.out.println("mdp crypte = "+cry);
-        System.out.println("mdp decrypte = "+decryptage(cry));*/
-    }
+        System.out.println("mdp decrypte = "+decryptage(cry));
+    }*/
     
+    /** 
+     * 
+     * @param password --> mot de passe à crypter
+     * @return mot de passe crypté
+     */
     public static String cryptage(String password){
         String salt = "r9ZYeoCR2VSDGVf0M+oYYQ==";
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
@@ -97,6 +101,11 @@ public class Cryptage {
         return myEncryptedPassword;
     }
     
+    /** 
+     * 
+     * @param myEncryptedPassword --> mot de passe crypté
+     * @return le mot de passe décrypté
+     */
     public static String decryptage(String myEncryptedPassword){
         String salt = "r9ZYeoCR2VSDGVf0M+oYYQ==";
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
@@ -156,7 +165,6 @@ public class Cryptage {
      *
      * @param password
      * @param key
-     * @param salt
      * @return vrai si le mot de passe est bon
      */
     public static boolean verifyPassword(String password, String key) {
@@ -167,6 +175,10 @@ public class Cryptage {
         return optEncrypted.get().equals(key);
     }
 
+    /**
+     *
+     * @return un IPP au hasard composé de 10 chiffres
+     */
     public static String getIPPRandom() {
         int nb;
         String ch = "";

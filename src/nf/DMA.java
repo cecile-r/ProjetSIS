@@ -4,63 +4,80 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-
 public class DMA {
-    
+
     private int IPP;
     //!\ restriction du DMA : pas d'accès aux actes dans les fiches de soins
-    private List<FicheDeSoins> ficheDeSoins = new ArrayList<FicheDeSoins> ();
+    private List<FicheDeSoins> ficheDeSoins = new ArrayList<FicheDeSoins>();
     //!\ restriction du DMA : pas d'accès aux résultats, juste à l'examen
-    private List<Examen> examens = new ArrayList<Examen> ();
-    private List<RendezVous> rendezVous = new ArrayList<RendezVous> ();
-    private List<LettreDeSortie> lettreDeSortie = new ArrayList<LettreDeSortie> ();
+    private List<Examen> examens = new ArrayList<Examen>();
+    private List<RendezVous> rendezVous = new ArrayList<RendezVous>();
+    private List<LettreDeSortie> lettreDeSortie = new ArrayList<LettreDeSortie>();
     private Localisation localisation;
-    private List<Evaluable> documents = new ArrayList<Evaluable> ();
-    
+    private List<Evaluable> documents = new ArrayList<Evaluable>();
+
     public DMA(Localisation localisation) {
         this.ficheDeSoins = new Vector<FicheDeSoins>();
         this.rendezVous = new Vector<RendezVous>();
-        this.examens=  new Vector<Examen>();
-        this.lettreDeSortie= new Vector<LettreDeSortie>();
-        this.localisation=localisation;
+        this.examens = new Vector<Examen>();
+        this.lettreDeSortie = new Vector<LettreDeSortie>();
+        this.localisation = localisation;
     }
-    
+
     //ficheDeSoins --> INTITULE -- restrictions
     //precriptions --> NON
     //lettreDeSortie --> tout
     //soins quotidiens --> NON
     //examens --> INTITULE -- restrictions
     //RDV
-    
-    public void ajouterFicheDeSoins(FicheDeSoins fs){
-       ficheDeSoins.add(fs);
-   }
-   public void ajouterRendezVous(RendezVous rdv){
-       rendezVous.add(rdv);
-   }
-   public void ajouterLettreDeSortie(LettreDeSortie l){
-       lettreDeSortie.add(l);
-   } 
-   public void ajouterExamen(Examen e){
-       examens.add(e);
-   }
-    
+    /**
+     * ajoute une fiche de soins au DMA
+     */
+    public void ajouterFicheDeSoins(FicheDeSoins fs) {
+        ficheDeSoins.add(fs);
+    }
+
+    /**
+     * ajoute un rendez vous au DMA
+     */
+    public void ajouterRendezVous(RendezVous rdv) {
+        rendezVous.add(rdv);
+    }
+
+    /**
+     * ajoute une lettre de sortie au DMA
+     */
+    public void ajouterLettreDeSortie(LettreDeSortie l) {
+        lettreDeSortie.add(l);
+    }
+
+    /**
+     * ajoute un examen au DMA
+     */
+    public void ajouterExamen(Examen e) {
+        examens.add(e);
+    }
+
+    /**
+     * retourne une chaine de caractere pour afficher le DMA
+     * @return String pour afficher le DMA
+     */
     @Override
-    public String toString(){
-        List <Evaluable> documents = new ArrayList<Evaluable>();
+    public String toString() {
+        List<Evaluable> documents = new ArrayList<Evaluable>();
         documents = new Vector<Evaluable>();
         documents.addAll(ficheDeSoins);
         documents.addAll(lettreDeSortie);
         documents.addAll(examens);
         ComparaisonEvaluables c = new ComparaisonEvaluables();
         documents = c.trierEvaluablesParDate(documents);
-        
-        String ch="------------------------DMA------------------------\n";
+
+        String ch = "------------------------DMA------------------------\n";
         for (int i = 0; i < documents.size(); i++) {
             Evaluable e = documents.get(i);
-            ch=ch+e.toStringDMA()+"\n";
+            ch = ch + e.toStringDMA() + "\n";
         }
-        return ch;   
+        return ch;
     }
 
     /**
@@ -160,8 +177,5 @@ public class DMA {
     public void setDocuments(List<Evaluable> documents) {
         this.documents = documents;
     }
-    
-    
-    
-    
+
 }

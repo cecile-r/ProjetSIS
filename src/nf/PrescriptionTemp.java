@@ -41,6 +41,11 @@ public class PrescriptionTemp implements Evaluable{
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une precription temporaire  pour
+     * le DM
+     */
     public String toStringDM(){
         String ch="------------------------------PRESCRIPTION------------------------------\n\n";
         ch+=convertirDateHeuretoString(date_presciption);
@@ -59,6 +64,11 @@ public class PrescriptionTemp implements Evaluable{
         return ch;
     }
     
+    /**
+     *
+     * @return chaine de caractere pour l'affichage d'une precription temporaire pour
+     * le DMA
+     */
     public String toStringDMA(){return null;};
     
     @Override
