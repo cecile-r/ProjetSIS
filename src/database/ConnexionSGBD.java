@@ -48,6 +48,7 @@ import static database.RequetesBDUrgences.creerFicheDeSoinsTemp;
 import static database.RequetesBDUrgences.creerPrescriptionTemp;
 import static database.RequetesBDUrgences.dpiExiste;
 import static database.RequetesBDUrgences.fusionDPI;
+import static database.RequetesBDUrgences.getDPITemp;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 import static database.RequetesBDUrgences.getVectorDPITemporaires;
 import static database.RequetesBDUrgences.listeExamensTemporaire;
@@ -589,17 +590,17 @@ class ConnexionSGBD {
             
             
             //Test ajout de DPI temporaire -> VALIDE
-            //Date dn = new Date(1997,3,20);
+            Date dn = new Date(1997,3,20);
             //PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
-            //DPITemporaire dpit = new DPITemporaire("9977554466", "Palmito", "Juan", dn, ph_urgence);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            DPITemporaire dpitjuan = new DPITemporaire("9977554466", "Palmito", "Juan", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpit);
             
             //Date dn = new Date(1999,8,26);
             //DPITemporaire dpitu = new DPITemporaire("9538539548", "Eclair", "Pika", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpitu);
             
-            Date dn = new Date(2000,12,20);
-            DPITemporaire dpitu = new DPITemporaire("1000054276", "Pouet", "Goku", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
+            //Date dn = new Date(2000,12,20);
+            //DPITemporaire dpitu = new DPITemporaire("1000054276", "Pouet", "Goku", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpitu);
             
             //Date dn2 = new Date(1999,8,26);
@@ -631,17 +632,24 @@ class ConnexionSGBD {
             
             
             //Test creerFicheDeSoinsTemp(fiche) -> VALIDE
-            Acte at1 = new Acte("prise de sang",Type.therapeutique,Code.KE,2, "RAS");
+            Acte at1 = new Acte("prise de sang",Type.therapeutique,Code.KE,2, "Rien à signaler.");
             Acte at2 = new Acte("changement pansement",Type.diagnostic,Code.CSC,1, "Cicatrisation normale");
           
-            DateHeure dht1 = new DateHeure(2022,3,18,16,00);
+            /*DateHeure dht1 = new DateHeure(2022,3,18,16,00);
             FicheDeSoinsTemp fst1 = new FicheDeSoinsTemp(dht1);
             fst1.setpH(ph_urgence);
             fst1.ajouterActe(at1);
             fst1.ajouterActe(at2);
-            fst1.setDPI(dpitu);
+            fst1.setDPI(dpitu);*/
             //creerFicheDeSoinsTemp(conn, fst1);
             
+            DateHeure dht1 = new DateHeure(2022,3,22,10,00);
+            FicheDeSoinsTemp fst1 = new FicheDeSoinsTemp(dht1);
+            fst1.setpH(ph_urgence);
+            fst1.ajouterActe(at1);
+            fst1.ajouterActe(at2);
+            fst1.setDPI(dpitjuan);
+            //creerFicheDeSoinsTemp(conn, fst1);
             
             //Test creerActeTemp(acte) -> VALIDE
             //creerActeTemp(conn, at1);
@@ -701,6 +709,11 @@ class ConnexionSGBD {
             
             //System.out.println(getListeDPI(conn));
             
+            //Test getDPITemp(ipp) -> VALIDE
+            //System.out.println(getDPITemp(conn, "9977554466").getListe_f());
+            
+            //System.out.println(getDPITemp(conn, "9977554466").getListe_f().toString());
+            //System.out.println(listeFichesDeSoinsTemporaire(conn, "9977554466"));
             
             
             

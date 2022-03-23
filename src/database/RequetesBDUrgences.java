@@ -34,16 +34,27 @@ import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.creerFicheDeSoins;
 import static database.RequetesBDDPI.creerPrescription;
 import static database.RequetesBDDPI.getIPPPatient;
+import static database.RequetesBDDPI.listeExamens;
+import static database.RequetesBDDPI.listeFichesDeSoins;
+import static database.RequetesBDDPI.listeLettreSortie;
+import static database.RequetesBDDPI.listePrescription;
+import static database.RequetesBDDPI.listeRendezVous;
+import static database.RequetesBDDPI.listeSoinQuotidien;
 import nf.Acte;
 import nf.Code;
+import nf.DM;
+import nf.DMA;
 import nf.DateHeure;
 import nf.Examen;
 import nf.ExamenTemp;
 import nf.FicheDeSoins;
 import nf.FicheDeSoinsTemp;
 import nf.Infirmier;
+import nf.LettreDeSortie;
 import nf.Prescription;
 import nf.PrescriptionTemp;
+import nf.RendezVous;
+import nf.SoinsQuotidien;
 import nf.Type;
 import nf.TypeExamen;
 
@@ -69,7 +80,7 @@ public class RequetesBDUrgences {
         stmt.close();
         return ippExiste;
     }
-    
+
     //Renvoie le nombre de DPI temporaire
     //VALIDE
     public static int nbDPITemporaire(Connection conn) throws SQLException {
@@ -179,7 +190,7 @@ public class RequetesBDUrgences {
             //Ajout de la fiche de soin dans la table FichesDeSoins
             FicheDeSoins f = new FicheDeSoins(listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getDateHeure());
             f.setActe(listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getActe());
-            
+
             //Création DPI avec l'IPP réel du patient dans la table DPI
             PreparedStatement stmt = null;
             stmt = conn.prepareStatement("SELECT * FROM DPI "
@@ -187,8 +198,8 @@ public class RequetesBDUrgences {
                     + "WHERE IPP = ?");
             stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
             ResultSet rs = stmt.executeQuery();//Les infos du DPI du patient
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
                 Date d = new Date(rs.getDate("date_de_naissance").getTime());
                 DPI dpi = new DPI(rs.getString("IPP"), rs.getString("nom_DPI"), rs.getString("prenom_DPI"), d, Sexe.valueOf(rs.getString("sexe_DPI")), rs.getString("adresse_DPI"), rs.getString("telephone_DPI"), m);
@@ -196,7 +207,7 @@ public class RequetesBDUrgences {
             }
             stmt.close();
             rs.close();
-            
+
             //Création du professionnel de santé qui réalise la fiche de soins
             if (listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getpH() != null) { //Si l'éditeur/celui qui réalise les actes est un PH
                 Statement stmt4 = conn.createStatement();
@@ -208,8 +219,7 @@ public class RequetesBDUrgences {
                 }
                 rs4.close();
                 stmt4.close();
-            } 
-            else if (listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getInfirmier() != null) { //L'éditeur/celui qui réalise les actes est un infirmier
+            } else if (listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getInfirmier() != null) { //L'éditeur/celui qui réalise les actes est un infirmier
                 Statement stmt5 = conn.createStatement();
                 ResultSet rs5 = stmt5.executeQuery("SELECT * FROM Infirmier "
                         + "WHERE idInfirmier = '" + listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).get(i).getInfirmier().getIdInfirmiere() + "'");//Avoir les infos de l'infirmier pour cette fiche de soins
@@ -282,7 +292,7 @@ public class RequetesBDUrgences {
                 PH ph = new PH(rs2.getString("idPH"), rs2.getString("nom_PH"), rs2.getString("prenom_PH"), Service.valueOf(rs2.getString("service_PH")), rs2.getString("mdp_PH"), rs2.getString("telephone_PH"), rs2.getString("specialite_PH"));
                 e.setPh(ph);
             }
-            
+
             //Création du DPI
             Statement stmt3 = conn.createStatement();
             ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
@@ -293,7 +303,7 @@ public class RequetesBDUrgences {
                 DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
                 e.setDPI(dpi);
             }
-            
+
             creerExamen(conn, e);
         }
         //Suppression des examens dans Examen_temporaire
@@ -316,42 +326,20 @@ public class RequetesBDUrgences {
     public static void creerFicheDeSoinsTemp(Connection conn, FicheDeSoinsTemp fiche) throws SQLException {
 
         for (int i = 0; i < fiche.getActe().size(); i++) {
-            PreparedStatement stmt2 = null;
             String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(fiche.getDateHeure()));
             Timestamp t = Timestamp.valueOf(ts);
             int a;//idActe
 
-            if (fiche.getInfirmier() != null) {
-                //Insertion dans la table Acte
-                a = creerActeTemp(conn, fiche.getActe().get(i));
-                //Insertion dans la table FichesDeSoins_temporaire
-                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
-                stmt2.setString(1, fiche.getDPI().getIPP());
-                stmt2.setTimestamp(2, t);
-                stmt2.setInt(3, a);//idActe
-                stmt2.setString(4, null);
-                stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
-            } else if (fiche.getpH() != null) {
-                //Insertion dans la table Acte
-                a = creerActeTemp(conn, fiche.getActe().get(i));
-                //Insertion dans la table FichesDeSoins_temporaire
-                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
-                stmt2.setString(1, fiche.getDPI().getIPP());
-                stmt2.setTimestamp(2, t);
-                stmt2.setInt(3, a);//idActe
-                stmt2.setString(4, fiche.getpH().getIdPH());
-                stmt2.setString(5, null);
-            } else {
-                //Insertion dans la table Acte
-                a = creerActeTemp(conn, fiche.getActe().get(i));
-                //Insertion dans la table FichesDeSoins_temporaire
-                stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
-                stmt2.setString(1, fiche.getDPI().getIPP());
-                stmt2.setTimestamp(2, t);
-                stmt2.setInt(3, a);
-                stmt2.setString(4, fiche.getpH().getIdPH());
-                stmt2.setString(5, fiche.getInfirmier().getIdInfirmiere());
-            }
+            //Insertion dans la table Acte
+            a = creerActeTemp(conn, fiche.getActe().get(i));
+            //Insertion dans la table FichesDeSoins_temporaire
+            PreparedStatement stmt2 = null;
+            stmt2 = conn.prepareStatement("INSERT INTO FichesDeSoins_temporaire values(?,?,?,?,?)");
+            stmt2.setString(1, fiche.getDPI().getIPP());
+            stmt2.setTimestamp(2, t);
+            stmt2.setInt(3, a);//idActe
+            stmt2.setString(4, fiche.getpH().getIdPH());
+            stmt2.setString(5, null);
             stmt2.executeUpdate();
             stmt2.close();
         }
@@ -365,27 +353,27 @@ public class RequetesBDUrgences {
         int rowCount = 0;
         stmt2 = conn.prepareStatement("SELECT COUNT(idActe) AS rowcount FROM Acte_temporaire");
         ResultSet rs2 = stmt2.executeQuery();
-        if(rs2.next()){
+        if (rs2.next()) {
             rowCount = rs2.getInt("rowcount");
         }
-        
+
         //Insertion de l'acte
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("INSERT INTO Acte_temporaire values(?,?,?,?,?,?)");
-        stmt.setInt(1, rowCount+1);
-        stmt.setString(2, acte.getCode().name()); 
-        stmt.setString(3, acte.getType().name()); 
-        stmt.setString(4, acte.getNomA()); 
-        stmt.setFloat(5, acte.getCoeff()); 
-        stmt.setString(6, acte.getObservation()); 
+        stmt.setInt(1, rowCount + 2);
+        stmt.setString(2, acte.getCode().name());
+        stmt.setString(3, acte.getType().name());
+        stmt.setString(4, acte.getNomA());
+        stmt.setFloat(5, acte.getCoeff());
+        stmt.setString(6, acte.getObservation());
         stmt.executeUpdate();
         stmt.close();
-        
+
         rs2.close();
         stmt2.close();
-        return (rowCount+1);
+        return (rowCount + 2);
     }
-    
+
     //Creer une prescription d'urgence (temporaire) et l'ajouter dans la base de données
     //VALIDE
     public static void creerPrescriptionTemp(Connection conn, PrescriptionTemp p) throws SQLException {
@@ -603,6 +591,35 @@ public class RequetesBDUrgences {
         rs.close();
         stmt.close();
         return listeExams;
+    }
+
+    //Renvoie le DPI temporaire associé à l'ipp donné
+    //
+    public static DPITemporaire getDPITemp(Connection conn, String ipp) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire "
+                + "WHERE IPP = '" + ipp + "'");//Les infos du DPI du patient
+
+        if (rs.next()) { //Si y'a un DPI temporaire qui correspond à l'identifiant
+            //Création des instances pour créer le DPI
+            Date d = new Date(rs.getDate("date_de_naissance_temp").getTime());
+            DPITemporaire dpi = new DPITemporaire(rs.getString("IPP"), rs.getString("nom_DPI_temp"), rs.getString("prenom_DPI_temp"), d);
+
+            //Remplissage de la liste de fiches de soins temporaires
+            List<FicheDeSoinsTemp> listeFiches = listeFichesDeSoinsTemporaire(conn, ipp);
+            dpi.setListe_f(listeFiches);
+
+            //Remplissage de la liste d'examens temporaires
+            List<ExamenTemp> listeExam = listeExamensTemporaire(conn, ipp);
+            dpi.setListe_e(listeExam);
+
+            //Remplissage de la liste de prescriptions temporaires
+            List<PrescriptionTemp> listeP = listePrescriptionTemporaire(conn, ipp);
+            dpi.setListe_p(listeP);
+
+            return dpi;
+        }
+        return null;
     }
 
 }
