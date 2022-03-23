@@ -681,7 +681,7 @@ class ConnexionSGBD {
             //DPI temporaire bien supprimé
             //System.out.println(listeFichesDeSoins(conn, "9736482920"));
             //System.out.println(listeFichesDeSoins(conn, "1926354276"));
-            System.out.println(listeFichesDeSoins(conn, "1800511989"));
+            //System.out.println(listeFichesDeSoins(conn, "1800511989"));
             //System.out.println(listePrescription(conn, "9736482920")); //Prescription bien ajoutée  
             //System.out.println(listeExamens(conn, "9736482920")); //Examen bien ajouté
             
@@ -698,6 +698,8 @@ class ConnexionSGBD {
             //Test IPPTempExistant(ipp) -> VALIDE
             //System.out.println(IPPTempExistant(conn, "1000054276")); //Renvoie false
             //System.out.println(IPPTempExistant(conn, "9999555566")); //Renvoie true
+            
+            //System.out.println(getListeDPI(conn));
             
             
             
