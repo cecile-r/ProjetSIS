@@ -781,11 +781,11 @@ public class RequetesBDDPI {
     
     //Creer un patient et l'ajouter dans la base de données
     //VALIDE
-    public static void creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, MedecinTraitant m) throws SQLException {
+    public static DPI creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, MedecinTraitant m) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "WHERE IPP = '" + id + "' AND IPP IN (SELECT IPP FROM Archive)");
-
+        DPI dpi = new DPI(id, nom_DPI, prenom_DPI, date_de_naissance, Sexe.valueOf(sexe_DPI), adresse_DPI, telephone_DPI, m);
         if (rs.next()) {
             System.out.println("Ce patient est déjà enregistré dans la base de données.");
         } else {
@@ -811,6 +811,7 @@ public class RequetesBDDPI {
         }
         rs.close();
         stmt.close();
+        return dpi;
     }
 
     //Creer une fiche de soins et l'ajouter dans la base de données
