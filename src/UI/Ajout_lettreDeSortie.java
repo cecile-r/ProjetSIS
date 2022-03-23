@@ -317,7 +317,9 @@ public class Ajout_lettreDeSortie extends javax.swing.JFrame {
                 dispose();
             } catch (SQLException ex) {
                 Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -5,7 +5,7 @@
  */
 package UI;
 
-import HL7.HL7_SIH;
+import HL7.HL7_SIH_Client;
 import static database.RequetesBDDPI.creerPrescription;
 import static database.RequetesBDDPI.getDPI;
 import java.awt.Dimension;
@@ -411,6 +411,8 @@ public class Ajout_prescription extends javax.swing.JFrame {
             dispose();
         } catch (SQLException ex) {
             Logger.getLogger(Ajout_lettreDeSortie.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -452,7 +454,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 //ENVOYER EN RADIO
                 if (jComboBox2.getSelectedItem() == TypeExamen.radiologie || jComboBox2.getSelectedItem() == TypeExamen.imagerie_par_resonance_magnetique || jComboBox2.getSelectedItem() == TypeExamen.scanner) {
                     try {
-                        HL7_SIH hl = new HL7_SIH(conn, 4444);//4444
+                        HL7_SIH_Client hl = new HL7_SIH_Client(conn);//4445
                         hl.envoyerDonnees(p);
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);

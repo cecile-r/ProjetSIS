@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class RDV_consultation extends javax.swing.JFrame {
 
     Connection conn;
@@ -265,8 +264,16 @@ public class RDV_consultation extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
 
         if (ph != null) {
-            Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
-            i.setVisible(true);
+
+            try {
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi, ph);
+                i.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(RDV_consultation.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(RDV_consultation.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             Vue_Patient_SM i = new Vue_Patient_SM(conn, dpi, sm);
             i.setVisible(true);

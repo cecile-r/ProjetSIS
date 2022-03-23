@@ -5,7 +5,7 @@
  */
 package UI;
 
-import HL7.HL7_SIH;
+import HL7.HL7_SIH_Client;
 import java.sql.Connection;
 import database.DatabaseAccessProperties;
 import static database.RequetesBDDPI.*;
@@ -131,12 +131,12 @@ public class Accueil_Med extends javax.swing.JFrame {
         int current_year = current_date.getYear();
         int current_month = current_date.getMonthValue();
         int current_day = current_date.getDayOfMonth();
-        Date date_courante = new Date(current_year,current_month, current_day);
-        Date date_courante2 = new Date(current_year-1900,current_month-1, current_day);
+        Date date_courante = new Date(current_year, current_month, current_day);
+        Date date_courante2 = new Date(current_year - 1900, current_month - 1, current_day);
         jLabel1.setText(convertirDatetoString(date_courante2));
         this.rdvs = new ArrayList<>();
         rdvsS = new Vector();
-        this.rdvs = listeRendezVous(conn, date_courante,ph);
+        this.rdvs = listeRendezVous(conn, date_courante, ph);
         List<Evaluable> evs = new ArrayList<>();
         evs.addAll(rdvs);
         evs = trierEvaluablesParDate(evs);
@@ -700,8 +700,6 @@ public class Accueil_Med extends javax.swing.JFrame {
         } else {
 
             try {
-                //HL7_SIH hl = new HL7_SIH(conn,4445);
-                //hl.recuperationDonnees();
                 
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPI dpi = getDPI(conn, dpis.get(index).getIPP());
@@ -711,11 +709,14 @@ public class Accueil_Med extends javax.swing.JFrame {
                 Vue_Patient_Med i = new Vue_Patient_Med(conn, dpi, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
-                dispose();
-
+             
             } catch (SQLException ex) {
                 Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            dispose();
 
         }
     }//GEN-LAST:event_Button_SelectionnerActionPerformed
@@ -864,11 +865,11 @@ public class Accueil_Med extends javax.swing.JFrame {
         int current_year = current_date.getYear();
         int current_month = current_date.getMonthValue();
         int current_day = current_date.getDayOfMonth();
-        Date date_courante = new Date(current_year,current_month, current_day);
-        Date date_courante2 = new Date(current_year-1900,current_month-1, current_day);
+        Date date_courante = new Date(current_year, current_month, current_day);
+        Date date_courante2 = new Date(current_year - 1900, current_month - 1, current_day);
         jLabel1.setText(convertirDatetoString(date_courante2));
         try {
-            this.rdvs = listeRendezVous(conn,date_courante ,ph);
+            this.rdvs = listeRendezVous(conn, date_courante, ph);
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -879,7 +880,7 @@ public class Accueil_Med extends javax.swing.JFrame {
         TableModel tableModel3 = new DefaultTableModel(rdvsS, entetesRDV);
         tab_planning.setModel(tableModel3);
         tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -888,11 +889,11 @@ public class Accueil_Med extends javax.swing.JFrame {
         int current_year = current_date.getYear();
         int current_month = current_date.getMonthValue();
         int current_day = current_date.getDayOfMonth();
-        Date date_courante = new Date(current_year,current_month, current_day);
-        Date date_courante2 = new Date(current_year-1900,current_month-1, current_day);
+        Date date_courante = new Date(current_year, current_month, current_day);
+        Date date_courante2 = new Date(current_year - 1900, current_month - 1, current_day);
         jLabel1.setText(convertirDatetoString(date_courante2));
         try {
-            this.rdvs = listeRendezVous(conn,date_courante ,ph);
+            this.rdvs = listeRendezVous(conn, date_courante, ph);
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_Med.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -905,35 +906,32 @@ public class Accueil_Med extends javax.swing.JFrame {
         tab_planning.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_planning.getRowCount()));
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
     public class jTableRender extends DefaultTableCellRenderer {
- 
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        
-        
-        Object o = table.getValueAt(row, 1);
-        if (o != null && component instanceof JLabel) {
-            JLabel label = (JLabel) component;
-            if(row==4){
-                Color gris = new Color(240,240,240);
-                component.setBackground(gris);
-            }else if (row%2==0) {
-                Color bleuclair = new Color(199,229,237);
-                component.setBackground(bleuclair);
-            }else if(row%2==1){
-                Color bleuclair2 = new Color(188,213,220);
-                component.setBackground(bleuclair2);
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            Object o = table.getValueAt(row, 1);
+            if (o != null && component instanceof JLabel) {
+                JLabel label = (JLabel) component;
+                if (row == 4) {
+                    Color gris = new Color(240, 240, 240);
+                    component.setBackground(gris);
+                } else if (row % 2 == 0) {
+                    Color bleuclair = new Color(199, 229, 237);
+                    component.setBackground(bleuclair);
+                } else if (row % 2 == 1) {
+                    Color bleuclair2 = new Color(188, 213, 220);
+                    component.setBackground(bleuclair2);
+                }
+
+                label.setHorizontalAlignment(CENTER);
             }
-            
-            label.setHorizontalAlignment(CENTER);
+            return component;
         }
-        return component;
     }
-}
-    
-    
+
     /**
      * @param args the command line arguments
      */

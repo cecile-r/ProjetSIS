@@ -337,6 +337,8 @@ public class Ajout_examen extends javax.swing.JFrame {
             dispose();
         } catch (SQLException ex) {
             Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ajout_examen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 

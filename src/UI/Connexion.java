@@ -5,7 +5,7 @@
  */
 package UI;
 
-import HL7.HL7_SIH;
+import HL7.HL7_SIH_Client;
 import database.DatabaseAccessProperties;
 import database.SQLWarningsExceptions;
 import java.awt.Color;
@@ -37,7 +37,7 @@ import nf.SecretaireMedicale;
 public class Connexion extends javax.swing.JFrame {
 
     Connection conn;
-    HL7_SIH hl;
+    HL7_SIH_Client hl;
 
     /**
      * Creates new form Connexion
@@ -338,7 +338,6 @@ public class Connexion extends javax.swing.JFrame {
 
                     //HL7_SIH hl = new HL7_SIH(conn, 4445);
                     //hl.recuperationDonnees();
-
                     Connexion i;
                     i = new Connexion(conn);
                     i.setVisible(true);
