@@ -53,8 +53,8 @@ public class DateHeure {
         if (getJour() != d.getJour())
             return getJour()  - d.getJour();
         if (getHeure() != d.getHeure())
-            return d.getHeure() -  getHeure()  ;
-        return d.getMinutes() - getMinutes();
+            return getHeure() -d.getHeure();
+        return getMinutes() - d.getMinutes() ;
         }
     
     

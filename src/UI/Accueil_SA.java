@@ -131,6 +131,7 @@ public class Accueil_SA extends javax.swing.JFrame {
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
         Table_Vue_Generale1.setModel(tableModel);
         Table_Vue_Generale1.setDefaultEditor(Object.class, null);
+        Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 20 * Table_Vue_Generale1.getRowCount()));
 
         //TABLEAU PH
         medecinsS = new Vector();
