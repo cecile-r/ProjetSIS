@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import nf.Acte;
 import nf.Code;
 import nf.DPI;
@@ -27,7 +26,6 @@ import nf.Service;
 import nf.Sexe;
 import nf.Type;
 import nf.TypeExamen;
-import database.RequetesBDConversion;
 import static database.RequetesBDConversion.convertDateHeureJavaEnTimestampSQL;
 import static database.RequetesBDConversion.convertDateJavaEnSQL;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
@@ -35,17 +33,12 @@ import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDConversion.convertDateSQLenJava;
 import static database.RequetesBDConversion.convertLocalDateEnDate;
 import static database.RequetesBDConversion.convertTimestampSQLenJava;
-import static database.RequetesBDConversion.toStringTimestamp;
 import static database.RequetesBDConversion.toStringTimestampJAVA;
 import static java.lang.String.valueOf;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.time.LocalDate;
 import nf.DM;
 import nf.DMA;
-import nf.DPITemporaire;
 import nf.DateHeure;
-import nf.FicheDeSoinsTemp;
 import nf.Lit;
 import nf.Localisation;
 import nf.Prescription;
@@ -137,30 +130,6 @@ public class RequetesBDDPI {
         return listeDPI;
     }
 
-    //Renvoie le vecteur des DPI fermés
-    //VALIDE
-    public static Vector getVectorDPIFerme(Connection conn) throws SQLException {
-        Vector vDPI = new Vector();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP NOT IN (SELECT IPP FROM Localisation) AND IPP NOT IN (SELECT IPP FROM Archive)");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            vParDPI.add(rs.getString("nom_DPI"));
-            vParDPI.add(rs.getString("prenom_DPI"));
-            vParDPI.add(d);
-            vParDPI.add(rs.getString("sexe_DPI"));
-            vDPI.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPI;
-    }
-
     //Renvoie la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
     //VALIDE
     public static List<DPI> getListeTousDPI(Connection conn) throws SQLException {
@@ -179,29 +148,6 @@ public class RequetesBDDPI {
         rs.close();
         stmt.close();
         return listeDPI;
-    }
-
-    //Renvoie le vecteur des DPI ouverts ou fermés -> patients dans le CHU ou non
-    //VALIDE
-    public static Vector getVectorTousDPI(Connection conn) throws SQLException {
-        Vector vDPI = new Vector();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) WHERE IPP NOT IN (SELECT IPP FROM Archive)");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            vParDPI.add(rs.getString("nom_DPI"));
-            vParDPI.add(rs.getString("prenom_DPI"));
-            vParDPI.add(d);
-            vParDPI.add(rs.getString("sexe_DPI"));
-            vDPI.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPI;
     }
 
     //Renvoie la liste des DPI ouverts -> patients dans le CHU
@@ -224,30 +170,6 @@ public class RequetesBDDPI {
         rs.close();
         stmt.close();
         return listeDPIOuvert;
-    }
-
-    //Renvoie le vecteur des DPI ouverts
-    //VALIDE
-    public static Vector getVectorDPI(Connection conn) throws SQLException {
-        Vector vDPIOuvert = new Vector();
-        Statement stmt = conn.createStatement();
-        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            vParDPI.add(rs.getString("nom_DPI"));
-            vParDPI.add(rs.getString("prenom_DPI"));
-            vParDPI.add(d);
-            vParDPI.add(rs.getString("sexe_DPI"));
-            vDPIOuvert.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPIOuvert;
     }
 
     //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
@@ -356,31 +278,6 @@ public class RequetesBDDPI {
         return listeDPIOuvert;
     }
 
-    //Renvoie le vecteur des DPI ouverts en fonction du nom
-    //VALIDE
-    public static Vector getVectorDPI(Connection conn, String nom) throws SQLException {
-        Vector vDPIOuvert = new Vector();
-        Statement stmt = conn.createStatement();
-        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "WHERE (UPPER(nom_DPI) LIKE UPPER('" + nom + "%'))");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            vParDPI.add(rs.getString("nom_DPI"));
-            vParDPI.add(rs.getString("prenom_DPI"));
-            vParDPI.add(d);
-            vParDPI.add(rs.getString("sexe_DPI"));
-            vDPIOuvert.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPIOuvert;
-    }
-
     //Renvoie la liste des DPI ouverts en fonction du nom et du service
     //VALIDE
     public static List<DPI> getListeDPIService(Connection conn, String service) throws SQLException {
@@ -403,31 +300,6 @@ public class RequetesBDDPI {
         return listeDPIOuvert;
     }
 
-    //Renvoie le vecteur des DPI ouverts en fonction du nom et du service
-    //VALIDE
-    public static Vector getVectorDPIService(Connection conn, String service) throws SQLException {
-        Vector vDPIOuvert = new Vector();
-        Statement stmt = conn.createStatement();
-        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "WHERE UPPER(service_responsable) LIKE UPPER('" + service + "%')");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            vParDPI.add(rs.getString("nom_DPI"));
-            vParDPI.add(rs.getString("prenom_DPI"));
-            vParDPI.add(d);
-            vParDPI.add(rs.getString("sexe_DPI"));
-            vDPIOuvert.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPIOuvert;
-    }
-
     //Renvoie la liste des DPI ouverts en fonction du nom et du service
     //VALIDE
     public static List<DPI> getListeDPI(Connection conn, String nom, String service) throws SQLException {
@@ -448,31 +320,6 @@ public class RequetesBDDPI {
         rs.close();
         stmt.close();
         return listeDPIOuvert;
-    }
-
-    //Renvoie le vecteur des DPI ouverts en fonction du nom et du service
-    //VALIDE
-    public static Vector getVectorDPI(Connection conn, String nom, String service) throws SQLException {
-        Vector vDPIOuvert = new Vector();
-        Statement stmt = conn.createStatement();
-        //Sélection des DPI ouverts -> Un patient est au CHU ssi il a une localisation
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
-                + "NATURAL JOIN Localisation "
-                + "WHERE UPPER(service_responsable) LIKE UPPER('" + service + "%') AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
-
-        while (rs.next()) {
-            Vector vParDPI = new Vector();
-            Date d = new Date(rs.getDate("date_de_naissance").getTime());
-            vParDPI.add(rs.getString("nom_DPI"));
-            vParDPI.add(rs.getString("prenom_DPI"));
-            vParDPI.add(d);
-            vParDPI.add(rs.getString("sexe_DPI"));
-            vDPIOuvert.add(vParDPI);
-        }
-
-        rs.close();
-        stmt.close();
-        return vDPIOuvert;
     }
 
     //Renvoie la liste des rendez-vous pour un patient donné
