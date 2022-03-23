@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.Vector;
 import nf.*;
 import database.*;
+import static database.RequetesBDConversion.convertDateJavaEnSQL;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMax;
 import static database.RequetesBDConversion.convertDateJavaEnTimestampJavaMin;
 import static database.RequetesBDDPI.creerActe;
@@ -591,6 +592,9 @@ class ConnexionSGBD {
             //PH ph_urgence = new PH("alerterou", "Alerte", "Rouge", Service.Urgences, "vite", "1515151515", "Urgentiste");
             DPITemporaire dpitjuan = new DPITemporaire("9977554466", "Palmito", "Juan", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
             //creerDPITemporaire(conn, dpit);
+            Date dnhur = new Date(1977,3,20);
+            DPITemporaire dpithur = new DPITemporaire("0077554466", "Up", "Hurry", dnhur);
+            //creerDPITemporaire(conn, dpithur);
             
             //Date dn = new Date(1999,8,26);
             //DPITemporaire dpitu = new DPITemporaire("9538539548", "Eclair", "Pika", dn);//DPI temporaire de quelqu'un existant dans la table DPI temporaire
@@ -707,10 +711,13 @@ class ConnexionSGBD {
             //System.out.println(getListeDPI(conn));
             
             //Test getDPITemp(ipp) -> VALIDE
-            //System.out.println(getDPITemp(conn, "9977554466").getListe_f());
+            //System.out.println(getDPITemp(conn, "9977554466"));
+            //System.out.println(getDPITemp(conn, "0077554466"));
             
             //System.out.println(getDPITemp(conn, "9977554466").getListe_f().toString());
             //System.out.println(listeFichesDeSoinsTemporaire(conn, "9977554466"));
+            
+            //System.out.println(convertDateJavaEnSQL(dpitjuan.getDate_naissance()));
             
             
             

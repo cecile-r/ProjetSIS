@@ -90,11 +90,12 @@ public class RequetesBDUrgences {
 
         if (!rs.next()) { //Si le DPI temporaire n'existe pas encore
             PreparedStatement stmt2 = null;
-            stmt2 = conn.prepareStatement("INSERT INTO DPI_temporaire values(?,?,?,?)");
+            stmt2 = conn.prepareStatement("INSERT INTO DPI_temporaire values(?,?,?,?,?)");
             stmt2.setString(1, dpit.getIPP());
             stmt2.setString(2, dpit.getNom());
             stmt2.setString(3, dpit.getPrenom());
             stmt2.setDate(4, convertDateJavaEnSQL(dpit.getDate_naissance()));
+            stmt2.setInt(5, 0);
             stmt2.executeUpdate();
             stmt2.close();
         } else {
@@ -111,7 +112,8 @@ public class RequetesBDUrgences {
         List<DPITemporaire> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
         //Sélection des DPI temporaires
-        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire "
+                + "WHERE attente = 0");
 
         while (rs.next()) {
             Date d = new Date(rs.getDate("date_de_naissance_temp").getTime());
