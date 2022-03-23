@@ -19,6 +19,10 @@ public class RendezVous implements Evaluable {
         //SET PH
     }
 
+    /**
+     * @return le prochain rdv dans la liste de rendez-vous
+     * c'est à dire le rendez vous après et le plus proche de la date courante
+     */
     public static RendezVous getProchainRDV(List<Evaluable> evs) {
 
         int i = evs.size() - 1;
@@ -44,6 +48,9 @@ public class RendezVous implements Evaluable {
 
     }
 
+    /**
+     * @return chaine de caractere avec patient, ph, dateheure, remarque
+     */
     @Override
     public String toString() {
         String ch = "";
@@ -56,6 +63,9 @@ public class RendezVous implements Evaluable {
         return ch;
     }
 
+    /**
+     * @return chaine de caractere décrivant le prochain rdv d'une personne
+     */
     public String toStringProchainRDV() {
 
         String ch = "Le " + dateHeure.getJour() + "/" + dateHeure.getMois() + "/" + dateHeure.getAnnee();

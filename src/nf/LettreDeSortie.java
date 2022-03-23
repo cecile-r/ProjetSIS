@@ -18,6 +18,10 @@ public class LettreDeSortie implements Evaluable {
         //SET DPI
     }
 
+    /**
+     * @return chaine de caractere avec date heure, ph, texte de la lettre de
+     * sortie
+     */
     @Override
     public String toString() {
         String ch = "";

@@ -1,6 +1,5 @@
 package nf;
 
-import java.util.Date;
 import static nf.DateHeure.convertirDateHeuretoString;
 
 public class Prescription implements Evaluable {
@@ -23,6 +22,9 @@ public class Prescription implements Evaluable {
         //SET DPI
     }
 
+    /**
+     * @return chaine de caractere avec date prescription, ph, type d'examen, observation
+     */
     @Override
     public String toString() {
         String ch = "";

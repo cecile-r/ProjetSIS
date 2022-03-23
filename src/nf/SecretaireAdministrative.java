@@ -14,6 +14,9 @@ public class SecretaireAdministrative {
         this.mdp=mdp;  
     }
     
+    /**
+     * @return chaine de caractere avec prenom et nom de SA
+     */
     @Override
     public String toString(){
         String ch = "";

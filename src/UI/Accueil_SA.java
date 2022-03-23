@@ -1124,6 +1124,9 @@ public class Accueil_SA extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Lucida Console", 1, 14)); // NOI18N
         jLabel6.setText("[URGENCES]");
 
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(

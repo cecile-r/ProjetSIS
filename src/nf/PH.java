@@ -41,6 +41,9 @@ public class PH {
        return prenomPH + " " + nomPH + ", " + specialite;
     }
     
+    /**
+     * @return chaine de caractere avec prenom nom service telephone specialite
+     */
     public String toStringDetail() {
         String ch= "\n\n\n";
         ch = ch+"Prénom : "+prenomPH + "\n\n";
@@ -164,27 +167,51 @@ public class PH {
         this.ficheDeSoins = ficheDeSoins;
     }
     
-    
+    /**
+     * ajoute une fiche de soins au PH
+     * @param fs --> fiche de soins
+     */
     public void ajouterFicheDeSoins(FicheDeSoins fs){
         ficheDeSoins.add(fs);
     }
     
+    /**
+     * ajoute une prescription au PH
+     * @param p --> prescription
+     */
     public void ajouterPrescriptions(Prescription p){
         precriptions.add(p);
     }
     
+    /**
+     * ajoute une lettre de sortie au PH
+     * @param ls --> lettre de sortie
+     */
     public void ajouterLettresDeSorties(LettreDeSortie ls){
         lettresDeSorties.add(ls);
     }
     
+    /**
+     * ajoute un examen au PH
+     * @param e --> examen
+     */
     public void ajouterExamen(Examen e){
         examens.add(e);
     }
     
+    /**
+     * ajoute un rdv au PH
+     * @param rdv --> rendez vous
+     */
     public void ajouterRdv(RendezVous rdv){
         rendezVous.add(rdv);
     }
 
+    /**
+     * compare un ph avec autre en fonction de son nom par ordre alphabetique
+     * @param ph --> praticien hospitalier
+     * @return nombre qui repésente la différence
+     */
     public int compareTo(PH ph) {
         return getNomPH().compareTo(ph.getNomPH());
     }

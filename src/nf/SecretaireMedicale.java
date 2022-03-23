@@ -15,6 +15,9 @@ public class SecretaireMedicale {
         this.mdp=mdp;
     }
     
+    /**
+     * @return chaine de caractere avec nom, prenom SM
+     */
     @Override
     public String toString(){
         String ch = "";

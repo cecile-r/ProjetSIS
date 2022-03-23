@@ -14,6 +14,11 @@ public enum Lit {
     P,
     F;
     
+    /**
+     * 
+     * @param lit --> un lit de type Lit (P/F)
+     * @return la chainde caractere correcpondant au lit
+     */
     public String toString2(Lit lit){
     	if(null != lit)switch (lit) {
             case P:

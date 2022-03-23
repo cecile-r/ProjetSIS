@@ -22,6 +22,9 @@ public class PrescriptionTemp implements Evaluable{
         //SET DPI
     }
 
+    /**
+     * @return chaine de caractere avec date prescription, ph, type d'examen, observation
+     */
     @Override
     public String toString(){
         String ch="";

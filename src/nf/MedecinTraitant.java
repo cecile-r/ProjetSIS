@@ -1,32 +1,32 @@
 package nf;
 
 public class MedecinTraitant {
-    
+
     private String mail;
     private String nomMedecinTraitant;
     private String prenomMedecinTraitant;
     private String telephoneMedecinTraitant;
-    
-    public MedecinTraitant(String mail, String nomMedecinTraitant, String prenomMedecinTraitant, String telephoneMedecinTraitant){
-        this.mail=mail;
-        this.nomMedecinTraitant=nomMedecinTraitant;
-        this.prenomMedecinTraitant=prenomMedecinTraitant;
-        this.telephoneMedecinTraitant=telephoneMedecinTraitant;
+
+    public MedecinTraitant(String mail, String nomMedecinTraitant, String prenomMedecinTraitant, String telephoneMedecinTraitant) {
+        this.mail = mail;
+        this.nomMedecinTraitant = nomMedecinTraitant;
+        this.prenomMedecinTraitant = prenomMedecinTraitant;
+        this.telephoneMedecinTraitant = telephoneMedecinTraitant;
     }
-    
+
     /*
-    prenom nom 
-    */
+     * prenom nom 
+     */
     @Override
-    public String toString(){
+    public String toString() {
         return prenomMedecinTraitant + " " + nomMedecinTraitant;
     }
-    
+
     /*
-    prenom nom telephone mail
-    */
-    public String toString2(){
-        return prenomMedecinTraitant + " " + nomMedecinTraitant+ " | " + telephoneMedecinTraitant +" | "+ mail;
+     * prenom nom telephone mail
+     */
+    public String toString2() {
+        return prenomMedecinTraitant + " " + nomMedecinTraitant + " | " + telephoneMedecinTraitant + " | " + mail;
     }
 
     /**
@@ -84,6 +84,5 @@ public class MedecinTraitant {
     public void setTelephoneMedecinTraitant(String telephoneMedecinTraitant) {
         this.telephoneMedecinTraitant = telephoneMedecinTraitant;
     }
-    
 
 }

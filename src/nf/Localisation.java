@@ -1,25 +1,29 @@
 package nf;
 
 public class Localisation {
-    
+
     private Service service_responsable;
     private Lit lit;
     private int nchambre;
     private Service service_geographique;
 
-    public Localisation(Service service_responsable, Lit lit, int nchambre, Service service_geographique){
-        this.service_geographique=service_geographique;
-        this.service_responsable=service_responsable;
-        this.lit=lit;
-        this.nchambre=nchambre;
+    public Localisation(Service service_responsable, Lit lit, int nchambre, Service service_geographique) {
+        this.service_geographique = service_geographique;
+        this.service_responsable = service_responsable;
+        this.lit = lit;
+        this.nchambre = nchambre;
     }
-    
+
+    /**
+     * @return une chaine de caractere avec service responsable, service
+     * geographique et chambre + lit
+     */
     @Override
-    public String toString(){
-        String ch="";
-        ch=ch+"Service responsable : "+service_responsable+"\n";
-        ch=ch+"Service géographique : "+service_geographique+"\n";
-        ch=ch+"Chambre : " + nchambre+ " " +lit.toString2(lit)+"\n";
+    public String toString() {
+        String ch = "";
+        ch = ch + "Service responsable : " + service_responsable + "\n";
+        ch = ch + "Service géographique : " + service_geographique + "\n";
+        ch = ch + "Chambre : " + nchambre + " " + lit.toString2(lit) + "\n";
         return ch;
     }
 

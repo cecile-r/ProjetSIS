@@ -100,6 +100,9 @@ public class Calendrier extends JPanel implements ActionListener {
         afficherGrille(iMois, iAnnee);
     }
 
+    /**
+     * permet de remplir les boutons (evenements, texte) et de les afficher
+     */
     public void remplirVectAfficher(DateHeure dh) {
         int ligne = 0;
         while (ligne < 9) {
@@ -132,6 +135,9 @@ public class Calendrier extends JPanel implements ActionListener {
 
     }
 
+    /**
+     * permet de remplir un vecteur pour les boutons des jours du calendrier
+     */
     //procedure de remplissage du vecteur par des boutton standard 
     public void remplirVect() {
         int ligne = 0;
@@ -149,6 +155,12 @@ public class Calendrier extends JPanel implements ActionListener {
     }
 
     //CONSULTATION
+    /**
+     * affiche le calendrier du mois en cours avec les rdvs des patients
+     * @param iMois --> mois en cours
+     * @param iAnnee --> annee en cours
+     * @param rdvs --> liste des rdvs du patient
+     */
     public void afficherGrille(int iMois, int iAnnee, List<RendezVous> rdvs) {
         for (int i = jour(iAnnee, iMois, 1); i < (jour(iAnnee, iMois, 1) + nbreJour(iMois, iAnnee)); i++) {
             JButton b = new JButton();
@@ -187,6 +199,11 @@ public class Calendrier extends JPanel implements ActionListener {
     }
 
     //PRISE DE RDV// PANNEAU 1
+    /**
+     * affiche le calendrier du mois en cours
+     * @param iMois --> mois en cours
+     * @param iAnnee --> annee  en cours
+     */
     public void afficherGrille(int iMois, int iAnnee) {
         for (int i = jour(iAnnee, iMois, 1); i < (jour(iAnnee, iMois, 1) + nbreJour(iMois, iAnnee)); i++) {
             JButton b = new JButton();
@@ -211,6 +228,13 @@ public class Calendrier extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * calcule le jour de l'année
+     * @param annee 
+     * @param mois
+     * @param jour
+     * @return jour de l'année
+     */
     public int jour(int annee, int mois, int jour) {
         int retour = 0;
         for (int i = 1900; i < annee; i++) {
@@ -245,6 +269,11 @@ public class Calendrier extends JPanel implements ActionListener {
         return (retour);
     }
 
+    /**
+     * 
+     * @param i --> numero de mois
+     * @return le mois en fonction du numéro de mois
+     */
     public String string(int i) {
         String retour = new String();
 
@@ -301,6 +330,12 @@ public class Calendrier extends JPanel implements ActionListener {
         return retour;
     }
 
+    /**
+     * calcule le nombre de jour du mois en cours
+     * @param annee 
+     * @param mois
+     * @return nombre de jour dans le mois
+     */
     public int nbreJour(int mois, int annee) {
         int retour = 0;
 
@@ -361,6 +396,10 @@ public class Calendrier extends JPanel implements ActionListener {
         return retour;
     }
 
+    /**
+     * ajoute les événements si on clique sur mois suivant ou précédent
+     * @param e --> evenement
+     */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == suiv) {
             container.removeAll();
@@ -400,8 +439,7 @@ public class Calendrier extends JPanel implements ActionListener {
         }
     }
 
-// les deux classes qui suivent font partie de ma biblioth�que de composants person�lis�e 
-// changer les si elles vous plaisent pa ;) 
+
 //****************************************************************/ 
 //label personalis� 
     /**

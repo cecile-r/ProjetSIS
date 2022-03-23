@@ -34,6 +34,9 @@ public class SoinsQuotidien implements Evaluable {
         //SET INFIRMIER
     }
 
+    /**
+     * @return chaine de caractere avec dateheure, infirmier, temperature, sat02, tension, remarque
+     */
     @Override
     public String toString(){
         String ch="";
@@ -174,7 +177,7 @@ public class SoinsQuotidien implements Evaluable {
     }
 
     /**
-     * @param infirmiere the infirmiere to set
+     * @param infirmier the infirmiere to set
      */
     public void setInfirmier(Infirmier infirmier) {
         this.infirmier = infirmier;
@@ -183,6 +186,7 @@ public class SoinsQuotidien implements Evaluable {
     /**
      * @return the dateHeure
      */
+    @Override
     public DateHeure getDateHeure() {
         return dateHeure;
     }
