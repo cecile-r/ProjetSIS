@@ -8,6 +8,7 @@ package UI;
 import static database.RequetesBDDPI.creerExamen;
 import static database.RequetesBDDPI.getDPI;
 import static database.RequetesBDUrgences.creerExamenTemp;
+import static database.RequetesBDUrgences.getDPITemp;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDateTime;
@@ -326,16 +327,27 @@ public class Ajout_examen extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         try {
-            String IPP = dpi.getIPP();
-            DPI dpi2 = getDPI(conn, IPP);
-            Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
-            int longueur = tailleMoniteur.width;
-            int hauteur = tailleMoniteur.height;
-            Vue_Patient_Med i;
-            i = new Vue_Patient_Med(conn, dpi2, ph);
-            i.setSize(longueur, hauteur);
-            i.setVisible(true);
-            dispose();
+            if (dpi != null) {
+                String IPP = dpi.getIPP();
+                DPI dpi2 = getDPI(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med i;
+                i = new Vue_Patient_Med(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+            } else { //DPI TEMPORAIRE
+                String IPP = dpiTemp.getIPP();
+                DPITemporaire dpi2 = getDPITemp(conn, IPP);
+                Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+                int longueur = tailleMoniteur.width;
+                int hauteur = tailleMoniteur.height;
+                Vue_Patient_Med_Urgences i;
+                i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
+                i.setSize(longueur, hauteur);
+                i.setVisible(true);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

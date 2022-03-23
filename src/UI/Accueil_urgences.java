@@ -43,6 +43,7 @@ import static nf.Cryptage.getIPPRandom;
 import nf.*;
 import static UI.Vector.*;
 import static database.RequetesBDUrgences.IPPTempExistant;
+import static database.RequetesBDUrgences.creerDPITemporaire;
 import static database.RequetesBDUrgences.getDPITemp;
 import static database.RequetesBDUrgences.getListeDPITemporaires;
 
@@ -51,7 +52,7 @@ import static database.RequetesBDUrgences.getListeDPITemporaires;
  * @author Audrey
  */
 public class Accueil_urgences extends javax.swing.JFrame {
-
+    
     PH ph;
     Connection conn;
     List<PH> medecins;
@@ -114,7 +115,6 @@ public class Accueil_urgences extends javax.swing.JFrame {
         entetes.add("Prénom");
         entetes.add("Date de naissance");
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
-        Table_Vue_Generale1.setAutoCreateRowSorter(true);
         Table_Vue_Generale1.setModel(tableModel);
         Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
@@ -131,7 +131,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         tab_medecins.setAutoCreateRowSorter(true);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
-
+        
     }
 
     /**
@@ -552,6 +552,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         Label_Date_Naissance2.setText("Date de naissance :");
 
         Button_Valider3.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Valider3.setFont(new java.awt.Font("Lucida Console", 0, 11)); // NOI18N
         Button_Valider3.setText("CREER LE PATIENT TEMPORAIREMENT");
         Button_Valider3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -582,8 +583,8 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 .addGap(221, 221, 221))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Button_Valider3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(387, 387, 387))
+                .addComponent(Button_Valider3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(319, 319, 319))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -668,9 +669,9 @@ public class Accueil_urgences extends javax.swing.JFrame {
         if (Table_Vue_Generale1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Aucun patient n'est sélectionné dans la liste", "Attention", JOptionPane.WARNING_MESSAGE);
         } else {
-
+            
             try {
-
+                
                 int index = Table_Vue_Generale1.getSelectedRow();
                 DPITemporaire dpiTemp;
                 dpiTemp = getDPITemp(conn, dpis.get(index).getIPP());
@@ -737,9 +738,9 @@ public class Accueil_urgences extends javax.swing.JFrame {
             TableModel tableModel = new DefaultTableModel(dpisS, entetes);
             Table_Vue_Generale1.setModel(tableModel);
             Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
-
+            
             TextField_Patient.setText("");
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -772,9 +773,9 @@ public class Accueil_urgences extends javax.swing.JFrame {
         String type_recherche; //Nom ou Service
         type_recherche = jComboBox_recherche_praticien.getSelectedItem().toString();
         String recherche = TextField_Docteur.getText();
-
+        
         if (type_recherche.equals("Nom")) {
-
+            
             try {
                 medecins = getListePH(conn, recherche);
                 medecins = trierPH(medecins); //tri par ordre alphabétique
@@ -785,7 +786,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Accueil_Inf.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         } else if (type_recherche.equals("Service")) {
             try {
                 medecins = getListePHService(conn, recherche);
@@ -926,11 +927,13 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 SimpleDateFormat formater = null;
                 formater = new SimpleDateFormat("dd/MM/yyyy");
                 Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
-
+                d.setYear(d.getYear() + 1900);
+                d.setMonth(d.getMonth()+1);
+                
                 String message = "Etes-vous sûr de vouloir créer le patient temporaire suivant ?";
                 message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText();
                 int retour = JOptionPane.showConfirmDialog(this, message, "Vérification des informations", JOptionPane.OK_CANCEL_OPTION);
-
+                
                 if (retour == 0) { //les informations sont correctes = validation
                     //tirer un IPP random qui n'existe pas
                     String IPP = getIPPRandom();
@@ -938,20 +941,23 @@ public class Accueil_urgences extends javax.swing.JFrame {
                         IPP = getIPPRandom();
                     }
                     //création du patient
-                    //creerNouveauDPI(conn, IPP, nom, prenom, d, sexe, telephone, adresse, mt);
+                    DPITemporaire dpitemp = new DPITemporaire(IPP, nom, prenom, d);
+                    creerDPITemporaire(conn, dpitemp);
 
                     //mettre à jour la liste des patients
                     dpis = getListeDPITemporaires(conn);
+                    dpis = trierDPITemp(dpis);
                     dpisS = getVectorDPITemp(dpis);
                     TableModel tableModel = new DefaultTableModel(dpisS, entetes);
                     Table_Vue_Generale1.setModel(tableModel);
+                    Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
                     //tout remettre à 0
                     TextField_Nom2.setText("");
                     jTextField_Prenom2.setText("");
                     jFormattedTextField_date_naissance2.setText("");
                     JOptionPane.showMessageDialog(this, "Le patient a été créé", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-
+                    
                 }
             }
         } catch (SQLException ex) {
@@ -960,7 +966,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
             Logger.getLogger(Accueil_urgences.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_Button_Valider3Button_ValiderActionPerformed
-
+    
     public boolean champsCorrects() throws ParseException {
         boolean v = true;
         if (TextField_Nom2.getText().equals("")) {
@@ -976,7 +982,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Merci d'entrer un format de date correct", "Attention", JOptionPane.WARNING_MESSAGE);
             v = false;
         }
-
+        
         return v;
     }
 
@@ -1013,13 +1019,13 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
                 int longueur = tailleMoniteur.width;
                 int hauteur = tailleMoniteur.height;
-
+                
                 try {
                     String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
                     String dbUrl = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:ufrima";
                     String username;
                     String password;
-
+                    
                     DatabaseAccessProperties dap = new DatabaseAccessProperties("src/database/BD.properties");
                     jdbcDriver = dap.getJdbcDriver();
                     dbUrl = dap.getDatabaseUrl();
@@ -1035,12 +1041,12 @@ public class Accueil_urgences extends javax.swing.JFrame {
                     Accueil_Med i = new Accueil_Med(conn, new PH("1616161616", "Pan", "Peter", Service.Addictologie, "peterpan", "0456486756", "Biologie"));
                     i.setSize(longueur, hauteur);
                     i.setVisible(true);
-
+                    
                 } catch (SQLException se) {
                     // Print information about SQL exceptions
                     SQLWarningsExceptions.printExceptions(se);
                     return;
-
+                    
                 } catch (Exception e) {
                     System.err.println("Exception: " + e.getMessage());
                     e.printStackTrace();

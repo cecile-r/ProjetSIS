@@ -99,6 +99,11 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         java.awt.Image img3 = icone3.getImage();
         icone3 = new ImageIcon(img3);
         jButton6.setIcon(icone3);
+        ImageIcon icone4 = new ImageIcon("src/image/avion.png");
+        java.awt.Image img4 = icone4.getImage();
+        icone4 = new ImageIcon(img4);
+        jButton_sortie.setIcon(icone4);
+        
         
         ImageIcon icone6 = new ImageIcon("src/image/pdf.png");
 
@@ -191,6 +196,7 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton_sortie = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         JTextArea_affichage = new javax.swing.JTextArea();
@@ -394,20 +400,29 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
             }
         });
 
+        jButton_sortie.setBackground(new java.awt.Color(169, 206, 243));
+        jButton_sortie.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton_sortie.setText("Sortie du patient");
+        jButton_sortie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_sortieActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_sortie, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(190, 190, 190)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -417,8 +432,10 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                    .addComponent(jButton_sortie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
 
         jScrollPane5.setBackground(new java.awt.Color(204, 204, 255));
@@ -541,9 +558,9 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        Accueil_Med i;
+        Accueil_urgences i;
         try {
-            i = new Accueil_Med(conn, ph);
+            i = new Accueil_urgences(conn, ph);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
@@ -558,6 +575,10 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton_sortieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_sortieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_sortieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -676,6 +697,7 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton_sortie;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
