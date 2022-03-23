@@ -28,7 +28,6 @@ import static nf.DateHeure.convertirDateHeuretoString;
  */
 public class Ajout_examen extends javax.swing.JFrame {
 
-    //Connection conn;
     PH ph;
     DPI dpi;
     DPITemporaire dpiTemp;
