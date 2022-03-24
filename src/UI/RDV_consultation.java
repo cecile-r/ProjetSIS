@@ -252,6 +252,7 @@ public class RDV_consultation extends javax.swing.JFrame {
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (ClassNotFoundException ex) {

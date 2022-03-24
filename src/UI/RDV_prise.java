@@ -468,6 +468,7 @@ public class RDV_prise extends javax.swing.JFrame {
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {

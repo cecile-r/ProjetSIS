@@ -138,12 +138,17 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         localisation = new Vector();
         Vector localisation1 = new Vector();
         localisation1.add(dpi.getdMA().getLocalisation().getService_responsable().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
-        localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        if (dpi.getdMA().getLocalisation().getService_geographique() != null) {
+            localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
+            localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
+            localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        } else {
+            localisation1.add("/");
+            localisation1.add("/");
+            localisation1.add("/");
+        }
         localisation.add(localisation1);
         TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
-        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(tableModelL);
 
         //calendrier
@@ -556,6 +561,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
@@ -581,6 +587,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
     private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
         //AJOUTER UN RDV
         RDV_prise i = new RDV_prise(conn, sa, null, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_prendreRDVActionPerformed
@@ -590,6 +597,7 @@ public class Vue_Patient_SA extends javax.swing.JFrame {
         Modif_Patient i;
         try {
             i = new Modif_Patient(conn, sa, null, dpi);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(Vue_Patient_SA.class.getName()).log(Level.SEVERE, null, ex);

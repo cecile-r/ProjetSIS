@@ -122,12 +122,17 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         localisation = new Vector();
         Vector localisation1 = new Vector();
         localisation1.add(dpi.getdMA().getLocalisation().getService_responsable().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
-        localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        if (dpi.getdMA().getLocalisation().getService_geographique() != null) {
+            localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
+            localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
+            localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        } else {
+            localisation1.add("/");
+            localisation1.add("/");
+            localisation1.add("/");
+        }
         localisation.add(localisation1);
         TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
-        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(tableModelL);
 
         //Documents
@@ -560,8 +565,8 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Panle_Gauche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton_modifier, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton_modifier, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton_fermeture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(26, 26, 26)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -621,6 +626,7 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
 
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (ClassNotFoundException ex) {
@@ -645,6 +651,7 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
     private void jButton_prendreRDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_prendreRDVActionPerformed
          //AJOUTER UN RDV
         RDV_prise i = new RDV_prise(conn, null,sm, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_prendreRDVActionPerformed
@@ -652,6 +659,7 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
     private void jButton_consultationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_consultationActionPerformed
         //CONSULTATION RDV
         RDV_consultation i = new RDV_consultation(conn, null, sm, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton_consultationActionPerformed
@@ -661,6 +669,7 @@ public class Vue_Patient_SM extends javax.swing.JFrame {
         Modif_Patient i;
         try {
             i = new Modif_Patient(conn, null,sm, dpi);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(Vue_Patient_SM.class.getName()).log(Level.SEVERE, null, ex);

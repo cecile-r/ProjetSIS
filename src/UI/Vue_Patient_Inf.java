@@ -118,9 +118,15 @@ public class Vue_Patient_Inf extends javax.swing.JFrame {
         localisation = new Vector();
         Vector localisation1 = new Vector();
         localisation1.add(dpi.getdMA().getLocalisation().getService_responsable().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
-        localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
-        localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        if (dpi.getdMA().getLocalisation().getService_geographique() != null) {
+            localisation1.add(dpi.getdMA().getLocalisation().getService_geographique().toString());
+            localisation1.add(dpi.getdMA().getLocalisation().getNchambre());
+            localisation1.add(dpi.getdMA().getLocalisation().getLit());
+        } else {
+            localisation1.add("/");
+            localisation1.add("/");
+            localisation1.add("/");
+        }
         localisation.add(localisation1);
         TableModel tableModelL = new DefaultTableModel(localisation, entetesL);
         jTable1.setModel(tableModelL);
@@ -664,6 +670,7 @@ private void jTable2MouseClicked(java.awt.event.MouseEvent evt) throws IOExcepti
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Vue_Patient_Inf.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -711,6 +718,7 @@ private void jTable2MouseClicked(java.awt.event.MouseEvent evt) throws IOExcepti
         //AJOUTER NOUVELLES CONSTANTES 
         Ajout_constantes i;
         i = new Ajout_constantes(conn, inf, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -374,6 +374,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         try {
             Connexion i;
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (ClassNotFoundException ex) {

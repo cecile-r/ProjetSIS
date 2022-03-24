@@ -229,10 +229,13 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
         Panel_logo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
+        prenom_medecin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         prenom_medecin.setText("prenom_medecin");
 
+        nom_medecin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         nom_medecin.setText("nom_medecin");
 
+        service.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         service.setText("service");
 
         jButton2.setBackground(new java.awt.Color(204, 102, 255));
@@ -264,21 +267,22 @@ public class Accueil_urgences extends javax.swing.JFrame {
             Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Panel_icon_perso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Panel_BandeauLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(prenom_medecin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nom_medecin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(service)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(Panel_BandeauLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
+                        .addGap(0, 11, Short.MAX_VALUE)
+                        .addGroup(Panel_BandeauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_BandeauLayout.createSequentialGroup()
+                                .addComponent(prenom_medecin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nom_medecin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(service)
+                                .addGap(19, 19, 19))))))
         );
 
         jTabbedPane1.setBackground(new java.awt.Color(204, 204, 255));
@@ -830,6 +834,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {

@@ -592,6 +592,7 @@ public class Modif_Patient extends javax.swing.JFrame {
 
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Modif_Patient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);

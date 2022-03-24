@@ -11,6 +11,9 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
+import static database.RequetesBDUrgences.dpiExiste;
+import static database.RequetesBDUrgences.fusionDPI;
+import static database.RequetesBDUrgences.miseAttente;
 import java.sql.Connection;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -84,7 +87,6 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         java.awt.Image imgP2 = iconeP2.getImage();
         iconeP2 = new ImageIcon(imgP2);
         Label_Icon_Patient.setIcon(iconeP2);
-        
 
         //images des boutons
         ImageIcon icone1 = new ImageIcon("src/image/prescription.png");
@@ -103,10 +105,8 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         java.awt.Image img4 = icone4.getImage();
         icone4 = new ImageIcon(img4);
         jButton_sortie.setIcon(icone4);
-        
-        
-        ImageIcon icone6 = new ImageIcon("src/image/pdf.png");
 
+        ImageIcon icone6 = new ImageIcon("src/image/pdf.png");
 
         //Documents
         entetesD = new Vector();
@@ -363,10 +363,10 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
                         .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jLabel11))
-                        .addGap(18, 18, 18)
-                        .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(Panle_GaucheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))))
                 .addGap(24, 24, 24))
         );
 
@@ -529,6 +529,7 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
@@ -544,7 +545,7 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
         int longueur = tailleMoniteur.width;
         int hauteur = tailleMoniteur.height;
         Ajout_FS i;
-        i = new Ajout_FS(conn, ph, null, null,dpi);
+        i = new Ajout_FS(conn, ph, null, null, dpi);
         i.setSize(longueur, hauteur);
         i.setVisible(true);
         dispose();
@@ -552,7 +553,8 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //AJOUT PRESCRIPTION
-        Ajout_prescription i = new Ajout_prescription(conn, ph,null,dpi);
+        Ajout_prescription i = new Ajout_prescription(conn, ph, null, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -571,13 +573,28 @@ public class Vue_Patient_Med_Urgences extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         //AJOUT EXAMEN
-        Ajout_examen i = new Ajout_examen(conn, ph,null,dpi);
+        Ajout_examen i = new Ajout_examen(conn, ph, null, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton_sortieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_sortieActionPerformed
-        // TODO add your handling code here:
+        // SORTIE DU PATIENT
+        try {
+            boolean b = dpiExiste(conn, dpi);
+            if (b) {//le patient existe 
+                fusionDPI(conn, dpi);
+            } else {//le patient n'existe pas
+                miseAttente(conn, dpi.getIPP());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Vue_Patient_Med_Urgences.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //sortie
+        jButton8ActionPerformed(evt);
+
     }//GEN-LAST:event_jButton_sortieActionPerformed
 
     /**

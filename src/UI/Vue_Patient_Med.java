@@ -807,6 +807,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
         Connexion i;
         try {
             i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
             i.setVisible(true);
             dispose();
         } catch (SQLException ex) {
@@ -831,6 +832,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //AJOUT PRESCRIPTION
         Ajout_prescription i = new Ajout_prescription(conn, ph, dpi, null);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -838,6 +840,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         //AJOUT LETTRE DE SORTIE
         Ajout_lettreDeSortie i = new Ajout_lettreDeSortie(conn, ph, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -857,6 +860,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         //AJOUT EXAMEN
         Ajout_examen i = new Ajout_examen(conn, ph, dpi, null);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -864,6 +868,7 @@ public class Vue_Patient_Med extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         //CONSULTATION RDV
         RDV_consultation i = new RDV_consultation(conn, ph, null, dpi);
+        i.setLocationRelativeTo(null);
         i.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel1MouseClicked

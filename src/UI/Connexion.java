@@ -16,12 +16,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static database.RequetesBDConnexion.getStatut;
-import static database.RequetesBDConnexion.userInf;
-import static database.RequetesBDConnexion.userPH;
-import static database.RequetesBDConnexion.userSA;
-import static database.RequetesBDConnexion.userSM;
-import static database.RequetesBDConnexion.verifyConnexion;
+import static database.RequetesBDConnexion.*;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -168,10 +163,6 @@ public class Connexion extends javax.swing.JFrame {
         Panel_MainLayout.setHorizontalGroup(
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Panel_Bandeau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(Panel_MainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_MainLayout.createSequentialGroup()
                 .addContainerGap(286, Short.MAX_VALUE)
                 .addGroup(Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,6 +173,7 @@ public class Connexion extends javax.swing.JFrame {
                         .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(Label_Identifiant, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(307, 307, 307))
+            .addComponent(Label_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         Panel_MainLayout.setVerticalGroup(
             Panel_MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,6 +339,7 @@ public class Connexion extends javax.swing.JFrame {
 
                     Connexion i;
                     i = new Connexion(conn);
+                    i.setLocationRelativeTo(null);
                     i.setVisible(true);
 
                 } catch (SQLException se) {

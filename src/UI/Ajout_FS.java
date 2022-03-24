@@ -469,7 +469,17 @@ public class Ajout_FS extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        try {
+            Connexion i;
+            i = new Connexion(conn);
+            i.setLocationRelativeTo(null);
+            i.setVisible(true);
+            dispose();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ajout_constantes.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ajout_constantes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
