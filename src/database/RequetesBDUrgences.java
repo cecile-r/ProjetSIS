@@ -316,20 +316,22 @@ public class RequetesBDUrgences {
             }
 
             //Création du DPI
-            PreparedStatement stmt3 = null;
-            stmt3 = conn.prepareStatement("SELECT * FROM DPI "
+            PreparedStatement stmt4 = null;
+            stmt4 = conn.prepareStatement("SELECT * FROM DPI "
                     + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                     + "WHERE IPP = ?");
             //Date dt = new Date(dpit.getDate_naissance().getYear()-1900, dpit.getDate_naissance().getMonth()-1, dpit.getDate_naissance().getDate());
             //stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
-            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
-            ResultSet rs3 = stmt3.executeQuery();//Les infos du DPI du patient
+            stmt4.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            ResultSet rs4 = stmt4.executeQuery();//Les infos du DPI du patient
             
-            if (rs3.next()) {
-                MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
-                DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
+            if (rs4.next()) {
+                MedecinTraitant m = new MedecinTraitant(rs4.getString("mail"), rs4.getString("nom_medecin_traitant"), rs4.getString("prenom_medecin_traitant"), rs4.getString("telephone_medecin_traitant"));
+                DPI dpi = new DPI(rs4.getString("IPP"), rs4.getString("nom_DPI"), rs4.getString("prenom_DPI"), convertDateSQLenJava(rs4.getDate("date_de_naissance")), Sexe.valueOf(rs4.getString("sexe_DPI")), rs4.getString("adresse_DPI"), rs4.getString("telephone_DPI"), m);
                 e.setDPI(dpi);
             }
+            rs4.close();
+            stmt4.close();
 
             creerExamen(conn, e);
         }
