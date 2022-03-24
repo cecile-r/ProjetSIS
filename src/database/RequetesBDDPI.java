@@ -100,7 +100,7 @@ public class RequetesBDDPI {
     
     /**
      * @param conn la connection établie pour la base de données
-     * @return la liste des DPI fermés -> patients PAS dans le CHU
+     * @return la liste des DPI fermés : patients PAS dans le CHU
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
@@ -149,7 +149,7 @@ public class RequetesBDDPI {
 
     /**
      * @param conn la connection établie pour la base de données
-     * @return la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
+     * @return la liste des DPI ouverts ou fermés : patients dans le CHU ou non
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeTousDPI(Connection conn) throws SQLException {
@@ -172,7 +172,7 @@ public class RequetesBDDPI {
 
     /**
      * @param conn la connection établie pour la base de données
-     * @return la liste des DPI ouverts -> patients dans le CHU
+     * @return la liste des DPI ouverts : patients dans le CHU
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeDPI(Connection conn) throws SQLException {
@@ -197,7 +197,7 @@ public class RequetesBDDPI {
 
     /**
      * @param conn la connection établie pour la base de données
-     * @return la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+     * @return la liste des DPI ayant un début de localisation : patient passé seulement au secrétariat administratif
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeDPIEntrant(Connection conn) throws SQLException {
@@ -221,8 +221,8 @@ public class RequetesBDDPI {
     
     /**
      * @param conn la connection établie pour la base de données
-     * @param service le service responsable 
-     * @return la liste des DPI ayant un début de localisation selon le service entré -> patient passé seulement au secrétariat administratif
+     * @param service le service responsable
+     * @return la liste des DPI ayant un début de localisation selon le service entré : patient passé seulement au secrétariat administratif
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeDPIEntrantService(Connection conn, Service service) throws SQLException {
@@ -247,7 +247,7 @@ public class RequetesBDDPI {
     /**
      * @param conn la connection établie pour la base de données
      * @param nom le nom du patient
-     * @return la liste des DPI ayant un début de localisation selon le nom entré -> patient passé seulement au secrétariat administratif
+     * @return la liste des DPI ayant un début de localisation selon le nom entré : patient passé seulement au secrétariat administratif
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeDPIEntrantNom(Connection conn, String nom) throws SQLException {
@@ -273,7 +273,7 @@ public class RequetesBDDPI {
      * @param conn la connection établie pour la base de données
      * @param service le service responsable 
      * @param nom le nom du patient
-     * @return la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+     * @return la liste des DPI ayant un début de localisation : patient passé seulement au secrétariat administratif
      * @throws java.sql.SQLException
      */
     public static List<DPI> getListeDPIEntrantServiceNom(Connection conn, Service service, String nom) throws SQLException {

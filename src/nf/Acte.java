@@ -14,13 +14,13 @@ public class Acte {
     private String observation;
 
     /**
-     * Constructeur -> creer un acte
+     * Constructeur : creer un acte
      *
-     * @param nomA  --> nom de l'acte
-     * @param type --> type d'acte
-     * @param code --> code de l'acte
-     * @param coeff --> coefficient de l'acte
-     * @param observation --> observation quelconque 
+     * @param nomA  : nom de l'acte
+     * @param type : type d'acte
+     * @param code : code de l'acte
+     * @param coeff : coefficient de l'acte
+     * @param observation : observation quelconque 
      */
     public Acte(String nomA, Type type, Code code, int coeff, String observation) {
         this.nomA = nomA;

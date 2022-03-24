@@ -16,8 +16,8 @@ public class ComparaisonEvaluables {
     
     /** 
      * 
-     * @param o1 --> evaluable 1
-     * @param o2 --> evaluable 2
+     * @param o1 : evaluable 1
+     * @param o2 : evaluable 2
      * @return un entier représentant la différence entre les 2 dates 
      */
     public static int comparer(Evaluable o1, Evaluable o2){
@@ -29,7 +29,7 @@ public class ComparaisonEvaluables {
         
     /** 
      * 
-     * @param liste --> liste d'evaluables (examen, lettre de sortie, fiche de soins, prescription, constantes, rdv)
+     * @param liste : liste d'evaluables (examen, lettre de sortie, fiche de soins, prescription, constantes, rdv)
      * @return le prix pour un coefficient donné
      */
     public static List<Evaluable> trierEvaluablesParDate(List<Evaluable> liste) {
@@ -55,7 +55,7 @@ public class ComparaisonEvaluables {
      
     /** 
      * Tri les evaluables par date
-     * @param es --> liste d'evaluables (examen, lettre de sortie, fiche de soins, prescription, constantes, rdv)
+     * @param es : liste d'evaluables (examen, lettre de sortie, fiche de soins, prescription, constantes, rdv)
      * @return la liste d'evaluables triee
      */
      public static List<Evaluable> trierEvaluables(List<Evaluable> es) {
