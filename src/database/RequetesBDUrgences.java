@@ -204,7 +204,7 @@ public class RequetesBDUrgences {
             stmt = conn.prepareStatement("SELECT * FROM DPI "
                     + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                     + "WHERE IPP = ?");
-            Date dt = new Date(dpit.getDate_naissance().getYear()-1900, dpit.getDate_naissance().getMonth()-1, dpit.getDate_naissance().getDate());
+            Date dt = new Date(dpit.getDate_naissance().getYear()+1900, dpit.getDate_naissance().getMonth()+1, dpit.getDate_naissance().getDate());
             stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
             ResultSet rs = stmt.executeQuery();//Les infos du DPI du patient
 
@@ -267,7 +267,8 @@ public class RequetesBDUrgences {
             stmt3 = conn.prepareStatement("SELECT * FROM DPI "
                     + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                     + "WHERE IPP = ?");
-            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            Date dt = new Date(dpit.getDate_naissance().getYear()+1900, dpit.getDate_naissance().getMonth()+1, dpit.getDate_naissance().getDate());
+            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
             ResultSet rs3 = stmt3.executeQuery();//Les infos du DPI du patient
             if (rs3.next()) {
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
@@ -303,10 +304,14 @@ public class RequetesBDUrgences {
             }
 
             //Création du DPI
-            Statement stmt3 = conn.createStatement();
-            ResultSet rs3 = stmt3.executeQuery("SELECT * FROM DPI "
+            PreparedStatement stmt3 = null;
+            stmt3 = conn.prepareStatement("SELECT * FROM DPI "
                     + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
-                    + "WHERE IPP = '" + getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()) + "'");//Les infos du DPI du patient
+                    + "WHERE IPP = ?");
+            Date dt = new Date(dpit.getDate_naissance().getYear()+1900, dpit.getDate_naissance().getMonth()+1, dpit.getDate_naissance().getDate());
+            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
+            ResultSet rs3 = stmt3.executeQuery();//Les infos du DPI du patient
+            
             if (rs3.next()) {
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
                 DPI dpi = new DPI(rs3.getString("IPP"), rs3.getString("nom_DPI"), rs3.getString("prenom_DPI"), convertDateSQLenJava(rs3.getDate("date_de_naissance")), Sexe.valueOf(rs3.getString("sexe_DPI")), rs3.getString("adresse_DPI"), rs3.getString("telephone_DPI"), m);
