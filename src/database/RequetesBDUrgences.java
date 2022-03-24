@@ -280,7 +280,7 @@ public class RequetesBDUrgences {
                     + "WHERE IPP = ?");
             //Date dt = new Date(dpit.getDate_naissance().getYear()-1900, dpit.getDate_naissance().getMonth()-1, dpit.getDate_naissance().getDate());
             //stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
-            stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
             ResultSet rs3 = stmt3.executeQuery();//Les infos du DPI du patient
             if (rs3.next()) {
                 MedecinTraitant m = new MedecinTraitant(rs3.getString("mail"), rs3.getString("nom_medecin_traitant"), rs3.getString("prenom_medecin_traitant"), rs3.getString("telephone_medecin_traitant"));
@@ -322,7 +322,7 @@ public class RequetesBDUrgences {
                     + "WHERE IPP = ?");
             //Date dt = new Date(dpit.getDate_naissance().getYear()-1900, dpit.getDate_naissance().getMonth()-1, dpit.getDate_naissance().getDate());
             //stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
-            stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            stmt3.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
             ResultSet rs3 = stmt3.executeQuery();//Les infos du DPI du patient
             
             if (rs3.next()) {
