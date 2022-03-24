@@ -42,7 +42,7 @@ public class HL7_SIH_Client {
     /**
      * envoie les données nécessaires de la prescription dans HL7 pour le SIR
      *
-     * @param Prescription
+     * @param p
      */
     public void envoyerDonnees(Prescription p) {
         ClientHL7 c = new ClientHL7();

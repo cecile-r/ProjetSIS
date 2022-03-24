@@ -138,6 +138,30 @@ public class RequetesBDUrgences {
         stmt.close();
         return listeDPI;
     }
+    
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du patient
+     * @return la liste de DPI temporaires selon le nom : les patients aux urgences
+     * @throws java.sql.SQLException
+     */
+    public static List<DPITemporaire> getListeDPITemporairesNom(Connection conn, String nom) throws SQLException {
+        List<DPITemporaire> listeDPI = new ArrayList();
+        Statement stmt = conn.createStatement();
+        //Sélection des DPI temporaires
+        ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire "
+                + "WHERE attente = 0 AND UPPER(nom_DPI_temp) LIKE UPPER('" + nom + "%')");
+
+        while (rs.next()) {
+            Date d = new Date(rs.getDate("date_de_naissance_temp").getTime());
+            DPITemporaire dpi = new DPITemporaire(rs.getString("IPP"), rs.getString("nom_DPI_temp"), rs.getString("prenom_DPI_temp"), d);
+            listeDPI.add(dpi);
+        }
+
+        rs.close();
+        stmt.close();
+        return listeDPI;
+    }
 
     /**
      * @param conn la connection établie pour la base de données

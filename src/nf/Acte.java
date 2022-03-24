@@ -14,7 +14,7 @@ public class Acte {
     private String observation;
 
     /**
-     * Constructeur -> creer un acte
+     * Constructeur : creer un acte
      *
      * @param nomA  : nom de l'acte
      * @param type : type d'acte

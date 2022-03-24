@@ -117,7 +117,6 @@ public class Cryptage {
     /**
      *
      * @param password
-     * @param salt
      * @return mot de passe crypté
      */
     public static Optional<String> hashPassword(String password) {
