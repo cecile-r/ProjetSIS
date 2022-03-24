@@ -125,6 +125,7 @@ public class Ajout_examen extends javax.swing.JFrame {
         });
 
         setTitle("Modifications");
+        setBackground(new java.awt.Color(204, 204, 255));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 

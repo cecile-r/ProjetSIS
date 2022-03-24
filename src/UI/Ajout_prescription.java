@@ -143,6 +143,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         });
 
         setTitle("Modifications");
+        setBackground(new java.awt.Color(204, 204, 255));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -364,7 +365,7 @@ public class Ajout_prescription extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

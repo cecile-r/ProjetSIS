@@ -10,32 +10,22 @@ import database.SQLWarningsExceptions;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import static nf.Checker.*;
-import nf.DPI;
 import nf.PH;
 import nf.Service;
-import static database.RequetesBDDPI.getDPI;
-import static database.RequetesBDDPI.getListeDPI;
-import static database.RequetesBDDPI.getListeDPIService;
 import static database.RequetesBDProfessionnels.getListePH;
 import static database.RequetesBDProfessionnels.getListePHService;
-import static database.RequetesBDDPI.*;
-import static database.RequetesBDProfessionnels.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -116,6 +106,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         entetes.add("Date de naissance");
         TableModel tableModel = new DefaultTableModel(dpisS, entetes);
         Table_Vue_Generale1.setModel(tableModel);
+        Table_Vue_Generale1.setDefaultEditor(Object.class, null);
         Table_Vue_Generale1.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_Vue_Generale1.getRowCount()));
 
         //TABLEAU PH
@@ -128,7 +119,7 @@ public class Accueil_urgences extends javax.swing.JFrame {
         entetes2.add("Prénom");
         entetes2.add("Service");
         TableModel tableModel2 = new DefaultTableModel(medecinsS, entetes2);
-        tab_medecins.setAutoCreateRowSorter(true);
+        tab_medecins.setDefaultEditor(Object.class, null);
         tab_medecins.setModel(tableModel2);
         tab_medecins.setPreferredSize(new java.awt.Dimension(3000, 40 * tab_medecins.getRowCount()));
         
@@ -829,8 +820,9 @@ public class Accueil_urgences extends javax.swing.JFrame {
 
     private void jButton_recherche_patientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_recherche_patientActionPerformed
         //RECHERCHE PATIENT
-        /*
+        
         String recherche = TextField_Patient.getText();
+        /*
         try {
             dpis = getListeDPITemporaires(conn, recherche);
             dpis = trierDPITemp(dpis);
@@ -1009,6 +1001,8 @@ public class Accueil_urgences extends javax.swing.JFrame {
                 SimpleDateFormat formater = null;
                 formater = new SimpleDateFormat("dd/MM/yyyy");
                 Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
+                d.setYear(d.getYear()+1900);
+                d.setMonth(d.getMonth()+1);
                 
                 String message = "Etes-vous sûr de vouloir créer le patient temporaire suivant ?";
                 message = message + "\n Nom : " + nom + "\n Prénom : " + prenom + "\n Date de naissance : " + jFormattedTextField_date_naissance2.getText();
