@@ -221,7 +221,7 @@ public class RequetesBDDPI {
     
     /**
      * @param conn la connection établie pour la base de données
-     * @param service le service responsable 
+     * @param service le service responsable
      * @return la liste des DPI ayant un début de localisation selon le service entré : patient passé seulement au secrétariat administratif
      * @throws java.sql.SQLException
      */
