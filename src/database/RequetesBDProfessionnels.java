@@ -31,8 +31,11 @@ public class RequetesBDProfessionnels {
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions PH
     
-    //Renvoie la liste des PH
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste de tous les PH
+     * @throws java.sql.SQLException
+     */
     public static List<PH> getListePH(Connection conn) throws SQLException {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -48,8 +51,12 @@ public class RequetesBDProfessionnels {
         return listePH;
     }
 
-    //Renvoie la liste des PH en fonction du nom
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du PH
+     * @return la liste des PH en fonction du nom
+     * @throws java.sql.SQLException
+     */
     public static List<PH> getListePH(Connection conn, String nom) throws SQLException {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -66,8 +73,12 @@ public class RequetesBDProfessionnels {
         return listePH;
     }
 
-    //Renvoie la liste des PH en fonction du service
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param service le service du PH
+     * @return la liste des PH en fonction du service
+     * @throws java.sql.SQLException
+     */
     public static List<PH> getListePHService(Connection conn, String service) throws SQLException {
         List<PH> listePH = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -85,8 +96,13 @@ public class RequetesBDProfessionnels {
         return listePH;
     }
 
-    //Renvoie la liste des rdv d'un PH pour un jour donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ph le PH
+     * @param date la date du rendez-vous
+     * @return la liste des rendez-vous d'un PH pour un jour donné
+     * @throws java.sql.SQLException
+     */
     public static List<RendezVous> getListeRDVparJour(Connection conn, PH ph, Date date) throws SQLException{
         List<RendezVous> listeRDV = new ArrayList();
         //Sélection de tous les rdv d'un PH selon la date donnée en paramètre
@@ -118,8 +134,12 @@ public class RequetesBDProfessionnels {
         return listeRDV;
     }
     
-    //Renvoie le PH qui correspond à l'id donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id l'identifiant
+     * @return le PH à partir de l'identifiant rentré
+     * @throws java.sql.SQLException
+     */
     public static PH getPH(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
@@ -139,8 +159,13 @@ public class RequetesBDProfessionnels {
         }
     }
     
-    //Renvoie le PH qui correspond au nom et prénom donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du PH
+     * @param prenom le prénom du PH
+     * @return le PH à partir du nom et prénom entrés
+     * @throws java.sql.SQLException
+     */
     public static PH getPHNomPrenom(Connection conn, String nom, String prenom) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
@@ -163,8 +188,11 @@ public class RequetesBDProfessionnels {
     ////////////////////////////////////////////////////////////////////////////
     //Fonctions médecin traitant
     
-    //Renvoie la liste des médecins traitants
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste de tous les médecins traitants
+     * @throws java.sql.SQLException
+     */
     public static List<MedecinTraitant> getListeMT(Connection conn) throws SQLException {
         List<MedecinTraitant> listeMT = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -181,8 +209,12 @@ public class RequetesBDProfessionnels {
         return listeMT;
     }
     
-    //Renvoie la liste des médecins traitants en fonction du nom donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom de famille du médecin traitant
+     * @return la liste des médecins traitants selon le nom de famille
+     * @throws java.sql.SQLException
+     */
     public static List<MedecinTraitant> getListeMTNom(Connection conn, String nom) throws SQLException {
         List<MedecinTraitant> listeMT = new ArrayList();
         Statement stmt = conn.createStatement();

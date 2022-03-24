@@ -14,52 +14,66 @@ import nf.DateHeure;
  */
 public class RequetesBDConversion {
     
-    //Convertir une Date java en DateHeure avec heure et min 01:00
-    //VALIDE
+    /**
+     * @param date pour la date java à convertir
+     * @return le Timestamp java associé à cette date avec une heure minimum (1h00)
+     */
     public static Timestamp convertDateJavaEnTimestampJavaMin(Date date){
         Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 1, 0 ,0 ,0);
         return t;
     }
     
-    //Convertir une Date java en DateHeure avec heure et min 23:59
-    //VALIDE
+    /**
+     * @param date pour la date java à convertir
+     * @return le Timestamp java associé à cette date avec une heure maximum (23h59)
+     */
     public static Timestamp convertDateJavaEnTimestampJavaMax(Date date){
         Timestamp t = new Timestamp(date.getYear()-1900, date.getMonth()-1, date.getDate(), 23, 59, 0, 0);
         return t;
     }
     
-    //Convertir une date sql en date java correctement
-    //VALIDE
+    /**
+     * @param date pour la date sql à convertir
+     * @return la Date java associée à cette date avec une heure maximum (23h59)
+     */
     public static Date convertDateSQLenJava(java.sql.Date date){
         Date dateReelle = new Date(date.getYear(), date.getMonth() - 1, date.getDate());
         return dateReelle;
     }
     
-    //Convertir une date heure sql en dateheure java correctement
-    //VALIDE
+    /**
+     * @param timestamp pour le timestamp sql à convertir
+     * @return la DateHeure java associée à cette date
+     */
     public static DateHeure convertTimestampSQLenJava(java.sql.Timestamp timestamp){
         DateHeure dh = new DateHeure(timestamp.getYear()+1900, timestamp.getMonth()+1, timestamp.getDate(), timestamp.getHours(), timestamp.getMinutes());
         return dh;
     }
     
-    //Convertir une date Java en Date SQL correctement
-    //VALIDE
+    /**
+     * @param d pour la date java à convertir
+     * @return la Date sql associée à cette date
+     */
     public static java.sql.Date convertDateJavaEnSQL(Date d){
         Date dateReelle = new Date(d.getYear()-1900, d.getMonth()-1, d.getDate());
         java.sql.Date dateSQL = new java.sql.Date(dateReelle.getTime());
         return dateSQL;
     }
     
-    //Convertir une date heure Java en Timestamp SQL correctement
-    //VALIDE
+    /**
+     * @param dh pour la DateHeure java à convertir
+     * @return le Timestamp sql associée à cette date heure
+     */
     public static java.sql.Timestamp convertDateHeureJavaEnTimestampSQL(DateHeure dh){
         DateHeure dateHeureReelle = new DateHeure(dh.getAnnee()-1900, dh.getMois()-1, dh.getJour(), dh.getHeure(), dh.getMinutes());
         java.sql.Timestamp timestampSQL = new java.sql.Timestamp(dateHeureReelle.getAnnee(),dateHeureReelle.getMois(),dateHeureReelle.getJour(), dateHeureReelle.getHeure(), dateHeureReelle.getMinutes(), 0, 0);
         return timestampSQL;
     }
    
-    //Renvoie en string le timestamp sous la forme DD-MON-YYYY HH:MI:SS AM ou PM
-    //VALIDE
+    /**
+     * @param ts pour le Timestamp sql à convertir
+     * @return la chaine de caractere associée au timestamp donné
+     */
     public static String toStringTimestamp(java.sql.Timestamp ts){
         //String year = String.valueOf(ts.getYear()+1900).substring(2, 4);
         int year = ts.getYear();
@@ -157,8 +171,10 @@ public class RequetesBDConversion {
         return s;
     }
     
-    //Renvoie en string le timestamp sous la forme DD-MON-YYYY HH:MI:SS AM ou PM
-    //VALIDE
+    /**
+     * @param ts pour le Timestamp sql à convertir
+     * @return la chaine de caractere associée au timestamp donné sous la forme DD-MON-YYYY HH:MI:SS AM ou PM
+     */
     public static String toStringTimestampJAVA(java.sql.Timestamp ts){
         //String year = String.valueOf(ts.getYear()+1900).substring(2, 4);
         int year = ts.getYear()+1900;
@@ -172,8 +188,10 @@ public class RequetesBDConversion {
         return s;
     }
 
-    //Renvoie une Date java à partir d'une LocalDate
-    //VALIDE
+    /**
+     * @param ld pour la date actuelle java à convertir
+     * @return la Date java associée à cette date
+     */
     public static Date convertLocalDateEnDate(LocalDate ld){
         Date d = new Date(ld.getYear(), ld.getMonthValue(), ld.getDayOfMonth());
         return d;
