@@ -89,7 +89,7 @@ public class DateHeure {
 
     /**
      * convertit un String de la forme dd/MM/yyyy HH:mm en date heure
-     * @param ch --> une date en String sous la forme dd/MM/yyyy HH:mm
+     * @param ch : une date en String sous la forme dd/MM/yyyy HH:mm
      * @return la date correspondante
      */
     public static DateHeure convertirStringtoDateHeure(String ch) {
@@ -108,7 +108,7 @@ public class DateHeure {
     /**
      * convertit un String de la forme dd/MM/yyyy 0:0 en date heure 
      * fonction utilisée pour les rdv
-     * @param ch --> une date en String sous la forme dd/MM/yyyy
+     * @param ch : une date en String sous la forme dd/MM/yyyy
      * @return la date heure correspondante
      */
     public static DateHeure convertirStringtoDateHeureSpecialJournee(String ch) {

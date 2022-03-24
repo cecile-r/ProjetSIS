@@ -40,7 +40,7 @@ public class Infirmier {
      
       /**
      * ajoute un soin quotidien à l'infirmier
-     * @param sq --> soin quotidien
+     * @param sq : soin quotidien
      */
     public void ajouterSoinsQuotidien(SoinsQuotidien sq){
         getSoinsQuotidien().add(sq);
@@ -48,7 +48,7 @@ public class Infirmier {
     
     /**
      * ajoute une fiche de soins
-     * @param fs --> fiche de soins
+     * @param fs : fiche de soins
      */
     public void ajouterFicheDeSoins(FicheDeSoins fs){
         ficheDeSoins.add(fs);

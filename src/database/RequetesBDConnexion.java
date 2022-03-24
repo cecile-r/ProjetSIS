@@ -19,9 +19,13 @@ import nf.Service;
  * @author cecilerichard
  */
 public class RequetesBDConnexion {
-    
-    //Renvoie true si le mdp est correct, sinon false
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id pour l'identifiant de l'utilisateur entré
+     * @param mdp pour le mot de passe entré
+     * @param statut pour définir le statut de l'utilisateur au sein du CHU
+     * @return boolean pour vérifier si la connexion est correcte ou non
+     */
     public static boolean verifyConnexion(Connection conn, String id, String mdp, String statut) throws SQLException {
         boolean correct = false;
         mdp = hashPassword(mdp).get();
@@ -60,8 +64,11 @@ public class RequetesBDConnexion {
         return correct;
     }
 
-    //Renvoie le PH dont on donne l'identifiant
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id pour l'identifiant du PH
+     * @return l'instance PH dont on donne l'identifiant
+     */
     public static PH userPH(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM PH "
@@ -80,8 +87,11 @@ public class RequetesBDConnexion {
         }
     }
 
-    //Renvoie l'infirmier dont on donne l'identifiant
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id pour l'identifiant de l'infirmier
+     * @return l'instance Infirmier dont on donne l'identifiant
+     */
     public static Infirmier userInf(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Infirmier "
@@ -100,8 +110,11 @@ public class RequetesBDConnexion {
         }
     }
 
-    //Renvoie la secretaire medicale dont on donne l'identifiant
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id pour l'identifiant de la secrétaire médicale
+     * @return l'instance SecretaireMedicale dont on donne l'identifiant
+     */
     public static SecretaireMedicale userSM(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Secretaire_medicale "
@@ -120,8 +133,11 @@ public class RequetesBDConnexion {
         }
     }
 
-    //Renvoie a secretaire administrative dont on donne l'identifiant
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id pour l'identifiant de la secrétaire administrative
+     * @return l'instance SecretaireAdministrative dont on donne l'identifiant
+     */
     public static SecretaireAdministrative userSA(Connection conn, String id) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Secretaire_administrative "
@@ -140,8 +156,11 @@ public class RequetesBDConnexion {
         }
     }
     
-    //Renvoie le statut du professionnel de santé
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id pour l'identifiant de l'utilisateur
+     * @return une chaine de caractère qui défini le statut d el'utilisateur au sein du CHU
+     */
     public static String getStatut(Connection conn, String id) throws SQLException{
         Statement stmt1 = conn.createStatement();
         Statement stmt2 = conn.createStatement();

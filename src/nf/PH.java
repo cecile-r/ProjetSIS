@@ -169,7 +169,7 @@ public class PH {
     
     /**
      * ajoute une fiche de soins au PH
-     * @param fs --> fiche de soins
+     * @param fs : fiche de soins
      */
     public void ajouterFicheDeSoins(FicheDeSoins fs){
         ficheDeSoins.add(fs);
@@ -177,7 +177,7 @@ public class PH {
     
     /**
      * ajoute une prescription au PH
-     * @param p --> prescription
+     * @param p : prescription
      */
     public void ajouterPrescriptions(Prescription p){
         precriptions.add(p);
@@ -185,7 +185,7 @@ public class PH {
     
     /**
      * ajoute une lettre de sortie au PH
-     * @param ls --> lettre de sortie
+     * @param ls : lettre de sortie
      */
     public void ajouterLettresDeSorties(LettreDeSortie ls){
         lettresDeSorties.add(ls);
@@ -193,7 +193,7 @@ public class PH {
     
     /**
      * ajoute un examen au PH
-     * @param e --> examen
+     * @param e : examen
      */
     public void ajouterExamen(Examen e){
         examens.add(e);
@@ -201,7 +201,7 @@ public class PH {
     
     /**
      * ajoute un rdv au PH
-     * @param rdv --> rendez vous
+     * @param rdv : rendez vous
      */
     public void ajouterRdv(RendezVous rdv){
         rendezVous.add(rdv);
@@ -209,7 +209,7 @@ public class PH {
 
     /**
      * compare un ph avec autre en fonction de son nom par ordre alphabetique
-     * @param ph --> praticien hospitalier
+     * @param ph : praticien hospitalier
      * @return nombre qui repésente la différence
      */
     public int compareTo(PH ph) {
