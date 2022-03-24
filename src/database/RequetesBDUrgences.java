@@ -164,6 +164,16 @@ public class RequetesBDUrgences {
     }
 
     /**
+     * @param d pour la date java à convertir
+     * @return la Date sql associée à cette date
+     */
+    public static java.sql.Date convertDateJavaEnSQLUrgences(Date d){
+        Date dateReelle = new Date(d.getYear(), d.getMonth(), d.getDate());
+        java.sql.Date dateSQL = new java.sql.Date(dateReelle.getTime());
+        return dateSQL;
+    }
+    
+    /**
      * @param conn la connection établie pour la base de données
      * @param dpit l'ipp du DPI temporaire
      * @return boolean true si le dpit existe sinon false
@@ -176,7 +186,7 @@ public class RequetesBDUrgences {
                 + "WHERE UPPER(nom_DPI) = UPPER(?) AND UPPER(prenom_DPI) = UPPER(?) AND date_de_naissance = ?");
         stmt.setString(1, dpit.getNom());
         stmt.setString(2, dpit.getPrenom());
-        stmt.setDate(3, convertDateJavaEnSQL(dpit.getDate_naissance()));
+        stmt.setDate(3, convertDateJavaEnSQLUrgences(dpit.getDate_naissance()));
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
