@@ -589,6 +589,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -616,6 +617,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -642,6 +644,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -668,6 +671,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -694,6 +698,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -720,6 +725,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -746,6 +752,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -772,6 +779,7 @@ public class RDV_prise extends javax.swing.JFrame {
                 rdv.setpH(ph);
                 rdv.setDPI(dpi);
                 creerRendezVous(conn, rdv);
+                jButton9ActionPerformed(evt);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_prise.class.getName()).log(Level.SEVERE, null, ex);
             }

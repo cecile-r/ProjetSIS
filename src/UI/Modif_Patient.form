@@ -289,6 +289,9 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="66" red="cc" type="rgb"/>
                     </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Lucida Console" size="11" style="1"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="MODIFIER LE PATIENT"/>
                   </Properties>
                   <Events>

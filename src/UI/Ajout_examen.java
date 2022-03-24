@@ -337,6 +337,7 @@ public class Ajout_examen extends javax.swing.JFrame {
                 i = new Vue_Patient_Med(conn, dpi2, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
+                dispose();
             } else { //DPI TEMPORAIRE
                 String IPP = dpiTemp.getIPP();
                 DPITemporaire dpi2 = getDPITemp(conn, IPP);
@@ -347,6 +348,7 @@ public class Ajout_examen extends javax.swing.JFrame {
                 i = new Vue_Patient_Med_Urgences(conn, dpi2, ph);
                 i.setSize(longueur, hauteur);
                 i.setVisible(true);
+                dispose();
             }
         } catch (SQLException ex) {
             Logger.getLogger(Ajout_FS.class.getName()).log(Level.SEVERE, null, ex);

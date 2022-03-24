@@ -1827,6 +1827,8 @@ public class Accueil_SA extends javax.swing.JFrame {
                 formater = new SimpleDateFormat("dd/MM/yyyy");
 
                 Date d = formater.parse(jFormattedTextField_date_naissance2.getText());
+                //d.setMonth(d.getMonth()+1);
+                //d.setYear(d.getYear()+1900);
                 String adresse = jTextArea_adresse2.getText();
                 String telephone = jFormattedTextField_telephone2.getText();
                 telephone = telephone.replaceAll("\\s+", "");
