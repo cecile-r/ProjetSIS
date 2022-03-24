@@ -90,7 +90,7 @@ public class Cryptage {
     
     /** 
      * 
-     * @param password --> mot de passe à crypter
+     * @param password : mot de passe à crypter
      * @return mot de passe crypté
      */
     public static String cryptage(String password){
@@ -103,7 +103,7 @@ public class Cryptage {
     
     /** 
      * 
-     * @param myEncryptedPassword --> mot de passe crypté
+     * @param myEncryptedPassword : mot de passe crypté
      * @return le mot de passe décrypté
      */
     public static String decryptage(String myEncryptedPassword){

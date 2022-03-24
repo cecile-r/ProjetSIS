@@ -27,7 +27,7 @@ public class Vector {
     
     /**
      * tri une liste de ph par ordre alphabétique
-     * @param phs --> liste des phs à trier
+     * @param phs : liste des phs à trier
      * @return une liste de ph triée
      */
     public static List<PH> trierPH(List<PH> phs) {
@@ -48,7 +48,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param phs --> liste des phs
+     * @param phs : liste des phs
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorPH(List<PH> phs) {
@@ -67,7 +67,7 @@ public class Vector {
 
     /**
      * tri une liste de dpis par ordre alphabétique
-     * @param dpis --> liste des dpis à trier
+     * @param dpis : liste des dpis à trier
      * @return une liste de dpis triée
      */
     public static List<DPI> trierDPI(List<DPI> dpis) {
@@ -88,7 +88,7 @@ public class Vector {
     
     /**
      * tri une liste de dpis temporaires par ordre alphabétique
-     * @param dpis --> liste des dpis temporaires à trier
+     * @param dpis : liste des dpis temporaires à trier
      * @return une liste de dpis triée
      */
     public static List<DPITemporaire> trierDPITemp(List<DPITemporaire> dpis) {
@@ -109,7 +109,7 @@ public class Vector {
     
     /**
      * renvoie le vecteur d'affichage 
-     * @param dpis --> liste des dpis
+     * @param dpis : liste des dpis
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorDPI(List<DPI> dpis) {
@@ -129,7 +129,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param dpis --> liste des dpis temporaires
+     * @param dpis : liste des dpis temporaires
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorDPITemp(List<DPITemporaire> dpis) {
@@ -148,7 +148,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param dpis --> liste des dpis fermés
+     * @param dpis : liste des dpis fermés
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorDPIFerme(List<DPI> dpis) {
@@ -168,7 +168,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param actes --> liste des actes
+     * @param actes : liste des actes
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorActes(List<Acte> actes) {
@@ -188,7 +188,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param mts --> liste des medecins traitants
+     * @param mts : liste des medecins traitants
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorMT(List<MedecinTraitant> mts) {
@@ -207,7 +207,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param phs --> liste des phs pour les rdvs
+     * @param phs : liste des phs pour les rdvs
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorPHRDV(List<PH> phs) {
@@ -224,7 +224,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param sqs --> liste des soins quotidiens
+     * @param sqs : liste des soins quotidiens
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorSoinsQuotidien(List<Evaluable> sqs) {
@@ -248,7 +248,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param sqs --> liste des soins quotidien necessaire a l'affiche pour le PH
+     * @param sqs : liste des soins quotidien necessaire a l'affiche pour le PH
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorSoinsQuotidienPH(List<Evaluable> sqs) {
@@ -273,7 +273,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'affichage 
-     * @param evs --> liste des rdvs 
+     * @param evs : liste des rdvs 
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorPHplanning(List<Evaluable> evs) {
@@ -304,7 +304,7 @@ public class Vector {
 
     /**
      * renvoie le vecteur d'en-tête pour l'affiche du planning
-     * @param evs --> liste des rdv
+     * @param evs : liste des rdv
      * @return un vecteur pour l'affichage
      */
     public static java.util.Vector getVectorSMplanningEntete(List<Evaluable> evs) {

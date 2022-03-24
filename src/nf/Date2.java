@@ -39,7 +39,7 @@ public class Date2 {
 
     /**
      * convertit un String de la forme dd/MM/yyyy en date
-     * @param d1 --> une date en String sous la forme dd/MM/yyyy 
+     * @param d1 : une date en String sous la forme dd/MM/yyyy 
      * @return la date correspondante
      */
     public static Date convertirStringtoDate(String d1) throws ParseException {

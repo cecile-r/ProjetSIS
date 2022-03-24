@@ -31,7 +31,7 @@ public enum Code {
     
     /** 
      * 
-     * @param coefficient --> coefficient pour le calcul de cout
+     * @param coefficient : coefficient pour le calcul de cout
      * @return le prix pour un coefficient donné
      */
     public double calculerCout(int coefficient) {

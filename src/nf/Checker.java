@@ -46,7 +46,7 @@ public class Checker {
     }        */
     /**
      * verifie le numero de telephone
-     * @param telephone --> numero de tel en String
+     * @param telephone : numero de tel en String
      * @return vrai si la chaine a est dans le bon format de telephone
      */
     public static boolean checkerTelephone(String telephone) {
@@ -56,8 +56,8 @@ public class Checker {
 
     /**
      *
-     * @param numero_secu --> numéro de sécurité sociale
-     * @param cle --> cle du numero de secu
+     * @param numero_secu : numéro de sécurité sociale
+     * @param cle : cle du numero de secu
      * @return vrai si le numero de secu est correct (format et cle)
      */
     public static boolean checkerNumero_secu(String numero_secu, String cle) {
@@ -75,7 +75,7 @@ public class Checker {
 
     /**
      *
-     * @param numero_secu --> numero de
+     * @param numero_secu : numero de
      * @return la cle a partir du numero secu
      */
     public double getCle(String numero_secu) {
@@ -88,7 +88,7 @@ public class Checker {
 
      /**
      *
-     * @param date --> date sous forme dd/MM/yyyy
+     * @param date : date sous forme dd/MM/yyyy
      * @return true si la date est correcte
      */
     public static boolean checkerDate(String date) {

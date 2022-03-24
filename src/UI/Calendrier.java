@@ -157,9 +157,9 @@ public class Calendrier extends JPanel implements ActionListener {
     //CONSULTATION
     /**
      * affiche le calendrier du mois en cours avec les rdvs des patients
-     * @param iMois --> mois en cours
-     * @param iAnnee --> annee en cours
-     * @param rdvs --> liste des rdvs du patient
+     * @param iMois : mois en cours
+     * @param iAnnee : annee en cours
+     * @param rdvs : liste des rdvs du patient
      */
     public void afficherGrille(int iMois, int iAnnee, List<RendezVous> rdvs) {
         for (int i = jour(iAnnee, iMois, 1); i < (jour(iAnnee, iMois, 1) + nbreJour(iMois, iAnnee)); i++) {
@@ -201,8 +201,8 @@ public class Calendrier extends JPanel implements ActionListener {
     //PRISE DE RDV// PANNEAU 1
     /**
      * affiche le calendrier du mois en cours
-     * @param iMois --> mois en cours
-     * @param iAnnee --> annee  en cours
+     * @param iMois : mois en cours
+     * @param iAnnee : annee  en cours
      */
     public void afficherGrille(int iMois, int iAnnee) {
         for (int i = jour(iAnnee, iMois, 1); i < (jour(iAnnee, iMois, 1) + nbreJour(iMois, iAnnee)); i++) {
@@ -271,7 +271,7 @@ public class Calendrier extends JPanel implements ActionListener {
 
     /**
      * 
-     * @param i --> numero de mois
+     * @param i : numero de mois
      * @return le mois en fonction du numéro de mois
      */
     public String string(int i) {
@@ -398,7 +398,7 @@ public class Calendrier extends JPanel implements ActionListener {
 
     /**
      * ajoute les événements si on clique sur mois suivant ou précédent
-     * @param e --> evenement
+     * @param e : evenement
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == suiv) {

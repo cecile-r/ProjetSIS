@@ -118,7 +118,7 @@ public class RequetesBDUrgences {
 
     /**
      * @param conn la connection établie pour la base de données
-     * @return la liste de DPI temporaires -> les patients aux urgences
+     * @return la liste de DPI temporaires : les patients aux urgences
      * @throws java.sql.SQLException
      */
     public static List<DPITemporaire> getListeDPITemporaires(Connection conn) throws SQLException {
