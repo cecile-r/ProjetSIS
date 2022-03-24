@@ -250,6 +250,7 @@ public class RDV_consultation extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
         Connexion i;
+
         try {
             i = new Connexion(conn);
             i.setLocationRelativeTo(null);
@@ -263,12 +264,15 @@ public class RDV_consultation extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-
+        Dimension tailleMoniteur = Toolkit.getDefaultToolkit().getScreenSize();
+        int longueur = tailleMoniteur.width;
+        int hauteur = tailleMoniteur.height;
         if (ph != null) {
 
             try {
                 Vue_Patient_Med i;
                 i = new Vue_Patient_Med(conn, dpi, ph);
+                i.setSize(longueur, hauteur);
                 i.setVisible(true);
             } catch (SQLException ex) {
                 Logger.getLogger(RDV_consultation.class.getName()).log(Level.SEVERE, null, ex);

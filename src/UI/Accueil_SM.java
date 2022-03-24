@@ -1263,8 +1263,8 @@ public class Accueil_SM extends javax.swing.JFrame {
             dpisF = trierDPI(dpisF);
             dpisFS = getVectorDPI(dpisF);
             TableModel tableModel = new DefaultTableModel(dpisFS, entetes);
-            Table_Vue_Generale1.setAutoCreateRowSorter(true);
-            Table_Vue_Generale1.setModel(tableModel);
+            Table_DPI_ferme.setModel(tableModel);
+            Table_DPI_ferme.setPreferredSize(new java.awt.Dimension(3000, 30 * Table_DPI_ferme.getRowCount()));
             
         } catch (SQLException ex) {
             Logger.getLogger(Accueil_SM.class.getName()).log(Level.SEVERE, null, ex);
