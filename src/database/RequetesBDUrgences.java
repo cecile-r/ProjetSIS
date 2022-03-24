@@ -48,8 +48,12 @@ import nf.TypeExamen;
  */
 public class RequetesBDUrgences {
 
-    //Renvoie true si l'ipp existe sinon renvoie false
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du DPI temporaire
+     * @return boolean true si l'ipp existe sinon false
+     * @throws java.sql.SQLException
+     */
     public static boolean IPPTempExistant(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT IPP FROM DPI_temporaire "
@@ -65,8 +69,11 @@ public class RequetesBDUrgences {
         return ippExiste;
     }
 
-    //Renvoie le nombre de DPI temporaire
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return le nombre de DPI temporaire
+     * @throws java.sql.SQLException
+     */
     public static int nbDPITemporaire(Connection conn) throws SQLException {
         PreparedStatement stmt = null;
         int rowCount = 0;
@@ -78,8 +85,11 @@ public class RequetesBDUrgences {
         return rowCount;
     }
 
-    //Créé un DPI temporaire 
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param dpit le dpi temporaire à créer
+     * @throws java.sql.SQLException
+     */
     public static void creerDPITemporaire(Connection conn, DPITemporaire dpit) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI_temporaire WHERE nom_DPI_temp=? AND prenom_DPI_temp=? AND date_de_naissance_temp=?");
@@ -106,8 +116,11 @@ public class RequetesBDUrgences {
 
     }
 
-    //Renvoie la liste des DPI temporaires -> patients aux urgences
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste de DPI temporaires -> les patients aux urgences
+     * @throws java.sql.SQLException
+     */
     public static List<DPITemporaire> getListeDPITemporaires(Connection conn) throws SQLException {
         List<DPITemporaire> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -126,8 +139,12 @@ public class RequetesBDUrgences {
         return listeDPI;
     }
 
-    //Renvoie true si le dpi existe déjà, sinon renvoie false
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param dpit l'ipp du DPI temporaire
+     * @return boolean true si le dpit existe sinon false
+     * @throws java.sql.SQLException
+     */
     public static boolean dpiExiste(Connection conn, DPITemporaire dpit) throws SQLException {
         boolean exist = false;
         PreparedStatement stmt = null;
@@ -145,8 +162,12 @@ public class RequetesBDUrgences {
         return exist;
     }
 
-    //Fusionne les DPI si le DPI des urgences existe déjà au CHU
-    //VALIDE
+    /**
+     * Fusionne les DPI si le DPI des urgences existe déjà au CHU
+     * @param conn la connection établie pour la base de données
+     * @param dpit l'ipp du DPI temporaire
+     * @throws java.sql.SQLException
+     */
     public static void fusionDPI(Connection conn, DPITemporaire dpit) throws SQLException {
         //FICHES DE SOINS
         for (int i = 0; i < listeFichesDeSoinsTemporaire(conn, dpit.getIPP()).size(); i++) { //Parcours des fiches de soins temporaires
@@ -284,8 +305,12 @@ public class RequetesBDUrgences {
         stmt2.close();
     }
 
-    //Creer une fiche de soins d'urgence (temporaire) et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Créer une fiche de soins d'urgence (temporaire) et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param fiche la fiche de soins temporaire à ajouter
+     * @throws java.sql.SQLException
+     */
     public static void creerFicheDeSoinsTemp(Connection conn, FicheDeSoinsTemp fiche) throws SQLException {
 
         for (int i = 0; i < fiche.getActe().size(); i++) {
@@ -308,8 +333,13 @@ public class RequetesBDUrgences {
         }
     }
 
-    //Creer un acte et l'ajouter dans la base de donnée
-    //VALIDE
+    /**
+     * Créer un acte et l'ajouter dans la base de donnée
+     * @param conn la connection établie pour la base de données
+     * @param acte l'acte temporaire à ajouter
+     * @return l'identifiant de l'acte
+     * @throws java.sql.SQLException
+     */
     public static int creerActeTemp(Connection conn, Acte acte) throws SQLException {
         //Calcul du nombre d'élément dans la table Acte pour trouver l'id
         PreparedStatement stmt2 = null;
@@ -337,8 +367,12 @@ public class RequetesBDUrgences {
         return (rowCount + 2);
     }
 
-    //Creer une prescription d'urgence (temporaire) et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Créer une prescription d'urgence (temporaire) et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param p la prescription temporaire à ajouter
+     * @throws java.sql.SQLException
+     */
     public static void creerPrescriptionTemp(Connection conn, PrescriptionTemp p) throws SQLException {
         PreparedStatement stmt2 = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(p.getDateHeure()));
@@ -362,8 +396,12 @@ public class RequetesBDUrgences {
         stmt2.close();
     }
 
-    //Creer un examen d'urgence (temporaire) et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Créer un examen d'urgence (temporaire) et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param exam l'examen temporaire à ajouter
+     * @throws java.sql.SQLException
+     */
     public static void creerExamenTemp(Connection conn, ExamenTemp exam) throws SQLException {
         PreparedStatement stmt = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(exam.getDateHeure()));
@@ -379,8 +417,12 @@ public class RequetesBDUrgences {
         stmt.close();
     }
 
-    //Renvoie la liste des fiches de soins pour un patient donné aux urgences
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des fiches de soins
+     * @throws java.sql.SQLException
+     */
     public static List<FicheDeSoinsTemp> listeFichesDeSoinsTemporaire(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         Statement stmt2 = conn.createStatement();
@@ -456,8 +498,12 @@ public class RequetesBDUrgences {
         return listeFiches;
     }
 
-    //Renvoie la liste des prescriptions pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des prescriptions
+     * @throws java.sql.SQLException
+     */
     public static List<PrescriptionTemp> listePrescriptionTemporaire(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Prescription_temporaire "
@@ -513,8 +559,12 @@ public class RequetesBDUrgences {
         return listeP;
     }
 
-    //Renvoie la liste des examens pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des examens
+     * @throws java.sql.SQLException
+     */
     public static List<ExamenTemp> listeExamensTemporaire(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Examen_temporaire "
@@ -556,8 +606,12 @@ public class RequetesBDUrgences {
         return listeExams;
     }
 
-    //Renvoie le DPI temporaire associé à l'ipp donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return le DPI temporaire
+     * @throws java.sql.SQLException
+     */
     public static DPITemporaire getDPITemp(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI_temporaire "
@@ -587,8 +641,11 @@ public class RequetesBDUrgences {
         }
     }
 
-    //Renvoie la liste de DPI temporaires en attente
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste des DPI temporaires mis en attente avant leur passage à l'administration
+     * @throws java.sql.SQLException
+     */
     public static List<DPITemporaire> getListeDPIAttente(Connection conn) throws SQLException {
         List<DPITemporaire> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -607,8 +664,12 @@ public class RequetesBDUrgences {
         return listeDPI;
     }
 
-    //Met les DPI temporaires en liste attente lorsqu'un patient sort des urgences pour la fusion ou création de DPI
-    //VALIDE
+    /**
+     * Met les DPI temporaires en liste attente lorsqu'un patient sort des urgences pour la fusion ou création de DPI
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @throws java.sql.SQLException
+     */
     public static void miseAttente(Connection conn, String ipp) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI_temporaire "
@@ -628,8 +689,12 @@ public class RequetesBDUrgences {
         stmt.close();
     }
 
-    //Supprime un DPI temporaire à partir d'un IPP
-    //VALIDE
+    /**
+     * Supprime un DPI temporaire à partir d'un IPP
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @throws java.sql.SQLException
+     */
     public static void supprimerDPITemp(Connection conn, String ipp) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM DPI_temporaire "
@@ -647,8 +712,13 @@ public class RequetesBDUrgences {
         stmt.close();
     }
     
-    //Transfert les fiches de soins, prescriptions, examens d'un DPI temporaire dans un DPI et suppression des temporaires
-    //VALIDE
+    /**
+     * Transfert les fiches de soins, prescriptions, examens d'un DPI temporaire dans un DPI et suppression des temporaires
+     * @param conn la connection établie pour la base de données
+     * @param dpi le dpi du patient
+     * @param dpit le dpi temporaire du patient
+     * @throws java.sql.SQLException
+     */
     public static void transfertDPI(Connection conn, DPI dpi, DPITemporaire dpit) throws SQLException {
         //Récupération des données de dpit
         //FICHES DE SOINS

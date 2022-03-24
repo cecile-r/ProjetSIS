@@ -50,8 +50,12 @@ import nf.SoinsQuotidien;
  */
 public class RequetesBDDPI {
 
-    //Renvoie true si l'ipp existe sinon renvoie false
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp pour l'identifiant
+     * @return boolean pour vérifier si l'ipp existe ou non
+     * @throws java.sql.SQLException
+     */
     public static boolean IPPexistant(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT IPP FROM DPI "
@@ -67,8 +71,14 @@ public class RequetesBDDPI {
         return ippExiste;
     }
     
-    //Renvoie l'IPP du patient en donnant un nom, prénom, date de naissance
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom pour le nom du patient
+     * @param prenom pour le prenom du patient
+     * @param date_naissance pour la date de naissance du patient
+     * @return la chaine de caractère de l'ipp
+     * @throws java.sql.SQLException
+     */
     public static String getIPPPatient(Connection conn, String nom, String prenom, Date date_naissance) throws SQLException{
         String ipp = "";
         PreparedStatement stmt = null;
@@ -88,8 +98,11 @@ public class RequetesBDDPI {
     ////////////////////////////////////////////////////////////////////////////
     //Récupération d'éléments
     
-    //Renvoie la liste des DPI fermés -> patients PAS dans le CHU
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste des DPI fermés -> patients PAS dans le CHU
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIFerme(Connection conn) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -109,8 +122,12 @@ public class RequetesBDDPI {
         return listeDPI;
     }
     
-    //Renvoie la liste des DPI fermés en fonction du nom
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du patient
+     * @return la liste des DPI fermés en fonction du nom
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIFermeNom(Connection conn, String nom) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -130,8 +147,11 @@ public class RequetesBDDPI {
         return listeDPI;
     }
 
-    //Renvoie la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste des DPI ouverts ou fermés -> patients dans le CHU ou non
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeTousDPI(Connection conn) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -150,8 +170,11 @@ public class RequetesBDDPI {
         return listeDPI;
     }
 
-    //Renvoie la liste des DPI ouverts -> patients dans le CHU
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste des DPI ouverts -> patients dans le CHU
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPI(Connection conn) throws SQLException {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -172,8 +195,11 @@ public class RequetesBDDPI {
         return listeDPIOuvert;
     }
 
-    //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @return la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIEntrant(Connection conn) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -193,8 +219,12 @@ public class RequetesBDDPI {
         return listeDPI;
     }
     
-    //Renvoie la liste des DPI ayant un début de localisation selon le service entré -> patient passé seulement au secrétariat administratif
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param service le service responsable 
+     * @return la liste des DPI ayant un début de localisation selon le service entré -> patient passé seulement au secrétariat administratif
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIEntrantService(Connection conn, Service service) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -214,8 +244,12 @@ public class RequetesBDDPI {
         return listeDPI;
     }
     
-    //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du patient
+     * @return la liste des DPI ayant un début de localisation selon le nom entré -> patient passé seulement au secrétariat administratif
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIEntrantNom(Connection conn, String nom) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -235,14 +269,22 @@ public class RequetesBDDPI {
         return listeDPI;
     }
     
-    //Renvoie la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param service le service responsable 
+     * @param nom le nom du patient
+     * @return la liste des DPI ayant un début de localisation -> patient passé seulement au secrétariat administratif
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIEntrantServiceNom(Connection conn, Service service, String nom) throws SQLException {
         List<DPI> listeDPI = new ArrayList();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
                 + "LEFT OUTER JOIN Medecin_traitant USING (telephone_medecin_traitant, IPP) "
-                + "WHERE IPP IN (SELECT IPP FROM Localisation WHERE service_geographique IS NULL AND UPPER(service_responsable) LIKE UPPER('" + service.name() + "%')) AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
+                + "WHERE IPP IN "
+                + "(SELECT IPP FROM Localisation "
+                + "WHERE service_geographique IS NULL AND UPPER(service_responsable) LIKE UPPER('" + service.name() + "%')) "
+                        + "AND UPPER(nom_DPI) LIKE UPPER('" + nom + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
@@ -256,8 +298,12 @@ public class RequetesBDDPI {
         return listeDPI;
     }
     
-    //Renvoie la liste des DPI ouverts en fonction du nom
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du patient
+     * @return la liste des DPI ouverts en fonction du nom
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPI(Connection conn, String nom) throws SQLException {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -278,8 +324,12 @@ public class RequetesBDDPI {
         return listeDPIOuvert;
     }
 
-    //Renvoie la liste des DPI ouverts en fonction du nom et du service
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param service le service responsable
+     * @return la liste des DPI ouverts en fonction du service
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPIService(Connection conn, String service) throws SQLException {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -300,8 +350,13 @@ public class RequetesBDDPI {
         return listeDPIOuvert;
     }
 
-    //Renvoie la liste des DPI ouverts en fonction du nom et du service
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param nom le nom du patient
+     * @param service le service responsable
+     * @return la liste des DPI ouverts en fonction du nom et du service
+     * @throws java.sql.SQLException
+     */
     public static List<DPI> getListeDPI(Connection conn, String nom, String service) throws SQLException {
         List<DPI> listeDPIOuvert = new ArrayList();
         Statement stmt = conn.createStatement();
@@ -322,8 +377,12 @@ public class RequetesBDDPI {
         return listeDPIOuvert;
     }
 
-    //Renvoie la liste des rendez-vous pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des rendez-vous pour un patient donné
+     * @throws java.sql.SQLException
+     */
     public static List<RendezVous> listeRendezVous(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM RendezVous "
@@ -362,8 +421,13 @@ public class RequetesBDDPI {
         return listeRDV;
     }
 
-    //Renvoie la liste des rendez-vous pour un PH et une date donnés
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param date la date du rendez-vous
+     * @param ph l'instance du PH réalisant le rendez-vous
+     * @return la liste des rendez-vous pour un PH et une date donnés
+     * @throws java.sql.SQLException
+     */
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, PH ph) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM RendezVous "
@@ -396,8 +460,13 @@ public class RequetesBDDPI {
         return listeRDV;
     }
     
-    //Renvoie la liste des rendez-vous pour un service et une date donnés
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param date la date du rendez-vous
+     * @param service le service responsable
+     * @return la liste des rendez-vous pour un service et une date donnés
+     * @throws java.sql.SQLException
+     */
     public static List<RendezVous> listeRendezVous(Connection conn, Date date, Service service) throws SQLException {
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM RendezVous "
@@ -440,8 +509,12 @@ public class RequetesBDDPI {
         return listeRDV;
     }
     
-    //Renvoie la liste des examens pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des examens pour un patient donné
+     * @throws java.sql.SQLException
+     */
     public static List<Examen> listeExamens(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Examen "
@@ -485,8 +558,12 @@ public class RequetesBDDPI {
         return listeExams;
     }
 
-    //Renvoie la liste des lettres de sortie pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des lettres de sortie pour un patient donné
+     * @throws java.sql.SQLException
+     */
     public static List<LettreDeSortie> listeLettreSortie(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM LettreDeSortie "
@@ -526,8 +603,12 @@ public class RequetesBDDPI {
         return listeLettres;
     }
 
-    //Renvoie la liste des soins quotidiens pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des soins quotidiens pour un patient donné
+     * @throws java.sql.SQLException
+     */
     public static List<SoinsQuotidien> listeSoinQuotidien(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM SoinsQuotidien "
@@ -568,8 +649,12 @@ public class RequetesBDDPI {
         return listeSQ;
     }
 
-    //Renvoie la liste des prescriptions pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des prescriptions pour un patient donné
+     * @throws java.sql.SQLException
+     */
     public static List<Prescription> listePrescription(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM Prescription "
@@ -627,8 +712,12 @@ public class RequetesBDDPI {
         return listeP;
     }
 
-    //Renvoie la liste des fiches de soins pour un patient donné
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return la liste des fiches de soins pour un patient donné
+     * @throws java.sql.SQLException
+     */
     public static List<FicheDeSoins> listeFichesDeSoins(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         Statement stmt2 = conn.createStatement();
@@ -706,8 +795,12 @@ public class RequetesBDDPI {
         return listeFiches;
     }
 
-    //Renvoie le DPI associé à l'ipp donnée, ainsi que ses DM et DMA associés
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @return le DPI associé à l'ipp donnée, ainsi que ses DM et DMA associés
+     * @throws java.sql.SQLException
+     */
     public static DPI getDPI(Connection conn, String ipp) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
@@ -779,8 +872,19 @@ public class RequetesBDDPI {
     ////////////////////////////////////////////////////////////////////////////
     //Création d'éléments
     
-    //Creer un patient et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * @param conn la connection établie pour la base de données
+     * @param id l'ipp du patient
+     * @param nom_DPI le nom du patient
+     * @param prenom_DPI le prenom du patient
+     * @param date_de_naissance la date de naissance du patient
+     * @param sexe_DPI le sexe du patient
+     * @param telephone_DPI le numéro de téléphone du patient
+     * @param adresse_DPI l'adresse postale du patient
+     * @param m le médecin traitant du patient
+     * @return le DPI crée, et crée ce nouveau DPI dans la base de données
+     * @throws java.sql.SQLException
+     */
     public static DPI creerNouveauDPI(Connection conn, String id, String nom_DPI, String prenom_DPI, Date date_de_naissance, String sexe_DPI, String telephone_DPI, String adresse_DPI, MedecinTraitant m) throws SQLException {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM DPI "
@@ -814,8 +918,12 @@ public class RequetesBDDPI {
         return dpi;
     }
 
-    //Creer une fiche de soins et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Crée une fiche de soins pour un patient et l'ajoute dans la base de donnée
+     * @param conn la connection établie pour la base de données
+     * @param fiche la fiche de soin a ajoutée au patient
+     * @throws java.sql.SQLException
+     */
     public static void creerFicheDeSoins(Connection conn, FicheDeSoins fiche) throws SQLException {
         
         for (int i = 0; i < fiche.getActe().size(); i++) {
@@ -863,8 +971,13 @@ public class RequetesBDDPI {
         }
     }
     
-    //Creer un acte et l'ajouter dans la base de donnée
-    //VALIDE
+    /**
+     * Crée un acte pour un patient et l'ajoute dans la base de donnée
+     * @param conn la connection établie pour la base de données
+     * @param acte l'acte ajouté au patient
+     * @return un entier qui représente l'identifiant de l'acte
+     * @throws java.sql.SQLException
+     */
     public static int creerActe(Connection conn, Acte acte) throws SQLException {
         //Calcul du nombre d'élément dans la table Acte pour trouver l'id
         PreparedStatement stmt2 = null;
@@ -892,8 +1005,12 @@ public class RequetesBDDPI {
         return (rowCount+2);
     }
     
-    //Creer une prescription et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Crée une prescription pour un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param p la prescription ajoutée au patient
+     * @throws java.sql.SQLException
+     */
     public static void creerPrescription(Connection conn, Prescription p) throws SQLException{
         PreparedStatement stmt2 = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(p.getDateHeure()));
@@ -918,8 +1035,12 @@ public class RequetesBDDPI {
         stmt2.close();
     }
     
-    //Creer une lettre de sortie et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Crée une lettre de sortie pour un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param ls la lettre de sortie ajoutée au patient
+     * @throws java.sql.SQLException
+     */
     public static void creerLettreSortie(Connection conn, LettreDeSortie ls) throws SQLException{
         PreparedStatement stmt = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(ls.getDateHeure()));
@@ -934,8 +1055,12 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
-    //Creer un soin quotidien et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Crée un soin quotidien pour un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param soin le soin quotidien ajouté au patient
+     * @throws java.sql.SQLException
+     */
     public static void creerSoinQuotidien(Connection conn, SoinsQuotidien soin) throws SQLException{
         PreparedStatement stmt = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(soin.getDateHeure()));
@@ -953,8 +1078,12 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
-    //Creer un rdv et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Crée un rendez-vous pour un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param rdv le rendez-vous ajouté au patient
+     * @throws java.sql.SQLException
+     */
     public static void creerRendezVous(Connection conn, RendezVous rdv) throws SQLException{
         PreparedStatement stmt = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(rdv.getDateHeure()));
@@ -983,8 +1112,12 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
-    //Creer un examen et l'ajouter dans la base de données
-    //VALIDE
+    /**
+     * Crée un examen pour un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param exam l'exam ajouté au patient
+     * @throws java.sql.SQLException
+     */
     public static void creerExamen(Connection conn, Examen exam) throws SQLException{
         PreparedStatement stmt = null;
         String ts = toStringTimestampJAVA(convertDateHeureJavaEnTimestampSQL(exam.getDateHeure()));
@@ -1000,8 +1133,13 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
-    //Creer localisation d'un patient lorsqu'il entre dans le CHU
-    //VALIDE
+    /**
+     * Crée la localisation d'un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @param loc la localisation où le patient sera
+     * @throws java.sql.SQLException
+     */
     public static void creerLocalisation(Connection conn, String ipp, Localisation loc) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
@@ -1028,8 +1166,13 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
-    //Creer localisation d'un patient par une secrétaire administratice -> utilise que le service responsable (géographique??)
-    //VALIDE
+    /**
+     * Crée la localisation à l'étape du secrétariat administratif d'un patient et l'ajouter dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @param service_respo le service responsable du patient
+     * @throws java.sql.SQLException
+     */
     public static void creerLocalisationSA(Connection conn, String ipp, Service service_respo) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
@@ -1059,8 +1202,15 @@ public class RequetesBDDPI {
     ////////////////////////////////////////////////////////////////////////////
     //Modification d'éléments
     
-    //Modifier localisation d'un patient par la secrétaire médicale -> le reste des infos de la localisation comparé à creerLocalisationSA
-    //VALIDE
+    /**
+     * Modifie la localisation à l'étape du secrétariat médical d'un patient et la modifier dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @param numero_chambre le numéro de la nouvelle chambre du patient
+     * @param lit le nouveau lit du patient
+     * @param service_geo le service géographique où sera le patient
+     * @throws java.sql.SQLException
+     */
     public static void modifierLocalisationSM(Connection conn, String ipp, int numero_chambre, Lit lit, Service service_geo) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("SELECT * FROM Archive WHERE IPP = ?");
@@ -1085,8 +1235,15 @@ public class RequetesBDDPI {
         stmt.close();
     }
     
-    //Modifier les informations d'un patient dans son DPI et faire les modifs dans la BD
-    //VALIDE
+    /**
+     * Modifie certaines informations dans le DPI d'un patient et le modifier dans la base de données
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @param telephone le nouveau numéro de téléphone du patient
+     * @param adresse la nouvelle adresse postale du patient
+     * @param m le médecin traitant du patient
+     * @throws java.sql.SQLException
+     */
     public static void modifierDPI(Connection conn, String ipp, String telephone, String adresse, MedecinTraitant m) throws SQLException{
         //Modification dans la table DPI
         PreparedStatement stmt = null;
@@ -1110,8 +1267,13 @@ public class RequetesBDDPI {
         stmt2.close();
     }
     
-    //Archivage d'un dossier quand le patient est décédé
-    //VALIDE
+    /**
+     * Archivage d'un dossier quand le patient est décédé
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @param date_deces la date de décès du patient
+     * @throws java.sql.SQLException
+     */
     public static void archiverDPI(Connection conn, String ipp, Date date_deces) throws SQLException{
         PreparedStatement stmt = null;
         //Ajout du DPI dans les archives
@@ -1129,8 +1291,12 @@ public class RequetesBDDPI {
     ////////////////////////////////////////////////////////////////////////////
     //Suppression d'éléments
     
-    //Supprimer la localisation d'un patient lorsqu'on ferme le dossier
-    //VALIDE
+    /**
+     * Suppression de la localisation d'un patient lorsqu'on ferme son dossier
+     * @param conn la connection établie pour la base de données
+     * @param ipp l'ipp du patient
+     * @throws java.sql.SQLException
+     */
     public static void fermerDPI(Connection conn, String ipp) throws SQLException{
         PreparedStatement stmt = null;
         stmt = conn.prepareStatement("DELETE FROM Localisation WHERE IPP = ?");

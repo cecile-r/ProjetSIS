@@ -759,7 +759,8 @@ class ConnexionSGBD {
             //System.out.println(listePrescriptionTemporaire(conn, "1937463529"));
             //System.out.println(listeExamensTemporaire(conn, "1937463529"));
             
-            //creerDPITemporaire(conn, dpitemp); 
+            DPITemporaire dpitemp2 = new DPITemporaire("1900003529", "Agua", "Carapuce", dateNai);
+            creerDPITemporaire(conn, dpitemp2); 
             //creerNouveauDPI(conn, "1800003456","Fuego","Salameche",dateNai, "homme", "0765342609", "2 bis avenue des Briquets", md);
             //transfertDPI(conn, dpinormal, dpitemp); -> réalisé
             
