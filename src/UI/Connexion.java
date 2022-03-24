@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static database.RequetesBDConnexion.*;
-import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import nf.Infirmier;
@@ -28,7 +27,7 @@ import nf.Service;
 
 /**
  *
- * @author Audrey et gwen le boss du game
+ * @author connexa
  */
 public class Connexion extends javax.swing.JFrame {
 

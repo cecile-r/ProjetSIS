@@ -482,7 +482,11 @@ public class Ajout_prescription extends javax.swing.JFrame {
                 PrescriptionTemp p = new PrescriptionTemp(dh, observation, typeExamen, null);
                 p.setDPI(dpiTemp);
                 p.setpH(ph);
-                //creerPrescription(conn, p);
+                try {
+                    creerPrescriptionTemp(conn, p);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Ajout_prescription.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             ///REVENIR PAGE PREDEDENTE
