@@ -220,7 +220,7 @@ public class RequetesBDProfessionnels {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT DISTINCT nom_medecin_traitant, prenom_medecin_traitant, mail, telephone_medecin_traitant "
                 + "FROM Medecin_traitant "
-                + "WHERE UPPER(nom_medecin_traitant) = UPPER('" + nom + "%')");
+                + "WHERE UPPER(nom_medecin_traitant) LIKE UPPER('" + nom + "%')");
 
         while (rs.next()) {
             MedecinTraitant m = new MedecinTraitant(rs.getString("mail"), rs.getString("nom_medecin_traitant"), rs.getString("prenom_medecin_traitant"), rs.getString("telephone_medecin_traitant"));
