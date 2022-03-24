@@ -204,7 +204,8 @@ public class RequetesBDUrgences {
             stmt = conn.prepareStatement("SELECT * FROM DPI "
                     + "LEFT OUTER JOIN Medecin_traitant USING(telephone_medecin_traitant, IPP) "
                     + "WHERE IPP = ?");
-            stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dpit.getDate_naissance()));
+            Date dt = new Date(dpit.getDate_naissance().getYear()+1900, dpit.getDate_naissance().getMonth()+1, dpit.getDate_naissance().getDate());
+            stmt.setString(1, getIPPPatient(conn, dpit.getNom(), dpit.getPrenom(), dt));
             ResultSet rs = stmt.executeQuery();//Les infos du DPI du patient
 
             if (rs.next()) {
