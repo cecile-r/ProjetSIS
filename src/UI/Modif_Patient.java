@@ -267,6 +267,7 @@ public class Modif_Patient extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
         Button_Valider2.setBackground(new java.awt.Color(204, 102, 255));
+        Button_Valider2.setFont(new java.awt.Font("Lucida Console", 1, 11)); // NOI18N
         Button_Valider2.setText("MODIFIER LE PATIENT");
         Button_Valider2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

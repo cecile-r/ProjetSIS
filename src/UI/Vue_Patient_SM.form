@@ -186,7 +186,6 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="Panel_logo" min="-2" pref="154" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -212,10 +211,7 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="Panel_logo" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="Panel_logo" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

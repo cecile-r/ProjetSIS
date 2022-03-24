@@ -100,7 +100,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <Component id="Panel_Bandeau" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" pref="601" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -254,10 +254,6 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="418" max="-2" attributes="0"/>
-                                  <Component id="Button_Selectionner" min="-2" pref="146" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
@@ -274,6 +270,10 @@
                                   <EmptySpace min="-2" pref="379" max="-2" attributes="0"/>
                                   <Component id="jPanel17" min="-2" pref="228" max="-2" attributes="0"/>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="416" max="-2" attributes="0"/>
+                                  <Component id="Button_Selectionner" min="-2" pref="146" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="87" pref="132" max="32767" attributes="0"/>
                       </Group>
@@ -284,17 +284,17 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="jPanel17" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="TextField_Patient" pref="36" max="32767" attributes="0"/>
-                              <Component id="jButton_actualiser1" max="32767" attributes="0"/>
-                              <Component id="jButton_recherche_patient" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jButton_recherche_patient" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="TextField_Patient" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="jButton_actualiser1" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" pref="361" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="Button_Selectionner" min="-2" pref="61" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="371" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="Button_Selectionner" min="-2" pref="61" max="-2" attributes="0"/>
+                          <EmptySpace pref="38" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -500,7 +500,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jPanel18" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="28" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
