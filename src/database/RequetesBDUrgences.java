@@ -307,8 +307,8 @@ public class RequetesBDUrgences {
             Examen e = new Examen(listeExamensTemporaire(conn, dpit.getIPP()).get(i).getType_examen(), listeExamensTemporaire(conn, dpit.getIPP()).get(i).getResultats(), listeExamensTemporaire(conn, dpit.getIPP()).get(i).getDateHeure());
 
             //Création du PH
-            Statement stmte = conn.createStatement();
-            ResultSet rs2 = stmte.executeQuery("SELECT * FROM PH "
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT * FROM PH "
                     + "WHERE idPH = '" + listeExamensTemporaire(conn, dpit.getIPP()).get(i).getPh().getIdPH() + "'");//Selection du PH qui réalise l'examen
             if (rs2.next()) {
                 PH ph = new PH(rs2.getString("idPH"), rs2.getString("nom_PH"), rs2.getString("prenom_PH"), Service.valueOf(rs2.getString("service_PH")), rs2.getString("mdp_PH"), rs2.getString("telephone_PH"), rs2.getString("specialite_PH"));
@@ -330,7 +330,9 @@ public class RequetesBDUrgences {
                 DPI dpi = new DPI(rs4.getString("IPP"), rs4.getString("nom_DPI"), rs4.getString("prenom_DPI"), convertDateSQLenJava(rs4.getDate("date_de_naissance")), Sexe.valueOf(rs4.getString("sexe_DPI")), rs4.getString("adresse_DPI"), rs4.getString("telephone_DPI"), m);
                 e.setDPI(dpi);
             }
+            rs2.close();
             rs4.close();
+            stmt2.close();
             stmt4.close();
 
             creerExamen(conn, e);
